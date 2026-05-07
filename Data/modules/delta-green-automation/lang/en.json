@@ -1,0 +1,39 @@
+{
+  "TYPES": {
+    "Item": {
+      "delta-green-automation": {
+        "action": "Action",
+        "effect": "Effect"
+      }
+    }
+  },
+  "delta-green-automation": {
+    "SETTINGS": {
+      "Menu": {
+        "automation": {
+          "name": "Automation Settings Menu",
+          "label": "Open menu"
+        }
+      },
+      "dyingStatusEffect": {
+        "name": "Auto add dying status effects",
+        "hint": "Cover unconscious/dead logic"
+      },
+      "failureSkills": {
+        "name": "Auto adding failure state to skill",
+        "hint": ""
+      }
+    },
+    "showCorruption": "Show agents corruption",
+    "messages": {
+      "skillsmark": {
+        "marked": "This skill is marked",
+        "tooltip": "See Page 29 of the Agents Handbook - Improving Skills"
+      },
+      "damage": {
+        "unconscious": "Agent {actorname} is unconscious.",
+        "collapse": "Agent {actorname} has a temporary emotional collapse."
+      }
+    }
+  }
+}

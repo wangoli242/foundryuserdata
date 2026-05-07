@@ -1,0 +1,57 @@
+{
+  "id": "token-action-hud-dg",
+  "title": "Token Action HUD Delta Green",
+  "description": "Token Action HUD is a repositionable HUD of actions for a selected token",
+  "authors": [
+    {
+      "name": "seumas",
+      "flags": {}
+    }
+  ],
+  "url": "https://gitlab.com/vtt2/token-action-hud-dg",
+  "version": "1.1.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "13.351",
+    "maximum": "13"
+  },
+  "esmodules": [
+    "scripts/init.js"
+  ],
+  "styles": [
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "languages/en.json",
+      "flags": {}
+    }
+  ],
+  "relationships": {
+    "systems": [
+      {
+        "id": "deltagreen",
+        "type": "system",
+        "compatibility": [
+          null
+        ]
+      }
+    ],
+    "requires": [
+      {
+        "id": "token-action-hud-core",
+        "type": "module",
+        "compatibility": [
+          null
+        ]
+      }
+    ],
+    "flags": {
+      "optional": []
+    }
+  },
+  "manifest": "https://gitlab.com/api/v4/projects/65538022/packages/generic/token-action-hud-dg/1.1.0/module.json",
+  "download": "https://gitlab.com/api/v4/projects/65538022/packages/generic/token-action-hud-dg/1.1.0/token-action-hud-dg.zip",
+  "readme": "https://gitlab.com/vtt2/token-action-hud-dg"
+}

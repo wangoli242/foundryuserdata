@@ -1,0 +1,21 @@
+{
+  "timestamp": 1778126577236,
+  "os": {
+    "platform": "linux",
+    "version": "Ubuntu 24.04.4 LTS",
+    "node": "24.15.0"
+  },
+  "foundry": {
+    "generation": 13,
+    "build": 351,
+    "channel": "stable",
+    "hosting": null
+  },
+  "modules": {},
+  "systems": {},
+  "worlds": {},
+  "playtime": {
+    "total": 0,
+    "max": 0
+  }
+}

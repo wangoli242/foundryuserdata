@@ -1,0 +1,5 @@
+2026/05/07-04:05:31.508838 fa3481dbdfc0 Delete type=3 #1
+2026/05/07-04:43:30.522972 fa346b7eefc0 Level-0 table #5: started
+2026/05/07-04:43:30.525250 fa346b7eefc0 Level-0 table #5: 21851 bytes OK
+2026/05/07-04:43:30.527054 fa346b7eefc0 Delete type=0 #3
+2026/05/07-04:43:30.528369 fa346b7eefc0 Manual compaction at level-0 from '!scenes!NUEDEFAULTSCENE0' @ 72057594037927935 : 1 .. '!scenes.tiles!NUEDEFAULTSCENE0.mMxIUI1fXJmrR1zK' @ 0 : 0; will stop at (end)

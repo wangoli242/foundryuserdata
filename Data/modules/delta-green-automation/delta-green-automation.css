@@ -1,0 +1,224 @@
+.suffering-applied {
+    color: red;
+}
+
+.strike {
+    text-decoration: line-through;
+}
+
+.fs1r {
+    font-size: 1rem;
+}
+
+#chat .chat-log {
+    div.tags {
+        margin: 5px 0 5px 0;
+
+        span.tag {
+            display: inline-block;
+            padding: 5px 12px;
+            border: 2px solid #006400;
+            border-radius: 999px;
+            color: #006400;
+            background-color: #e6f4e6;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+    }
+}
+
+
+.target-layer {
+    display: flex;
+    align-items: center;
+    text-align: center;
+
+    > label {
+        flex: 1;
+    }
+}
+
+.target-block {
+    margin: 5px;
+
+    .target-row {
+        display: flex;
+        align-items: center;
+        text-align: center;
+
+        .image {
+            width: 40px;
+            height: 40px;
+            background-size: 40px;
+            margin-right: 5px;
+        }
+
+        .fa-user-plus:hover, .fa-user-minus:hover {
+            text-shadow: 0 0 5px #d16623;
+            color: #d16623;
+        }
+    }
+
+    .target-row-btns {
+        margin-left: auto;
+
+        > i {
+            margin: 5px;
+        }
+    }
+}
+
+.item-roll-damage, [data-action="apply-sanity-loses"], [data-action="rollback-sanity-loses"] {
+    width: 100%;
+    margin-top: 7px;
+}
+
+
+span[data-post-inline] {
+    margin-left: 5px;
+    border-left: 1px solid var(--content-link-border-color);
+
+    i {
+        margin-left: 2px;
+        padding: 2px;
+    }
+}
+
+span[data-post-inline]:hover {
+    color: white;
+}
+
+.basic-chat-card {
+    > header {
+        display: flex;
+        align-items: center;
+        flex-wrap: wrap;
+        text-align: center;
+
+        > img {
+            height: 40px;
+            width: 40px;
+        }
+
+        > h4 {
+            flex: 1;
+            margin: 0;
+            margin-left: 15px;
+            text-align: left;
+            text-wrap: wrap;
+        }
+    }
+}
+
+.list-area {
+    .label-row {
+        display: flex;
+        align-items: center;
+    }
+
+    .remove-row {
+        margin-left: auto;
+        margin-right: 10px;
+    }
+}
+
+.rollback-section {
+    order: 99;
+    display: flex;
+    margin-top: 5px;
+    align-items: center;
+    justify-content: center;
+
+    > i {
+        margin: 5px;
+    }
+}
+
+[data-action="rollback-skill-failure-state"] {
+    align-items: center;
+    display: inline-flex;
+    justify-content: center;
+    min-height: unset;
+    width: 20px;
+    height: 20px;
+    margin-left: 5px;
+    font-size: 12px;
+}
+
+[data-tooltip] {
+    position: relative;
+    cursor: pointer;
+}
+
+#delta-green-automation-agent-builder-form {
+    .basic-form {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .step-form {
+        flex: 1;
+    }
+
+    .bottom-buttons {
+        margin-top: auto;
+        display: flex;
+        justify-content: space-between;
+        padding: 1rem;
+    }
+
+    .bottom-buttons:has(> button:only-child) {
+        justify-content: flex-end;
+    }
+}
+
+.sanity-macro {
+    form {
+        height: 100%;
+    }
+
+    .standard-form {
+        flex: 1;
+    }
+}
+
+.corruption-first-line {
+    display: inline-grid;
+    grid-template-columns: auto auto auto 60px;
+    width: 100%;
+    align-items: center;
+}
+
+.list-area.corruptions {
+
+    padding: 0;
+
+    li {
+        display: flex;
+        gap: 20px;
+        padding: 5px;
+
+        .name {
+            max-width: 90px;
+        }
+    }
+
+    img {
+        width: 60px;
+        height: 60px;
+    }
+
+    li {
+        border-bottom: 1px solid yellow;
+    }
+
+    li:last-child {
+        border-bottom: none;
+    }
+}
+
+[data-application-part="corruption_search"] {
+    padding-bottom: 5px;
+    border-bottom: 1px solid yellow;
+}

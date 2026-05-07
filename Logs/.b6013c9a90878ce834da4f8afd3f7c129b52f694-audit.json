@@ -1,0 +1,15 @@
+{
+    "keep": {
+        "days": false,
+        "amount": 5
+    },
+    "auditLog": "/home/ubuntu/foundryuserdata/Logs/.b6013c9a90878ce834da4f8afd3f7c129b52f694-audit.json",
+    "files": [
+        {
+            "date": 1778125787674,
+            "name": "/home/ubuntu/foundryuserdata/Logs/error.2026-05-07.log",
+            "hash": "3611c4b16fd5b9eabb313934a234701670625d9cd69455a6c9b64dff3b56d601"
+        }
+    ],
+    "hashType": "sha256"
+}
