@@ -3678,3 +3678,17 @@
 {"level":"info","message":"Created client session 22e174d34ebfee6cb693017a","timestamp":"2026-05-07 16:37:10"}
 {"level":"info","message":"Created client session 7120fa47c20dc851590ba723","timestamp":"2026-05-07 16:44:28"}
 {"level":"info","message":"Created client session c85d09e0443b5cb824c5f79b","timestamp":"2026-05-07 16:54:44"}
+{"level":"info","message":"Created client session f476f72b061aef78a7862f16","timestamp":"2026-05-07 17:15:00"}
+{"level":"info","message":"Created client session d81cd5abb5c290a27294ca30","timestamp":"2026-05-07 17:20:05"}
+{"level":"info","message":"Logged user aFXBIYID8O38Ue0X out of active World","timestamp":"2026-05-07 17:21:43"}
+{"ip":"38.143.253.121","level":"warn","message":"User authentication failed for user Gamemaster; invalid password","session":"c0e9d926b69bbbcdcfade5bc","status":401,"timestamp":"2026-05-07 17:23:05"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"c0e9d926b69bbbcdcfade5bc","timestamp":"2026-05-07 17:23:10"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-07 17:23:12"}
+{"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 634ms","timestamp":"2026-05-07 17:23:12"}
+{"level":"info","message":"Logged user aFXBIYID8O38Ue0X out of active World","timestamp":"2026-05-07 17:30:23"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"c0e9d926b69bbbcdcfade5bc","timestamp":"2026-05-07 17:30:29"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-07 17:30:31"}
+{"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 676ms","timestamp":"2026-05-07 17:30:31"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/delta-green-music-from-a-darkened-room/assets/scenes/U4oCXefDz4npbTMp-thumb.webp\"","timestamp":"2026-05-07 17:30:51"}
+{"level":"info","message":"Created Token with id [SJVtFSWdwvuskiw0] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-07 17:31:33"}
+{"level":"info","message":"Deleted Token with id [SJVtFSWdwvuskiw0] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-07 17:31:35"}
