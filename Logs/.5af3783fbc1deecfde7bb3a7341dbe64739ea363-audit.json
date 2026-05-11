@@ -9,6 +9,26 @@
             "date": 1778125787673,
             "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-07.log",
             "hash": "879e19c91b841e492a6b55f60710c22240333fe33c712c16c664b9d9ff9071de"
+        },
+        {
+            "date": 1778198454771,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-08.log",
+            "hash": "3d7b1af0a9bfa5445b751baced29f8ecbdd05a42ac06319488f1812053abb38e"
+        },
+        {
+            "date": 1778285015996,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-09.log",
+            "hash": "c5dea64a2df673f8db51b91b498a42a68e6fbca93f771fd3f8d53e2b887facc6"
+        },
+        {
+            "date": 1778373538040,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-10.log",
+            "hash": "d33bc7ecbbb1c0ac260be666738f291ddc9db2968a40231f235c7e908123de82"
+        },
+        {
+            "date": 1778457685053,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-11.log",
+            "hash": "aa9d69c3b7b76714bd395e2ab9caac453187483291b9fb46a6da4ef8b1a9fd4b"
         }
     ],
     "hashType": "sha256"
