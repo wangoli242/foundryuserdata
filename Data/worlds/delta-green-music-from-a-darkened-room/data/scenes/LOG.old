@@ -1,8 +1,15 @@
-2026/05/11-18:18:13.072208 fa3480d9dfc0 Recovering log #18
-2026/05/11-18:18:13.077848 fa3480d9dfc0 Delete type=3 #11
-2026/05/11-18:18:13.077870 fa3480d9dfc0 Delete type=0 #18
-2026/05/11-18:21:59.946804 fa346b7eefc0 Level-0 table #25: started
-2026/05/11-18:21:59.946816 fa346b7eefc0 Level-0 table #25: 0 bytes OK
-2026/05/11-18:21:59.949181 fa346b7eefc0 Delete type=0 #23
-2026/05/11-18:21:59.949335 fa346b7eefc0 Manual compaction at level-0 from '!scenes!Bcx2ieCEaGGEcVd6' @ 72057594037927935 : 1 .. '!scenes.walls!Bcx2ieCEaGGEcVd6.z5kS3AjQ2ui1W0qu' @ 0 : 0; will stop at (end)
-2026/05/11-18:21:59.956278 fa346b7eefc0 Manual compaction at level-1 from '!scenes!Bcx2ieCEaGGEcVd6' @ 72057594037927935 : 1 .. '!scenes.walls!Bcx2ieCEaGGEcVd6.z5kS3AjQ2ui1W0qu' @ 0 : 0; will stop at (end)
+2026/05/11-18:24:03.221703 fa34815adfc0 Recovering log #24
+2026/05/11-18:24:03.227023 fa34815adfc0 Delete type=3 #22
+2026/05/11-18:24:03.227046 fa34815adfc0 Delete type=0 #24
+2026/05/12-06:10:13.735587 fa346b7eefc0 Level-0 table #29: started
+2026/05/12-06:10:13.738543 fa346b7eefc0 Level-0 table #29: 45429 bytes OK
+2026/05/12-06:10:13.740499 fa346b7eefc0 Delete type=0 #27
+2026/05/12-06:10:13.740761 fa346b7eefc0 Manual compaction at level-0 from '!scenes!Bcx2ieCEaGGEcVd6' @ 72057594037927935 : 1 .. '!scenes.walls!Bcx2ieCEaGGEcVd6.z5kS3AjQ2ui1W0qu' @ 0 : 0; will stop at (end)
+2026/05/12-06:10:13.753932 fa346b7eefc0 Manual compaction at level-1 from '!scenes!Bcx2ieCEaGGEcVd6' @ 72057594037927935 : 1 .. '!scenes.walls!Bcx2ieCEaGGEcVd6.z5kS3AjQ2ui1W0qu' @ 0 : 0; will stop at '!scenes.walls!Bcx2ieCEaGGEcVd6.z5kS3AjQ2ui1W0qu' @ 1873 : 1
+2026/05/12-06:10:13.753937 fa346b7eefc0 Compacting 1@1 + 1@2 files
+2026/05/12-06:10:13.756813 fa346b7eefc0 Generated table #30@1: 111 keys, 13014 bytes
+2026/05/12-06:10:13.756822 fa346b7eefc0 Compacted 1@1 + 1@2 files => 13014 bytes
+2026/05/12-06:10:13.758643 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/05/12-06:10:13.758697 fa346b7eefc0 Delete type=2 #29
+2026/05/12-06:10:13.758741 fa346b7eefc0 Delete type=2 #21
+2026/05/12-06:10:13.759548 fa346b7eefc0 Manual compaction at level-1 from '!scenes.walls!Bcx2ieCEaGGEcVd6.z5kS3AjQ2ui1W0qu' @ 1873 : 1 .. '!scenes.walls!Bcx2ieCEaGGEcVd6.z5kS3AjQ2ui1W0qu' @ 0 : 0; will stop at (end)

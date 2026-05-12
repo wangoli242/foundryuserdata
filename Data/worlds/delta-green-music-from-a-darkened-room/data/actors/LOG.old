@@ -1,8 +1,15 @@
-2026/05/11-18:18:12.983295 fa346bffefc0 Recovering log #13
-2026/05/11-18:18:12.991163 fa346bffefc0 Delete type=0 #13
-2026/05/11-18:18:12.991185 fa346bffefc0 Delete type=3 #11
-2026/05/11-18:21:59.919429 fa346b7eefc0 Level-0 table #19: started
-2026/05/11-18:21:59.919444 fa346b7eefc0 Level-0 table #19: 0 bytes OK
-2026/05/11-18:21:59.921668 fa346b7eefc0 Delete type=0 #17
-2026/05/11-18:21:59.924150 fa346b7eefc0 Manual compaction at level-0 from '!actors!3AMolEmabkA0Rt7b' @ 72057594037927935 : 1 .. '!actors.items!ogLLym5kNrlh8EB3.GUNDkqV0wgSNvvJI' @ 0 : 0; will stop at (end)
-2026/05/11-18:21:59.924277 fa346b7eefc0 Manual compaction at level-1 from '!actors!3AMolEmabkA0Rt7b' @ 72057594037927935 : 1 .. '!actors.items!ogLLym5kNrlh8EB3.GUNDkqV0wgSNvvJI' @ 0 : 0; will stop at (end)
+2026/05/11-18:24:03.128022 fa34815adfc0 Recovering log #18
+2026/05/11-18:24:03.135106 fa34815adfc0 Delete type=3 #16
+2026/05/11-18:24:03.135134 fa34815adfc0 Delete type=0 #18
+2026/05/12-06:10:13.692862 fa346b7eefc0 Level-0 table #23: started
+2026/05/12-06:10:13.695552 fa346b7eefc0 Level-0 table #23: 5609 bytes OK
+2026/05/12-06:10:13.697181 fa346b7eefc0 Delete type=0 #21
+2026/05/12-06:10:13.701273 fa346b7eefc0 Manual compaction at level-0 from '!actors!3AMolEmabkA0Rt7b' @ 72057594037927935 : 1 .. '!actors.items!ogLLym5kNrlh8EB3.GUNDkqV0wgSNvvJI' @ 0 : 0; will stop at (end)
+2026/05/12-06:10:13.701376 fa346b7eefc0 Manual compaction at level-1 from '!actors!3AMolEmabkA0Rt7b' @ 72057594037927935 : 1 .. '!actors.items!ogLLym5kNrlh8EB3.GUNDkqV0wgSNvvJI' @ 0 : 0; will stop at '!actors!hmmuBx14SjkfOO98' @ 191 : 1
+2026/05/12-06:10:13.701380 fa346b7eefc0 Compacting 1@1 + 1@2 files
+2026/05/12-06:10:13.704200 fa346b7eefc0 Generated table #24@1: 36 keys, 24706 bytes
+2026/05/12-06:10:13.704209 fa346b7eefc0 Compacted 1@1 + 1@2 files => 24706 bytes
+2026/05/12-06:10:13.706080 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/05/12-06:10:13.706144 fa346b7eefc0 Delete type=2 #15
+2026/05/12-06:10:13.706192 fa346b7eefc0 Delete type=2 #23
+2026/05/12-06:10:13.710159 fa346b7eefc0 Manual compaction at level-1 from '!actors!hmmuBx14SjkfOO98' @ 191 : 1 .. '!actors.items!ogLLym5kNrlh8EB3.GUNDkqV0wgSNvvJI' @ 0 : 0; will stop at (end)
