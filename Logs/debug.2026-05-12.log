@@ -301,3 +301,93 @@
 {"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/delta-green-music-from-a-darkened-room/assets/scenes/niVXOXkQWwvVBfFY-thumb.webp\"","timestamp":"2026-05-12 07:17:32"}
 {"level":"info","message":"Created Scene with id [sw1xoJBtOpCPb4SV]","timestamp":"2026-05-12 07:17:59"}
 {"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/delta-green-music-from-a-darkened-room/assets/scenes/sw1xoJBtOpCPb4SV-thumb.webp\"","timestamp":"2026-05-12 07:18:12"}
+{"level":"info","message":"Created client session 6adcdffc5e48701f735aaf97","timestamp":"2026-05-12 07:24:16"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Shreyas","session":"6adcdffc5e48701f735aaf97","timestamp":"2026-05-12 07:24:34"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-12 07:24:35"}
+{"level":"info","message":"Vended World data to User [4tfCzHLcdt6y7Fit] in 537ms","timestamp":"2026-05-12 07:24:35"}
+{"level":"info","message":"Logged user 4tfCzHLcdt6y7Fit out of active World","timestamp":"2026-05-12 07:25:38"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Kaiser","session":"6adcdffc5e48701f735aaf97","timestamp":"2026-05-12 07:25:42"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-12 07:25:43"}
+{"level":"info","message":"Vended World data to User [PgBW75ObGeNtWF7r] in 336ms","timestamp":"2026-05-12 07:25:43"}
+{"level":"info","message":"Logged user PgBW75ObGeNtWF7r out of active World","timestamp":"2026-05-12 07:26:20"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Pyre","session":"6adcdffc5e48701f735aaf97","timestamp":"2026-05-12 07:26:23"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-12 07:26:24"}
+{"level":"info","message":"Vended World data to User [xgzUUqC7yJfhTHQC] in 731ms","timestamp":"2026-05-12 07:26:24"}
+{"level":"info","message":"Logged user xgzUUqC7yJfhTHQC out of active World","timestamp":"2026-05-12 07:27:09"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Yuri","session":"6adcdffc5e48701f735aaf97","timestamp":"2026-05-12 07:27:11"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-12 07:27:13"}
+{"level":"info","message":"Vended World data to User [STrPhxF1dRGcEIXm] in 392ms","timestamp":"2026-05-12 07:27:13"}
+{"level":"info","message":"Created client session 8926c435d04f2834c5eb6cab","timestamp":"2026-05-12 07:28:03"}
+{"level":"info","message":"Created client session ed82b51c7a347e54c5598a0d","timestamp":"2026-05-12 07:30:05"}
+{"level":"info","message":"Created client session 873dbb9541ef379468704909","timestamp":"2026-05-12 07:30:05"}
+{"level":"info","message":"Created client session d39aff93b1076dc1a8032d70","timestamp":"2026-05-12 07:30:05"}
+{"level":"info","message":"Created client session e5274bbac528c908cc367925","timestamp":"2026-05-12 07:30:05"}
+{"level":"info","message":"Created client session fe99192b2f0bcb433a61c84e","timestamp":"2026-05-12 07:30:05"}
+{"level":"info","message":"Created client session f644c5eeb12f062f04fc7a98","timestamp":"2026-05-12 07:30:05"}
+{"level":"info","message":"Created client session c827f6b2ecce77cd7cba9211","timestamp":"2026-05-12 07:30:05"}
+{"level":"info","message":"Created client session ed3a0e6f0d66d38349df3605","timestamp":"2026-05-12 07:30:44"}
+{"level":"info","message":"Created Token with id [xx2yIWzY44Kl71tv] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:08"}
+{"level":"info","message":"Deleted Token with id [xx2yIWzY44Kl71tv] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:11"}
+{"level":"info","message":"Created Token with id [pvOVFx7cAUrMiS0K] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:12"}
+{"level":"info","message":"Deleted Token with id [pvOVFx7cAUrMiS0K] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:13"}
+{"level":"info","message":"Created Token with id [AhZ86jdT2dpmz6Ut] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:15"}
+{"level":"info","message":"Deleted Token with id [AhZ86jdT2dpmz6Ut] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:17"}
+{"level":"info","message":"Created Token with id [OAROBbxGv5TIYl7u] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:18"}
+{"level":"info","message":"Deleted Token with id [OAROBbxGv5TIYl7u] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:18"}
+{"level":"info","message":"Created Token with id [wGWGspwO8azpCmpE] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:19"}
+{"level":"info","message":"Deleted Token with id [wGWGspwO8azpCmpE] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:20"}
+{"level":"info","message":"Created Token with id [DKnFBzbtrkKmDBie] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:23"}
+{"level":"info","message":"Deleted Token with id [DKnFBzbtrkKmDBie] in parent Scene [U4oCXefDz4npbTMp]","timestamp":"2026-05-12 07:32:24"}
+{"level":"info","message":"Deleted Token with id [zoBXUewjni1cUAA4] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:31"}
+{"level":"info","message":"Created Token with id [njKrWgaAQNajt9HY] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:33"}
+{"level":"info","message":"Created Token with id [aoKDZEhNFnWeDvTr] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:42"}
+{"level":"info","message":"Created Token with id [KcAJ7MPWmMkCWzaz] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:44"}
+{"level":"info","message":"Created Token with id [mbjroZEoGBphbDER] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:46"}
+{"level":"info","message":"Created Token with id [JxdlJiMoDQ8S2zb8] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:48"}
+{"level":"info","message":"Deleted Token with id [JxdlJiMoDQ8S2zb8] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:50"}
+{"level":"info","message":"Deleted Token with id [KcAJ7MPWmMkCWzaz] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:56"}
+{"level":"info","message":"Created Token with id [B55O1dkFVZr3ijTC] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-12 07:32:57"}
+{"level":"info","message":"Created Setting with id [z2McIwgZNc28oKMD]","timestamp":"2026-05-12 07:33:33"}
+{"level":"info","message":"Created Setting with id [DA1NWrCIDaZ7MkpC]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [FGbvIgU7suDZ20oq]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [rt8YEDW91mXx66Fr]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [AKTF3PknHmhaQgcR]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [upTWGhgUwmEsTK8Y]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created FogExploration with id [WrxudOOaYzVKhmux]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [LIhPH9bEifDn1k2m]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [EvXYaoUOQlSuDkqo]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [u7UyVK2jm1Txhmsm]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [LLK6bEFXME2f4dDc]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [fKsf3W7V02FPbxJg]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [TbbF0XEgpPXkEQPv]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [uAm0oJvL98pqzhRi]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [eVbgqaRtk2yuskMw]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [KiYLOB9kanwXnr8P]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [DfLHj3byIQ35X7vH]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [Op01ajnCOAW0cZG4]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [nGsCrjb3ZRpqZwb6]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [Vf6sLae4glVZ29NV]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [7a6nYQYdbZH3DQOy]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [027xnf4evKiVttiJ]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [8YSPtatm9J5Q2xgT]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [hCLAl6stQW8JZx3W]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [68HldSYJHq7Jf0ft]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [PUy6D27mlbXdmAtN]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [AuSNyL5hJZXRb5bC]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [U1RmRc0YOMk8WwpZ]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [rvF2sUQgijs4UKT6]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [CJY74Q0c8zwB1nbB]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [yh0jKh7rzZefIkvm]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [hmHQhO2JDmR6M0mD]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [rSpxpXtx1Tp76ULw]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [kzrLVWtS2X59M6IN]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"Created Setting with id [wrgJ2YVHOatWlNoP]","timestamp":"2026-05-12 07:33:34"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-12 07:33:38"}
+{"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 651ms","timestamp":"2026-05-12 07:33:38"}
+{"level":"info","message":"Toggling game pause status to true","timestamp":"2026-05-12 07:35:48"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-05-12 07:35:48"}
+{"level":"info","message":"Toggling game pause status to true","timestamp":"2026-05-12 07:35:49"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-05-12 07:35:49"}
+{"level":"info","message":"Toggling game pause status to true","timestamp":"2026-05-12 07:35:53"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-05-12 07:35:54"}
+{"level":"info","message":"Toggling game pause status to true","timestamp":"2026-05-12 07:35:54"}
