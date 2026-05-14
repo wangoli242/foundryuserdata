@@ -1,0 +1,200 @@
+{"level":"info","message":"Created client session 2e123aa7f6aac2e6ccd97b1e","timestamp":"2026-05-14 00:09:04"}
+{"level":"info","message":"Created client session f7214778b2b68935d420605c","timestamp":"2026-05-14 00:09:49"}
+{"level":"info","message":"Created client session ba31fa70ffd9361386a8921e","timestamp":"2026-05-14 00:22:25"}
+{"level":"info","message":"Created client session 9e8c17da7394b6880703ef87","timestamp":"2026-05-14 00:23:08"}
+{"level":"info","message":"Created client session 0c948fa839734369232852c7","timestamp":"2026-05-14 00:23:08"}
+{"level":"info","message":"Created client session 185f472f92fd6678ce97dd45","timestamp":"2026-05-14 00:23:12"}
+{"level":"info","message":"Created client session eba6fe629e75357c8dbd016b","timestamp":"2026-05-14 00:25:49"}
+{"level":"info","message":"Created client session b6917bb6ff4deed427e10b41","timestamp":"2026-05-14 00:28:17"}
+{"level":"info","message":"Created client session b508e13b011feee5e7a2b168","timestamp":"2026-05-14 00:29:12"}
+{"level":"info","message":"Created client session 5baf671f1eb808e75350957d","timestamp":"2026-05-14 00:29:45"}
+{"level":"info","message":"Created client session 433f1438f337656551eec62f","timestamp":"2026-05-14 00:30:23"}
+{"level":"info","message":"Created client session bca02170e2f613cf5fc9810a","timestamp":"2026-05-14 00:31:42"}
+{"level":"info","message":"Created client session feaaec375ac49f11133b146d","timestamp":"2026-05-14 00:32:41"}
+{"level":"info","message":"Created client session 0c1fad66242aff598c4ac2da","timestamp":"2026-05-14 00:33:03"}
+{"level":"info","message":"Created client session e6806c72bad12cfc6ee78419","timestamp":"2026-05-14 00:33:43"}
+{"level":"info","message":"Created client session 9efeb5f926591834588a3544","timestamp":"2026-05-14 00:34:16"}
+{"level":"info","message":"Created client session 47746aaca9b276f6cab7ef27","timestamp":"2026-05-14 00:35:01"}
+{"level":"info","message":"Created client session 7edb367199c6c6efca9190c4","timestamp":"2026-05-14 00:35:18"}
+{"level":"info","message":"Created client session 4ebc30daeafc6a78406ea3e6","timestamp":"2026-05-14 00:35:35"}
+{"level":"info","message":"Created client session a116c0c386c755402c9af39e","timestamp":"2026-05-14 00:35:50"}
+{"level":"info","message":"Created client session 18c39bf2f89720cd7fc3e0e3","timestamp":"2026-05-14 00:36:09"}
+{"level":"info","message":"Created client session e06681f6978e013ce9888b1f","timestamp":"2026-05-14 01:05:04"}
+{"level":"info","message":"Created client session 2459136728fe4b2fcf543c81","timestamp":"2026-05-14 01:13:18"}
+{"level":"info","message":"Created client session d0347012e189950f1d4b0bce","timestamp":"2026-05-14 01:16:07"}
+{"level":"info","message":"Created client session 91cd2c21cb96217eb40c1d28","timestamp":"2026-05-14 01:16:08"}
+{"level":"info","message":"Created client session f9cfe3ed041a1268525409a5","timestamp":"2026-05-14 01:16:08"}
+{"level":"info","message":"Created client session 08339326ab0ed1f485a13c7a","timestamp":"2026-05-14 01:26:20"}
+{"level":"info","message":"Created client session 06e291a3a42050965ed4a5d7","timestamp":"2026-05-14 01:26:37"}
+{"level":"info","message":"Created client session 8921237398d5080dea51a5b4","timestamp":"2026-05-14 02:02:15"}
+{"level":"info","message":"Created client session 73053030e84947bc6280bf7a","timestamp":"2026-05-14 02:30:40"}
+{"level":"info","message":"Created client session b885a7c81506d307dce5bc70","timestamp":"2026-05-14 03:10:22"}
+{"level":"info","message":"Created client session a7ecf540244eb730608b6793","timestamp":"2026-05-14 03:35:28"}
+{"level":"info","message":"Created client session b2e3b19f6b9483ab91c77558","timestamp":"2026-05-14 03:35:48"}
+{"level":"info","message":"Created client session 76d160c30e29c4508ef568b6","timestamp":"2026-05-14 03:42:58"}
+{"level":"info","message":"Created client session 3cbbec149a26416a57716df5","timestamp":"2026-05-14 03:44:21"}
+{"level":"info","message":"Created client session a755c2d402ba5058c3886b08","timestamp":"2026-05-14 03:49:45"}
+{"level":"info","message":"Created client session 41d019e92623f8e64796b57b","timestamp":"2026-05-14 03:49:45"}
+{"level":"info","message":"Created client session e1c45faaf7eec6084027b67f","timestamp":"2026-05-14 04:21:11"}
+{"level":"info","message":"Created client session 7c06c0651ddc1d14d067596a","timestamp":"2026-05-14 04:24:18"}
+{"level":"info","message":"Created client session c9776a08903e5f25d62a2e80","timestamp":"2026-05-14 04:33:03"}
+{"ip":"71.81.66.111","level":"info","message":"User authentication successful for user Yuri","session":"c9776a08903e5f25d62a2e80","timestamp":"2026-05-14 04:34:18"}
+{"level":"info","message":"Core software stable update 14.361 is available!","timestamp":"2026-05-14 04:34:20"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-14 04:34:20"}
+{"level":"info","message":"Vended World data to User [STrPhxF1dRGcEIXm] in 546ms","timestamp":"2026-05-14 04:34:20"}
+{"level":"info","message":"Created Item with id [75myPpbqYBALsWuX] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 04:34:41"}
+{"level":"info","message":"Created Item with id [XtNZq8UZbsFhfCCa] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 04:38:47"}
+{"level":"info","message":"Created Item with id [nmRhEB5P5rzUxRfP] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 04:42:14"}
+{"level":"info","message":"Created Item with id [RDWmFi0lgtjcvhxY] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 04:47:05"}
+{"level":"info","message":"Created Item with id [KBQoQo4h1d4UzI7Y] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 04:49:35"}
+{"level":"info","message":"Created client session 952fec12cb23a201ab3ce72d","timestamp":"2026-05-14 05:07:48"}
+{"level":"info","message":"Created client session 13b73ffcf15900fa106316d5","timestamp":"2026-05-14 05:09:45"}
+{"level":"info","message":"Created Item with id [dDomiXE8u9Tah2c5] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 05:10:25"}
+{"level":"info","message":"Created client session 140496be10aed00c37ee4c0e","timestamp":"2026-05-14 05:20:27"}
+{"level":"info","message":"Created Item with id [KXRhlh2bJq0cnpke] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 05:21:45"}
+{"level":"info","message":"Created Item with id [1BqGkyq5ItkRGfk0] in parent Actor [3AMolEmabkA0Rt7b]","timestamp":"2026-05-14 05:24:57"}
+{"level":"info","message":"Created client session b1c10ff85de6e8e036aa07af","timestamp":"2026-05-14 05:32:58"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"b1c10ff85de6e8e036aa07af","timestamp":"2026-05-14 05:33:03"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-14 05:33:05"}
+{"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 572ms","timestamp":"2026-05-14 05:33:05"}
+{"level":"info","message":"Created Scene with id [fxKyWyprgG9WmWuI]","timestamp":"2026-05-14 05:36:31"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/delta-green-music-from-a-darkened-room/assets/scenes/fxKyWyprgG9WmWuI-thumb.webp\"","timestamp":"2026-05-14 05:37:25"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.s0FP2h9LltMPNjS7.JournalEntryPage.J7cL18eQKpcZxria#text.content'.","timestamp":"2026-05-14 05:38:44"}
+{"level":"info","message":"Created client session b18ac97cf5077508df02a3a4","timestamp":"2026-05-14 05:39:14"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.s0FP2h9LltMPNjS7.JournalEntryPage.J7cL18eQKpcZxria#text.content'.","timestamp":"2026-05-14 05:39:44"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.s0FP2h9LltMPNjS7.JournalEntryPage.J7cL18eQKpcZxria#text.content'.","timestamp":"2026-05-14 05:40:15"}
+{"level":"debug","message":"Instance 'JournalEntry.s0FP2h9LltMPNjS7.JournalEntryPage.J7cL18eQKpcZxria#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:40:15"}
+{"level":"info","message":"Created JournalEntry with id [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 05:41:20"}
+{"level":"info","message":"Created JournalEntry with id [h5BQwYrnsRpWsG8J]","timestamp":"2026-05-14 05:42:00"}
+{"level":"info","message":"Created JournalEntry with id [RbDrhCdJb8f0F1wu]","timestamp":"2026-05-14 05:42:20"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.s0FP2h9LltMPNjS7.JournalEntryPage.J7cL18eQKpcZxria#text.content'.","timestamp":"2026-05-14 05:43:59"}
+{"level":"info","message":"Created client session a6a9f785003cd4e0c710d355","timestamp":"2026-05-14 05:44:11"}
+{"level":"info","message":"Created client session a9498b74feb7fedd0c611006","timestamp":"2026-05-14 05:44:13"}
+{"level":"info","message":"Created client session be0cef799b070b707b33b6d5","timestamp":"2026-05-14 05:44:21"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.s0FP2h9LltMPNjS7.JournalEntryPage.J7cL18eQKpcZxria#text.content'.","timestamp":"2026-05-14 05:44:43"}
+{"level":"debug","message":"Instance 'JournalEntry.s0FP2h9LltMPNjS7.JournalEntryPage.J7cL18eQKpcZxria#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:44:43"}
+{"level":"info","message":"Created JournalEntryPage with id [cUNJm1ofg7FmRZks] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 05:46:25"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.cUNJm1ofg7FmRZks#text.content'.","timestamp":"2026-05-14 05:46:25"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.cUNJm1ofg7FmRZks#text.content'.","timestamp":"2026-05-14 05:47:25"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.cUNJm1ofg7FmRZks#text.content'.","timestamp":"2026-05-14 05:48:22"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.cUNJm1ofg7FmRZks#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:48:22"}
+{"level":"info","message":"Created JournalEntryPage with id [aTdEeCSnaduhnekE] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 05:48:56"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:48:56"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:49:56"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:50:54"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:50:54"}
+{"level":"info","message":"Created JournalEntryPage with id [rkq0OHr2N2R2tAro] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 05:51:31"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content'.","timestamp":"2026-05-14 05:51:31"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content'.","timestamp":"2026-05-14 05:51:33"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:51:33"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:51:35"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:51:37"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:51:37"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:51:37"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:51:39"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:51:39"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content'.","timestamp":"2026-05-14 05:51:41"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content'.","timestamp":"2026-05-14 05:52:41"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content'.","timestamp":"2026-05-14 05:54:41"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content'.","timestamp":"2026-05-14 05:55:29"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rkq0OHr2N2R2tAro#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:55:29"}
+{"level":"info","message":"Created JournalEntryPage with id [PPLivvD23E7jdhsO] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 05:56:17"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.PPLivvD23E7jdhsO#text.content'.","timestamp":"2026-05-14 05:56:17"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.PPLivvD23E7jdhsO#text.content'.","timestamp":"2026-05-14 05:57:17"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.PPLivvD23E7jdhsO#text.content'.","timestamp":"2026-05-14 05:57:57"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.PPLivvD23E7jdhsO#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:57:57"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:58:00"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content'.","timestamp":"2026-05-14 05:58:11"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.aTdEeCSnaduhnekE#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 05:58:11"}
+{"level":"info","message":"Created JournalEntryPage with id [b8cz3nqhKIpcoXrn] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 05:58:47"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 05:58:47"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 05:59:47"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 06:00:47"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 06:01:47"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 06:02:47"}
+{"level":"info","message":"Logged user STrPhxF1dRGcEIXm out of active World","timestamp":"2026-05-14 06:03:31"}
+{"ip":"71.81.66.111","level":"info","message":"User authentication successful for user Yuri","session":"c9776a08903e5f25d62a2e80","timestamp":"2026-05-14 06:03:35"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-14 06:03:36"}
+{"level":"info","message":"Vended World data to User [STrPhxF1dRGcEIXm] in 617ms","timestamp":"2026-05-14 06:03:36"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 06:03:47"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 06:04:47"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content'.","timestamp":"2026-05-14 06:05:26"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.b8cz3nqhKIpcoXrn#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:05:26"}
+{"level":"info","message":"Created JournalEntryPage with id [wTgQfEEwHMurkOr8] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 06:05:47"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:05:47"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:06:02"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:06:02"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:06:05"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:06:06"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:06:07"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:06:10"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:07:10"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:08:10"}
+{"level":"info","message":"Created ChatMessage with id [40rdFguMME8gMdP4]","timestamp":"2026-05-14 06:09:07"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:11:10"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:12:10"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:13:10"}
+{"level":"info","message":"Created ChatMessage with id [wlf6X9k600rRfbQK]","timestamp":"2026-05-14 06:13:14"}
+{"level":"info","message":"Created ChatMessage with id [B55gM1pMU4JjaeWP]","timestamp":"2026-05-14 06:13:33"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:14:10"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content'.","timestamp":"2026-05-14 06:14:15"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.wTgQfEEwHMurkOr8#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:14:15"}
+{"level":"info","message":"Created ChatMessage with id [Uquklk1yNR1jWCoY]","timestamp":"2026-05-14 06:14:23"}
+{"level":"info","message":"Created ChatMessage with id [dBl113gFDTuQnFRT]","timestamp":"2026-05-14 06:14:32"}
+{"level":"info","message":"Created ChatMessage with id [tPzihaTUVXQvJzaQ]","timestamp":"2026-05-14 06:14:53"}
+{"level":"info","message":"Created JournalEntryPage with id [mpBtccjmJgaTlYY4] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 06:16:45"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:16:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:17:45"}
+{"level":"info","message":"Logged user STrPhxF1dRGcEIXm out of active World","timestamp":"2026-05-14 06:17:54"}
+{"ip":"71.81.66.111","level":"info","message":"User authentication successful for user Yuri","session":"c9776a08903e5f25d62a2e80","timestamp":"2026-05-14 06:17:58"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-14 06:18:00"}
+{"level":"info","message":"Vended World data to User [STrPhxF1dRGcEIXm] in 756ms","timestamp":"2026-05-14 06:18:00"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:18:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:19:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:20:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:21:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:22:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:23:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:24:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:25:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:26:45"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:27:45"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content'.","timestamp":"2026-05-14 06:27:58"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.mpBtccjmJgaTlYY4#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:27:58"}
+{"level":"info","message":"Created JournalEntryPage with id [pqHJyNlvbK5NLB2P] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 06:28:03"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:28:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:29:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:30:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:31:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:32:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:33:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:34:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:35:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:36:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:37:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:38:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:39:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:40:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:41:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:42:03"}
+{"level":"info","message":"Created client session 36dd2abbceb356ff8121e589","timestamp":"2026-05-14 06:42:20"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:43:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:44:03"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:45:03"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:45:28"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:45:28"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:45:32"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:46:32"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:51:32"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content'.","timestamp":"2026-05-14 06:51:51"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.pqHJyNlvbK5NLB2P#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:51:51"}
+{"level":"info","message":"Created JournalEntryPage with id [rzjhZ7TxOkc8rPPn] in parent JournalEntry [3cJTG31OfzfBtYbS]","timestamp":"2026-05-14 06:51:57"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rzjhZ7TxOkc8rPPn#text.content'.","timestamp":"2026-05-14 06:51:57"}
+{"level":"debug","message":"Broadcasting autosave update for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rzjhZ7TxOkc8rPPn#text.content'.","timestamp":"2026-05-14 06:52:57"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rzjhZ7TxOkc8rPPn#text.content'.","timestamp":"2026-05-14 06:53:35"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rzjhZ7TxOkc8rPPn#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:53:35"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-14 06:53:39"}
+{"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 509ms","timestamp":"2026-05-14 06:53:39"}
+{"level":"debug","message":"Starting edit session for user 'aFXBIYID8O38Ue0X' and instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rzjhZ7TxOkc8rPPn#text.content'.","timestamp":"2026-05-14 06:53:47"}
+{"level":"debug","message":"Retiring user 'aFXBIYID8O38Ue0X' from editing session for instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rzjhZ7TxOkc8rPPn#text.content'.","timestamp":"2026-05-14 06:55:30"}
+{"level":"debug","message":"Instance 'JournalEntry.3cJTG31OfzfBtYbS.JournalEntryPage.rzjhZ7TxOkc8rPPn#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-14 06:55:30"}

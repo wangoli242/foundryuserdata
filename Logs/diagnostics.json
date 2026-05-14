@@ -1,5 +1,5 @@
 {
-  "timestamp": 1778522708641,
+  "timestamp": 1778733259985,
   "os": {
     "platform": "linux",
     "version": "Ubuntu 24.04.4 LTS",
@@ -12,6 +12,12 @@
     "hosting": null
   },
   "modules": {
+    "XCard": {
+      "version": "0.0.13"
+    },
+    "chat-portrait": {
+      "version": "13.0.1"
+    },
     "delta-green-agent-wizard": {
       "version": "0.1.1"
     },
@@ -21,8 +27,17 @@
     "delta-green-book-style": {
       "version": "1.0.0"
     },
+    "dice-calculator": {
+      "version": "3.5.5"
+    },
     "dice-so-nice": {
       "version": "5.3.4"
+    },
+    "michaelghelfi": {
+      "version": "1.4"
+    },
+    "polyglot": {
+      "version": "2.8.3"
     },
     "simplefog": {
       "version": "1.4.4"
@@ -40,12 +55,12 @@
   "systems": {
     "deltagreen": {
       "version": "1.6.6",
-      "playtime": 54485
+      "playtime": 462758
     }
   },
   "worlds": {},
   "playtime": {
-    "total": 54485,
-    "max": 54485
+    "total": 462758,
+    "max": 462758
   }
 }
