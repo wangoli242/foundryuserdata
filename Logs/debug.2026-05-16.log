@@ -209,3 +209,50 @@
 {"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-16 21:28:31"}
 {"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 577ms","timestamp":"2026-05-16 21:28:31"}
 {"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/delta-green-music-from-a-darkened-room/assets/scenes/sQiiv8qX464tAGTw-thumb.webp\"","timestamp":"2026-05-16 21:31:07"}
+{"level":"info","message":"Created client session 576a3980b102b97e0beb0844","timestamp":"2026-05-16 21:32:43"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-05-16 21:35:24"}
+{"level":"info","message":"Created Wall with id [d4PWXZcVfXZvLpqe] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:35:42"}
+{"level":"info","message":"Deleted Wall with id [d4PWXZcVfXZvLpqe] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:35:46"}
+{"level":"info","message":"Created Wall with id [amiwGhLBw4OPq9Qm] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:35:48"}
+{"level":"info","message":"Created Wall with id [x6fz3lYrhWLp4Khw] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:35:51"}
+{"level":"info","message":"Created Wall with id [nfo94cUoOsxClxXI] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:35:53"}
+{"level":"info","message":"Created Wall with id [lf0nCampNmcNV0H6] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:35:59"}
+{"level":"info","message":"Created Wall with id [4nuDjhFkRwxssStN] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:36:01"}
+{"level":"info","message":"Created Wall with id [sQSWyEbtly5NpnGP] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:36:09"}
+{"level":"info","message":"Created Wall with id [ihuVJckYpi4Lf4wA] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:36:11"}
+{"level":"info","message":"Created Wall with id [oNCeRsOCN4Rj9m7b] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:36:14"}
+{"level":"info","message":"Created Wall with id [vKTDEYmrTVJ26skX] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:36:18"}
+{"level":"info","message":"Deleted Wall with id [vKTDEYmrTVJ26skX] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:36:19"}
+{"level":"info","message":"Created Wall with id [NmbDFyoA2zWeuH7f] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:36:21"}
+{"level":"info","message":"Created Wall with id [ejb0Ts4Hd9SV0NS8] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:19"}
+{"level":"info","message":"Created Wall with id [NQ3K3vy0HtOBnzWn] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:23"}
+{"level":"info","message":"Created Wall with id [OsVEtOaAn2EZvjLq] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:26"}
+{"level":"info","message":"Created Wall with id [80inbAv3DR54TJFG] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:30"}
+{"level":"info","message":"Created Wall with id [KC9AbpHFCZU3r3v9] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:36"}
+{"level":"info","message":"Created Wall with id [kvQ1lT8iTw7F7brj] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:52"}
+{"level":"info","message":"Created Wall with id [NhoBob1A1Eadm2ag] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:54"}
+{"level":"info","message":"Created Wall with id [S3PqyfghEpQRN5Ja] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:37:56"}
+{"level":"info","message":"Created Wall with id [s9rCUXtLWa8tdTrr] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:06"}
+{"level":"info","message":"Created Wall with id [uplHuQZoxxkHzDTC] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:15"}
+{"level":"info","message":"Created Wall with id [0RnIiJwRetG3vGLJ] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:21"}
+{"level":"info","message":"Created Wall with id [bEKqyvngqccHtMbP] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:31"}
+{"level":"info","message":"Created Wall with id [m21Aqn5ywxFoyEUT] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:35"}
+{"level":"info","message":"Created Wall with id [NLGo3JVdFoK8u6q8] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:38"}
+{"level":"info","message":"Created Wall with id [9cBzFJRFoZhOdShw] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:39"}
+{"level":"info","message":"Created Wall with id [MOdVvkdzuH4TI8Wy] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:38:43"}
+{"level":"info","message":"Created Wall with id [HYscaCXgBvPhRbQo] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:02"}
+{"level":"info","message":"Created Wall with id [ZeLNbh72hGZP0kvi] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:07"}
+{"level":"info","message":"Created Wall with id [UPzmAMSbjQAuHmnv] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:13"}
+{"level":"info","message":"Created Wall with id [1MuKoUv1XbIWy41U] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:24"}
+{"level":"info","message":"Created Wall with id [MZ2D8nvPcSh8iIyW] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:36"}
+{"level":"info","message":"Created Wall with id [0FdvNWVO7Ihmk3EO] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:42"}
+{"level":"info","message":"Created Wall with id [pXo9byRNI8NnKMbs] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:47"}
+{"level":"info","message":"Created Wall with id [8JKQLn5kaak2XRTz] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:39:52"}
+{"level":"info","message":"Created client session cf7ea429636261e4002600ee","timestamp":"2026-05-16 21:39:55"}
+{"level":"info","message":"Created Wall with id [A2Ghtr6f3eVs8LsM] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:40:04"}
+{"level":"info","message":"Created Wall with id [0GIp0uRpbKiPftIv] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:40:08"}
+{"level":"info","message":"Created Wall with id [8Y3OCSl3suyzh470] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-16 21:40:11"}
+{"level":"info","message":"Created Wall with id [P8mffkWCjb46aLqj] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-16 21:44:04"}
+{"level":"info","message":"Deleted Wall with id [P8mffkWCjb46aLqj] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-16 21:44:07"}
+{"level":"info","message":"Deleted Token with id [mbjroZEoGBphbDER] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-16 21:44:10"}
+{"level":"info","message":"Created Token with id [iXk3YaQhZhrM2FLS] in parent Scene [Bcx2ieCEaGGEcVd6]","timestamp":"2026-05-16 21:44:12"}
