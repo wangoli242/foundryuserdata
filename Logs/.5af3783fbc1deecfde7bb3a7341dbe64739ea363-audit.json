@@ -6,16 +6,6 @@
     "auditLog": "/home/ubuntu/foundryuserdata/Logs/.5af3783fbc1deecfde7bb3a7341dbe64739ea363-audit.json",
     "files": [
         {
-            "date": 1778373538040,
-            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-10.log",
-            "hash": "d33bc7ecbbb1c0ac260be666738f291ddc9db2968a40231f235c7e908123de82"
-        },
-        {
-            "date": 1778457685053,
-            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-11.log",
-            "hash": "aa9d69c3b7b76714bd395e2ab9caac453187483291b9fb46a6da4ef8b1a9fd4b"
-        },
-        {
             "date": 1778546144255,
             "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-12.log",
             "hash": "306daba2b1d5cb6a3899c2124a7f4e12b81624c62bf0a50656f32cbd7873c955"
@@ -29,6 +19,16 @@
             "date": 1778717344548,
             "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-14.log",
             "hash": "49f1d9d0ca04c57d0a92e8515ba938e40182522023e403deb6d15e75562df3f2"
+        },
+        {
+            "date": 1778803231022,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-15.log",
+            "hash": "399d49d7d2a24623ce222bdf67dcd7911072a6eea76c8e8f0fae8cabfc3a7134"
+        },
+        {
+            "date": 1778890974421,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-16.log",
+            "hash": "1a2166bf81382b2dc288e4facec07c2806de493f7cdb9ccc51158a51b0c1b916"
         }
     ],
     "hashType": "sha256"
