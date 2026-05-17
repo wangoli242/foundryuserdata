@@ -1,0 +1,38 @@
+{"level":"info","message":"Created client session 9e738652f5a03d368dd9e393","timestamp":"2026-05-17 00:37:36"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"5de62681080cb7cbfb3cbb9f","timestamp":"2026-05-17 00:37:38"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-17 00:37:40"}
+{"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 590ms","timestamp":"2026-05-17 00:37:40"}
+{"ip":"70.160.11.31","level":"info","message":"User authentication successful for user Shreyas","session":"9e738652f5a03d368dd9e393","timestamp":"2026-05-17 00:37:42"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-17 00:37:43"}
+{"level":"info","message":"Vended World data to User [4tfCzHLcdt6y7Fit] in 141ms","timestamp":"2026-05-17 00:37:43"}
+{"level":"info","message":"Created JournalEntryPage with id [ljvKwWF1unwHnubn] in parent JournalEntry [RbDrhCdJb8f0F1wu]","timestamp":"2026-05-17 00:39:21"}
+{"level":"debug","message":"Starting edit session for user '4tfCzHLcdt6y7Fit' and instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content'.","timestamp":"2026-05-17 00:39:21"}
+{"level":"debug","message":"Retiring user '4tfCzHLcdt6y7Fit' from editing session for instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content'.","timestamp":"2026-05-17 00:39:26"}
+{"level":"debug","message":"Instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-17 00:39:26"}
+{"level":"debug","message":"Starting edit session for user '4tfCzHLcdt6y7Fit' and instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content'.","timestamp":"2026-05-17 00:39:28"}
+{"level":"debug","message":"Retiring user '4tfCzHLcdt6y7Fit' from editing session for instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content'.","timestamp":"2026-05-17 00:39:33"}
+{"level":"debug","message":"Instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-17 00:39:33"}
+{"level":"debug","message":"Starting edit session for user '4tfCzHLcdt6y7Fit' and instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content'.","timestamp":"2026-05-17 00:39:35"}
+{"level":"debug","message":"Retiring user '4tfCzHLcdt6y7Fit' from editing session for instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content'.","timestamp":"2026-05-17 00:39:36"}
+{"level":"debug","message":"Instance 'JournalEntry.RbDrhCdJb8f0F1wu.JournalEntryPage.ljvKwWF1unwHnubn#text.content' has no more active editors, cleaning up.","timestamp":"2026-05-17 00:39:36"}
+{"level":"info","message":"Deleted JournalEntryPage with id [ljvKwWF1unwHnubn] in parent JournalEntry [RbDrhCdJb8f0F1wu]","timestamp":"2026-05-17 00:39:39"}
+{"level":"info","message":"Created Token with id [EFUPyhP1mBpk8jkR] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-17 00:40:14"}
+{"level":"info","message":"Created FogExploration with id [hjfXlV44nbWIi7O5]","timestamp":"2026-05-17 00:40:26"}
+{"level":"info","message":"Created FogExploration with id [Fn9qxG2U9TeSpDaD]","timestamp":"2026-05-17 00:40:27"}
+{"level":"info","message":"Created Token with id [HePCv0hTPNw8sqiJ] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-17 00:40:54"}
+{"level":"info","message":"Created Token with id [P4ulDBgTVtTt8Dl4] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-17 00:41:35"}
+{"level":"info","message":"Reset 2 FogExploration documents for Scene sQiiv8qX464tAGTw","timestamp":"2026-05-17 00:42:06"}
+{"level":"info","message":"Created FogExploration with id [SOjsOZ4RUQshx5Tr]","timestamp":"2026-05-17 00:42:17"}
+{"level":"info","message":"Created FogExploration with id [7nVzs6eMwOZUtxzq]","timestamp":"2026-05-17 00:42:17"}
+{"level":"info","message":"Deleted Token with id [HePCv0hTPNw8sqiJ] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-17 00:42:25"}
+{"level":"info","message":"Deleted Token with id [P4ulDBgTVtTt8Dl4] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-17 00:46:39"}
+{"level":"info","message":"Created Token with id [vd8lZXxTzC2FaAf6] in parent Scene [sQiiv8qX464tAGTw]","timestamp":"2026-05-17 00:47:23"}
+{"level":"info","message":"Logged user aFXBIYID8O38Ue0X out of active World","timestamp":"2026-05-17 00:50:37"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"5de62681080cb7cbfb3cbb9f","timestamp":"2026-05-17 00:50:43"}
+{"level":"info","message":"No system update for Delta Green: The Role-Playing Game is currently available.","timestamp":"2026-05-17 00:50:44"}
+{"level":"info","message":"Vended World data to User [aFXBIYID8O38Ue0X] in 604ms","timestamp":"2026-05-17 00:50:44"}
+{"level":"info","message":"Created client session 5bda753d526a92df9ef5f55b","timestamp":"2026-05-17 00:52:42"}
+{"level":"info","message":"Created client session ca77cb94661ea69275a2a4a4","timestamp":"2026-05-17 00:52:45"}
+{"level":"info","message":"Created client session a7974061b5ddb32281075f1d","timestamp":"2026-05-17 00:53:01"}
+{"level":"info","message":"Created client session 47a391b5286d7ac18f63f8c8","timestamp":"2026-05-17 00:54:28"}
+{"level":"info","message":"Created client session e422c6c1b2db58cd7e3415c0","timestamp":"2026-05-17 00:56:26"}
