@@ -6,29 +6,29 @@
     "auditLog": "/home/ubuntu/foundryuserdata/Logs/.5af3783fbc1deecfde7bb3a7341dbe64739ea363-audit.json",
     "files": [
         {
-            "date": 1778631001861,
-            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-13.log",
-            "hash": "38de5a014a29fba061d1247b53628de198771aa7c2a672a9203e9f1d3ee6cf5f"
-        },
-        {
-            "date": 1778717344548,
-            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-14.log",
-            "hash": "49f1d9d0ca04c57d0a92e8515ba938e40182522023e403deb6d15e75562df3f2"
-        },
-        {
-            "date": 1778803231022,
-            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-15.log",
-            "hash": "399d49d7d2a24623ce222bdf67dcd7911072a6eea76c8e8f0fae8cabfc3a7134"
-        },
-        {
-            "date": 1778890974421,
-            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-16.log",
-            "hash": "1a2166bf81382b2dc288e4facec07c2806de493f7cdb9ccc51158a51b0c1b916"
-        },
-        {
             "date": 1778978256269,
             "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-17.log",
             "hash": "c68d103d2a14c2c95aa579fc0b9c3fb5eb9944c3c7e0641b84eed15a98cf4755"
+        },
+        {
+            "date": 1779063629937,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-18.log",
+            "hash": "d8e2c7ebf724b33944d10cda86f677187fc9f41b0bbb330e7103a40b4633d098"
+        },
+        {
+            "date": 1779148874708,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-19.log",
+            "hash": "6c5eb72412f9b1495f4f87722f873d0f3b6f99c7c158f84a91a192bfc47a05b0"
+        },
+        {
+            "date": 1779235795649,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-20.log",
+            "hash": "71b1180acaa4eb0f61a28fe09ee3c7f39daacd958b08c1ddcd21589fd7f2742d"
+        },
+        {
+            "date": 1779323075602,
+            "name": "/home/ubuntu/foundryuserdata/Logs/debug.2026-05-21.log",
+            "hash": "ff40be779b412bc58863a1958ec9009dc7e60bd0d9abea384785a1895ec70eb5"
         }
     ],
     "hashType": "sha256"
