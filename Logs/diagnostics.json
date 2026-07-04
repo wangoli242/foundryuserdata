@@ -1,5 +1,5 @@
 {
-  "timestamp": 1779394576400,
+  "timestamp": 1783096057843,
   "os": {
     "platform": "linux",
     "version": "Ubuntu 24.04.4 LTS",
@@ -55,12 +55,12 @@
   "systems": {
     "deltagreen": {
       "version": "1.6.6",
-      "playtime": 462758
+      "playtime": 4906745
     }
   },
   "worlds": {},
   "playtime": {
-    "total": 462758,
-    "max": 462758
+    "total": 4906745,
+    "max": 2759371
   }
 }

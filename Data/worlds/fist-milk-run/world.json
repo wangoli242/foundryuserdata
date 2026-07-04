@@ -1,0 +1,15 @@
+{
+  "title": "FIST - Milk Run+",
+  "id": "fist-milk-run",
+  "system": "fist-ultra-edition",
+  "coreVersion": "13.351",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "1.13.0",
+  "lastPlayed": "Fri Jul 03 2026 16:28:48 GMT+0000 (Coordinated Universal Time)",
+  "playtime": 53385,
+  "description": "",
+  "flags": {}
+}

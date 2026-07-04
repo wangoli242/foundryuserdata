@@ -1,7 +1,15 @@
-2026/05/11-18:24:03.189518 fa3481dbdfc0 Recovering log #16
-2026/05/11-18:24:03.195338 fa3481dbdfc0 Delete type=0 #16
-2026/05/11-18:24:03.195355 fa3481dbdfc0 Delete type=3 #14
-2026/05/12-06:10:13.719389 fa346b7eefc0 Level-0 table #21: started
-2026/05/12-06:10:13.721738 fa346b7eefc0 Level-0 table #21: 19297 bytes OK
-2026/05/12-06:10:13.723754 fa346b7eefc0 Delete type=0 #19
-2026/05/12-06:10:13.723952 fa346b7eefc0 Manual compaction at level-0 from '!journal!7cHGC5tgbF6f9Xcq' @ 72057594037927935 : 1 .. '!journal.pages!yKnBHi2GTGP27uAP.97oYjEpgf0wrjaFZ' @ 0 : 0; will stop at (end)
+2026/05/12-06:10:50.946649 fa3481dbdfc0 Recovering log #20
+2026/05/12-06:10:50.953136 fa3481dbdfc0 Delete type=3 #18
+2026/05/12-06:10:50.953159 fa3481dbdfc0 Delete type=0 #20
+2026/06/01-05:41:33.993978 fa346b7eefc0 Level-0 table #25: started
+2026/06/01-05:41:33.999727 fa346b7eefc0 Level-0 table #25: 256908 bytes OK
+2026/06/01-05:41:34.001699 fa346b7eefc0 Delete type=0 #23
+2026/06/01-05:41:34.017028 fa346b7eefc0 Manual compaction at level-0 from '!journal!3cJTG31OfzfBtYbS' @ 72057594037927935 : 1 .. '!journal.pages!yKnBHi2GTGP27uAP.97oYjEpgf0wrjaFZ' @ 0 : 0; will stop at (end)
+2026/06/01-05:41:34.017175 fa346b7eefc0 Manual compaction at level-1 from '!journal!3cJTG31OfzfBtYbS' @ 72057594037927935 : 1 .. '!journal.pages!yKnBHi2GTGP27uAP.97oYjEpgf0wrjaFZ' @ 0 : 0; will stop at '!journal.pages!yKnBHi2GTGP27uAP.s22LZ0ChhPfB5RKN' @ 782 : 1
+2026/06/01-05:41:34.017178 fa346b7eefc0 Compacting 1@1 + 1@2 files
+2026/06/01-05:41:34.020517 fa346b7eefc0 Generated table #26@1: 32 keys, 21023 bytes
+2026/06/01-05:41:34.020527 fa346b7eefc0 Compacted 1@1 + 1@2 files => 21023 bytes
+2026/06/01-05:41:34.022320 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/06/01-05:41:34.022387 fa346b7eefc0 Delete type=2 #25
+2026/06/01-05:41:34.022456 fa346b7eefc0 Delete type=2 #21
+2026/06/01-05:41:34.049355 fa346b7eefc0 Manual compaction at level-1 from '!journal.pages!yKnBHi2GTGP27uAP.s22LZ0ChhPfB5RKN' @ 782 : 1 .. '!journal.pages!yKnBHi2GTGP27uAP.97oYjEpgf0wrjaFZ' @ 0 : 0; will stop at (end)

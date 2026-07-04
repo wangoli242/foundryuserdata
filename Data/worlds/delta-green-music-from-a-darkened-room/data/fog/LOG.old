@@ -1,8 +1,16 @@
-2026/05/11-18:24:03.165580 fa346bffefc0 Recovering log #17
-2026/05/11-18:24:03.171636 fa346bffefc0 Delete type=0 #17
-2026/05/11-18:24:03.171654 fa346bffefc0 Delete type=3 #15
-2026/05/12-06:10:13.710213 fa346b7eefc0 Level-0 table #22: started
-2026/05/12-06:10:13.712619 fa346b7eefc0 Level-0 table #22: 11272 bytes OK
-2026/05/12-06:10:13.714615 fa346b7eefc0 Delete type=0 #20
-2026/05/12-06:10:13.717262 fa346b7eefc0 Manual compaction at level-0 from '!fog!Gl5ZTdfTEbRkDhZJ' @ 72057594037927935 : 1 .. '!fog!OV4kNq3dF6bTDdmw' @ 0 : 0; will stop at (end)
-2026/05/12-06:10:13.723868 fa346b7eefc0 Manual compaction at level-1 from '!fog!Gl5ZTdfTEbRkDhZJ' @ 72057594037927935 : 1 .. '!fog!OV4kNq3dF6bTDdmw' @ 0 : 0; will stop at (end)
+2026/05/12-06:10:50.923075 fa3481dbdfc0 Recovering log #21
+2026/05/12-06:10:50.929365 fa3481dbdfc0 Delete type=0 #21
+2026/05/12-06:10:50.929385 fa3481dbdfc0 Delete type=3 #19
+2026/06/01-05:41:33.936003 fa346b7eefc0 Level-0 table #26: started
+2026/06/01-05:41:33.960875 fa346b7eefc0 Level-0 table #26: 2148735 bytes OK
+2026/06/01-05:41:33.963061 fa346b7eefc0 Delete type=0 #24
+2026/06/01-05:41:33.972236 fa346b7eefc0 Manual compaction at level-0 from '!fog!60KlMIR6m2z1Gmyf' @ 72057594037927935 : 1 .. '!fog!i4fm2neqgZoxA0N3' @ 0 : 0; will stop at (end)
+2026/06/01-05:41:33.977204 fa346b7eefc0 Manual compaction at level-1 from '!fog!60KlMIR6m2z1Gmyf' @ 72057594037927935 : 1 .. '!fog!i4fm2neqgZoxA0N3' @ 0 : 0; will stop at '!fog!i4fm2neqgZoxA0N3' @ 113 : 1
+2026/06/01-05:41:33.977209 fa346b7eefc0 Compacting 1@1 + 2@2 files
+2026/06/01-05:41:33.982338 fa346b7eefc0 Generated table #27@1: 9 keys, 126257 bytes
+2026/06/01-05:41:33.982347 fa346b7eefc0 Compacted 1@1 + 2@2 files => 126257 bytes
+2026/06/01-05:41:33.984649 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/06/01-05:41:33.984699 fa346b7eefc0 Delete type=2 #14
+2026/06/01-05:41:33.984805 fa346b7eefc0 Delete type=2 #26
+2026/06/01-05:41:33.985044 fa346b7eefc0 Delete type=2 #22
+2026/06/01-05:41:33.993888 fa346b7eefc0 Manual compaction at level-1 from '!fog!i4fm2neqgZoxA0N3' @ 113 : 1 .. '!fog!i4fm2neqgZoxA0N3' @ 0 : 0; will stop at (end)

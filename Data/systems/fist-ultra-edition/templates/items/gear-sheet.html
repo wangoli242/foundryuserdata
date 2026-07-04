@@ -1,0 +1,50 @@
+<form autocomplete="off">
+  <h3>Gear</h3>
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Name"}}</div>
+    <input type="text" name="name" value="{{item.name}}" />
+  </div>
+  <br />
+  <div>
+    <div>Limited uses</div>
+    <input
+      style="margin: 0"
+      type="checkbox"
+      name="system.isLimitedUses"
+      {{checked
+      system.isLimitedUses}}
+    />
+  </div>
+  <br />
+  {{#if item.system.isLimitedUses}}
+  <div>
+    <div>Max uses</div>
+    <input type="number" name="system.uses.max" value="{{system.uses.max}}" />
+  </div>
+  <br />
+  {{/if}} {{#if item.system.damage}}
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Damage"}}</div>
+    <input type="text" name="system.damage" value="{{system.damage}}" />
+    <p class="notes" style="color: #b00020">
+      You should use the <b>weapon</b> type for damage-dealing items instead of
+      <b>gear</b>. This field will be removed in a future update.
+    </p>
+  </div>
+  <br />
+  {{/if}} {{#if item.system.armor}}
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Armor"}}</div>
+    <input type="number" name="system.armor" value="{{system.armor}}" />
+    <p class="notes" style="color: #b00020">
+      You should use the <b>armor</b> type for armor-granting items instead of
+      <b>gear</b>. This field will be removed in a future update.
+    </p>
+  </div>
+  <br />
+  {{/if}}
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Description"}}</div>
+    <textarea name="system.description">{{{system.description}}}</textarea>
+  </div>
+</form>
