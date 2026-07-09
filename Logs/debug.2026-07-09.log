@@ -626,3 +626,97 @@
 {"level":"info","message":"Deleted 34 ChatMessage documents","timestamp":"2026-07-09 06:10:40"}
 {"level":"info","message":"Reset 3 FogExploration documents for Scene ku6OAS7ECuxghMZi","timestamp":"2026-07-09 06:10:47"}
 {"level":"info","message":"Logged user olgUvOxRlG7uDAVP out of active World","timestamp":"2026-07-09 06:11:03"}
+{"level":"info","message":"Administrator authentication successful for session 518a79710e0d237cdc247aa9","timestamp":"2026-07-09 06:12:00"}
+{"level":"info","message":"Connected to database \"actors\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 7%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"cards\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 14%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"messages\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 21%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"combats\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 29%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"fog\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 36%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"folders\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 43%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"items\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 50%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"journal\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 57%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"macros\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 64%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"playlists\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 71%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"tables\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 79%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"scenes\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 86%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"settings\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 93%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"users\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading World Data - 100%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 7%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 14%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 21%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 29%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 36%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 43%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 50%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 57%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 64%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 71%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 79%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 86%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 93%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 100%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"fist-ultra-edition-compendium.core_traits_gear\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 33%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"fist-ultra-edition-compendium.core_traits_skills\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 67%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Connected to database \"fist-ultra-edition-compendium.rollable_tables\"","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 100%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Created 0 Folder documents with ids: []","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating Package Data - 33%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating Package Data - 67%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Migrating Package Data - 100%","timestamp":"2026-07-09 06:12:04"}
+{"level":"info","message":"Launching World | Complete","timestamp":"2026-07-09 06:12:04"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"518a79710e0d237cdc247aa9","timestamp":"2026-07-09 06:12:13"}
+{"level":"info","message":"No system update for FIST: Ultra Edition is currently available.","timestamp":"2026-07-09 06:12:14"}
+{"level":"info","message":"Vended World data to User [xmljeyMGZBPkULO7] in 436ms","timestamp":"2026-07-09 06:12:14"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-07-09 06:12:27"}
+{"level":"info","message":"Deleted 8 Token documents in parent Scene [Qd6o0lUHPQsYtKTl]","timestamp":"2026-07-09 06:12:30"}
+{"level":"info","message":"Deleted 3 Token documents with ids: [sIVMa4haAi5wcRKW,m7eYUqhUTyMaXSp4,rDCBbZmDrmkIlt89] in parent Scene [Qd6o0lUHPQsYtKTl]","timestamp":"2026-07-09 06:12:31"}
+{"level":"info","message":"Deleted Token with id [tV51ZncKKhrk6yyQ] in parent Scene [Qd6o0lUHPQsYtKTl]","timestamp":"2026-07-09 06:12:38"}
+{"level":"info","message":"Deleted 10 Token documents in parent Scene [Qd6o0lUHPQsYtKTl]","timestamp":"2026-07-09 06:12:46"}
+{"level":"info","message":"Deleted Drawing with id [Fh8ay6LrN7GuZS8C] in parent Scene [Qd6o0lUHPQsYtKTl]","timestamp":"2026-07-09 06:12:49"}
+{"level":"info","message":"Deleted 2 Drawing documents with ids: [vyyWTX9pwgTmDDap,6vIUVWVImhcBk3rr] in parent Scene [Qd6o0lUHPQsYtKTl]","timestamp":"2026-07-09 06:12:50"}
+{"level":"info","message":"Created Folder with id [ybu6qp0LkByTFOZa]","timestamp":"2026-07-09 06:13:08"}
+{"level":"info","message":"Created Actor with id [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:13:34"}
+{"level":"info","message":"Created Item with id [TBtr6BgAFXy63FUN] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:13:39"}
+{"level":"info","message":"Deleted Item with id [TBtr6BgAFXy63FUN] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:13:41"}
+{"level":"info","message":"Created Item with id [A0QrK2yvyiRlhhvV] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:13:55"}
+{"level":"info","message":"Created Item with id [irycTL1IuNuVafmH] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:14:12"}
+{"level":"info","message":"Created Item with id [eqmONrDqPtrx2F3N] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:14:28"}
+{"level":"info","message":"Deleted Item with id [eqmONrDqPtrx2F3N] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:14:31"}
+{"level":"info","message":"Created Folder with id [zoQV3BdrKaTRiwPZ]","timestamp":"2026-07-09 06:15:19"}
+{"level":"info","message":"Created Actor with id [lNK4HWIcKJEiUzMw]","timestamp":"2026-07-09 06:15:37"}
+{"level":"info","message":"Created Folder with id [WC61uWR494lAfF21]","timestamp":"2026-07-09 06:16:17"}
+{"level":"info","message":"Created Actor with id [h6s8C8KoVnOEqqkm]","timestamp":"2026-07-09 06:16:25"}
+{"level":"info","message":"Created Folder with id [pnPDyP7pW47xS74d]","timestamp":"2026-07-09 06:16:42"}
+{"level":"info","message":"Created Actor with id [aM079rc9wZoHzDHF]","timestamp":"2026-07-09 06:16:47"}
+{"level":"info","message":"Created Item with id [R03xXPwsx7L8CH0V] in parent Actor [lNK4HWIcKJEiUzMw]","timestamp":"2026-07-09 06:16:57"}
+{"level":"info","message":"Created ChatMessage with id [MwgRWGq4EANsovwW]","timestamp":"2026-07-09 06:17:23"}
+{"level":"info","message":"Created Item with id [d53Jib3o9yTe3dqd] in parent Actor [lNK4HWIcKJEiUzMw]","timestamp":"2026-07-09 06:18:18"}
+{"level":"info","message":"Created Item with id [Z03lgFM8r4LWet2F] in parent Actor [lNK4HWIcKJEiUzMw]","timestamp":"2026-07-09 06:18:26"}
+{"level":"info","message":"Created Item with id [3t9dwAImoq6jip0T] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:19:11"}
+{"level":"info","message":"Created Item with id [LM3qpAdXih2zeZKE] in parent Actor [NSMHAkXPCAw6OvS7]","timestamp":"2026-07-09 06:19:26"}
+{"level":"info","message":"Created User with id [NtkiXgAzAG8PcZW0]","timestamp":"2026-07-09 06:20:35"}
+{"level":"info","message":"Created User with id [SkDvkDGrHNLjBWsI]","timestamp":"2026-07-09 06:20:36"}
+{"level":"info","message":"Created User with id [9aYk5kWzD953DK6S]","timestamp":"2026-07-09 06:20:36"}
+{"level":"info","message":"Created User with id [St1KLKMSN1uQAmVT]","timestamp":"2026-07-09 06:20:36"}
+{"level":"info","message":"Created User with id [ACofkaHXw9Sl3rba]","timestamp":"2026-07-09 06:20:37"}
+{"level":"info","message":"Deleted User with id [ACofkaHXw9Sl3rba]","timestamp":"2026-07-09 06:20:41"}
+{"level":"info","message":"No system update for FIST: Ultra Edition is currently available.","timestamp":"2026-07-09 06:20:55"}
+{"level":"info","message":"Vended World data to User [xmljeyMGZBPkULO7] in 436ms","timestamp":"2026-07-09 06:20:55"}
+{"level":"info","message":"Created ChatMessage with id [eADY5EvZqZ9Kot4k]","timestamp":"2026-07-09 06:25:56"}
+{"level":"info","message":"Logged user xmljeyMGZBPkULO7 out of active World","timestamp":"2026-07-09 06:26:28"}

@@ -1,3 +1,8 @@
 2026/07/08-06:46:54.911447 fa3481dbdfc0 Recovering log #4
 2026/07/08-06:46:54.917937 fa3481dbdfc0 Delete type=3 #2
 2026/07/08-06:46:54.917959 fa3481dbdfc0 Delete type=0 #4
+2026/07/09-06:12:00.124279 fa346b7eefc0 Level-0 table #9: started
+2026/07/09-06:12:00.124295 fa346b7eefc0 Level-0 table #9: 0 bytes OK
+2026/07/09-06:12:00.127201 fa346b7eefc0 Delete type=0 #7
+2026/07/09-06:12:00.139382 fa346b7eefc0 Manual compaction at level-0 from '!folders!7zo2bljGLQY3uwXI' @ 72057594037927935 : 1 .. '!items.effects!phbftAlert000000.uvZy4Zzi0oPd54qs' @ 0 : 0; will stop at (end)
+2026/07/09-06:12:00.139433 fa346b7eefc0 Manual compaction at level-1 from '!folders!7zo2bljGLQY3uwXI' @ 72057594037927935 : 1 .. '!items.effects!phbftAlert000000.uvZy4Zzi0oPd54qs' @ 0 : 0; will stop at (end)
