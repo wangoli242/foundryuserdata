@@ -1,0 +1,68 @@
+{
+  "id": "fist-ultra-edition-compendium",
+  "title": "FIST: Ultra Edition - Compendium",
+  "description": "",
+  "version": "1.2.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "fist-ultra-edition",
+        "type": "system",
+        "compatibility": {}
+      }
+    ]
+  },
+  "authors": [
+    {
+      "name": "Olivier Grech",
+      "email": "olivier.grech@gmail.com",
+      "url": "https://www.buymeacoffee.com/oliviergrech",
+      "flags": {}
+    }
+  ],
+  "packs": [
+    {
+      "name": "core_traits_gear",
+      "label": "Core Traits - Gear",
+      "path": "packs/core_traits_gear",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "fist-ultra-edition",
+      "flags": {}
+    },
+    {
+      "name": "core_traits_skills",
+      "label": "Core Traits - Skills",
+      "path": "packs/core_traits_skills",
+      "type": "Item",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "fist-ultra-edition",
+      "flags": {}
+    },
+    {
+      "name": "rollable_tables",
+      "label": "Rollable Tables",
+      "path": "packs/rollable_tables",
+      "type": "RollTable",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "system": "fist-ultra-edition",
+      "flags": {}
+    }
+  ],
+  "url": "https://gitlab.com/olivier-grech/fist-ultra-edition-compendium",
+  "manifest": "https://gitlab.com/olivier-grech/fist-ultra-edition-compendium/-/releases/1.2.0/downloads/module.json",
+  "download": "https://gitlab.com/olivier-grech/fist-ultra-edition-compendium/-/releases/1.2.0/downloads/fist-ultra-edition-compendium-1.2.0.zip"
+}

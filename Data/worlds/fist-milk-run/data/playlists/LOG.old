@@ -1,5 +1,7 @@
-2026/07/03-16:28:48.761666 fa34815adfc0 Delete type=3 #1
-2026/07/06-04:33:06.375259 fa346b7eefc0 Level-0 table #5: started
-2026/07/06-04:33:06.375271 fa346b7eefc0 Level-0 table #5: 0 bytes OK
-2026/07/06-04:33:06.377345 fa346b7eefc0 Delete type=0 #3
-2026/07/06-04:33:06.383997 fa346b7eefc0 Manual compaction at level-0 from 'undefined' @ 72057594037927935 : 1 .. 'undefined' @ 0 : 0; will stop at (end)
+2026/07/06-21:26:37.469632 fa34815adfc0 Recovering log #8
+2026/07/06-21:26:37.476612 fa34815adfc0 Delete type=0 #8
+2026/07/06-21:26:37.476629 fa34815adfc0 Delete type=3 #6
+2026/07/07-20:02:04.636628 fa346b7eefc0 Level-0 table #13: started
+2026/07/07-20:02:04.640375 fa346b7eefc0 Level-0 table #13: 42695 bytes OK
+2026/07/07-20:02:04.642519 fa346b7eefc0 Delete type=0 #11
+2026/07/07-20:02:04.665762 fa346b7eefc0 Manual compaction at level-0 from '!playlists!5X5s5FS6hylveg4W' @ 72057594037927935 : 1 .. '!playlists.sounds!sazyMIqQDV2XGO9f.nlmvUrkEWCb9a9bE' @ 0 : 0; will stop at (end)

@@ -1,5 +1,24 @@
-2026/07/03-16:28:48.781057 fa3480d9dfc0 Delete type=3 #1
-2026/07/06-04:33:06.379382 fa346b7eefc0 Level-0 table #5: started
-2026/07/06-04:33:06.381873 fa346b7eefc0 Level-0 table #5: 10075 bytes OK
-2026/07/06-04:33:06.383840 fa346b7eefc0 Delete type=0 #3
-2026/07/06-04:33:06.384078 fa346b7eefc0 Manual compaction at level-0 from '!scenes!IOWKYwlXPrhEMiU6' @ 72057594037927935 : 1 .. '!scenes.drawings!IOWKYwlXPrhEMiU6.aCT3zBBA10SludH6' @ 0 : 0; will stop at (end)
+2026/07/06-21:26:37.487417 fa3480d9dfc0 Recovering log #8
+2026/07/06-21:26:37.494171 fa3480d9dfc0 Delete type=0 #8
+2026/07/06-21:26:37.494188 fa3480d9dfc0 Delete type=3 #6
+2026/07/07-03:32:12.614389 fa346b7eefc0 Level-0 table #14: started
+2026/07/07-03:32:12.634647 fa346b7eefc0 Level-0 table #14: 1569007 bytes OK
+2026/07/07-03:32:12.637228 fa346b7eefc0 Delete type=0 #12
+2026/07/07-04:47:08.294530 fa346b7eefc0 Compacting 1@1 + 1@2 files
+2026/07/07-04:47:08.303048 fa346b7eefc0 Generated table #15@1: 112 keys, 25473 bytes
+2026/07/07-04:47:08.303058 fa346b7eefc0 Compacted 1@1 + 1@2 files => 25473 bytes
+2026/07/07-04:47:08.305831 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/07/07-04:47:08.307130 fa346b7eefc0 Delete type=2 #14
+2026/07/07-04:47:08.307626 fa346b7eefc0 Delete type=2 #10
+2026/07/07-20:02:04.648243 fa346b7eefc0 Level-0 table #17: started
+2026/07/07-20:02:04.662839 fa346b7eefc0 Level-0 table #17: 1211153 bytes OK
+2026/07/07-20:02:04.665187 fa346b7eefc0 Delete type=0 #13
+2026/07/07-20:02:04.665928 fa346b7eefc0 Manual compaction at level-0 from '!scenes!IOWKYwlXPrhEMiU6' @ 72057594037927935 : 1 .. '!scenes.tokens.delta!Qd6o0lUHPQsYtKTl.zT3N8bbkkXMdhedL.j92ayb0aY7uYBqSY' @ 0 : 0; will stop at (end)
+2026/07/07-20:02:04.678805 fa346b7eefc0 Manual compaction at level-1 from '!scenes!IOWKYwlXPrhEMiU6' @ 72057594037927935 : 1 .. '!scenes.tokens.delta!Qd6o0lUHPQsYtKTl.zT3N8bbkkXMdhedL.j92ayb0aY7uYBqSY' @ 0 : 0; will stop at '!scenes.tokens!Qd6o0lUHPQsYtKTl.zT3N8bbkkXMdhedL' @ 2599 : 1
+2026/07/07-20:02:04.678811 fa346b7eefc0 Compacting 1@1 + 1@2 files
+2026/07/07-20:02:04.683134 fa346b7eefc0 Generated table #18@1: 112 keys, 25471 bytes
+2026/07/07-20:02:04.683143 fa346b7eefc0 Compacted 1@1 + 1@2 files => 25471 bytes
+2026/07/07-20:02:04.685850 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/07/07-20:02:04.685903 fa346b7eefc0 Delete type=2 #15
+2026/07/07-20:02:04.686124 fa346b7eefc0 Delete type=2 #17
+2026/07/07-20:02:04.686917 fa346b7eefc0 Manual compaction at level-1 from '!scenes.tokens!Qd6o0lUHPQsYtKTl.zT3N8bbkkXMdhedL' @ 2599 : 1 .. '!scenes.tokens.delta!Qd6o0lUHPQsYtKTl.zT3N8bbkkXMdhedL.j92ayb0aY7uYBqSY' @ 0 : 0; will stop at (end)

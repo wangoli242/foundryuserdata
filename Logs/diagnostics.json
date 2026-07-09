@@ -1,5 +1,5 @@
 {
-  "timestamp": 1783297580998,
+  "timestamp": 1783493155879,
   "os": {
     "platform": "linux",
     "version": "Ubuntu 24.04.4 LTS",
@@ -33,6 +33,12 @@
     "dice-so-nice": {
       "version": "5.3.4"
     },
+    "fist-ultra-edition-compendium": {
+      "version": "1.2.0"
+    },
+    "foundryvtt-show-notes": {
+      "version": "11.4"
+    },
     "michaelghelfi": {
       "version": "1.4"
     },
@@ -59,12 +65,12 @@
     },
     "fist-ultra-edition": {
       "version": "1.13.0",
-      "playtime": 105708
+      "playtime": 364452
     }
   },
   "worlds": {},
   "playtime": {
-    "total": 5012453,
+    "total": 5271197,
     "max": 2759371
   }
 }

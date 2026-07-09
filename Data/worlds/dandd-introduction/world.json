@@ -1,0 +1,15 @@
+{
+  "title": "D&D Introduction",
+  "id": "dandd-introduction",
+  "system": "dnd5e",
+  "coreVersion": "13.351",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "5.3.3",
+  "lastPlayed": "Wed Jul 08 2026 06:46:54 GMT+0000 (Coordinated Universal Time)",
+  "playtime": 84204,
+  "description": "",
+  "flags": {}
+}

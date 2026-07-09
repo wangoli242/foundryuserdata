@@ -1025,3 +1025,1078 @@
 {"level":"info","message":"Created client session aa1d98ce485bde33c790665b","timestamp":"2026-07-06 21:25:47"}
 {"level":"info","message":"Created client session 91a57dab3fc185441ea870d2","timestamp":"2026-07-06 21:25:48"}
 {"level":"info","message":"Created client session 2cbf9b548c9d191914d6a216","timestamp":"2026-07-06 21:25:49"}
+{"level":"info","message":"Applied sidegrade metadata updates to module fist-ultra-edition-compendium","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 2%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 3%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 5%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 7%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 9%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 10%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 12%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 14%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 15%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 17%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 19%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 21%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 22%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 24%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 26%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 27%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 29%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 31%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 32%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 34%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 36%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 37%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 39%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 41%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 42%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 44%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 45%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 46%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 48%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 50%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 51%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 53%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 55%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 56%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 58%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 60%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 62%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 65%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 70%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 76%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 81%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 85%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 91%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 96%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Downloading package - 100%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 4%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 9%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 13%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 17%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 22%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 26%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 30%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 35%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 39%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 43%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 48%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 52%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 57%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 61%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 65%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 70%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 74%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 78%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 83%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 87%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 91%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 96%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installing package - 100%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Installed module fist-ultra-edition-compendium","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"complete - 100%","timestamp":"2026-07-06 21:26:30"}
+{"level":"info","message":"Connected to database \"actors\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 7%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"cards\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 14%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"messages\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 21%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"combats\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 29%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"fog\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 36%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"folders\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 43%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"items\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 50%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"journal\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 57%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"macros\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 64%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"playlists\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 71%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"tables\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 79%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"scenes\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 86%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"settings\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 93%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Connected to database \"users\"","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Loading World Data - 100%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 7%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 14%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 21%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 29%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 36%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 43%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 50%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 57%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 64%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 71%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 79%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 86%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 93%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Migrating World Data - 100%","timestamp":"2026-07-06 21:26:37"}
+{"level":"info","message":"Launching World | Complete","timestamp":"2026-07-06 21:26:37"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"d350db94646764e71c71d574","timestamp":"2026-07-06 21:26:43"}
+{"level":"info","message":"No system update for FIST: Ultra Edition is currently available.","timestamp":"2026-07-06 21:26:44"}
+{"level":"info","message":"Vended World data to User [xmljeyMGZBPkULO7] in 450ms","timestamp":"2026-07-06 21:26:44"}
+{"level":"info","message":"Connected to database \"fist-ultra-edition-compendium.core_traits_gear\"","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Connected to database \"fist-ultra-edition-compendium.core_traits_skills\"","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Connected to database \"fist-ultra-edition-compendium.rollable_tables\"","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Created 0 Folder documents with ids: []","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Created Setting with id [qAzBCVznMRYhBKfY]","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [0aUAqWdfcnGkhHdO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [0aUkB83K6mBPjzLw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [0hF3xiyZXyns7qSJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [0pfgqM5zjYziQJ4g] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [1BMk4yPtWnZoYY4o] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [1uCTxinrPY31tl4O] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [1x2Hb5kQXFHJIj4a] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [2MSewlm5N4bME6xc] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [2NFiUhWC8wczuzSg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [2euaob0JXoTUUhMv] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [2rU9IQq7WJ6TGAvE] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [3TDPCmG2KIfvylHy] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4437mjwWZjT8976T] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4B7pZfBc6K23M300] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4G1etc7pjbRfa0zu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4GSL3OENsFnofDFB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4iw5dfEixcT8cSnY] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4jQLdUC3hIKO2A8Q] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4lbsOOaF7T8TRKGg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4mQNYhRRnIsX2rqW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [5231K7e7kAq08Hod] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [5Gc1V0hF62X0K13s] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6RpguNB0tQX23uiD] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6a0R0vn0BYCxwGBv] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6cCJf7IzQvJhXF44] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6f2qu3n5TO3cjNR9] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6lLiJBBfaOChIbOS] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6oAYatMJDYneeebW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6r7EDjdbE4FQHcAk] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [7CRUowXvKOiP7fOa] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [7EO73O777VLSpYHP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [7UkjyjjztCnzMDWq] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [7hHgQQ8RbIe2dipO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [8KXUHm149nq7KYoQ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [8VORwtAo2TAi7RLs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [8dDAqu2uOyktCocs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [8pYH8u4tqCLdlRG2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [9Q9AqxixHlLvhTa9] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [9bvw5f1UoNR4Iyds] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [A0rilwTLdXHNgqT4] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [APZ2osOQGkRqvYHw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [AQOk0UBExUXkk9Dm] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Atw2PS7W1zHMsQYP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [BBrt9xOjgp2tI9cU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [C59HNs9AVlszp8Jy] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [CdwgSsrXtYOGtL1u] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [DW1MMVDxxy7ymR4f] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [DWan6cq501Xa8QZU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [DjALu0hQBZDkUVmN] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [DlbDuys6Ss587dDK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [EISJmpm3kq0N60Us] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [EWpeVZQhmKF5WBoo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Ebrw5YIgfvpjgW52] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [EsyVITu5Q6Y1CvmT] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [F5LG0UwPc5DSOU2W] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [FYQHKczwyxyUBaRh] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [G0TEVIqrQJIMe4XS] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [GbAaC0EpPYk9TeYs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [GfCJl45SqydR3EUO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [HTzI6X5ZEyagtUlR] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [HVaRiVSWSIVxqOVK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Hi6xubri1MfJZMpM] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [HmWGVyY41A582inr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [I2CRrmwtKG5WHLb5] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [IBa8DR53CNCEUDzd] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [J5WJn4rFPTi04dsB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [KJldqfbZAK4LiNaI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [KRvzuMNszTTb9FMZ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [KSz35QaOOrHfSuK5] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [L0RwOvb7Inh9PPpF] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [LSA9XnNDy7SGHcsa] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Lf7Jc2LMGLJLIsMF] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [LljJEMHD5n3P2XW0] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [MPSXuQaGURBLBMxk] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Mf7tpb6WQwnIzLK9] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [MkIpd2KFlZyqQsEP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [MkrADnCYipgE7P1G] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Mwt7mxmhGWcA5QpU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [NBoIacGS43TlohJg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Na55yseZOI7FKULO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [NwkGEQCukX5jCPyo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OFSTXITmsCu3O1Dd] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OMeP74czzr7QQEvf] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OW9hFGI3JgE9WY92] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OWH4xHAneNPoTz82] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OWgccDKlHLaiMstI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OdGZqpR0SgcaXP79] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OsZcghrWNqTEbS4p] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [OuwkTo1nZsexQgL3] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [P6YdCb4wEgWqjt7g] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [P6vYZ4Jvmwoqicsq] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [PAadVvHpw7cEY9RL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [PB1wKvxRIGvzMKgH] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [PFhtrwJagORFi6I1] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [PGEIX1rdMumdtKiz] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [PyOxZrt4C2kNlFnf] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [QHPNMpyboF2WDAFm] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [QOinvziaby9abf6L] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [QQYC6uBTrvU4Z0Gx] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [QTAwBls0eQCknhwU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [QiPRHRqUWSGTicOV] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [QpHmZGSMvPfroUeU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ROwSFeXB3fFkyhEr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [RPQ8Xd7OJjEOKx7H] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Rkb83ZbIRbCcFU6S] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [SFmg42mSm9MivJKw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [SGX8ZP08l6sKnPUi] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [SoS25TrCfffB95iN] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [SsgLIZEE2RRhkLjv] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [T00Y0usiULHurxZn] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [TCMl03wLI9g0RA9e] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Towwvmer5loeJP1l] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [UFWqLxlFCncpdMAk] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [UXH1s5qf2CyrZdPJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [UeFrtGbMeTy0cvpW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Uguisw7chXa4Oce2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [UiRffYPEP3NzEhhb] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [UjwdzLUcD5eo6Kaz] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [VEEqUUpo1cUt1sPj] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [VLQ8nRPUogZD5TuV] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Vft68tNNYz4UXYnu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Vv8Qe0KQ6Gqn2lUg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [VwbWYQQQF81KA5IN] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [W6TxkUBSTILatHdI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [WEPjlOP2sYlxSIDo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [WRDvQaOARMY6nWxS] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [WbWrqiR2h5vTEHwl] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [XRZ45Ews49MXfer1] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Y9girHCc2D7c5kdj] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [YF7a1tNrZ2GLRXoG] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [YN8lYpEhhIxGQAZw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [YNQsCBQSh8cYoTkL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [YqYovqT7uu4hYEsE] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [Z0eNboy5yN4ncAYC] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ZMlA5Di7fI4kGbL6] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ZNZRIhQt4OgkTwMO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ZtqnYVNjkcRbQnPY] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ZyFFhxpk0Fq0AiqK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [aALHedSfiyivaPax] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [aaQiGvNFxcC42GmA] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [abAVIzrVmdOAmBBI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [b3tjnbAoRAVXDsbU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [b88NIFGTFG9CL3xi] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [b8mdCQPU46j03Sze] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [bZ3MdlPYbWjjMvpn] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [buAa935DGIvoCZRJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [cU88c2smJkN7p9sK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [d2e8jSZd4SnPei2F] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [dXBEbd46QM16R29A] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [dck7KJQxCLgQY7a8] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [eztYJis8VSBxAVg6] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [fRM4maKTQ63Xg4LR] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [fqqP5NCHOzYS1v8b] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ftzpupEUMXV8ssDL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [fukbRQDRdqvhZKV1] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [g76qqvSIBGhsIC0y] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [gAcrPakaGKQXQwTw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [gShxjxaiMMC6xzUu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [gVzSiMQEHahYGA1H] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [gt1PyLv9mdiX3T40] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [hPG5kSIOc6YT920m] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [hWIz5gY0tVfsj9Gs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [hhlguR3fHJXiYKYu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [hicDWLkCp0g1TC5W] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [hm3HbyImUNbMbEng] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [iRwyRMyaHSue0U7T] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [iThxQnODPLmhqiwW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ijOeWtyc4TsE29eB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [imPJQZEOJTVZjsMq] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [irquy3JTmywb7o4Q] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [ivSkQj2Uik539FYD] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [jK6WyoZAO2e5L5Vt] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [jYERUmsDGSg4pgbJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [jbpKsK531GYXW495] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [kCMYggLmgIzTJwHO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [kFUn21bfJdNfojg2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [keIH6Vnje0pX4ngx] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [kiRFVhjYWpwLAkE0] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [lfZJ2OFfZb6PZ20E] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [lxb0nPi6LVwi1nBZ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [meaJOGr4taynGEp6] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [nKtC1rHZ8gH5ZehX] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [nyw930O66gRXcwcw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [oFtcgd7dztKltCOe] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [q4zJV9Qqvq7TwylB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [q89wAqJdUVs5PMKa] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [qnau49BdJa3bGwck] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [qzT3ksUvlVLf9kbr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [rDl09Ur9Vz4I6PYK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [rFLZ3D4MhnZESQIw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [riBWZQAdR22JxmeQ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [rn235aYYVZQBbYTo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [sHxVrF6QZOCVJwkL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [t69Q1pixNUYjHQ44] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [tTKjqtf0RUY8pxY2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [uBvB1rkbt75r371Q] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [uHBdANbAi58MH0fl] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [uOPVbUwCiIr1faab] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [umsL4feyQ7Bk3bvD] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [v2NQzo6CINGjHSxI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [vfVUXh2JvQ7RGoVs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [vqSLihzyDm11XUtP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [wVS7IU32euN4dx2M] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [wyFLqzTm4fU4Wqxm] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [x52YEp3ikQnH1Sd2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [x5hNQhfR6NcReizI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [xGoQssTFadpogo5m] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [xRBspHtsKZsKho73] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [xflKgIfqhV2ZXnBA] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [y1cDzeLVqSBmm4Nr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [y7R3tPV5pDqw2SlG] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [yMWuNCGkFbFO96Iw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [zIxKYlNMmGsJFaLG] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [zdwbtywVwiPTmNVR] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [zhcEJQHv72jLFzno] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [zkGtc3qkG5aCfDiC] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [0aUAqWdfcnGkhHdO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [0aUkB83K6mBPjzLw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [0hF3xiyZXyns7qSJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [0pfgqM5zjYziQJ4g] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [1BMk4yPtWnZoYY4o] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [1uCTxinrPY31tl4O] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [1x2Hb5kQXFHJIj4a] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [2MSewlm5N4bME6xc] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [2NFiUhWC8wczuzSg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [2euaob0JXoTUUhMv] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [2rU9IQq7WJ6TGAvE] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [3TDPCmG2KIfvylHy] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4437mjwWZjT8976T] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4B7pZfBc6K23M300] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4G1etc7pjbRfa0zu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4GSL3OENsFnofDFB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4iw5dfEixcT8cSnY] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4jQLdUC3hIKO2A8Q] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4lbsOOaF7T8TRKGg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [4mQNYhRRnIsX2rqW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [5231K7e7kAq08Hod] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [5Gc1V0hF62X0K13s] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [6RpguNB0tQX23uiD] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [6a0R0vn0BYCxwGBv] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [6cCJf7IzQvJhXF44] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [6f2qu3n5TO3cjNR9] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [6lLiJBBfaOChIbOS] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [6oAYatMJDYneeebW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [6r7EDjdbE4FQHcAk] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [7CRUowXvKOiP7fOa] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [7EO73O777VLSpYHP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [7UkjyjjztCnzMDWq] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [7hHgQQ8RbIe2dipO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [8KXUHm149nq7KYoQ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [8VORwtAo2TAi7RLs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [8dDAqu2uOyktCocs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [8pYH8u4tqCLdlRG2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [9Q9AqxixHlLvhTa9] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [9bvw5f1UoNR4Iyds] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [A0rilwTLdXHNgqT4] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [APZ2osOQGkRqvYHw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [AQOk0UBExUXkk9Dm] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Atw2PS7W1zHMsQYP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [BBrt9xOjgp2tI9cU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [C59HNs9AVlszp8Jy] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [CdwgSsrXtYOGtL1u] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [DW1MMVDxxy7ymR4f] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [DWan6cq501Xa8QZU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [DjALu0hQBZDkUVmN] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [DlbDuys6Ss587dDK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [EISJmpm3kq0N60Us] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [EWpeVZQhmKF5WBoo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Ebrw5YIgfvpjgW52] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [EsyVITu5Q6Y1CvmT] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [F5LG0UwPc5DSOU2W] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [FYQHKczwyxyUBaRh] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [G0TEVIqrQJIMe4XS] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [GbAaC0EpPYk9TeYs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [GfCJl45SqydR3EUO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [HTzI6X5ZEyagtUlR] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [HVaRiVSWSIVxqOVK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Hi6xubri1MfJZMpM] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [HmWGVyY41A582inr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [I2CRrmwtKG5WHLb5] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [IBa8DR53CNCEUDzd] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [J5WJn4rFPTi04dsB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [KJldqfbZAK4LiNaI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [KRvzuMNszTTb9FMZ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [KSz35QaOOrHfSuK5] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [L0RwOvb7Inh9PPpF] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [LSA9XnNDy7SGHcsa] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Lf7Jc2LMGLJLIsMF] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [LljJEMHD5n3P2XW0] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [MPSXuQaGURBLBMxk] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Mf7tpb6WQwnIzLK9] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [MkIpd2KFlZyqQsEP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [MkrADnCYipgE7P1G] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Mwt7mxmhGWcA5QpU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [NBoIacGS43TlohJg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Na55yseZOI7FKULO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [NwkGEQCukX5jCPyo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OFSTXITmsCu3O1Dd] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OMeP74czzr7QQEvf] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OW9hFGI3JgE9WY92] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OWH4xHAneNPoTz82] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OWgccDKlHLaiMstI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OdGZqpR0SgcaXP79] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OsZcghrWNqTEbS4p] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [OuwkTo1nZsexQgL3] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [P6YdCb4wEgWqjt7g] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [P6vYZ4Jvmwoqicsq] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [PAadVvHpw7cEY9RL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [PB1wKvxRIGvzMKgH] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [PFhtrwJagORFi6I1] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [PGEIX1rdMumdtKiz] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [PyOxZrt4C2kNlFnf] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [QHPNMpyboF2WDAFm] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [QOinvziaby9abf6L] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [QQYC6uBTrvU4Z0Gx] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [QTAwBls0eQCknhwU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [QiPRHRqUWSGTicOV] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [QpHmZGSMvPfroUeU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ROwSFeXB3fFkyhEr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [RPQ8Xd7OJjEOKx7H] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Rkb83ZbIRbCcFU6S] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [SFmg42mSm9MivJKw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [SGX8ZP08l6sKnPUi] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [SoS25TrCfffB95iN] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [SsgLIZEE2RRhkLjv] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [T00Y0usiULHurxZn] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [TCMl03wLI9g0RA9e] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Towwvmer5loeJP1l] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [UFWqLxlFCncpdMAk] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [UXH1s5qf2CyrZdPJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [UeFrtGbMeTy0cvpW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Uguisw7chXa4Oce2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [UiRffYPEP3NzEhhb] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [UjwdzLUcD5eo6Kaz] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [VEEqUUpo1cUt1sPj] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [VLQ8nRPUogZD5TuV] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Vft68tNNYz4UXYnu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Vv8Qe0KQ6Gqn2lUg] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [VwbWYQQQF81KA5IN] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [W6TxkUBSTILatHdI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [WEPjlOP2sYlxSIDo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [WRDvQaOARMY6nWxS] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [WbWrqiR2h5vTEHwl] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [XRZ45Ews49MXfer1] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Y9girHCc2D7c5kdj] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [YF7a1tNrZ2GLRXoG] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [YN8lYpEhhIxGQAZw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [YNQsCBQSh8cYoTkL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [YqYovqT7uu4hYEsE] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [Z0eNboy5yN4ncAYC] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ZMlA5Di7fI4kGbL6] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ZNZRIhQt4OgkTwMO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ZtqnYVNjkcRbQnPY] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ZyFFhxpk0Fq0AiqK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [aALHedSfiyivaPax] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [aaQiGvNFxcC42GmA] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [abAVIzrVmdOAmBBI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [b3tjnbAoRAVXDsbU] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [b88NIFGTFG9CL3xi] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [b8mdCQPU46j03Sze] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [bZ3MdlPYbWjjMvpn] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [buAa935DGIvoCZRJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [cU88c2smJkN7p9sK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [d2e8jSZd4SnPei2F] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [dXBEbd46QM16R29A] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [dck7KJQxCLgQY7a8] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [eztYJis8VSBxAVg6] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [fRM4maKTQ63Xg4LR] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [fqqP5NCHOzYS1v8b] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ftzpupEUMXV8ssDL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [fukbRQDRdqvhZKV1] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [g76qqvSIBGhsIC0y] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [gAcrPakaGKQXQwTw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [gShxjxaiMMC6xzUu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [gVzSiMQEHahYGA1H] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [gt1PyLv9mdiX3T40] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [hPG5kSIOc6YT920m] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [hWIz5gY0tVfsj9Gs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [hhlguR3fHJXiYKYu] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [hicDWLkCp0g1TC5W] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [hm3HbyImUNbMbEng] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [iRwyRMyaHSue0U7T] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [iThxQnODPLmhqiwW] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ijOeWtyc4TsE29eB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [imPJQZEOJTVZjsMq] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [irquy3JTmywb7o4Q] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [ivSkQj2Uik539FYD] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [jK6WyoZAO2e5L5Vt] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [jYERUmsDGSg4pgbJ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [jbpKsK531GYXW495] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [kCMYggLmgIzTJwHO] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [kFUn21bfJdNfojg2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [keIH6Vnje0pX4ngx] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [kiRFVhjYWpwLAkE0] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [lfZJ2OFfZb6PZ20E] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [lxb0nPi6LVwi1nBZ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [meaJOGr4taynGEp6] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [nKtC1rHZ8gH5ZehX] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [nyw930O66gRXcwcw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [oFtcgd7dztKltCOe] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [q4zJV9Qqvq7TwylB] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [q89wAqJdUVs5PMKa] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [qnau49BdJa3bGwck] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [qzT3ksUvlVLf9kbr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [rDl09Ur9Vz4I6PYK] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [rFLZ3D4MhnZESQIw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [riBWZQAdR22JxmeQ] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [rn235aYYVZQBbYTo] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [sHxVrF6QZOCVJwkL] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [t69Q1pixNUYjHQ44] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [tTKjqtf0RUY8pxY2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [uBvB1rkbt75r371Q] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [uHBdANbAi58MH0fl] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [uOPVbUwCiIr1faab] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [umsL4feyQ7Bk3bvD] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [v2NQzo6CINGjHSxI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [vfVUXh2JvQ7RGoVs] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [vqSLihzyDm11XUtP] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [wVS7IU32euN4dx2M] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [wyFLqzTm4fU4Wqxm] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [x52YEp3ikQnH1Sd2] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [x5hNQhfR6NcReizI] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [xGoQssTFadpogo5m] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [xRBspHtsKZsKho73] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [xflKgIfqhV2ZXnBA] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [y1cDzeLVqSBmm4Nr] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [y7R3tPV5pDqw2SlG] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [yMWuNCGkFbFO96Iw] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [zIxKYlNMmGsJFaLG] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [zdwbtywVwiPTmNVR] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [zhcEJQHv72jLFzno] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Persisting migrated Item record [zkGtc3qkG5aCfDiC] of database \"fist-ultra-edition-compendium.core_traits_gear\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Completed migration of database \"fist-ultra-edition-compendium.core_traits_gear.\"","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [016PhNZHtaPO6R3I] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [0BkFjYcm4p8Byuqv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [0FX5IHjUAEUG4heU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [12OYh9eKmfIPpTmY] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [1Q0pbrWNPKUVEL4j] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [1UjZN66Xhc6yAxVH] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [1l7DC8qPtG8gDjlK] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [2EtFsaE6E8tyBdBw] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [33CZiRYnrMDgviNm] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [3WFHZ4aYSGIgFwrL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [3aTfXCxbFLvuA4dB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [3fxNDuL5bzjZX3e5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [44kvEOWdk0A2X3GO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [47D4S9VlDrVvpdhp] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4QtuFvWEDvyd3YDZ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4pq8BLFdpCtm6wyb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [4t7YhZOHNZhbDYeM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [5AsFa930dc7XWQHg] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [5E6VIKURkt0YiAhU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [5HNzn0kib5Rr5bKR] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [5V4dLE3Om6diMyre] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [5rQSkgMj4GkZ1lyr] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6TH8xYJF0F1MOBFj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6ZK2T07vTXLpTRT5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6nKuE1s4tS4D5KoN] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [6oGoTceGPK10nH8o] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [77FtcD1mxg1jv69k] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [80K9NY6bQDfkJZIi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [8ZxnI8wlMQQKj2lB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:58"}
+{"level":"info","message":"Migrated Item record [8tlegRzWPsKhDtmM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [90GwKPK9rEtP2dYG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [93gCIAgBdUCpy08f] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [9Zfma5NAgYKlhKMm] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [9ebBb2gFf02lcKxb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [9hwW0q5FiFdJW7t0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [A9S6UKOXF6zilwQH] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ArKmlR5DINCSHxGa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [AsvSrJgIgTPkPqKG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [B3gexldEG3GLL996] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [B7wNcsmoClZRiWz4] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [BVpiKTuoFgA4BzBq] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [BaiUi4lvhCwEhsKv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Bf2kD3LiqYfoSBYi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [BpPW7zAODOZiAqd9] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Byi5vJTqcRtiydo6] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [C1HMsmqX8UXLphwq] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [CJFxbpMjZHP4N8Gx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [CZWnyiFJxQGJQugy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [CiJdW5kZFH5TzKTO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Co0th5WgCzsi3PQD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [D3QRky1A4XtTaoj3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [D4E4N15yU4F4IXzy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [DHwxiNkpxbGBUsiJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [DTfx6PYpynxl9MxU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [DWdMNALc5VuXGYeD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [DpiitixYnyk861ZG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [E2Xok0zNlb0X85ni] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [EJrHjHCZFOF2RvM0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [EOcqo4TZFaZPBEEU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [FLs4wdS1JJUGm4ss] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [FgmwenGxlfGOOpqi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [G9XCK4QrJL94zjJ8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [GC3n4pj9aE7on7JO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [GEUctbpPB1pqRXgv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [GLjtLgeEMC5XXncr] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [GX9BePbwVJqbShgc] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [GbO5xrP061LzRbBJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [H4wNcWFqkuh4aMOa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [H5jlXwN3ZqcJeqAR] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [HC4PY1399RRFVmMY] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [HF4uSCsYOZYLmFEl] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Hjiy1S6uf2LMUpV7] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [HlYmhw3oH4cRLoRJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [HvKuGKtcu1J7jKX1] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [IHKVZc8woqIVQGKP] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ILb5VpnCQ91eYOB0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [JJgpi1dyoU4rjF8p] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [JKo7TtX24LLjo8Um] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [K7wGE5JgSYqPxjPo] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [KWPBl38uTFxC49Ae] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Loepb6wEiAPCeXTy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [MN5XHbeyMu9r7qWj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [MeZV1m1TV1phxlyE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [OxtOBCSU71us9Dj9] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [P7OBwAXSaVF55ZRY] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Q0SDUi1GqYaTSGlh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [QFGiGnMwY86ijBub] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [QXDwOXkCsMBRX1td] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [RF4kDjOsq5VT42hi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [RP7RidMZ83jfxPJb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [RT9c2R1NvcWqBk6F] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [S3o0vPNzdHqKp7GE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [SLaaHV9ojfLaIKy3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [TKy73QeXy2TEFtqo] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [TNZNwQ3yq5FnPJXD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [U0jT4zD8GkwVA6Wg] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [UEdk6ZdRgOTla6dM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ULSZGeXyqTCKMTk3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [UMjaMZtqiS4iCZ2m] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [UVPJImw2NxDNsKYz] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Ui9LZFo20DBVSTKx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [UlzFSroZw0FCg9f1] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [UtFw6KkyGMPym6ff] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [UtrMRLVFyBFnzD3n] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [V19F9N46elCaQ9hy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [V2Z9mdVEHAJbVaVb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [VHNYzOjE2gKZ6YAd] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [W40AgQYlcX5mZ9PG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [WzFPLp1N5J23LKGW] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [XNligjeBcl1jlqQk] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [XOY4UrL19KB2jYcs] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Y583Z9AYsJnBBnfB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [Y6xDYQD5SMhSC5tb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [YEyn5tE0EXZBpjNf] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [YF1Zutf4GQrZ3mmb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [YGPcsMEmabu9u94c] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [YSJFVqHvV9dcw8jD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ZFEqZRDwOcVseH6s] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ZTATvZrPaMG8ItBT] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ZlDS8cnCxTTzEaVB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ZzsfnckZIe4A7bgD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [a1BoMVweecThtDNv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [a411HQ3wYOJzMhSO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [aICHtd2SdnEDFW35] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [aZyVFKziObADR5BG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [adfevPF8GlI9Vip5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [bhHDj13jgzPewgFZ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [bibGLporOHuwtFXF] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [blcgQeO1CPHli3o8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [buVoVM9qG58PLbgh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [cVp8pa0SPZSE2jzL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [cX1htmx45fe8ATn1] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ciD5s7hYqvNGdXZ7] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [d1zbFhoAqzzOvrMf] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [dyMnQe4YMo6szMLO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [eeHxZpI6XVLr9aaM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [efBFaDWP3jAK8VCi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [eurIz14QMg1Z3iRx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [eym2r9157lUk2rM0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [fRi6gzg0VmXokxjz] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [fVd9yppsDComOWS3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [g9WJPjYByHjq7xcl] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [gHHV1Au3FCBd4HIJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [giNNYZRfw6nIUUQ0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [gz9Zq8FUHXIRFdVi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [h2ALaRiIlr91pjEa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [h68CvMEeXv3tu272] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [hBQ2x7rwEqjEA6Zn] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [hTltQot2vaReEa5D] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [hUAEwECbPtobtzEx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [htpRNN7ZxKYXRMcT] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [iFhdyqcHruS3HfWA] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [jBWogvWigmoc1GeG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [jVWHmdpyuAXmw1C3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [jr0QFAaY3KUYmfhD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ka3jXVw3ubH2vOpR] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [l22RG9os3Wmt6JdL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [lXthVXdoSz4cOxDT] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [lvoPRBjZyIqcxbsu] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [mPyJwSfwOtxmFYam] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [n4OammffpxfmqRTg] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [nKw4vY34AxOLhjVh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [nN2lG70xDw1e1hTI] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [nNaGXzVosN6T6kWh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [nr3r6sXENG2T6lCc] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [o6vXy8VVsakulQTI] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [oH48qjfWVAbqEqyp] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [oN1Up6yPIsdRKOj9] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ohy0IGvnqbS9w9v7] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [oqbxVcdRyZrJPpjN] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [pLtKv2VjyS0g9dwe] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [peIwWmB2DxFbLIKm] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [qCuC0mZyHweLEP4I] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [qXw0zwFWazTE7xLB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [qoqbi0JwSZl3eYor] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [rBgHPoCKhECTN5TI] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [rCuputEyzVOAVINF] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [reh2Lu4eJz1GSDtu] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [rxLgLKgr45FhnUFE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [sCUHzdq5b7StAh3g] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [sKZNqRhnkeGENFEF] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [sTZZ3WNgJCRGKJnb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [sZ5scjlWVtx3mhnj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [stEkG2fxur5kUdqH] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [tG7Ta4fddcwqxsaU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [tVPEYsPTVXu9vOwz] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [uETb40KipX8lMqw5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [uIrc4kYffubFRsam] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [uOsWX8Vn5APLv2vL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [uY509F5mBldhBrjO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ubPL7XbzNBj5XUfC] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [umgJJ31pQbQTQxBC] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [v0DbfSa5mh2wvErV] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [v0cwBkg9ZrevOjrM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [vgtmx5F0Z9jslSQx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [wBEqhBSxubh2F92F] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [wMehccq7V0QgivF8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [wPU6S47giPw8Dohv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [wfWkP540RongzC3J] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [wsKR9xzdTHCftAxV] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [xDbRl0Cke4lf6HPa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [xJh9DUrLUnYgfH4a] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [xQMXRThZIxs7Jw00] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [xYqAFJfACPuUOUQB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [y1qC7cIEKZBrq5tE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [yBEeqCvqbmO3f0pC] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [yYTqsCqkK7V6rYkB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [yfeivODQXJALkoNj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [ymnMF5VySgUuzHx2] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [yqHI3zSVfdFJRYjS] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [yqPSdqzTizjWuuqB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [z0qLioIdTHjpNmgO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [z3NLG2OFFdfOz5IK] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [z6x3nBZrSphvIed8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [zNBLGKov8XZnPXMf] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated Item record [zuHoMSJtfeH8sVt6] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [016PhNZHtaPO6R3I] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [0BkFjYcm4p8Byuqv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [0FX5IHjUAEUG4heU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [12OYh9eKmfIPpTmY] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [1Q0pbrWNPKUVEL4j] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [1UjZN66Xhc6yAxVH] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [1l7DC8qPtG8gDjlK] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [2EtFsaE6E8tyBdBw] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [33CZiRYnrMDgviNm] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [3WFHZ4aYSGIgFwrL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [3aTfXCxbFLvuA4dB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [3fxNDuL5bzjZX3e5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [44kvEOWdk0A2X3GO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [47D4S9VlDrVvpdhp] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [4QtuFvWEDvyd3YDZ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [4pq8BLFdpCtm6wyb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [4t7YhZOHNZhbDYeM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [5AsFa930dc7XWQHg] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [5E6VIKURkt0YiAhU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [5HNzn0kib5Rr5bKR] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [5V4dLE3Om6diMyre] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [5rQSkgMj4GkZ1lyr] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [6TH8xYJF0F1MOBFj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [6ZK2T07vTXLpTRT5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [6nKuE1s4tS4D5KoN] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [6oGoTceGPK10nH8o] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [77FtcD1mxg1jv69k] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [80K9NY6bQDfkJZIi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [8ZxnI8wlMQQKj2lB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [8tlegRzWPsKhDtmM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [90GwKPK9rEtP2dYG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [93gCIAgBdUCpy08f] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [9Zfma5NAgYKlhKMm] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [9ebBb2gFf02lcKxb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [9hwW0q5FiFdJW7t0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [A9S6UKOXF6zilwQH] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ArKmlR5DINCSHxGa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [AsvSrJgIgTPkPqKG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [B3gexldEG3GLL996] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [B7wNcsmoClZRiWz4] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [BVpiKTuoFgA4BzBq] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [BaiUi4lvhCwEhsKv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Bf2kD3LiqYfoSBYi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [BpPW7zAODOZiAqd9] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Byi5vJTqcRtiydo6] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [C1HMsmqX8UXLphwq] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [CJFxbpMjZHP4N8Gx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [CZWnyiFJxQGJQugy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [CiJdW5kZFH5TzKTO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Co0th5WgCzsi3PQD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [D3QRky1A4XtTaoj3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [D4E4N15yU4F4IXzy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [DHwxiNkpxbGBUsiJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [DTfx6PYpynxl9MxU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [DWdMNALc5VuXGYeD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [DpiitixYnyk861ZG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [E2Xok0zNlb0X85ni] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [EJrHjHCZFOF2RvM0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [EOcqo4TZFaZPBEEU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [FLs4wdS1JJUGm4ss] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [FgmwenGxlfGOOpqi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [G9XCK4QrJL94zjJ8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [GC3n4pj9aE7on7JO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [GEUctbpPB1pqRXgv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [GLjtLgeEMC5XXncr] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [GX9BePbwVJqbShgc] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [GbO5xrP061LzRbBJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [H4wNcWFqkuh4aMOa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [H5jlXwN3ZqcJeqAR] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [HC4PY1399RRFVmMY] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [HF4uSCsYOZYLmFEl] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Hjiy1S6uf2LMUpV7] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [HlYmhw3oH4cRLoRJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [HvKuGKtcu1J7jKX1] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [IHKVZc8woqIVQGKP] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ILb5VpnCQ91eYOB0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [JJgpi1dyoU4rjF8p] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [JKo7TtX24LLjo8Um] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [K7wGE5JgSYqPxjPo] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [KWPBl38uTFxC49Ae] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Loepb6wEiAPCeXTy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [MN5XHbeyMu9r7qWj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [MeZV1m1TV1phxlyE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [OxtOBCSU71us9Dj9] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [P7OBwAXSaVF55ZRY] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Q0SDUi1GqYaTSGlh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [QFGiGnMwY86ijBub] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [QXDwOXkCsMBRX1td] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [RF4kDjOsq5VT42hi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [RP7RidMZ83jfxPJb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [RT9c2R1NvcWqBk6F] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [S3o0vPNzdHqKp7GE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [SLaaHV9ojfLaIKy3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [TKy73QeXy2TEFtqo] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [TNZNwQ3yq5FnPJXD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [U0jT4zD8GkwVA6Wg] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [UEdk6ZdRgOTla6dM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ULSZGeXyqTCKMTk3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [UMjaMZtqiS4iCZ2m] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [UVPJImw2NxDNsKYz] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Ui9LZFo20DBVSTKx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [UlzFSroZw0FCg9f1] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [UtFw6KkyGMPym6ff] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [UtrMRLVFyBFnzD3n] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [V19F9N46elCaQ9hy] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [V2Z9mdVEHAJbVaVb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [VHNYzOjE2gKZ6YAd] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [W40AgQYlcX5mZ9PG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [WzFPLp1N5J23LKGW] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [XNligjeBcl1jlqQk] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [XOY4UrL19KB2jYcs] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Y583Z9AYsJnBBnfB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [Y6xDYQD5SMhSC5tb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [YEyn5tE0EXZBpjNf] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [YF1Zutf4GQrZ3mmb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [YGPcsMEmabu9u94c] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [YSJFVqHvV9dcw8jD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ZFEqZRDwOcVseH6s] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ZTATvZrPaMG8ItBT] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ZlDS8cnCxTTzEaVB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ZzsfnckZIe4A7bgD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [a1BoMVweecThtDNv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [a411HQ3wYOJzMhSO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [aICHtd2SdnEDFW35] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [aZyVFKziObADR5BG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [adfevPF8GlI9Vip5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [bhHDj13jgzPewgFZ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [bibGLporOHuwtFXF] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [blcgQeO1CPHli3o8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [buVoVM9qG58PLbgh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [cVp8pa0SPZSE2jzL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [cX1htmx45fe8ATn1] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ciD5s7hYqvNGdXZ7] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [d1zbFhoAqzzOvrMf] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [dyMnQe4YMo6szMLO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [eeHxZpI6XVLr9aaM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [efBFaDWP3jAK8VCi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [eurIz14QMg1Z3iRx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [eym2r9157lUk2rM0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [fRi6gzg0VmXokxjz] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [fVd9yppsDComOWS3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [g9WJPjYByHjq7xcl] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [gHHV1Au3FCBd4HIJ] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [giNNYZRfw6nIUUQ0] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [gz9Zq8FUHXIRFdVi] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [h2ALaRiIlr91pjEa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [h68CvMEeXv3tu272] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [hBQ2x7rwEqjEA6Zn] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [hTltQot2vaReEa5D] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [hUAEwECbPtobtzEx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [htpRNN7ZxKYXRMcT] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [iFhdyqcHruS3HfWA] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [jBWogvWigmoc1GeG] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [jVWHmdpyuAXmw1C3] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [jr0QFAaY3KUYmfhD] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ka3jXVw3ubH2vOpR] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [l22RG9os3Wmt6JdL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [lXthVXdoSz4cOxDT] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [lvoPRBjZyIqcxbsu] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [mPyJwSfwOtxmFYam] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [n4OammffpxfmqRTg] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [nKw4vY34AxOLhjVh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [nN2lG70xDw1e1hTI] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [nNaGXzVosN6T6kWh] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [nr3r6sXENG2T6lCc] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [o6vXy8VVsakulQTI] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [oH48qjfWVAbqEqyp] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [oN1Up6yPIsdRKOj9] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ohy0IGvnqbS9w9v7] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [oqbxVcdRyZrJPpjN] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [pLtKv2VjyS0g9dwe] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [peIwWmB2DxFbLIKm] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [qCuC0mZyHweLEP4I] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [qXw0zwFWazTE7xLB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [qoqbi0JwSZl3eYor] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [rBgHPoCKhECTN5TI] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [rCuputEyzVOAVINF] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [reh2Lu4eJz1GSDtu] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [rxLgLKgr45FhnUFE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [sCUHzdq5b7StAh3g] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [sKZNqRhnkeGENFEF] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [sTZZ3WNgJCRGKJnb] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [sZ5scjlWVtx3mhnj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [stEkG2fxur5kUdqH] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [tG7Ta4fddcwqxsaU] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [tVPEYsPTVXu9vOwz] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [uETb40KipX8lMqw5] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [uIrc4kYffubFRsam] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [uOsWX8Vn5APLv2vL] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [uY509F5mBldhBrjO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ubPL7XbzNBj5XUfC] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [umgJJ31pQbQTQxBC] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [v0DbfSa5mh2wvErV] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [v0cwBkg9ZrevOjrM] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [vgtmx5F0Z9jslSQx] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [wBEqhBSxubh2F92F] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [wMehccq7V0QgivF8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [wPU6S47giPw8Dohv] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [wfWkP540RongzC3J] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [wsKR9xzdTHCftAxV] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [xDbRl0Cke4lf6HPa] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [xJh9DUrLUnYgfH4a] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [xQMXRThZIxs7Jw00] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [xYqAFJfACPuUOUQB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [y1qC7cIEKZBrq5tE] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [yBEeqCvqbmO3f0pC] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [yYTqsCqkK7V6rYkB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [yfeivODQXJALkoNj] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [ymnMF5VySgUuzHx2] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [yqHI3zSVfdFJRYjS] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [yqPSdqzTizjWuuqB] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [z0qLioIdTHjpNmgO] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [z3NLG2OFFdfOz5IK] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [z6x3nBZrSphvIed8] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [zNBLGKov8XZnPXMf] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated Item record [zuHoMSJtfeH8sVt6] of database \"fist-ultra-edition-compendium.core_traits_skills\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Completed migration of database \"fist-ultra-edition-compendium.core_traits_skills.\"","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated RollTable record [0kci5aCVa6efMaG4] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated RollTable record [2XPVgAk2Mg67uI6s] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated RollTable record [EZs5kvDkOEAAvfQN] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated RollTable record [RBSyS9Gt0XIgA8JO] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated RollTable record [RLqmtvdroZ0Y2xTj] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated RollTable record [oCwRhv6zyl1Pkq7f] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Migrated RollTable record [qIb9Xow3QErcvFGU] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated RollTable record [0kci5aCVa6efMaG4] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated RollTable record [2XPVgAk2Mg67uI6s] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated RollTable record [EZs5kvDkOEAAvfQN] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated RollTable record [RBSyS9Gt0XIgA8JO] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated RollTable record [RLqmtvdroZ0Y2xTj] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated RollTable record [oCwRhv6zyl1Pkq7f] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Persisting migrated RollTable record [qIb9Xow3QErcvFGU] of database \"fist-ultra-edition-compendium.rollable_tables\".","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"Completed migration of database \"fist-ultra-edition-compendium.rollable_tables.\"","timestamp":"2026-07-06 21:26:59"}
+{"level":"info","message":"No system update for FIST: Ultra Edition is currently available.","timestamp":"2026-07-06 21:27:00"}
+{"level":"info","message":"Vended World data to User [xmljeyMGZBPkULO7] in 562ms","timestamp":"2026-07-06 21:27:00"}
+{"level":"info","message":"Created Item with id [UG5mN4nZFLhGn9Dx] in parent Actor [kq25bKJ1iKIvz2cS]","timestamp":"2026-07-06 21:27:08"}
+{"level":"info","message":"Deleted Item with id [UG5mN4nZFLhGn9Dx] in parent Actor [kq25bKJ1iKIvz2cS]","timestamp":"2026-07-06 21:27:18"}
+{"level":"info","message":"Created Item with id [KO76gsjGljIOf6lr] in parent Actor [kq25bKJ1iKIvz2cS]","timestamp":"2026-07-06 21:27:18"}
+{"level":"info","message":"Created Actor with id [MpsdwhOyj133gVWa]","timestamp":"2026-07-06 21:28:43"}
+{"level":"info","message":"Created Item with id [Zi9EkdRS1bsOu65M] in parent Actor [MpsdwhOyj133gVWa]","timestamp":"2026-07-06 21:28:45"}
+{"level":"info","message":"Deleted Actor with id [MpsdwhOyj133gVWa]","timestamp":"2026-07-06 21:28:51"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-07-06 21:29:02"}
+{"level":"info","message":"Toggling game pause status to true","timestamp":"2026-07-06 21:29:03"}
+{"level":"info","message":"Created client session 8e1f4d2893748e7ad54262b0","timestamp":"2026-07-06 21:38:16"}
+{"level":"info","message":"Created client session 113ba30d0d68e9ca219e5292","timestamp":"2026-07-06 21:41:23"}
+{"level":"info","message":"Created Playlist with id [5X5s5FS6hylveg4W]","timestamp":"2026-07-06 21:42:54"}
+{"level":"info","message":"Created PlaylistSound with id [VdrPC2Zetm8WOAI8] in parent Playlist [5X5s5FS6hylveg4W]","timestamp":"2026-07-06 21:44:06"}
+{"level":"info","message":"Created PlaylistSound with id [x7MlwhvDeI012cPc] in parent Playlist [5X5s5FS6hylveg4W]","timestamp":"2026-07-06 21:44:13"}
+{"level":"info","message":"Created PlaylistSound with id [hU2MpgaNEdmNK2XG] in parent Playlist [5X5s5FS6hylveg4W]","timestamp":"2026-07-06 21:44:25"}
+{"level":"info","message":"Created client session f530a98090c5181f4205a08a","timestamp":"2026-07-06 21:44:30"}
+{"level":"info","message":"Created PlaylistSound with id [Ua3zRWFMnqUAL67n] in parent Playlist [5X5s5FS6hylveg4W]","timestamp":"2026-07-06 21:44:31"}
+{"level":"info","message":"Created PlaylistSound with id [0BdOFbMeEg2Pgq9g] in parent Playlist [5X5s5FS6hylveg4W]","timestamp":"2026-07-06 21:45:15"}
+{"level":"info","message":"Created Playlist with id [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:45:24"}
+{"level":"info","message":"Created PlaylistSound with id [9EJqbeCFrRwWDLDU] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:45:35"}
+{"level":"info","message":"Created PlaylistSound with id [W86kZDBrl9FnwgdH] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:45:43"}
+{"level":"info","message":"Created PlaylistSound with id [fapXac9gsBDBwnxK] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:46:02"}
+{"level":"info","message":"Created PlaylistSound with id [nlmvUrkEWCb9a9bE] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:46:12"}
+{"level":"info","message":"Created PlaylistSound with id [8Ctl00WRRkqSleK3] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:46:18"}
+{"level":"info","message":"Created PlaylistSound with id [TUBDTlF4aFpe582O] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:46:29"}
+{"level":"info","message":"Created PlaylistSound with id [d6iJPXJzZj67sQGQ] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:46:36"}
+{"level":"info","message":"Created PlaylistSound with id [ibiA0Nat1NYr7AfL] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:46:44"}
+{"level":"info","message":"Created PlaylistSound with id [RcRkaIJGfYW3cV0U] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:46:54"}
+{"level":"info","message":"Created PlaylistSound with id [VzOMcJIDvStm4dUJ] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:47:00"}
+{"level":"info","message":"Created Playlist with id [34Cm2boi6HQuE51v]","timestamp":"2026-07-06 21:49:38"}
+{"level":"info","message":"No system update for FIST: Ultra Edition is currently available.","timestamp":"2026-07-06 21:53:30"}
+{"level":"info","message":"Vended World data to User [xmljeyMGZBPkULO7] in 510ms","timestamp":"2026-07-06 21:53:30"}
+{"level":"info","message":"Deleted Playlist with id [34Cm2boi6HQuE51v]","timestamp":"2026-07-06 21:53:46"}
+{"level":"info","message":"Created PlaylistSound with id [O5B6RhtZwJf7mLHJ] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:58:35"}
+{"level":"info","message":"Created PlaylistSound with id [dskOmlnNuxb8kjaY] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 21:58:40"}
+{"level":"info","message":"Created PlaylistSound with id [CGwhCueNjDxF2FR1] in parent Playlist [sazyMIqQDV2XGO9f]","timestamp":"2026-07-06 22:07:26"}
+{"level":"info","message":"Created client session 048dbb00b7ca2b459368cd9c","timestamp":"2026-07-06 22:25:50"}
+{"level":"info","message":"Created client session 115c8c0dc2a7fb3d81bcb0d7","timestamp":"2026-07-06 22:41:19"}
+{"level":"info","message":"Created client session 2db52356e9f0a0ec4dae44d1","timestamp":"2026-07-06 23:13:17"}
+{"level":"info","message":"Created client session f29e885631a6a34f7213dd4d","timestamp":"2026-07-06 23:13:18"}
+{"level":"info","message":"Created client session 3d54aa597796db983c91c11a","timestamp":"2026-07-06 23:13:18"}
+{"level":"info","message":"Created client session 69d0cf77229cd850d37d05b5","timestamp":"2026-07-06 23:13:19"}
+{"level":"info","message":"Created client session 1d7b868366fc0a9a251b3a2a","timestamp":"2026-07-06 23:13:19"}
+{"level":"info","message":"Created client session 7356ec20a992091738e6d0bc","timestamp":"2026-07-06 23:13:19"}
+{"level":"info","message":"Created client session de4f980c0a5cd45feaa00f9f","timestamp":"2026-07-06 23:13:20"}
+{"level":"info","message":"Created client session 7c1133f869e3a5d9db5dd008","timestamp":"2026-07-06 23:13:21"}
+{"level":"info","message":"Created client session 6c90ec38a534b9a0502f04ad","timestamp":"2026-07-06 23:13:22"}
+{"level":"info","message":"Created client session f89efad311aa0febdb66831e","timestamp":"2026-07-06 23:13:22"}
+{"level":"info","message":"Created client session f8ec4ae5ee7a525d936d2130","timestamp":"2026-07-06 23:13:23"}
+{"level":"info","message":"Created client session 3acfc61bac5b106d51fb707c","timestamp":"2026-07-06 23:13:24"}
+{"level":"info","message":"Created client session fccaee8c76fe22e28d2a1512","timestamp":"2026-07-06 23:13:24"}
+{"level":"info","message":"Created client session 4396f32883b0b874b4e6d9d0","timestamp":"2026-07-06 23:13:25"}
+{"level":"info","message":"Created client session 9b5c9b0883a51f9539b53fc0","timestamp":"2026-07-06 23:13:26"}
+{"level":"info","message":"Created client session aafc156d221ffd4754c1859b","timestamp":"2026-07-06 23:13:27"}
+{"level":"info","message":"Created client session 4968b166d4bfe4453a20e7e8","timestamp":"2026-07-06 23:13:27"}
+{"level":"info","message":"Created client session 93919d830c88b26046f52ee3","timestamp":"2026-07-06 23:13:28"}
+{"level":"info","message":"Created client session 4f0d39b4530a6803f8bf3fca","timestamp":"2026-07-06 23:13:29"}
+{"level":"info","message":"Created client session 2077dbf864759be89ec0ad93","timestamp":"2026-07-06 23:13:29"}
+{"level":"info","message":"Created client session 7def9153333618dba992ae6a","timestamp":"2026-07-06 23:13:30"}
+{"level":"info","message":"Created client session bc87ebe0c6e9a01f1b35b3c0","timestamp":"2026-07-06 23:13:31"}
+{"level":"info","message":"Created client session cf27001f8b2b236e3e3eab1c","timestamp":"2026-07-06 23:13:31"}
+{"level":"info","message":"Created client session 65aaa81185a0aeae1e4f58cf","timestamp":"2026-07-06 23:13:32"}
+{"level":"info","message":"Created client session 3e153eae7515f3a1826a62f9","timestamp":"2026-07-06 23:13:32"}
+{"level":"info","message":"Created client session 53ab4c5897676fd880674338","timestamp":"2026-07-06 23:13:33"}
+{"level":"info","message":"Created client session 462eb99c9488a1528e728ce8","timestamp":"2026-07-06 23:13:33"}
+{"level":"info","message":"Created client session 6cff623d234dcc88eec3cd94","timestamp":"2026-07-06 23:13:34"}
+{"level":"info","message":"Created client session 3523e6bfc26657e8a0f10838","timestamp":"2026-07-06 23:13:34"}
+{"level":"info","message":"Created client session 4623342e32c2769dc640b2bd","timestamp":"2026-07-06 23:13:35"}
+{"level":"info","message":"Created client session d79578e52387a23e635a201b","timestamp":"2026-07-06 23:44:17"}
+{"level":"info","message":"Created client session 87ef7e7715f0001e59f9bc0a","timestamp":"2026-07-06 23:52:55"}
+{"level":"info","message":"Created client session bbde057109c5eab32f920bf1","timestamp":"2026-07-06 23:58:38"}
