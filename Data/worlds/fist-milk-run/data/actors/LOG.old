@@ -1,8 +1,15 @@
-2026/07/07-20:02:31.863029 fa346bffefc0 Recovering log #13
-2026/07/07-20:02:31.870839 fa346bffefc0 Delete type=0 #13
-2026/07/07-20:02:31.870859 fa346bffefc0 Delete type=3 #11
-2026/07/08-06:45:55.042857 fa346b7eefc0 Level-0 table #19: started
-2026/07/08-06:45:55.042874 fa346b7eefc0 Level-0 table #19: 0 bytes OK
-2026/07/08-06:45:55.044925 fa346b7eefc0 Delete type=0 #17
-2026/07/08-06:45:55.045004 fa346b7eefc0 Manual compaction at level-0 from '!actors!0647oASaoyHikMHR' @ 72057594037927935 : 1 .. '!actors.items!uPOPNxfR2H8kMFfu.fHwIsoH3SqN0yAq9' @ 0 : 0; will stop at (end)
-2026/07/08-06:45:55.060671 fa346b7eefc0 Manual compaction at level-1 from '!actors!0647oASaoyHikMHR' @ 72057594037927935 : 1 .. '!actors.items!uPOPNxfR2H8kMFfu.fHwIsoH3SqN0yAq9' @ 0 : 0; will stop at (end)
+2026/07/09-06:30:56.623272 fa3481dbdfc0 Recovering log #22
+2026/07/09-06:30:56.630013 fa3481dbdfc0 Delete type=3 #20
+2026/07/09-06:30:56.630038 fa3481dbdfc0 Delete type=0 #22
+2026/07/09-06:39:16.605536 fa346b7eefc0 Level-0 table #28: started
+2026/07/09-06:39:16.608312 fa346b7eefc0 Level-0 table #28: 12933 bytes OK
+2026/07/09-06:39:16.610140 fa346b7eefc0 Delete type=0 #26
+2026/07/09-06:39:16.614555 fa346b7eefc0 Manual compaction at level-0 from '!actors!0647oASaoyHikMHR' @ 72057594037927935 : 1 .. '!actors.items!uPOPNxfR2H8kMFfu.fHwIsoH3SqN0yAq9' @ 0 : 0; will stop at (end)
+2026/07/09-06:39:16.614685 fa346b7eefc0 Manual compaction at level-1 from '!actors!0647oASaoyHikMHR' @ 72057594037927935 : 1 .. '!actors.items!uPOPNxfR2H8kMFfu.fHwIsoH3SqN0yAq9' @ 0 : 0; will stop at '!actors.items!lNK4HWIcKJEiUzMw.vNy0fW6gfou20bd2' @ 662 : 1
+2026/07/09-06:39:16.614692 fa346b7eefc0 Compacting 1@1 + 1@2 files
+2026/07/09-06:39:16.617867 fa346b7eefc0 Generated table #29@1: 82 keys, 36600 bytes
+2026/07/09-06:39:16.617876 fa346b7eefc0 Compacted 1@1 + 1@2 files => 36600 bytes
+2026/07/09-06:39:16.619646 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/07/09-06:39:16.619698 fa346b7eefc0 Delete type=2 #28
+2026/07/09-06:39:16.619745 fa346b7eefc0 Delete type=2 #24
+2026/07/09-06:39:16.626839 fa346b7eefc0 Manual compaction at level-1 from '!actors.items!lNK4HWIcKJEiUzMw.vNy0fW6gfou20bd2' @ 662 : 1 .. '!actors.items!uPOPNxfR2H8kMFfu.fHwIsoH3SqN0yAq9' @ 0 : 0; will stop at (end)

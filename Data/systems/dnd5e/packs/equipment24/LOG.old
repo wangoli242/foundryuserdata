@@ -1,5 +1,8 @@
-2026/05/07-17:37:20.161006 7f448d7be6c0 Delete type=3 #1
-2026/05/07-17:37:20.169247 7f446ffff6c0 Level-0 table #5: started
-2026/05/07-17:37:20.177218 7f446ffff6c0 Level-0 table #5: 911551 bytes OK
-2026/05/07-17:37:20.177705 7f446ffff6c0 Delete type=0 #3
-2026/05/07-17:37:20.178003 7f446ffff6c0 Manual compaction at level-0 from '!folders!0qKr1rbesCSNE0MA' @ 72057594037927935 : 1 .. '!items.effects!phbagNet00000000.67ofG0FVqrrkAHKa' @ 0 : 0; will stop at (end)
+2026/07/09-06:28:14.109839 fa34815adfc0 Recovering log #8
+2026/07/09-06:28:14.116147 fa34815adfc0 Delete type=0 #8
+2026/07/09-06:28:14.116165 fa34815adfc0 Delete type=3 #6
+2026/07/09-06:30:46.742152 fa346b7eefc0 Level-0 table #14: started
+2026/07/09-06:30:46.742164 fa346b7eefc0 Level-0 table #14: 0 bytes OK
+2026/07/09-06:30:46.744142 fa346b7eefc0 Delete type=0 #12
+2026/07/09-06:30:46.748371 fa346b7eefc0 Manual compaction at level-0 from '!folders!0qKr1rbesCSNE0MA' @ 72057594037927935 : 1 .. '!items.effects!phbagNet00000000.67ofG0FVqrrkAHKa' @ 0 : 0; will stop at (end)
+2026/07/09-06:30:46.748448 fa346b7eefc0 Manual compaction at level-1 from '!folders!0qKr1rbesCSNE0MA' @ 72057594037927935 : 1 .. '!items.effects!phbagNet00000000.67ofG0FVqrrkAHKa' @ 0 : 0; will stop at (end)
