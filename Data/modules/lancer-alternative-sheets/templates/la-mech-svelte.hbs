@@ -1,0 +1,154 @@
+<form class="la-root la-mech la-text-text {{cssClass}} -heightfull" autocomplete="off">
+    {{!-- Forward data to be ready for Svelte mounting --}}
+    {{la_setDatastore @root}}
+    {{!-- (#1)
+    // Foundry seems to initialize nav tabs only once on the constructor,
+    // but Svelte unfortunately mounts after the constructor so we must reconcile.
+    // 
+    // Chosen approach was made because navbar and relative content containers aren't
+    // reactive, so doing it how Foundry likes it is better than dealing with potential
+    // side-effects over trying to be consistent with the rest of the codebase.
+    //
+    // If Svelte needs to be reconciled (i.e. now that they don't have a common
+    // parent), <svelte:window on:eventsomewhere={}>CONTENT HERE</svelte:window> 
+    // can be used to listen for events in other mounted components, or an event 
+    // listener can be added through the activateListeners() override, or hooks, etc
+    --}}
+    <header 
+        class="la-header {{la_getBackgroundStyle}} la-flexcol -widthfull la-bckg-primary -positionrelative -fontface-neutral
+            sheet-header"
+    >
+        <div 
+            class="-heightfull -widthfull
+                la-SVELTE-HEADER"
+        >
+            {{!-- Svelte is injected in-place here --}}
+        </div>
+        {{!-- (#1) --}}
+        <!-- Navigation -->
+        <div class="la-nav__island la-flexrow -justifyend -gap1 la-dropshadow -widthfull -positionabsolute"
+            style="z-index: 1;"
+        >
+            <div class="la-flexrow -gap1
+                la-SVELTE-ADVANCEDNAV "
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+            <nav 
+                class="la-tabs la-flexrow la-bckg-tabs clipped-alt" 
+                data-group="primary"
+            >
+                <button type="button"
+                    class="la-tab clipped-bot-alt la-text-header -fontsize4 -padding1
+                        {{la_getAdvancedStyle actor.uuid}}"
+                    data-tab="custom"
+                >
+                    {{localize "LA.tab.custom.label"}}
+                </button>
+                <button type="button"
+                    class="la-tab clipped-bot-alt la-text-header -fontsize4 -padding1"
+                    data-tab="status"
+                >
+                    {{localize "LA.tab.status.label"}}
+                </button>
+                <button type="button"
+                    class="la-tab clipped-bot-alt la-text-header -fontsize4 -padding1"
+                    data-tab="loadout"
+                >
+                    {{localize "LA.tab.loadout.label"}}
+                </button>
+            </nav>
+        </div>
+    </header>
+    <div class="la-body la-flexrow la-bckg-background -heightfull -positionrelative -fontface-neutral">
+        <!-- Sidebar -->
+        <section 
+            class="la-sidebar la-flexcol {{la_getBackgroundStyle}} la-shadow -medium -inset -widthfull -heightfull
+                "
+        >
+            <div class="la-nav-secondary__island la-flexrow -justifystart -positionabsolute -left0 -top0">
+                <nav 
+                    class="la-tabs-secondary la-flexrow la-bckg-tabs clipped-bot" 
+                    data-group="secondary"
+                    style="z-index: 1;"
+                >
+                    <button
+                        class="la-tab clipped-bot la-text-header -fontsizemedium -padding0 -padding1-lr"
+                        data-tab="statistics"
+                    >
+                        {{localize "LA.tab.statistics.label"}}
+                    </button>
+                    <button
+                        class="la-tab clipped-bot la-text-header -fontsizemedium -padding0 -padding1-lr"
+                        data-tab="activity"
+                    >
+                        {{localize "LA.tab.activity.label"}}
+                    </button>
+                </nav>
+            </div>
+            <div 
+                class="la-content-secondary -widthfull -heightfull
+                    la-SCROLL-SIDEBAR"
+                data-group="secondary"
+            >
+                <div 
+                    class="la-sidebar__statistics
+                        la-SVELTE-SIDEBARSTATISTICS tab"
+                    data-tab="statistics"
+                >
+                    {{!-- (#1) --}}
+                    {{!-- Svelte is injected in-place here --}}
+                </div>
+                <div 
+                    class="la-sidebar__activity
+                        la-SVELTE-SIDEBARACTIVITY tab"
+                    data-tab="activity"
+                >
+                    {{!-- (#1) --}}
+                    {{!-- Svelte is injected in-place here --}}
+                </div>
+            </div>
+        </section>
+        <div class="{{la_getScrollStyle}}">&nbsp;</div>
+        <section
+            class="la-content-body la-content -widthfull -heightfull sheet-body"
+            data-group="primary"
+        >
+            {{!-- (#1) --}}
+            <div 
+                class="
+                    la-SVELTE-HASE"
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+            <div 
+                class="-positionabsolute -bottom0 -width7 -displayflex -directioncolumn -gap1
+                    la-SVELTE-ADVANCED "
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+            <div
+                class="la-custom la-tab la-dropshadow -fontsize4 -margin3-t
+                    la-SVELTE-CUSTOM tab"
+                data-tab="custom"
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+            <div
+                class="la-status la-tab la-dropshadow -fontsize4 -margin3-t
+                    la-SVELTE-STATUS tab"
+                data-tab="status"
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+            <div
+                class="la-loadout la-tab la-dropshadow -fontsize4 -margin3-t
+                    la-SVELTE-LOADOUT tab"
+                data-tab="loadout"
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+        </section>
+        <div class="{{la_getScrollStyle}}">&nbsp;</div>
+    </div>
+</form>

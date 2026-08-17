@@ -1,0 +1,250 @@
+:root{
+  --ADA_COMBATBANNER_color: rgba(255, 0, 0, 1);
+  --ADA_COMBATBANNER_colorTransparent: rgba(255, 0, 0, .3);
+}
+
+@font-face {
+  font-family: 'Orbitron';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://fonts.gstatic.com/s/orbitron/v25/yMJMMIlzdpvBhQQL_SC3X9yhF25-T1nyGy6BoWgz.woff2) format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+2074, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+.yourTurnBanner, .yourTurnBannerBackground {
+  position: absolute;
+  transition: 6s;
+  width: 100%;
+}
+
+.yourTurnBanner{
+  margin-left: 0px;
+  padding-left: 400px;
+  margin-top: 150px;
+  height: 155px;
+}
+
+.yourTurnBanner.removing{
+  opacity: 1;
+  animation-name: fadeOut;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes fadeOut{
+  from{
+    opacity: 1;
+  }
+  to{
+    opacity: 0;
+  }
+}
+
+
+
+
+
+
+.yourTurnBannerBackground{
+  height: 180px;
+  top:  -20px;
+  left: 0px;
+  background-color: var(--ADA_COMBATBANNER_colorTransparent);
+  background-blend-mode: hard-light;
+  background-repeat: repeat;
+  border-top: var(--ADA_COMBATBANNER_color);
+  border-top-width: 15px;
+  border-top-style: solid;
+  animation-name: backgroundColor;
+  animation-duration: 4s;
+  animation-fill-mode: forwards;
+  z-index: -1;
+  clip-path:polygon(    
+    0    0%,    
+    100%  0,     
+    100% 70%,    
+    95% 100%,    
+    0   100%  )
+}
+
+.yourTurnBannerBackground.removing{
+  animation-name: backgroundDisappear;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+}
+
+@keyframes backgroundDisappear{
+  from{
+    width: 100%;
+  }
+
+  to{
+    width: 0%;
+  }
+}
+
+
+
+
+
+
+.yourTurnImg {
+  position: absolute;
+  object-fit: scale-down;
+  border-width: 0px;
+  width: 400px;
+  height: 400px;
+  z-index: 1000;
+  opacity: 0.001;
+}
+
+.yourTurnImg.adding{
+  animation-name: imgFadeIn;
+  animation-duration: 2s;
+  animation-fill-mode: forwards;
+}
+
+.yourTurnImg.removing{
+  opacity: 1;
+  width: 400px;
+  height: 400px;
+  animation-name: fadeOut;
+  animation-delay: 1.5s;
+  animation-duration: 3s;
+  animation-fill-mode: forwards;
+}
+@keyframes imgFadeIn {
+  from {
+    opacity: 0;
+  }
+  20% {
+    opacity: 0;
+  }
+  50% {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+
+
+
+
+
+
+
+.yourTurnText, .yourTurnSubheading {
+  max-height: 100px;
+  color: lightgray;
+  font-weight: bold;   
+  text-overflow: clip;
+  margin-bottom: auto; 
+  margin-top: auto;
+  text-shadow: 2px 2px 5px black;
+  /* text-transform: uppercase; */
+}
+.roundCount{
+  position:relative;
+  bottom:0;
+  max-height: 100px;
+  color: lightgray;
+  font-family: Orbitron, Consolas, sans-serif;
+  font-weight: bold;   
+  text-overflow: clip;
+  margin-bottom: auto; 
+  margin-top: auto;
+  text-shadow: 2px 2px 5px black;
+  text-transform: uppercase;
+}
+.yourTurnText {
+  font-size: 48pt;
+  vertical-align: middle;
+  font-family: Orbitron, Consolas, sans-serif;
+  text-align: left; 
+  border-bottom-width: 0px;
+  border-bottom: var(--ADA_TURN_color);
+  border-bottom-style: solid;
+  width: fit-content;
+  block-size: fit-content;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.yourTurnSubheading{
+  display: inline-flex;
+  font-family: Consolas, Courier, sans-serif;
+  justify-content: space-evenly;
+  font-size: 18pt;
+  max-height: 27;
+  width: auto;
+  margin-inline-start: 0px;
+  padding-right: 5px;
+}
+
+.yourTurnSubheading.last{
+  display: inline-flex;
+  margin-right: 0px;
+  border-right-width: 0px;
+  text-align: right;
+  align-self: flex-end;
+  margin-left: 30%;
+  max-width: 30%;
+  white-space: nowrap;
+}
+
+.yourTurnSubheading.yourTurnImg{
+  position: relative;
+  height: 100px;
+  width: 100px;
+  border-width: 0px; 
+  bottom: 40px;
+  opacity: 1;
+  object-fit: scale-down;
+  animation: none;
+  image-rendering: optimizeSpeed;
+}
+
+
+@keyframes backgroundColor {
+  from{
+    background-color: rgba(0, 0, 0, 0);
+    opacity: 0;
+    width: 0;
+    padding-right: 0px;
+    clip-path:polygon(    
+      0    0%,    
+      100%  0,     
+      100% 70%,    
+      15% 100%,    
+      0   100%  )
+  }
+  80%{
+    background-color: var(--ADA_COMBATBANNER_color);
+    opacity: .9;
+  }
+  to{
+    background-color: var(--ADA_COMBATBANNER_colorTransparent);
+    opacity: .8;
+    width: 100%;
+    padding-right: 400px;
+    clip-path:polygon(    
+    0    0%,    
+    100%  0,     
+    100% 70%,    
+    95% 100%,    
+    0   100%  )
+  }
+}
+
+@keyframes borderSlideDown {
+  from{
+    border-bottom-width: 0px;
+  }
+  to{
+    border-bottom-width: 5px;
+  }
+}

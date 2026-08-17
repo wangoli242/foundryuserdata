@@ -1,0 +1,69 @@
+<form class="la-deployable la-text-text {{cssClass}} la-root flexcol {{getTheme}} -heightfull" autocomplete="off">
+    {{!-- Forward data to be ready for Svelte mounting --}}
+    {{la_setDatastore @root}}
+    <div class="{{la_getBackgroundAltStyle}} la-bckg-background la-flexcol -divider la-prmy-primary -heightfull -fontface-neutral">
+        <div class="-widthfull">
+            <div class="
+                la-SVELTE-HEADER">
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+        </div>
+        <!-- Navigation -->
+        <div class="-positionrelative -widthfull la-dropshadow"
+            style="z-index: 1;"
+        >
+            <div class="la-nav__island la-flexrow -justifystart -positionabsolute -left0 -top0"
+            >
+                <nav
+                    class="la-tabs la-flexrow la-bckg-tabs clipped-bot" 
+                    data-group="primary"
+                >
+                    <button type="button"
+                        class="la-tab clipped-bot la-text-header -fontsizemedium -padding0 -padding1-lr"
+                        data-tab="detail"
+                    >
+                        {{localize "LA.tab.detail.label"}}
+                    </button>
+                    <button type="button"
+                        class="la-tab clipped-bot la-text-header -fontsizemedium -padding0 -padding1-lr"
+                        data-tab="activity"
+                    >
+                        {{localize "LA.tab.activity.label"}}
+                    </button>
+                    <button type="button"
+                        class="la-tab clipped-bot la-text-header -fontsizemedium -padding0 -padding1-lr
+                            {{la_getAdvancedStyle actor.uuid}}"
+                        data-tab="custom"
+                    >
+                        {{localize "LA.tab.custom.label"}}
+                    </button>
+                </nav>
+            </div>
+        </div>
+        <section
+            class="la-content -flex1 -widthfull -padding6-t
+                la-SCROLL_BODY"
+            data-group="primary" 
+        >
+            <div 
+                class="-widthfull
+                    la-SVELTE-DETAIL tab"
+                data-tab="detail"
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+            <div class="-widthfull
+                    la-SVELTE-ACTIVITY tab"
+                data-tab="activity"
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+            <div class="-widthfull
+                    la-SVELTE-CUSTOM tab"
+                data-tab="custom"
+            >
+                {{!-- Svelte is injected in-place here --}}
+            </div>
+        </section>
+    </div>
+</form>

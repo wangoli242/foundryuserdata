@@ -1,0 +1,826 @@
+/* global $, game, CONFIG */
+
+import { removeGlobalBonus, removeConstantBonus, getBonusIcon, getBonusDetailString } from '../bonuses/genericBonuses.js';
+import { applyEffectsToTokens } from '../bonuses/flagged-effects.js';
+import { durationFieldsHtml, setupDurationUI, getDurationConfig, createDurationMarks } from '../bonuses/duration-widget.js';
+import { playUiSound } from './sound.js';
+import { tahScale, laHudRenderIcon } from './item-helpers.js';
+import { HudPanel } from './hud-panel.js';
+
+function getBonusDetailStr(/** @type {any} */ bonus)
+{
+    if (bonus.type === 'multi' && Array.isArray(bonus.bonuses))
+        return bonus.bonuses.map(getBonusDetailStr).join(' | ');
+    return getBonusDetailString(bonus);
+}
+
+let _lastSearchQuery = '';
+let _lastDurationLabel = null;
+
+const BG_DEFAULT = 'var(--la-plate)';
+const BG_HOVER   = 'color-mix(in srgb, var(--la-plate), #000 12%)';
+// Row text: plate ink when inactive (flips with the plate), dark on the light active/permanent bg.
+const FG_DEFAULT = 'var(--la-ink)';
+const FG_ACTIVE  = '#111';
+
+export class StatusPanel extends HudPanel
+{
+    constructor(options)
+    {
+        super(options);
+        const { token, tokens, incDepth, decDepth, suppressCollapse, extendCollapse } = options;
+        this._tokens           = tokens ?? [token];
+        this._incDepth         = incDepth;
+        this._decDepth         = decDepth;
+        this._suppressCollapse = suppressCollapse;
+        this._extendCollapse   = extendCollapse;
+
+        this._subtypePanel = null;
+        this._durMarks     = null;
+    }
+
+    async _applyWithDuration(status)
+    {
+        const { duration, originID } = getDurationConfig(this._panel, 'la-sdur');
+        await applyEffectsToTokens({
+            tokens: this._tokens,
+            effectNames: status.name,
+            duration: { ...duration, overrideTurnOriginId: originID },
+        });
+    }
+
+    close()
+    {
+        this._suppressCollapse?.(false);
+        this._durMarks?.destroy();
+        this._durMarks = null;
+        $('.la-status-tooltip').remove();
+        if (this._subtypePanel)
+        {
+            this._subtypePanel.remove();
+            this._subtypePanel = null;
+        }
+        super.close();
+    }
+
+    syncRows()
+    {
+        if (!this._panel || !this._actor)
+            return;
+        const actor = this._actor;
+        const hasStatusCounter = !!game.modules.get('statuscounter')?.active;
+        this._panel.find('[data-status-id]').each(function()
+        {
+            const rowEl = $(this);
+            const statusId = rowEl.attr('data-status-id');
+            const effects = /** @type {any[]} */ ([...actor.effects]).filter(/** @type {any} */ eff => eff.statuses?.has(statusId) && !eff.disabled);
+            const nowActive = effects.length > 0;
+            const nowPerm = nowActive && effects.some(/** @type {any} */ eff =>
+            {
+                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
+                const dur = laFlags?.duration ?? /** @type {any} */ (eff.flags)?.['csm-lancer-qol']?.duration;
+                return dur?.label === 'permanent';
+            });
+            rowEl.data('active', nowActive);
+            rowEl.data('permanent', nowPerm);
+            const bg = nowActive ? (nowPerm ? '#f0e0a0' : '#b8d4f0') : BG_DEFAULT;
+            const border = nowActive ? (nowPerm ? '#a07020' : '#1a4a7a') : 'transparent';
+            rowEl.css({ background: bg, borderLeftColor: border, color: nowActive ? FG_ACTIVE : FG_DEFAULT });
+            const totalStack = hasStatusCounter ? effects.reduce((sum, /** @type {any} */ eff) => sum + (eff.getFlag?.('statuscounter', 'value') ?? 1), 0) : 0;
+            const parts = [];
+            if (hasStatusCounter && totalStack > 1)
+                parts.push(`×${totalStack}`);
+            if (effects.length > 1)
+                parts.push(`[${effects.length}]`);
+            rowEl.find('.la-status-badge').text(parts.join(' '));
+        });
+    }
+
+    open(anchorRow)
+    {
+        $('.la-status-tooltip').remove();
+        this._resetPanel(anchorRow);
+        const actor = this._actor;
+        const token = this._token;
+        if (!actor || !token)
+            return;
+
+        const hasStatusCounter  = !!game.modules.get('statuscounter')?.active;
+        const hasTempCustomStatuses = !!game.modules.get('temporary-custom-statuses')?.active;
+        const tempCustomStatusesApi = hasTempCustomStatuses ? /** @type {any} */ (game.modules.get('temporary-custom-statuses'))?.api : null;
+        const savedStatuses = hasTempCustomStatuses ? (game.settings.get('temporary-custom-statuses', 'savedStatuses') ?? []) : [];
+        const activeCustomEffects = hasTempCustomStatuses
+            ? /** @type {any[]} */ ([...actor.effects]).filter(/** @type {any} */ eff =>
+                eff.getFlag?.('temporary-custom-statuses', 'isCustom') &&
+                !eff.getFlag?.('lancer-automations', 'linkedBonusId')
+            )
+            : [];
+        const customMap = new Map();
+        savedStatuses.forEach(/** @type {any} */ saved => customMap.set(saved.name, { name: saved.name, icon: saved.icon }));
+        activeCustomEffects.forEach(/** @type {any} */ eff =>
+        {
+            const name = eff.getFlag?.('temporary-custom-statuses', 'originalName') || eff.name;
+            if (!customMap.has(name))
+                customMap.set(name, { name, icon: eff.img ?? '' });
+        });
+        const customSaved = [...customMap.values()];
+
+        // active first, then favorites, alphabetic within each group
+        const readFavorites = () =>
+        {
+            try
+            {
+                return new Set(game.settings.get('lancer-automations', 'tah.statusFavorites') ?? []);
+            }
+            catch
+            {
+                return new Set();
+            }
+        };
+        const favoriteIds = readFavorites();
+        const toggleStatusFavorite = async (/** @type {string} */ sid) =>
+        {
+            const current = readFavorites();
+            const nowFav = !current.has(sid);
+            if (nowFav)
+                current.add(sid);
+            else
+                current.delete(sid);
+            await game.settings.set('lancer-automations', 'tah.statusFavorites', [...current]);
+            return nowFav;
+        };
+        const activeStatusIds = new Set();
+        for (const eff of /** @type {any} */ (actor.effects))
+        {
+            if (eff.disabled)
+                continue;
+            for (const statusId of (eff.statuses ?? []))
+                activeStatusIds.add(statusId);
+        }
+        const allStatuses = (/** @type {any} */ (CONFIG).statusEffects ?? [])
+            .filter(/** @type {any} */ status => status.id)
+            .sort(/** @type {any} */ (aStatus, bStatus) =>
+            {
+                const aActive = activeStatusIds.has(aStatus.id);
+                const bActive = activeStatusIds.has(bStatus.id);
+                if (aActive !== bActive)
+                    return aActive ? -1 : 1;
+                const aFav = favoriteIds.has(aStatus.id);
+                const bFav = favoriteIds.has(bStatus.id);
+                if (aFav !== bFav)
+                    return aFav ? -1 : 1;
+                return (aStatus.name ?? aStatus.id).localeCompare(bStatus.name ?? bStatus.id);
+            });
+
+        const getEffectsForStatus = (/** @type {string} */ sid) =>
+            /** @type {any[]} */ ([...actor.effects]).filter(/** @type {any} */ eff => eff.statuses?.has(sid) && !eff.disabled);
+
+        const getStack = (/** @type {any} */ eff) =>
+            hasStatusCounter ? (eff.getFlag?.('statuscounter', 'value') ?? 1) : 1;
+
+        const isActive = (/** @type {any} */ s) => getEffectsForStatus(s.id).length > 0;
+
+        const isPermanent = (/** @type {any} */ status) =>
+        {
+            for (const eff of getEffectsForStatus(status.id))
+            {
+                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
+                const dur = laFlags?.duration ?? /** @type {any} */ (eff.flags)?.['csm-lancer-qol']?.duration;
+                if (dur?.label === 'permanent')
+                    return true;
+            }
+            return false;
+        };
+
+        // active-row colors: yellow when any active effect is permanent, blue otherwise
+        const ACTIVE_BG_NORMAL    = '#b8d4f0';
+        const ACTIVE_BORDER_NORMAL = '#1a4a7a';
+        const ACTIVE_BG_PERM      = '#f0e0a0';
+        const ACTIVE_BORDER_PERM  = '#a07020';
+        const activeBg     = (/** @type {boolean} */ perm) => perm ? ACTIVE_BG_PERM : ACTIVE_BG_NORMAL;
+        const activeBorder = (/** @type {boolean} */ perm) => perm ? ACTIVE_BORDER_PERM : ACTIVE_BORDER_NORMAL;
+
+        const isCustomActive = (/** @type {string} */ name) =>
+            /** @type {any[]} */ ([...actor.effects]).some(/** @type {any} */ eff =>
+                (eff.getFlag?.('temporary-custom-statuses', 'originalName') === name || eff.name === name) &&
+                !eff.disabled
+            );
+
+        const getStatusBadge = (/** @type {any} */ s) =>
+        {
+            const effects = getEffectsForStatus(s.id);
+            if (!effects.length)
+                return '';
+            const totalStack = hasStatusCounter ? effects.reduce((sum, e) => sum + getStack(e), 0) : 0;
+            const parts = [];
+            if (hasStatusCounter && totalStack > 1)
+                parts.push(`×${totalStack}`);
+            if (effects.length > 1)
+                parts.push(`[${effects.length}]`);
+            return parts.join(' ');
+        };
+
+        const buildStatusTooltip = (/** @type {any} */ status) =>
+        {
+            const effects = getEffectsForStatus(status.id);
+            const lines = [];
+            if (status.description)
+                lines.push(`<div class="la-tooltip-line">${status.description}</div>`);
+            for (const eff of effects)
+            {
+                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
+                const stackCount = hasStatusCounter ? (eff.getFlag?.('statuscounter', 'value') ?? 1) : null;
+                let label = 'Base Effect';
+                if (laFlags?.consumption)
+                {
+                    const trigger = laFlags.consumption?.trigger;
+                    const triggerLabel = Array.isArray(trigger) ? trigger.join(', ') : trigger;
+                    label = `Consume: ${typeof laFlags.consumption === 'string' ? laFlags.consumption : (triggerLabel ?? laFlags.consumption?.type ?? 'Effect')}`;
+                }
+                else if (laFlags?.linkedBonusId)
+                    label = 'Bonus Effect';
+                const stackStr = stackCount && stackCount > 1 ? ` ×${stackCount}` : '';
+                if (effects.length > 1 || stackStr)
+                    lines.push(`<div class="la-tooltip-label">${label}${stackStr}</div>`);
+                const dur = laFlags?.duration ?? /** @type {any} */ (eff.flags)?.['csm-lancer-qol']?.duration;
+                if (dur?.label)
+                    lines.push(`<div class="la-tooltip-duration">Duration: ${dur.label}</div>`);
+            }
+            return lines.length ? lines.join('') : null;
+        };
+
+        const setRowActive =(/** @type {any} */ rowEl, /** @type {boolean} */ nowActive, /** @type {boolean} */ perm = false) =>
+        {
+            rowEl.data('active', nowActive);
+            rowEl.data('permanent', nowActive && perm);
+            rowEl.css({
+                background: nowActive ? activeBg(perm) : BG_DEFAULT,
+                borderLeftColor: nowActive ? activeBorder(perm) : 'transparent',
+                color: nowActive ? FG_ACTIVE : FG_DEFAULT
+            });
+        };
+        const updateRowBadge = (/** @type {any} */ rowEl, /** @type {any} */ s) =>
+        {
+            rowEl.find('.la-status-badge').text(getStatusBadge(s));
+        };
+
+        const showTooltip =(/** @type {any} */ rowEl, /** @type {any} */ s) =>
+        {
+            const body = buildStatusTooltip(s);
+            if (!body)
+                return null;
+            const label = game.i18n.localize(s.name ?? s.id);
+            const tooltipEl = $(`<div class="la-status-tooltip">
+                <div class="la-status-tooltip__title">${label}</div>
+                <div class="la-status-tooltip__body">${body}</div>
+            </div>`);
+            $('body').append(tooltipEl);
+            const rect = /** @type {HTMLElement} */ (rowEl[0]).getBoundingClientRect();
+            const tooltipHeight = tooltipEl.outerHeight() ?? 0;
+            const top = Math.min(rect.top, window.innerHeight - tooltipHeight - 8);
+            tooltipEl.css({ top, left: rect.right + 6 });
+            return tooltipEl;
+        };
+
+        const searchBar =$(`<input type="text" class="la-status-search" placeholder="Search statuses…">`);
+        const searchWrap = $(`<div class="la-status-search-wrap"><i class="fas fa-search la-status-search-icon"></i></div>`);
+        searchWrap.append(searchBar);
+
+        searchBar.val(_lastSearchQuery);
+        const durTool = $(durationFieldsHtml('la-sdur', this._token?.id));
+        if (_lastDurationLabel && durTool.find(`#la-sdur-duration option[value="${_lastDurationLabel}"]`).length)
+            durTool.find('#la-sdur-duration').val(_lastDurationLabel);
+        durTool.find('#la-sdur-duration').on('change', function ()
+        {
+            _lastDurationLabel = String($(this).val());
+        });
+        const searchRow = $(`<div class="la-status-search-row"></div>`);
+        const helpTip = $(`<i class="fas fa-circle-question la-status-help" data-tooltip="Click: apply or add a stack<br>Right-click: remove or reduce<br>Ctrl+click: favorite<br>Hover: description"></i>`);
+        searchRow.append(searchWrap, durTool, helpTip);
+        const refreshDurMarks = () =>
+        {
+            this._durMarks ??= createDurationMarks();
+            const label = String(durTool.find('#la-sdur-duration').val());
+            const turnBased = label === 'end' || label === 'start';
+            const originToken = turnBased ? (game.canvas?.tokens?.get(String(durTool.find('#la-sdur-origin').val())) ?? null) : null;
+            this._durMarks.update({ targetTokens: this._tokens, originToken });
+        };
+        setupDurationUI(durTool, 'la-sdur', {
+            onChange: () =>
+            {
+                this._suppressCollapse?.(false);
+                refreshDurMarks();
+            },
+            onPickStart: () =>
+            {
+                this._suppressCollapse?.(true);
+                this._durMarks?.destroy();
+            },
+        });
+        searchRow.on('click mousedown', (ev) =>
+        {
+            ev.stopPropagation();
+            this._cancelCollapse?.();
+            this._extendCollapse?.();
+        });
+        refreshDurMarks();
+
+        const gridEl =$(`<div class="lancer-scroll la-hud-status-grid"></div>`);
+        for (const status of allStatuses)
+        {
+            const active = isActive(status);
+            const perm   = active && isPermanent(status);
+            const badge  = getStatusBadge(status);
+            const bg     = active ? activeBg(perm) : BG_DEFAULT;
+            const border = active ? activeBorder(perm) : 'transparent';
+            const fg     = active ? FG_ACTIVE : FG_DEFAULT;
+            const rowEl = $(`<div class="la-hud-status-row" style="background:${bg};border-left-color:${border};color:${fg};" data-status-id="${status.id}">
+                <img class="la-status-row__img" src="${status.icon ?? status.img ?? ''}" onerror="this.style.display='none'">
+                <span class="la-status-name">${game.i18n.localize(status.name ?? status.id)}</span>
+                <span class="la-status-badge">${badge}</span>
+            </div>`);
+            rowEl.data('active', active);
+            rowEl.data('permanent', perm);
+            if (favoriteIds.has(status.id))
+                rowEl.css('position', 'relative').append('<span class="la-hud-fav-mark">★</span>');
+
+            let tooltipEl = /** @type {any} */ (null);
+            let tooltipTimer = null;
+            rowEl.on('mouseenter', function()
+            {
+                playUiSound('statusHover');
+                if (!$(this).data('active'))
+                    $(this).css({ background: BG_HOVER, borderLeftColor: 'var(--la-edge)' });
+                const self = $(this);
+                tooltipTimer = setTimeout(() =>
+                {
+                    tooltipEl = showTooltip(self, status);
+                }, 600);
+            }).on('mouseleave', function()
+            {
+                clearTimeout(tooltipTimer); tooltipTimer = null;
+                tooltipEl?.remove(); tooltipEl = null;
+                const active = $(this).data('active');
+                const perm = $(this).data('permanent');
+                $(this).css({ background: active ? activeBg(perm) : BG_DEFAULT, borderLeftColor: active ? activeBorder(perm) : 'transparent', color: active ? FG_ACTIVE : FG_DEFAULT });
+            });
+
+            rowEl.on('click', async (ev) =>
+            {
+                if (ev.ctrlKey)
+                {
+                    const nowFav = await toggleStatusFavorite(status.id);
+                    playUiSound('toggle');
+                    rowEl.find('.la-hud-fav-mark').remove();
+                    if (nowFav)
+                        rowEl.css('position', 'relative').append('<span class="la-hud-fav-mark">★</span>');
+                    return;
+                }
+                playUiSound('toggle');
+                const effects = getEffectsForStatus(status.id);
+                if (effects.length > 1)
+                {
+                    this._openSubtypeManager(actor, status, effects, rowEl);
+                    return;
+                }
+                this._incDepth();
+                try
+                {
+                    if (hasStatusCounter && effects.length === 1)
+                    {
+                        const eff = effects[0];
+                        await eff.update({ 'flags.statuscounter.value': getStack(eff) + 1, 'flags.statuscounter.visible': true });
+                    }
+                    else if (effects.length === 0)
+                        await this._applyWithDuration(status);
+                    else
+                    {
+                        for (const token of this._tokens)
+                            await /** @type {any} */ (token).toggleEffect(status);
+                    }
+                    updateRowBadge(rowEl, status);
+                    setRowActive(rowEl, isActive(status), isPermanent(status));
+                }
+                finally
+                {
+                    this._decDepth();
+                }
+            });
+
+            rowEl.on('contextmenu', async (ev) =>
+            {
+                ev.preventDefault();
+                playUiSound('toggle');
+                const effects = getEffectsForStatus(status.id);
+                if (effects.length > 1)
+                {
+                    this._openSubtypeManager(actor, status, effects, rowEl);
+                    return;
+                }
+                if (effects.length === 0)
+                {
+                    // Right-click on inactive: same as left-click toggle
+                    this._incDepth();
+                    try
+                    {
+                        await this._applyWithDuration(status);
+                        updateRowBadge(rowEl, status);
+                        setRowActive(rowEl, isActive(status), isPermanent(status));
+                    }
+                    finally
+                    {
+                        this._decDepth();
+                    }
+                    return;
+                }
+                this._incDepth();
+                try
+                {
+                    const eff = effects[0];
+                    const stack = getStack(eff);
+                    if (hasStatusCounter && stack > 1)
+                        await eff.update({ 'flags.statuscounter.value': stack - 1, 'flags.statuscounter.visible': stack - 1 > 1 });
+                    else
+                    {
+                        await actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);
+                        for (const token of this._tokens.slice(1))
+                        {
+                            const tokenEff = [...token.actor.effects].find(matchingEff => matchingEff.statuses?.has(status.id) && !matchingEff.disabled);
+                            if (tokenEff)
+                                await token.actor.deleteEmbeddedDocuments('ActiveEffect', [tokenEff.id]);
+                        }
+                    }
+                    updateRowBadge(rowEl, status);
+                    setRowActive(rowEl, isActive(status), isPermanent(status));
+                }
+                finally
+                {
+                    this._decDepth();
+                }
+            });
+
+            gridEl.append(rowEl);
+        }
+
+        const rightEl =$(`<div class="la-hud-right-col"></div>`);
+
+        const laApi = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+        if (laApi?.executeEffectManager)
+        {
+            const effectManagerBtn = $(`<button class="la-hud-util-btn">Effect Manager</button>`);
+            effectManagerBtn.on('mouseenter', () => playUiSound('statusHover'));
+            effectManagerBtn.on('click', () =>
+            {
+                playUiSound('toggle'); laApi.executeEffectManager();
+            });
+            rightEl.append(effectManagerBtn);
+        }
+        const clearBtn = $(`<button class="la-hud-util-btn la-hud-util-btn--secondary">Clear All Effects</button>`);
+        clearBtn.on('mouseenter', () => playUiSound('statusHover'));
+        clearBtn.on('click', async () =>
+        {
+            playUiSound('toggle');
+            this._incDepth();
+            try
+            {
+                const ids = /** @type {any[]} */ ([...actor.effects]).map(/** @type {any} */ eff => eff.id);
+                if (ids.length)
+                    await actor.deleteEmbeddedDocuments('ActiveEffect', ids);
+                gridEl.find('[data-status-id]').each(function()
+                {
+                    setRowActive($(this), false);
+                    $(this).find('.la-status-badge').text('');
+                });
+            }
+            finally
+            {
+                this._decDepth();
+            }
+        });
+        rightEl.append(clearBtn);
+
+        if (hasTempCustomStatuses)
+        {
+            const getCustomEffects = (/** @type {string} */ name) =>
+                /** @type {any[]} */ ([...actor.effects]).filter(/** @type {any} */ e =>
+                    (e.getFlag?.('temporary-custom-statuses', 'originalName') === name || e.name === name) && !e.disabled
+                );
+
+            const getCustomBadge = (/** @type {string} */ name) =>
+            {
+                const effs = getCustomEffects(name);
+                if (!effs.length)
+                    return '';
+                const totalStack = hasStatusCounter ? effs.reduce((sum, /** @type {any} */ eff) => sum + (eff.getFlag?.('statuscounter', 'value') ?? 1), 0) : 0;
+                const parts = [];
+                if (hasStatusCounter && totalStack > 1)
+                    parts.push(`×${totalStack}`);
+                if (effs.length > 1)
+                    parts.push(`[${effs.length}]`);
+                return parts.join(' ');
+            };
+
+            rightEl.append($(`<div class="la-hud-panel-section-header">Custom</div>`));
+            const customListEl = $(`<div class="lancer-scroll la-hud-custom-list"></div>`);
+            for (const customStatus of /** @type {any[]} */ (customSaved))
+            {
+                const active = isCustomActive(customStatus.name);
+                const badge  = getCustomBadge(customStatus.name);
+                const bg     = active ? '#b8d4f0' : BG_DEFAULT;
+                const border = active ? '#1a4a7a' : 'transparent';
+                const fg     = active ? FG_ACTIVE : FG_DEFAULT;
+                const customRow = $(`<div class="la-hud-status-row" style="background:${bg};border-left-color:${border};color:${fg};">
+                    <img class="la-status-row__img" src="${customStatus.icon ?? ''}" onerror="this.style.display='none'">
+                    <span class="la-status-name">${customStatus.name}</span>
+                    <span class="la-status-badge">${badge}</span>
+                </div>`);
+                customRow.on('mouseenter', function()
+                {
+                    playUiSound('statusHover');
+                    if (!$(this).data('active'))
+                        $(this).css({ background: BG_HOVER, borderLeftColor: 'var(--la-edge)' });
+                }).on('mouseleave', function()
+                {
+                    const active = $(this).data('active');
+                    $(this).css({ background: active ? '#b8d4f0' : BG_DEFAULT, borderLeftColor: active ? '#1a4a7a' : 'transparent', color: active ? FG_ACTIVE : FG_DEFAULT });
+                });
+                customRow.data('active', active);
+
+                const updateCustomRow = () =>
+                {
+                    customRow.find('.la-status-badge').text(getCustomBadge(customStatus.name));
+                    setRowActive(customRow, isCustomActive(customStatus.name));
+                    this.syncRows();
+                };
+
+                customRow.on('click', async () =>
+                {
+                    playUiSound('toggle');
+                    const effs = getCustomEffects(customStatus.name);
+                    if (effs.length > 1)
+                    {
+                        this._openSubtypeManager(actor, { id: customStatus.name, name: customStatus.name, icon: customStatus.icon }, effs, customRow);
+                        return;
+                    }
+                    this._incDepth();
+                    try
+                    {
+                        if (hasStatusCounter && effs.length === 1)
+                        {
+                            const eff = effs[0];
+                            await eff.update({ 'flags.statuscounter.value': getStack(eff) + 1, 'flags.statuscounter.visible': true });
+                        }
+                        else if (effs.length === 0)
+                        {
+                            for (const token of this._tokens)
+                                await tempCustomStatusesApi.addStatus(token.actor, customStatus.name, customStatus.icon, 1);
+                        }
+                        else
+                        {
+                            await actor.deleteEmbeddedDocuments('ActiveEffect', [effs[0].id]);
+                            for (const tok of this._tokens.slice(1))
+                            {
+                                const eff = [...tok.actor.effects].find(candidate => candidate.getFlag?.('temporary-custom-statuses', 'originalName') === customStatus.name || candidate.name === customStatus.name);
+                                if (eff)
+                                    await tok.actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);
+                            }
+                        }
+                        updateCustomRow();
+                    }
+                    finally
+                    {
+                        this._decDepth();
+                    }
+                });
+
+                customRow.on('contextmenu', async (ev) =>
+                {
+                    ev.preventDefault();
+                    playUiSound('toggle');
+                    const effs = getCustomEffects(customStatus.name);
+                    if (effs.length > 1)
+                    {
+                        this._openSubtypeManager(actor, { id: customStatus.name, name: customStatus.name, icon: customStatus.icon }, effs, customRow);
+                        return;
+                    }
+                    if (effs.length === 0)
+                    {
+                        this._incDepth();
+                        try
+                        {
+                            for (const token of this._tokens)
+                                await tempCustomStatusesApi.addStatus(token.actor, customStatus.name, customStatus.icon, 1);
+                            updateCustomRow();
+                        }
+                        finally
+                        {
+                            this._decDepth();
+                        }
+                        return;
+                    }
+                    this._incDepth();
+                    try
+                    {
+                        const eff = effs[0];
+                        const stack = getStack(eff);
+                        if (hasStatusCounter && stack > 1)
+                            await eff.update({ 'flags.statuscounter.value': stack - 1, 'flags.statuscounter.visible': stack - 1 > 1 });
+                        else
+                        {
+                            await actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);
+                            for (const token of this._tokens.slice(1))
+                            {
+                                const matchingEff = [...token.actor.effects].find(candidate => candidate.getFlag?.('temporary-custom-statuses', 'originalName') === customStatus.name || candidate.name === customStatus.name);
+                                if (matchingEff)
+                                    await token.actor.deleteEmbeddedDocuments('ActiveEffect', [matchingEff.id]);
+                            }
+                        }
+                        updateCustomRow();
+                    }
+                    finally
+                    {
+                        this._decDepth();
+                    }
+                });
+
+                customListEl.append(customRow);
+            }
+            if (!customSaved.length)
+                customListEl.append($(`<div class="la-status-empty">No custom statuses</div>`));
+            rightEl.append(customListEl);
+        }
+
+        const globalBonuses   =/** @type {any[]} */ (actor.getFlag('lancer-automations', 'global_bonuses')   || []);
+        const constantBonuses = /** @type {any[]} */ (actor.getFlag('lancer-automations', 'constant_bonuses') || []);
+        const allBonuses = [
+            ...globalBonuses.map((/** @type {any} */ bonus, i) => ({ bonus, kind: 'global', idx: i })),
+            ...constantBonuses.map((/** @type {any} */ bonus, i) => ({ bonus, kind: 'constant', idx: i })),
+        ];
+        rightEl.append($(`<div class="la-hud-panel-section-header">Bonuses</div>`));
+        const bonusListEl = $(`<div class="lancer-scroll la-bonus-list"></div>`);
+        if (!allBonuses.length)
+            bonusListEl.append($(`<div class="la-status-empty">No bonuses</div>`));
+        else
+        {
+            for (const { bonus, kind } of allBonuses)
+            {
+                const detail = getBonusDetailStr(bonus);
+                const kindBadge = kind === 'constant' ? ' <span class="la-bonus-row__kind">(const)</span>' : '';
+                const row = $(`<div class="la-bonus-row" title="${bonus.name}: ${detail}">
+                    ${laHudRenderIcon(bonus.icon || getBonusIcon(bonus))}
+                    <div class="la-bonus-row__body">
+                        <b>${bonus.name}</b>${kindBadge}<br>
+                        <span class="la-bonus-row__detail">${detail}</span>
+                    </div>
+                    <i class="la-bonus-del fas fa-trash" title="Delete bonus"></i>
+                </div>`);
+                row.find('.la-bonus-del').on('mouseenter', function()
+                {
+                    $(this).css('opacity', '1');
+                })
+                    .on('mouseleave', function()
+                    {
+                        $(this).css('opacity', '0.45');
+                    })
+                    .on('click', async (ev) =>
+                    {
+                        ev.stopPropagation();
+                        if (kind === 'global')
+                            await removeGlobalBonus(actor, bonus.id);
+                        else
+                            await removeConstantBonus(actor, bonus.id);
+                        row.remove();
+                        if (!bonusListEl.children().length)
+                            bonusListEl.append($(`<div class="la-status-empty">No bonuses</div>`));
+                    });
+                bonusListEl.append(row);
+            }
+        }
+        rightEl.append(bonusListEl);
+
+        const panel = $(`<div class="la-hud-status-panel"></div>`);
+        const leftWrap = $(`<div class="la-status-leftwrap"></div>`);
+        const header = $(`<div class="la-hud-col-label">Statuses</div>`);
+        searchBar.on('input', function ()
+        {
+            _lastSearchQuery = String($(this).val());
+            const query = _lastSearchQuery.toLowerCase().trim();
+            gridEl.find('[data-status-id]').each(function ()
+            {
+                const name = $(this).find('.la-status-name').text().toLowerCase();
+                $(this).toggle(!query || name.includes(query));
+            });
+        });
+        const extendFade = () =>
+        {
+            this._cancelCollapse?.();
+            this._extendCollapse?.();
+        };
+        searchBar.on('click mousedown', (ev) =>
+        {
+            ev.stopPropagation();
+            extendFade();
+        });
+        if (_lastSearchQuery)
+            searchBar.trigger('input');
+        leftWrap.append(header, searchRow, gridEl);
+        panel.append(leftWrap, rightEl);
+
+        this._mount(panel, anchorRow, { useParentCol: false, clampTop: true });
+        panel.on('click', extendFade);
+    }
+
+    _openSubtypeManager(actor, statusConfig, effects, anchorRow)
+    {
+        if (this._subtypePanel)
+        {
+            this._subtypePanel.remove(); this._subtypePanel = null;
+        }
+        const hasStatusCounter = !!game.modules.get('statuscounter')?.active;
+        const getStack = (/** @type {any} */ eff) => hasStatusCounter ? (eff.getFlag?.('statuscounter', 'value') ?? 1) : 1;
+        const statusName = game.i18n.localize(statusConfig.name ?? statusConfig.id);
+
+        const panel = $(`<div class="la-hud-sub-panel"></div>`);
+        const header = $(`<div class="la-hud-sub-header">${statusName} <span class="la-sub-close">✕</span></div>`);
+        const body  = $(`<div></div>`);
+        panel.append(header, body);
+        header.find('.la-sub-close').on('click', () =>
+        {
+            panel.remove(); this._subtypePanel = null;
+        });
+
+        const refresh = () =>
+        {
+            const current = /** @type {any[]} */ ([...actor.effects]).filter(eff => effects.some(/** @type {any} */ orig => orig.id === eff.id));
+            if (!current.length)
+            {
+                panel.remove(); this._subtypePanel = null; this.syncRows(); return;
+            }
+            body.empty();
+            for (const eff of current)
+            {
+                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
+                let label = 'Base';
+                if (laFlags?.consumption)
+                    label = 'Consume';
+                else if (laFlags?.linkedBonusId)
+                    label = 'Bonus';
+                const stack = getStack(eff);
+                const row = $(`<div class="la-hud-sub-row" data-eid="${eff.id}">
+                    <span class="la-sub-label">${label}</span>
+                    <span class="la-sub-stack">×${stack}</span>
+                    ${hasStatusCounter ? `<span class="la-sub-minus la-sub-btn la-sub-btn--minus">−</span>` : ''}
+                    ${hasStatusCounter ? `<span class="la-sub-plus la-sub-btn la-sub-btn--plus">+</span>` : ''}
+                    <span class="la-sub-del la-sub-btn la-sub-btn--del">✕</span>
+                </div>`);
+                row.find('.la-sub-minus').on('click', async () =>
+                {
+                    const liveEff = /** @type {any} */ (actor.effects).get(eff.id);
+                    if (!liveEff)
+                        return;
+                    const stack = getStack(liveEff);
+                    if (stack > 1)
+                        await liveEff.update({ 'flags.statuscounter.value': stack - 1, 'flags.statuscounter.visible': stack - 1 > 1 });
+                    else
+                        await actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);
+                    refresh();
+                });
+                row.find('.la-sub-plus').on('click', async () =>
+                {
+                    const liveEff = /** @type {any} */ (actor.effects).get(eff.id);
+                    if (!liveEff)
+                        return;
+                    const stack = getStack(liveEff);
+                    await liveEff.update({ 'flags.statuscounter.value': stack + 1, 'flags.statuscounter.visible': true });
+                    refresh();
+                });
+                row.find('.la-sub-del').on('click', async () =>
+                {
+                    await actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);
+                    refresh();
+                });
+                body.append(row);
+            }
+            this.syncRows();
+        };
+
+        refresh();
+        panel.on('mouseleave', this._scheduleCollapse).on('mouseenter', this._cancelCollapse);
+        $('body').append(panel);
+        this._subtypePanel = panel;
+
+        // Slide up from the row; fixed to body, animates like the HUD columns (opacity + position)
+        const scale = tahScale();
+        if (scale !== 1)
+            panel.css({ transform: `scale(${scale})`, 'transform-origin': 'top left' });
+        const rect     = anchorRow[0].getBoundingClientRect();
+        const panelHeight = (panel.outerHeight() || 0) * scale;
+        const panelWidth  = (panel.outerWidth()  || 200) * scale;
+        const goAbove  = rect.top - panelHeight > 4;
+        const finalTop = goAbove ? rect.top - panelHeight : rect.bottom;
+        const startTop = goAbove ? rect.top           : rect.bottom - panelHeight;
+        const left     = Math.min(rect.left, window.innerWidth - panelWidth - 8);
+        panel.css({ position: 'fixed', top: startTop, left, zIndex: 9999, opacity: 0, width: 'fit-content' });
+        panel.animate({ top: finalTop, opacity: 1 }, 250);
+    }
+}

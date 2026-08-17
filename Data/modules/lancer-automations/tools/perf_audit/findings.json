@@ -1,0 +1,889 @@
+{
+ "scripts/activations/accdiff-target-button.js": [],
+ "scripts/activations/damage-target-button.js": [
+  {
+   "line": 11,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "low",
+   "issue": "_formulaBounds Map caches every unique formula string forever, never cleared or bounded.",
+   "accumulates": "One entry per unique damage formula encountered across all rolls in the session.",
+   "fix": "Add a size cap (e.g. if (_formulaBounds.size > 500) _formulaBounds.clear()) before inserting, or use a small LRU.",
+   "risk": "In practice unique formulas are likely few; clearing the cache only costs a re-evaluation on next access, so risk is minimal."
+  }
+ ],
+ "scripts/activations/flow-queue.js": [],
+ "scripts/activations/flow-steps-extra.js": [],
+ "scripts/activations/flow-steps.js": [],
+ "scripts/activations/flow-wraps.js": [],
+ "scripts/activations/flows.js": [],
+ "scripts/activations/reaction-export-import.js": [],
+ "scripts/activations/reaction-manager.js": [
+  {
+   "line": 2953,
+   "category": "listener-leak",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "document-level mousemove listener added each time trigger ref popup opens, never removed.",
+   "accumulates": "Each open of the trigger data reference popup adds a new mousemove listener on document that persists after popup removal.",
+   "fix": "Store the mousemove and mouseup handlers as named functions; remove them in the close button handler, in the toggle-off path (line 2858-2860), and in a close() override on ReactionEditor.",
+   "risk": "Ensure all removal paths (close button, toggle, editor close) consistently call removeEventListener with the same handler references."
+  },
+  {
+   "line": 2961,
+   "category": "listener-leak",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "document-level mouseup listener added each time trigger ref popup opens, never removed.",
+   "accumulates": "Each open of the trigger data reference popup adds a new mouseup listener on document that persists after popup removal.",
+   "fix": "Same fix as the mousemove listener: store handler, removeEventListener on all teardown paths.",
+   "risk": "Same as above; must use the exact same function reference for add and remove."
+  },
+  {
+   "line": 2985,
+   "category": "dom-leak",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "Trigger ref popup appended to document.body is not removed when ReactionEditor closes.",
+   "accumulates": "One orphaned popup div per ReactionEditor close (if popup was open). Also leaves the leaked document listeners from above.",
+   "fix": "Override close() on ReactionEditor to call this._triggerRefPopup?.remove() and clean up the associated document listeners.",
+   "risk": "Ensure super.close() is still called; check that _triggerRefPopup is nulled out to avoid double-remove."
+  }
+ ],
+ "scripts/activations/reaction-reset.js": [],
+ "scripts/activations/reaction.js": [],
+ "scripts/activations/reactions-engine.js": [
+  {
+   "line": 28,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "new Set created every createItem hook call with the same static values as line 87.",
+   "accumulates": "",
+   "fix": "Share the same module-level constant as the line-87 fix.",
+   "risk": "None; same static list."
+  },
+  {
+   "line": 87,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "new Set created every call to getReactionItems, which runs once per token per trigger event.",
+   "accumulates": "",
+   "fix": "Hoist the Set to a module-level constant (like COMBAT_INHERENT_TRIGGERS on line 16) and reuse it.",
+   "risk": "None; the Set contents are static literals."
+  },
+  {
+   "line": 350,
+   "category": "redundant-work",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "Allocates a new array and uses .includes() instead of the existing COMBAT_INHERENT_TRIGGERS Set at line 16.",
+   "accumulates": "",
+   "fix": "Replace `combatInherentTriggers` with `COMBAT_INHERENT_TRIGGERS` and use `.has()` instead of `.includes()`.",
+   "risk": "Verify the two lists are identical (they are: both contain onEnterCombat, onExitCombat, onTurnStart, onTurnEnd, onRoundStart)."
+  },
+  {
+   "line": 613,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "low",
+   "issue": "_laConfigWarnedSet only grows, never cleared; keys include token/item identifiers that change across sessions.",
+   "accumulates": "One entry per unique (warning-type, lid, reactionPath) combo encountered; in practice bounded by registered reactions.",
+   "fix": "Clear the set on the existing lancer-automations.clearCaches hook, or when combat ends.",
+   "risk": "After clearing, warnings will re-fire once per key; this is likely acceptable and may even be desirable."
+  }
+ ],
+ "scripts/activations/reactions-registry.js": [],
+ "scripts/activations/reactions-ui.js": [],
+ "scripts/activations/reroll.js": [],
+ "scripts/activations/stabilize-flow.js": [],
+ "scripts/activations/statroll-target-button.js": [],
+ "scripts/activations/targeting-ui.js": [
+  {
+   "line": 403,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "Delegated change.laTargetBtn handler on $form stacks if buildTargetingUI called multiple times on same form element.",
+   "accumulates": "Each re-call of buildTargetingUI (non-AoE branch) adds another relabel listener; each fires resolveWeaponRange on every checkbox change.",
+   "fix": "Add $form.off('change.laTargetBtn') immediately before line 403 to remove the prior handler before re-registering.",
+   "risk": "Safe; the namespace ensures only this handler is removed. Verify no other code registers under .laTargetBtn."
+  }
+ ],
+ "scripts/alt-struct/alt-struct-helpers.js": [],
+ "scripts/alt-struct/index.js": [],
+ "scripts/alt-struct/stress.js": [],
+ "scripts/alt-struct/structure.js": [],
+ "scripts/Battelog/attack-capture.js": [],
+ "scripts/Battelog/awards.js": [],
+ "scripts/Battelog/battelog-utils.js": [],
+ "scripts/Battelog/battlelog.js": [],
+ "scripts/Battelog/combat-recorder.js": [],
+ "scripts/Battelog/combat-telemetry-derive.js": [],
+ "scripts/Battelog/combat-telemetry-mock.js": [],
+ "scripts/Battelog/combat-telemetry.js": [],
+ "scripts/Battelog/damage-capture.js": [],
+ "scripts/Battelog/gm-card.js": [],
+ "scripts/Battelog/intro-terminal.js": [],
+ "scripts/Battelog/recap.js": [],
+ "scripts/Battelog/telemetry-store.js": [],
+ "scripts/bonuses/effectManager.js": [
+  {
+   "line": 576,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "$(document).on('click.la-multiselect') added per initLaMultiSelect call (6\u00d7 per dialog open), never removed on close.",
+   "accumulates": "6 document-level click handlers added each time the Effect Manager is opened; none are removed when it closes.",
+   "fix": "In the dialog's close override (~line 3367), add $(document).off('click.la-multiselect') to remove all handlers registered under that namespace.",
+   "risk": "If other code outside this dialog uses the same jQuery namespace on document, off() would remove those too. Verify no other module code uses 'click.la-multiselect'."
+  },
+  {
+   "line": 688,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "$(document).on('change', selector) in setupTriggerUI added 2\u00d7 per dialog open, never removed on close.",
+   "accumulates": "2 delegated document-level change handlers accumulate per dialog open; they keep firing even after the dialog DOM is destroyed.",
+   "fix": "Use a unique namespace, e.g. $(document).on('change.la-em-trigger', selector, fn), and add $(document).off('.la-em-trigger') in the close override.",
+   "risk": "Ensure the namespace does not collide with other code. The handler references the dialog's html, so stale invocations are harmless but waste CPU on selector matching."
+  }
+ ],
+ "scripts/bonuses/flagged-effects.js": [
+  {
+   "line": 197,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "META_KEYS Set is re-created on every _sameIdentity call; should be a module-level constant.",
+   "accumulates": "",
+   "fix": "Hoist `const META_KEYS = new Set([...])` to module scope so it is created once.",
+   "risk": "None; the set contents are static literals."
+  },
+  {
+   "line": 678,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "_collapseRemoveDuplicates allocates 3 Map/Set objects per _refreshEffects call, a moderately hot path (hover, selection, movement).",
+   "accumulates": "",
+   "fix": "Reuse module-level Map/Set instances, clearing them at the start of each call instead of allocating new ones.",
+   "risk": "Ensure .clear() is called at function entry so stale data never leaks between calls."
+  },
+  {
+   "line": 735,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "_collapseAddBadges allocates 3 Map/Set objects per _refreshEffects call, same hot path as above.",
+   "accumulates": "",
+   "fix": "Reuse module-level Map/Set instances, clearing them at function entry.",
+   "risk": "Same as above; ensure .clear() at entry."
+  },
+  {
+   "line": 789,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "new PIXI.TextStyle created per badge per _refreshEffects call; TextStyle construction is non-trivial.",
+   "accumulates": "",
+   "fix": "Cache a small Map of sizeRatio\u2192TextStyle at module level (bounded by distinct icon sizes, typically 1-3 entries). Invalidate on canvas resize.",
+   "risk": "Must invalidate cache if canvas dimensions change (listen for canvasReady or canvasInit to clear)."
+  }
+ ],
+ "scripts/bonuses/genericBonuses.js": [],
+ "scripts/bonuses/infection.js": [],
+ "scripts/combat/action-limits.js": [],
+ "scripts/combat/actor-change-hooks.js": [
+  {
+   "line": 6,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "previousHeatValues Map grows per unique actor.id, never pruned when actors are deleted.",
+   "accumulates": "One entry per actor that ever changed heat; deleted actors leave orphan entries.",
+   "fix": "Add a Hooks.on('deleteActor', (actor) => { previousHeatValues.delete(actor.id); previousHPValues.delete(actor.id); }); alongside the existing hooks.",
+   "risk": "None \u2014 deleteActor fires after deletion, so the cleanup is safe. Verify the hook name matches the Foundry version used."
+  },
+  {
+   "line": 7,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "previousHPValues Map grows per unique actor.id, never pruned when actors are deleted.",
+   "accumulates": "One entry per actor that ever changed HP; deleted actors leave orphan entries.",
+   "fix": "Same deleteActor hook as above covers both Maps.",
+   "risk": "Same as above."
+  }
+ ],
+ "scripts/combat/grapple.js": [],
+ "scripts/combat/grid-helpers.js": [],
+ "scripts/combat/overwatch.js": [],
+ "scripts/combat/per-frequency-tags.js": [],
+ "scripts/combat/reinforcement.js": [],
+ "scripts/combat/speed-provider.js": [],
+ "scripts/combat/terrain-utils.js": [],
+ "scripts/filters/customFilters.js": [],
+ "scripts/fx/actionFX.js": [],
+ "scripts/fx/jb2a-fallback.js": [],
+ "scripts/fx/statusFX.js": [
+  {
+   "line": 1242,
+   "category": "redundant-work",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "isFXEnabled() calls getConfig() twice per EFFECT_MAP entry (24 entries per token), each allocating a spread copy.",
+   "accumulates": "",
+   "fix": "Call getConfig() once at the top of _doReconcileStatusFX and pass the config object to isFXEnabled/isMasterEnabled, or cache it in a local.",
+   "risk": "Ensure the cached config is not mutated; currently getConfig() returns a fresh spread each time so callers may rely on that."
+  }
+ ],
+ "scripts/interactive/area-geometry.js": [],
+ "scripts/interactive/canvas-helpers.js": [
+  {
+   "line": 602,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "Range<=1 pulse path allocates a new array and spreads all ring cells into it every animation frame.",
+   "accumulates": "",
+   "fix": "Pre-flatten the ringCells array once in the outer closure (beside the `rings` variable) and reuse it each tick.",
+   "risk": "Must update the pre-flattened array when `rings` is reassigned (the originToken-move branch); keep both in sync."
+  },
+  {
+   "line": 957,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "posKey() called every frame allocates a new array via .map() and joins it, even when nothing moved.",
+   "accumulates": "",
+   "fix": "Cache each entry's sub-key in a small array updated only when _originPosKey changes, or build the string with a loop instead of .map().join().",
+   "risk": "Ensure the cached key still detects point-origin and token-origin changes correctly."
+  }
+ ],
+ "scripts/interactive/canvas.js": [],
+ "scripts/interactive/cards.js": [],
+ "scripts/interactive/combat.js": [
+  {
+   "line": 919,
+   "category": "dom-leak",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "Detail popup DOM element survives dialog close if user right-clicks then confirms/cancels without re-right-clicking.",
+   "accumulates": "One orphaned popup element per dialog open-rightclick-close cycle; same pattern at lines 1104, 1225, 1398.",
+   "fix": "In each dialog's close callback (or Foundry Dialog close option), call e.g. $('.la-weapon-detail-popup').remove() to clean up any lingering popup.",
+   "risk": "Ensure the close/destroy hook fires reliably in Foundry's Dialog lifecycle; test that popups are still shown correctly during normal use."
+  }
+ ],
+ "scripts/interactive/deployables.js": [
+  {
+   "line": 564,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "_deployableInfoCache is never cleared, unlike the sibling caches cleared on clearCaches hook at line 553.",
+   "accumulates": "One entry per unique deployable LID queried via getDeployableInfo; grows across scene changes and re-imports.",
+   "fix": "Add `_deployableInfoCache.clear();` inside the existing `Hooks.on('lancer-automations.clearCaches', ...)` callback at line 553.",
+   "risk": "None; cache is lazily repopulated on next access, same pattern as the two caches already cleared there."
+  }
+ ],
+ "scripts/interactive/detail-renderers.js": [],
+ "scripts/interactive/extra-config-dialog.js": [],
+ "scripts/interactive/extra-config.js": [],
+ "scripts/interactive/extras-dialog.js": [],
+ "scripts/interactive/index.js": [],
+ "scripts/interactive/keybindings.js": [],
+ "scripts/interactive/movement-reach-highlight.js": [],
+ "scripts/interactive/network.js": [],
+ "scripts/interactive/overlap-picker.js": [],
+ "scripts/interactive/presence.js": [],
+ "scripts/interactive/range-pulse-manager.js": [],
+ "scripts/interactive/shape-placement-engine.js": [
+  {
+   "line": 309,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "PIXI.Text objects destroyed and recreated every pointermove for tilted lines; Text is expensive (internal canvas render).",
+   "accumulates": "",
+   "fix": "Pool the cell-label Text children: hide extras and reuse existing ones instead of destroy/recreate each frame. Only destroy surplus on clearCellLabels if count shrinks.",
+   "risk": "Reused Text must have all properties (position, text, style) fully overwritten each frame; stale values would show wrong labels."
+  }
+ ],
+ "scripts/interactive/target-shapes.js": [
+  {
+   "line": 54,
+   "category": "hot-path",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "paintShape clears and redraws every target's Graphics every frame, even when the token has not moved.",
+   "accumulates": "",
+   "fix": "Cache each token's last x/y/width/height; skip clear+redraw in paintShape when position is unchanged.",
+   "risk": "Must invalidate cache on grid-size change, token resize, or scene change so marks still update."
+  },
+  {
+   "line": 62,
+   "category": "hot-path",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "updateLabel calls _hitChanceFor and repositions every label every frame even when nothing changed.",
+   "accumulates": "",
+   "fix": "Only call updateLabel when the underlying hit data or token position has changed (same position-cache approach).",
+   "risk": "If hitChanceFor result can change mid-frame without a token move (e.g. buff toggle), a dirty flag or periodic check is safer than pure position caching."
+  },
+  {
+   "line": 81,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "getOccupiedOffsets allocates an array every frame per hex-grid target inside the ticker.",
+   "accumulates": "",
+   "fix": "Cache the offsets array per token (invalidate on position change) or reuse a scratch array.",
+   "risk": "getOccupiedOffsets may be shared utility; caching must account for token size/position changes."
+  }
+ ],
+ "scripts/interactive/tools/advancedMeasure.js": [
+  {
+   "line": 215,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "drawDashed (dashed ticker) allocates a new Set, cells array, and calls perimeterEdges (two Maps, arrays) every frame.",
+   "accumulates": "",
+   "fix": "Cache the perimeter edges and cell list; recompute only when marks array changes (track a dirty/version counter on the store).",
+   "risk": "Token movement changes cell positions without mutating the marks array; include a frame-local position check or invalidate on token update too."
+  },
+  {
+   "line": 507,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "new Set + two spread arrays + targetCells() array allocated every ticker frame while tool is open.",
+   "accumulates": "",
+   "fix": "Cache the Set; rebuild only when store.cells or marks change (dirty flag). Or move to a pre-allocated Set that is cleared and re-filled each frame instead of constructing a new one.",
+   "risk": "Ensure the dirty flag is set on every mutation path (addShape, removeAt, toggle mark, token move)."
+  },
+  {
+   "line": 1174,
+   "category": "listener-leak",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "makeIconDropdown adds document mousedown listener on open; if renderToolbar rebuilds DOM while open, close() is never called.",
+   "accumulates": "One orphaned document mousedown listener per re-render while dropdown is open; self-cleans on next mousedown but can stack briefly.",
+   "fix": "Track the current onOutside handler at module scope or in a WeakMap; remove it at the start of renderToolbar before replaceChildren.",
+   "risk": "Ensure the removal still runs the full close() side-effects (un-hiding sibling popovers) or those become unnecessary after replaceChildren."
+  }
+ ],
+ "scripts/interactive/tools/chooseToken.js": [
+  {
+   "line": 253,
+   "category": "hot-path",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "areaPulseTick redraws every selection highlight every frame via paintSelectionHighlight, even when token hasn't moved.",
+   "accumulates": "Cost scales with number of selected tokens; constant per-frame overhead for entire tool lifetime.",
+   "fix": "Cache each token's position (x,y) alongside the highlight entry; only call paintSelectionHighlight when the token's position has changed. The alpha pulse already works via entry.graphics.alpha on line 253 and does not require a redraw.",
+   "risk": "If a token moves via drag or animation and the position cache isn't invalidated, the highlight will lag. Compare token.document.x/y or token.center each tick."
+  },
+  {
+   "line": 1291,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "placedPresenceCells and placedPresenceLabels allocate arrays via flatMap/map on every pointermove broadcast.",
+   "accumulates": "",
+   "fix": "Cache placedPresenceCells/Labels results and invalidate only when placements change (place/remove/recompute), instead of recomputing on every pointer move.",
+   "risk": "Must invalidate cache in every code path that mutates placements or their graphics/labelLayer."
+  },
+  {
+   "line": 1450,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "clearCellLabels destroys + recreates PIXI.Text objects on every pointermove in cone/line mode with tilt.",
+   "accumulates": "",
+   "fix": "Pool the PIXI.Text labels: hide unused ones instead of destroying, reuse existing ones by updating .text/.x/.y, only create new ones if the pool is exhausted. Destroy pooled texts in doCleanup.",
+   "risk": "Pool must handle the case where the number of cells changes between moves. Ensure pooled texts are hidden (visible=false) not just orphaned."
+  }
+ ],
+ "scripts/interactive/tools/haseContest.js": [
+  {
+   "line": 74,
+   "category": "redundant-work",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "paintMark clears and redraws both token marks every animation frame even when tokens have not moved.",
+   "accumulates": "",
+   "fix": "Cache each token's x/y/width/height (and grid type) and skip the clear+redraw in paintMark when unchanged. The alpha pulse on line 68 already works without redrawing.",
+   "risk": "If a token moves via drag without a document update (mid-drag), the cached position could lag. Compare against token.document.x/y which is what paintMark already reads."
+  },
+  {
+   "line": 87,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "getOccupiedOffsets allocates a new array of offset objects every animation frame per token inside the ticker.",
+   "accumulates": "",
+   "fix": "Addressed by the same position-cache guard above: skip paintMark entirely when position is unchanged, eliminating the per-frame allocation.",
+   "risk": "Same as above; ensure the cache invalidates when position changes."
+  }
+ ],
+ "scripts/interactive/tools/knockBackToken.js": [
+  {
+   "line": 97,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "presenceData creates several new arrays and objects per call; invoked every pointermove via broadcastToolPresence.",
+   "accumulates": "",
+   "fix": "Throttling the broadcast (line 423 fix) removes most of the churn. Alternatively, reuse/mutate a persistent data object.",
+   "risk": "If presenceData's returned object is stored externally by reference, mutating it in place could cause stale reads. Verify broadcastToolPresence copies or consumes immediately."
+  },
+  {
+   "line": 368,
+   "category": "redundant-work",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "getInRangeOffsets recomputed every pointermove but only depends on activeToken and distance, which change only on click.",
+   "accumulates": "",
+   "fix": "Cache the inRangeSet per activeIndex; recompute only when activeIndex changes (in clickHandler / updateVisuals).",
+   "risk": "If distance or token position could change mid-drag (unlikely here), the cache would be stale. Invalidate on activeIndex change."
+  },
+  {
+   "line": 371,
+   "category": "redundant-work",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "getOccupiedGridSpaces called every pointermove; other tokens rarely move during this interaction.",
+   "accumulates": "",
+   "fix": "Cache the result and invalidate only on activeIndex change or a token update hook. Less critical than getInRangeOffsets.",
+   "risk": "If another token moves while the tool is active the cache would be stale; a Hooks.on('updateToken') invalidation covers this."
+  },
+  {
+   "line": 423,
+   "category": "hot-path",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "broadcastToolPresence emits a socket message on every pointermove with no throttle, potentially 60+ times/sec.",
+   "accumulates": "",
+   "fix": "Throttle the broadcastToolPresence call inside moveHandler to ~50-100 ms (e.g. a simple timestamp guard or lodash-style throttle wrapper).",
+   "risk": "Other clients will see slightly delayed cursor updates; ensure the final position is always sent (trailing call)."
+  }
+ ],
+ "scripts/interactive/tools/moveToken.js": [],
+ "scripts/interactive/tools/pickAreaTargetToggle.js": [
+  {
+   "line": 114,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "New Set created on every hover call inside updateHitLabels.",
+   "accumulates": "",
+   "fix": "Reuse a module-level or closure-scoped Set, calling .clear() at the start of each invocation instead of allocating a new one.",
+   "risk": "Must ensure the Set is cleared before each use; straightforward."
+  },
+  {
+   "line": 150,
+   "category": "redundant-work",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "getInRangeOffsets recomputed every hover despite constant casterToken and castRange for the picker session.",
+   "accumulates": "",
+   "fix": "Compute inRangeSet once before the picker starts (after line 106, guarded by castRange >= 0 && casterToken) and close over it in colorFor.",
+   "risk": "Ensure casterToken position does not change mid-pick; if it can, recompute on token update instead."
+  },
+  {
+   "line": 151,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "Spreads Set into array solely to call .some(); unnecessary allocation on every hover.",
+   "accumulates": "",
+   "fix": "Iterate the Set directly: use a for-of loop with early return, or call result.affected.forEach-based check, avoiding the spread.",
+   "risk": "None; purely mechanical replacement."
+  }
+ ],
+ "scripts/interactive/tools/pickSingleTargetToggle.js": [],
+ "scripts/interactive/tools/placeToken.js": [
+  {
+   "line": 585,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "presenceData() called on every pointermove allocates new arrays via flatMap/map/getProtoOffsets for all placements.",
+   "accumulates": "",
+   "fix": "Cache presenceData placement cells; recompute placed cells only when placements array changes, not on every pointer move.",
+   "risk": "Ensure cache is invalidated when placements are added/removed/reordered and when range or elevation changes."
+  }
+ ],
+ "scripts/interactive/tools/placeZone.js": [],
+ "scripts/main.js": [
+  {
+   "line": 892,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "Each tick creates new arrays via `.filter()`, `.find()`, and a `partnerUuids` array inside `_redrawHoverConnections`.",
+   "accumulates": "",
+   "fix": "Hoist reusable arrays to module scope and repopulate them in-place (or cache results as above), eliminating per-frame allocations that pressure the GC.",
+   "risk": "Minimal; just ensure the cached array is cleared when hover ends to avoid retaining stale token references."
+  },
+  {
+   "line": 927,
+   "category": "hot-path",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "`_redrawHoverConnections` runs every tick (~60fps) while hovering, scanning all placeables with `.find`/`.filter` each frame.",
+   "accumulates": "",
+   "fix": "Cache the deployable/partner lookup results and only recompute when `canvas.tokens.placeables` changes (e.g. on token create/delete/update hooks), so the per-frame ticker only redraws the cached lines with the updated `_dashOffset`.",
+   "risk": "If the invalidation hook is missed (e.g. a token moves mid-hover), the lines could point to stale positions. Keep a `refreshToken` hook or poll positions from the cached token refs rather than re-querying placeables."
+  }
+ ],
+ "scripts/movement/cost-rules.js": [],
+ "scripts/movement/elevation.js": [
+  {
+   "line": 98,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "new Map built from terrain types every call; terrainTopUnder runs twice per pointer-move during drag via _updateDragDestination.",
+   "accumulates": "",
+   "fix": "Cache typeById outside terrainTopUnder (e.g. module-level, invalidated when terrain types change or rebuilt once per drag-update cycle). Alternatively, accept a pre-built typeById parameter.",
+   "risk": "If terrain types are modified mid-drag (unlikely), the cache would be stale. Invalidate on scene change or THT updates."
+  },
+  {
+   "line": 264,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "new Map built from terrain types every call; _terrainTopMost is called 1+N times per path recomputation inside getCompleteMovementPathWrapper loop.",
+   "accumulates": "",
+   "fix": "Same as terrainTopUnder: build typeById once per getCompleteMovementPathWrapper invocation and pass it in, or use a shared short-lived cache.",
+   "risk": "Same as above\u2014terrain types won't change mid-computation, so a per-invocation cache is safe."
+  }
+ ],
+ "scripts/movement/hex-drag-stabilizer.js": [],
+ "scripts/movement/history.js": [],
+ "scripts/movement/iso-elevation-anim.js": [
+  {
+   "line": 126,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "Large object literal (15+ props, nested objects) allocated every refreshToken call, discarded immediately when debug is off.",
+   "accumulates": "",
+   "fix": "Guard the call site: wrap lines 126-144 in `if (globalThis._laIsoDebugOn)` so the object is never constructed when debugging is off.",
+   "risk": "None; debug behavior is identical since _laIsoDebug already early-returns when the flag is off."
+  },
+  {
+   "line": 157,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "_isoElevationDelta allocates a new {x,y} object every refreshToken call during movement.",
+   "accumulates": "",
+   "fix": "Inline the computation (token.mesh.position.x += bumpState.value * scale; y -= ...) or reuse a module-level scratch object.",
+   "risk": "Minimal; ensure the scratch object is not leaked into other code paths if reused."
+  },
+  {
+   "line": 222,
+   "category": "ticker-leak",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "Hooks.once consumed by ANY effect ending first, leaving other effects' tickers without hook-based cleanup.",
+   "accumulates": "If N effects overlap on a non-iso scene, only the first to end gets its ticker removed via hook; the rest run until container.destroyed self-check fires.",
+   "fix": "Replace Hooks.once with Hooks.on and explicitly Hooks.off inside the callback after matching, so each effect's cleanup survives other effects ending first.",
+   "risk": "Verify Foundry's Hooks.off signature (needs the hook ID returned by Hooks.on). The self-cleanup at lines 210-214 is a safety net, so the ticker is not permanent, but removing it sooner saves per-frame work."
+  }
+ ],
+ "scripts/movement/keybindings.js": [],
+ "scripts/movement/move-api.js": [],
+ "scripts/movement/move-tracking.js": [],
+ "scripts/movement/movement-actions.js": [],
+ "scripts/movement/movement-utils.js": [],
+ "scripts/movement/movement-wheel.js": [
+  {
+   "line": 211,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "setTimeout(0) defers listener registration; if closeWheel runs before it fires, listeners are added after cleanup and never removed.",
+   "accumulates": "Each open-then-immediate-close (e.g. canvasPan fires in the same tick) leaks 4 document/globalThis listeners that persist for the session.",
+   "fix": "Guard the setTimeout callback: at its start, check `if (!_wheelEl) return;` before assigning handlers and calling addEventListener.",
+   "risk": "None significant; the guard simply skips registration when the wheel was already torn down."
+  }
+ ],
+ "scripts/movement/reachability.js": [],
+ "scripts/movement/tactical-distance.js": [],
+ "scripts/movement/terrain-trigger-waypoints.js": [],
+ "scripts/movement/token-move-hooks.js": [],
+ "scripts/movement/token-ruler.js": [],
+ "scripts/movement/vision-throttle.js": [],
+ "scripts/setup/checkCompatibility.js": [],
+ "scripts/setup/codemirror-hints.js": [
+  {
+   "line": 919,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "new RegExp constructed on every _hint call (each keystroke) from a dynamic but session-stable string.",
+   "accumulates": "",
+   "fix": "Cache the RegExp per kind (e.g. in a module-level Map keyed by triggerObj) since the pattern does not change after init.",
+   "risk": "Minimal; just ensure the cache key accounts for all inputs that affect the pattern."
+  },
+  {
+   "line": 1077,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "installLancerHints has no idempotency guard; if called again on the same CM instance, inputRead/cursorActivity/blur handlers accumulate.",
+   "accumulates": "Each re-render or re-call adds duplicate event handlers on the same CM instance, growing over a session.",
+   "fix": "Set a flag on the cm instance (e.g. cm._lancerHintsInstalled = true) and return early if already set, preventing duplicate handler registration.",
+   "risk": "If the caller intentionally re-installs with a different `kind`, the guard would block it; use a kind-aware flag or remove old handlers first."
+  },
+  {
+   "line": 1089,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "Each _installLancerSignatureTooltip call registers new cursorActivity/blur/focus handlers with independent tip closures; duplicates fight.",
+   "accumulates": "Repeated calls create parallel tooltip systems, each appending its own DOM element to document.body on cursor move.",
+   "fix": "Guard with a flag on cm (e.g. cm._lancerSigTipInstalled) or store/remove prior handlers before re-registering.",
+   "risk": "If the cm instance is reused across different editor contexts, ensure the flag is reset when the old context is torn down."
+  },
+  {
+   "line": 1149,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "cm.addOverlay called without removing prior overlay; repeated installLancerHints calls stack overlays and their per-token callbacks.",
+   "accumulates": "Each call adds another overlay whose token function runs on every visible token during rendering.",
+   "fix": "Store the overlay object on cm (e.g. cm._lancerArgOverlay) and call cm.removeOverlay on the old one before adding a new one.",
+   "risk": "Ensure removeOverlay is called with the same object reference that was passed to addOverlay."
+  }
+ ],
+ "scripts/setup/fcs.js": [],
+ "scripts/setup/iso-settings.js": [],
+ "scripts/setup/lancer-modif.js": [
+  {
+   "line": 199,
+   "category": "listener-leak",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "onShow wrapper chains if tippy instance persists across re-renders (Svelte sheets reuse DOM). Each render adds another closure layer.",
+   "accumulates": "One extra closure + setTimeout per render of the actor sheet, compounding on every menu open.",
+   "fix": "Tag the tippy instance after wrapping (e.g. tippyInstance._laDisabledPatched = true) and skip if already tagged. This makes wrapping idempotent.",
+   "risk": "If the tippy instance is replaced but the DOM element is reused and the tag persists on a stale reference, the new instance would not get patched. Verify that tippy recreation clears the flag or use a WeakSet keyed on the instance."
+  }
+ ],
+ "scripts/setup/migrations.js": [],
+ "scripts/setup/news.js": [],
+ "scripts/setup/scene-dim-from-image.js": [],
+ "scripts/setup/settings-onboarding.js": [],
+ "scripts/setup/settings-register.js": [],
+ "scripts/setup/settingsMenus.js": [],
+ "scripts/setup/status-effects.js": [],
+ "scripts/setup/supabase-client.js": [],
+ "scripts/setup/telemetry.js": [],
+ "scripts/setup/tour.js": [],
+ "scripts/setup/version-check.js": [],
+ "scripts/socket.js": [],
+ "scripts/tah/combat-bar.js": [],
+ "scripts/tah/consume-feedback.js": [
+  {
+   "line": 7,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "_lastConsume entries for deleted items are never pruned until next scene change via canvasReady.",
+   "accumulates": "Each item deleted mid-scene leaves orphaned uuid keys; grows if items are repeatedly created and destroyed on one scene.",
+   "fix": "Add a Hooks.on('deleteItem', (item) => { for (const type of Object.keys(RESOURCE_FIELDS)) _lastConsume.delete(`${item.uuid}:${type}`); }) inside initConsumeFeedback.",
+   "risk": "Ensure deleteItem hook fires with a valid item.uuid; if the item is re-created with the same uuid the first update will silently seed instead of showing feedback, which matches current behavior for unknown prev."
+  }
+ ],
+ "scripts/tah/glossary-panel.js": [],
+ "scripts/tah/hover.js": [],
+ "scripts/tah/hud-popups.js": [],
+ "scripts/tah/hud.js": [
+  {
+   "line": 722,
+   "category": "listener-leak",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "`unbind()` never disconnects `_favResizeObserver`; holds strong ref to removed c1 DOM subtree until next `_render()`.",
+   "accumulates": "Does not accumulate (at most one leaked), but delays GC of prior column DOM between unbind and next bind.",
+   "fix": "In `unbind()`, add: `this._favResizeObserver?.disconnect(); this._favResizeObserver = null;`",
+   "risk": "None; the observer is re-created in every `_render()` call which already calls `disconnect()` before creating a new one."
+  },
+  {
+   "line": 1079,
+   "category": "listener-leak",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "`unbind()` never removes `_favDocHandlers` (mousemove+click on document); handler fires every pointer move while HUD is closed.",
+   "accumulates": "Does not accumulate (at most one set leaked), but persists from first use until next `bind()`, keeping prior render-scope DOM alive via closure.",
+   "fix": "In `unbind()`, add: `if (this._favDocHandlers) { document.removeEventListener('mousemove', this._favDocHandlers.move); if (this._favDocHandlers.click) document.removeEventListener('click', this._favDocHandlers.click, true); this._favDocHandlers = null; }`",
+   "risk": "Verify the favorites hover/click still works after re-bind; the listeners are re-added in `_render()` so this only affects the unbound state."
+  }
+ ],
+ "scripts/tah/index.js": [],
+ "scripts/tah/item-helpers.js": [],
+ "scripts/tah/log-panel.js": [],
+ "scripts/tah/search.js": [],
+ "scripts/tah/sound.js": [
+  {
+   "line": 56,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "high",
+   "issue": "SFX lookup table is re-created as a new object on every non-throttled playUiSound call (hover, targeting, etc.).",
+   "accumulates": "",
+   "fix": "Hoist the SFX object to module scope as a constant, alongside TOKEN_FEEDBACK_VARIANTS and MIN_GAP.",
+   "risk": "None \u2014 the object is purely static data with no closures over local state."
+  }
+ ],
+ "scripts/tah/statbar/config.js": [],
+ "scripts/tah/statbar/state.js": [
+  {
+   "line": 16,
+   "category": "unbounded-growth",
+   "severity": "medium",
+   "confidence": "low",
+   "issue": "_lastValues Map keyed per token; entries may never be removed when tokens are deleted or scenes change.",
+   "accumulates": "One entry per token that ever appeared; survives scene changes if not cleared externally.",
+   "fix": "Clear _lastValues (and _fadeState, _flashingTokens, _overlayHubs) on scene teardown / canvasTearDown, if not already done in another file.",
+   "risk": "Cleanup may already exist in a sibling file that calls .clear() on scene change; verify before adding duplicate cleanup."
+  },
+  {
+   "line": 18,
+   "category": "unbounded-growth",
+   "severity": "medium",
+   "confidence": "low",
+   "issue": "_fadeState Map keyed per token; same accumulation risk as _lastValues across scene changes.",
+   "accumulates": "One entry per token that triggered a fade; never pruned in this file.",
+   "fix": "Same scene-teardown clear as above.",
+   "risk": "Fade animations in progress could be interrupted if cleared at the wrong time; clear only on full scene tear-down."
+  },
+  {
+   "line": 19,
+   "category": "unbounded-growth",
+   "severity": "medium",
+   "confidence": "low",
+   "issue": "_overlayHubs Map likely keyed per token; PIXI display objects stored here are never removed in this file.",
+   "accumulates": "One hub per token; if not pruned on token delete or scene change, both the Map entry and PIXI objects persist.",
+   "fix": "On scene teardown, iterate _overlayHubs, destroy each hub's PIXI children, then clear the Map.",
+   "risk": "Hubs may already be destroyed by their owner; double-destroy on a PIXI object is safe but verify no external code retains references."
+  }
+ ],
+ "scripts/tah/stats-bar.js": [],
+ "scripts/tah/status-panel.js": [],
+ "scripts/tah/tokenStatBar.js": [
+  {
+   "line": 2584,
+   "category": "hot-path",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "Per-pixel color interpolation and individual drawRect calls every frame for overshield animation; osW can be 50-100+ iterations.",
+   "accumulates": "",
+   "fix": "Replace per-pixel loop with 2-3 wider gradient bands or a single tinted sprite whose tint shifts each frame, cutting draw calls from O(osW) to O(1).",
+   "risk": "Visual fidelity of the shimmer effect will be slightly coarser; verify the animation still reads as a sweep."
+  },
+  {
+   "line": 2797,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "_lastValues Map is set per token but never cleared on scene change; sweepLancerTokens clears _overlayHubs but not _lastValues.",
+   "accumulates": "One snapshot object (~10 fields + extras sub-object) per unique token ID across every scene visited in the session.",
+   "fix": "Add `_lastValues.clear();` inside sweepLancerTokens alongside the existing `_overlayHubs.clear()` call (around line 4019).",
+   "risk": "First actor update after scene change won't diff against a previous snapshot, so no flash fires for the initial state \u2014 matches existing first-draw behavior."
+  }
+ ],
+ "scripts/tah/tokenStatHint.js": [
+  {
+   "line": 955,
+   "category": "alloc-churn",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "Two `new PIXI.Point` allocations every call to tokenScreenRect, which runs on every canvasPan while popup is visible.",
+   "accumulates": "",
+   "fix": "Reuse a module-level pair of PIXI.Point objects (e.g. `const _pt1 = new PIXI.Point(); const _pt2 = new PIXI.Point();`) and call `.set(x,y)` before `toGlobal`.",
+   "risk": "Ensure toGlobal does not store a reference to the passed Point; PIXI's toGlobal returns a new Point by default so reuse of the input is safe."
+  },
+  {
+   "line": 1361,
+   "category": "hook-leak",
+   "severity": "medium",
+   "confidence": "medium",
+   "issue": "5 Hooks (hoverToken, controlToken, deleteToken, canvasTearDown, updateToken) lack a re-entry guard, unlike the guarded hooks below.",
+   "accumulates": "Each call to initTokenStatHint adds 5 duplicate hook handlers; the guarded hooks at 1401/1430 suggest re-entry was considered possible.",
+   "fix": "Add a module-level `_hookedCore` guard (like `_hookedPan`) around lines 1361-1398, or merge all hook registrations under a single guard.",
+   "risk": "If initTokenStatHint is provably called only once, the guard is harmless but unnecessary. Verify the call site."
+  }
+ ],
+ "scripts/tools/aura.js": [
+  {
+   "line": 9,
+   "category": "unbounded-growth",
+   "severity": "low",
+   "confidence": "low",
+   "issue": "callbackCache Map grows with each unique function source string; entries are never pruned or evicted.",
+   "accumulates": "One entry per distinct lambda source passed to createAura over the session; bounded by unique sources, so growth is slow.",
+   "fix": "Not urgent. If desired, clear entries in deleteAuras by tracking which sources belong to which owner, or add a max-size eviction policy.",
+   "risk": "Clearing a cache entry while the aura still exists would break the libWrapper intercept for that aura's macro callback."
+  }
+ ],
+ "scripts/tools/compendium-tools.js": [],
+ "scripts/tools/downtime.js": [],
+ "scripts/tools/item-browser.js": [],
+ "scripts/tools/misc-tools.js": [],
+ "scripts/tools/movement-tools.js": [],
+ "scripts/tools/pilot-reserves.js": [],
+ "scripts/tools/rest.js": [],
+ "scripts/tools/scan-icons.js": [],
+ "scripts/tools/scan-lookup.js": [],
+ "scripts/tools/scan.js": [],
+ "scripts/tools/settings-utils.js": [],
+ "scripts/tools/string-utils.js": [],
+ "scripts/tools/weapon-bonus-utils.js": [],
+ "scripts/tools/wreck.js": [],
+ "scripts/utils/lancer-token.js": [],
+ "scripts/vision/lancerDetectionModes.js": [
+  {
+   "line": 493,
+   "category": "alloc-churn",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "When debug enabled, `_drawLosDebug` creates O(edges + viewers*targets) PIXI.Text objects every call, destroyed and re-created on each refreshToken.",
+   "accumulates": "",
+   "fix": "Pool or reuse PIXI.Text objects: keep a list on `_losDebugLayer`, update text/position/style in place, hide unused ones, only create new ones when needed.",
+   "risk": "Must reset text content and visibility correctly; stale labels could appear if pool management is wrong."
+  },
+  {
+   "line": 1253,
+   "category": "hot-path",
+   "severity": "medium",
+   "confidence": "high",
+   "issue": "`refreshToken` fires per-token per-frame during animations; each call fully redraws debug overlay, redundant with sightRefresh.",
+   "accumulates": "",
+   "fix": "Debounce or batch `_drawLosDebug` with a requestAnimationFrame guard so at most one redraw per frame, e.g. `let _losDebugDirty=false; function _scheduleLosDebug(){if(!_losDebugDirty){_losDebugDirty=true;requestAnimationFrame(()=>{_losDebugDirty=false;_drawLosDebug();})}}`.",
+   "risk": "Debug overlay may lag one frame behind a token move; acceptable for a diagnostic tool."
+  },
+  {
+   "line": 1475,
+   "category": "hot-path",
+   "severity": "low",
+   "confidence": "medium",
+   "issue": "Per-frame ticker scans `token.children` with `find()` for every placed token to locate the overlay mesh.",
+   "accumulates": "",
+   "fix": "Cache the overlay mesh as `token._laSilhouetteMesh` when created; check that reference instead of `find()`.",
+   "risk": "Must clear the cached reference when the mesh is destroyed or the token is removed; check in `destroy()` path."
+  }
+ ],
+ "scripts/vision/tokenBlocksVision.js": [],
+ "scripts/vision/vision-disable-on-select.js": [],
+ "scripts/vision/visionFromEdge.js": [],
+ "startups/itemActivations.js": [],
+ "startups/personalStuff.js": []
+}

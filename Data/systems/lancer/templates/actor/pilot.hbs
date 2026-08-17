@@ -1,0 +1,362 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{!-- Sheet Header --}}
+  <header class="sheet-header">
+    <div class="name flexrow">
+      <div class="details flexcol">
+        <span>{{localize "lancer.pilot-sheet.header.ll"}}</span>
+        <h1 class="pilot-callsign">{{system.level}}</h1>
+      </div>
+
+      <div class="details flexcol">
+        <span>{{localize "lancer.pilot-sheet.header.cs"}}</span>
+        <h1 class="pilot-callsign">{{system.callsign}}</h1>
+      </div>
+
+      <div class="details flexcol">
+        <span>{{localize "lancer.pilot-sheet.header.name"}}</span>
+        <h2 class="medium">{{actor.name}}</h2>
+      </div>
+
+      <div class="details flexcol">
+        <span>{{localize "lancer.pilot-sheet.header.bg"}}</span>
+        <h3 class="medium">{{{system.background}}}</h3>
+      </div>
+    </div>
+    {{{ref-portrait-img actor.img "img" actor}}}
+    <div class="header-details pilot-stats flexrow">
+      {{{compact-stat-edit "mdi mdi-heart-outline" "system.hp.value" "system.hp.max"}}}
+      {{{compact-stat-edit "mdi mdi-shield-star-outline" "system.overshield.value" ""}}}
+      {{{compact-stat-view "mdi mdi-shield-outline" "system.armor"}}}
+      {{{compact-stat-view "cci cci-evasion" "system.evasion"}}}
+      {{{compact-stat-view "cci cci-edef" "system.edef"}}}
+      {{{compact-stat-view "mdi mdi-arrow-right-bold-hexagon-outline" "system.speed"}}}
+      {{{compact-stat-view "cci cci-save" "system.save"}}}
+      {{{compact-stat-view "cci cci-sensor" "system.sensor_range"}}}
+    </div>
+
+    {{!-- Sheet Tab Navigation --}}
+    <nav class="lancer-tabs" data-group="primary">
+      <a class="item lancer-tab medium" data-tab="cloud">{{localize "lancer.pilot-sheet.tabs.cloud"}}</a>
+      <a class="item lancer-tab medium" data-tab="dossier">{{localize "lancer.pilot-sheet.tabs.dossier"}}</a>
+      <a class="item lancer-tab medium" data-tab="narrative">{{localize "lancer.pilot-sheet.tabs.narrative"}}</a>
+      <a class="item lancer-tab medium" data-tab="tactical">{{localize "lancer.pilot-sheet.tabs.tactical"}}</a>
+      <a class="item lancer-tab medium" data-tab="loadout">{{localize "lancer.pilot-sheet.tabs.mech"}}</a>
+      <a class="item lancer-tab medium" data-tab="effects">{{localize "lancer.common-sheet.tabs.effects"}}</a>
+    </nav>
+  </header>
+
+  {{!-- Sheet Body --}}
+  <section class="sheet-body scroll-body">
+    {{!-- Cloud Management Tab --}}
+    <div class="tab manage" data-group="primary" data-tab="cloud">
+      <div class="cloud-tab__body">
+        <div class="cloud-import card clipped">
+          <span class="lancer-header lancer-primary major">{{localize "lancer.pilot-sheet.cloud-header.label"}}</span>
+          <span class="cloud-import-description">{{localize "lancer.pilot-sheet.cloud-download.description"}}</span>
+          <input
+            class="lancer-input major"
+            style="text-align: center"
+            type="text"
+            name="system.cloud_id"
+            value="{{system.cloud_id}}"
+            data-dtype="String"
+            placeholder='{{localize "lancer.pilot-sheet.cloud-header.raw-placeholder"}}'
+          >
+          <button
+            class="cloud-control lancer-button"
+            style="align-self: center"
+            data-action="download"
+          >
+            <i class="cci cci-tech-quick i--dark i--5"></i> {{localize 'lancer.pilot-sheet.cloud-download.label'}}
+          </button>
+          <span class="last-sync minor desc-text">
+            {{localize "lancer.pilot-sheet.cloud-download.lastSync" timestamp=system.last_cloud_update}}
+          </span>
+        </div>
+
+        <div class="file-import card clipped">
+          <span class="lancer-header lancer-primary major">{{localize "lancer.pilot-sheet.json-import.label"}}</span>
+          <span class="file-import-description monospace">{{
+              localize "lancer.pilot-sheet.json-import.description"
+            }}</span>
+          <div class="file-select-container">
+            <label class="lancer-file-input">
+              <input
+                id="pilot-json-import"
+                type="file"
+                aria-label="{{localize 'lancer.pilot-sheet.json-import.placeholder'}}"
+                name="pilot-json-up"
+                accept=".json"
+              >
+
+              <span class="lancer-file-input-display">
+                <div class="lancer-file-input__button">Browse</div>
+                <span class="lancer-file-input__filenames">{{
+                    localize "lancer.pilot-sheet.json-import.placeholder"
+                  }}</span>
+              </span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{!-- Dossier Tab --}}
+    <div class="tab dossier active" data-group="primary" data-tab="dossier">
+      <div class="wraprow double">
+        <div class="card clipped">
+          <span class="lancer-header lancer-primary major">{{localize "lancer.pilot-sheet.dossier.cs"}}</span>
+          <input class="lancer-input major" {{{getset "system.callsign" }}} type="text" data-dtype="String">
+        </div>
+        <div class="card clipped">
+          <span class="lancer-header lancer-primary major">{{localize "lancer.pilot-sheet.dossier.name"}}</span>
+          <input class="lancer-input major" name="name" value="{{actor.name}}" type="text" data-dtype="String">
+        </div>
+
+        <div class="card clipped">
+          <span class="lancer-header lancer-primary">{{localize "lancer.pilot-sheet.dossier.background"}}</span>
+          <input class="lancer-input major" {{{getset "system.background" }}} type="text" data-dtype="String">
+        </div>
+        {{{textarea-card "HISTORY" "system.history"}}}
+        {{{textarea-card "NOTES" "system.notes"}}}
+      </div>
+    </div>
+
+    {{!-- Pilot Narrative Tab --}}
+    <div class="tab pilot flexcol" data-group="primary" data-tab="narrative">
+      <div class="card clipped">
+        <div class="flexrow">
+          {{{clicker-stat-card "level" "mdi mdi-shield-outline" "system.level" false}}}
+          {{{stat-rollable-card "grit" "cci cci-armor" "system.grit"}}}
+        </div>
+      </div>
+
+      {{!-- Bond --}}
+      {{#if system.bond}}
+        <div class="card clipped ref set" data-uuid="{{ system.bond.uuid }}">
+          <h2 class="lancer-header lancer-primary clipped">
+            <span>{{upper-case (localize "lancer.pilot-sheet.narrative.bond" bondName=system.bond.name)}}</span>
+            <a class="lancer-context-menu" data-path="itemTypes.bond.0">
+              <i class="fas fa-ellipsis-v"></i>
+            </a>
+          </h2>
+          <div class="flexrow">
+            {{!-- Questions --}}
+            <div class="flexcol">
+              {{#each system.bond.system.questions as |question index|}}
+                <div class="flexcol flex-center bond-question-item">
+                  <p class="bond-question-question">{{question.question}}</p>
+                  {{{bond-answer-selector ../this index}}}
+                </div>
+              {{/each}}
+            </div>
+            {{!-- XP Checklist --}}
+            <div class="flexcol">
+              {{#each system.bond.system.major_ideals as |ideal index|}}
+                <div class="flexrow flex-center bond-xp-item">
+                  {{{std-checkbox (concat "system.bond_state.xp_checklist.major_ideals." index)}}}
+                  <span class="grow">{{ideal}}</span>
+                </div>
+              {{/each}}
+              <div class="flexrow flex-center bond-xp-item">
+                {{{std-checkbox "system.bond_state.xp_checklist.minor_ideal"}}}
+                {{{bond-ideal-selector this}}}
+              </div>
+              <div class="flexrow flex-center bond-xp-item">
+                {{{std-checkbox "system.bond_state.xp_checklist.veteran_power"}}}
+                <span class="grow">Boon XP from another PC.</span>
+              </div>
+              <div class="flexrow flex-center">
+                <button class="bond-xp-button lancer-tech lancer-button grow">
+                  <i class="mdi mdi-arrow-up-bold-hexagon-outline i--3"></i>
+                  Tally XP
+                </button>
+              </div>
+            </div>
+          </div>
+          <div class="flexrow">
+            {{!-- Stress, XP, refresh powers --}}
+            <div class="flexrow">
+              {{{generic-counter "Stress" system.bond_state.stress "system.bond_state.stress"}}}
+              {{{generic-counter "XP" system.bond_state.xp "system.bond_state.xp"}}}
+              <button class="refresh-powers-button lancer-tech lancer-button flexcol flex-center">
+                <i class="mdi mdi-refresh i--3"></i>
+                Refresh Powers
+              </button>
+            </div>
+          </div>
+
+          {{!-- Powers --}}
+          <div class="flexcol">
+            {{#each system.bond.system.powers as |power index|}}
+              {{#if power.unlocked}}
+                {{{bond-power "system.bond" index}}}
+              {{/if}}
+            {{/each}}
+          </div>
+        </div>
+      {{/if}}
+
+      <div class="flexrow">
+        {{!-- Skill Triggers --}}
+        <div class="card clipped">
+          <h2 class="lancer-header lancer-primary submajor clipped">
+            {{localize "lancer.pilot-sheet.abilities.skills"}}
+          </h2>
+          {{#each itemTypes.skill as |skill index|}}
+            {{{item-preview (concat "itemTypes.skill." index) "delete"}}}
+          {{/each}}
+        </div>
+        {{!-- Bond Clocks --}}
+        {{#if system.bond}}
+          <div class="flexcol">
+            <div class="card clipped grow">
+              <div class="lancer-header lancer-primary submajor clipped">
+                <span>{{localize "lancer.pilot-sheet.narrative.burdens"}}</span>
+                <a
+                  class="gen-control fas fa-plus"
+                  data-action="append"
+                  data-path="system.bond_state.burdens"
+                  data-action-value="(struct)counter"
+                ></a>
+              </div>
+              {{#each system.bond_state.burdens as |burden index|}}
+                {{{counter burden (concat "system.bond_state.burdens." index) "true"}}}
+              {{/each}}
+            </div>
+            <div class="card clipped grow">
+              <div class="lancer-header lancer-primary submajor clipped">
+                <span>{{localize "lancer.pilot-sheet.narrative.clocks"}}</span>
+                <a
+                  class="gen-control fas fa-plus"
+                  data-action="append"
+                  data-path="system.bond_state.clocks"
+                  data-action-value="(struct)counter"
+                ></a>
+              </div>
+              {{#each system.bond_state.clocks as |clock index|}}
+                {{{counter clock (concat "system.bond_state.clocks." index) "true"}}}
+              {{/each}}
+            </div>
+          </div>
+        {{/if}}
+      </div>
+
+      <div class="card clipped">
+        <span class="lancer-header lancer-primary submajor">{{
+            localize "lancer.common-sheet.headers.combatUtilities"
+          }}</span>
+        <div class="lancer-flow-button-grid">
+          {{{flow-button "BASIC ATTACK" "BasicAttack"}}}
+          {{{flow-button (localize "lancer.common-sheet.buttons.damage") "Damage"}}}
+        </div>
+      </div>
+
+      {{!-- Armor + Weapons --}}
+      <div class="flexrow">
+        {{!-- Armor --}}
+        <div class="card clipped">
+          <h2 class="lancer-header lancer-primary major">{{localize "lancer.pilot-sheet.tactical.armor"}}</h2>
+          {{#each system.loadout.armor as |armor key|}}
+            {{{pilot-armor-slot (concat "system.loadout.armor." key ".value")}}}
+          {{/each}}
+        </div>
+
+        {{!-- Weapons --}}
+        <div class="card clipped">
+          <h2 class="lancer-header lancer-primary major">{{localize "lancer.pilot-sheet.tactical.weapons"}}</h2>
+          {{#each system.loadout.weapons as |weapon key|}}
+            {{{pilot-weapon-slot (concat "system.loadout.weapons." key ".value")}}}
+          {{/each}}
+        </div>
+      </div>
+
+      {{!-- Gear --}}
+      <div class="flexrow">
+        {{!-- Gear --}}
+        <div class="card clipped">
+          <h2 class="lancer-header lancer-primary major clipped-top">
+            {{localize "lancer.pilot-sheet.tactical.gear"}}
+          </h2>
+          {{#each system.loadout.gear as |gear key|}}
+            {{{pilot-gear-slot (concat "system.loadout.gear." key ".value")}}}
+          {{/each}}
+        </div>
+      </div>
+
+      {{!-- Reserves --}}
+      <div class="flexrow">
+        {{!-- Reserves --}}
+        <div class="card clipped">
+          <h2 class="lancer-header lancer-primary major clipped-top">
+            {{localize "lancer.pilot-sheet.tactical.reserves"}}
+          </h2>
+          {{#each itemTypes.reserve as |reserve index|}}
+            {{{reserve-slot (concat "itemTypes.reserve." index)}}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    {{!-- Pilot Tactical Tab --}}
+    <div class="tab tactical flexcol" data-group="primary" data-tab="tactical">
+      {{!-- Counters --}}
+      <div class="flexrow">
+        {{{pilot-counters actor}}}
+      </div>
+
+      <div class="flexrow">
+        {{{clicker-stat-card "hull" "" "system.hull" true}}}
+        {{{clicker-stat-card "agi" "" "system.agi" true}}}
+        {{{clicker-stat-card "sys" "" "system.sys" true}}}
+        {{{clicker-stat-card "eng" "" "system.eng" true}}}
+      </div>
+
+      {{!-- Talents --}}
+      <div class="card clipped">
+        <h2 class="lancer-header lancer-primary major clipped">{{localize "lancer.pilot-sheet.abilities.talents"}}</h2>
+        {{#each itemTypes.talent as |talent index|}}
+          {{{item-preview (concat "itemTypes.talent." index) "delete"}}}
+        {{/each}}
+      </div>
+
+      {{!-- Licenses + Core Bonuses --}}
+      <div class="flexrow">
+        {{!-- Licenses --}}
+        <div class="card clipped">
+          <h2 class="lancer-header lancer-primary major clipped-top">
+            {{localize "lancer.pilot-sheet.tactical.licenses"}}
+          </h2>
+          {{#each itemTypes.license as |license index|}}
+            {{{ref-license (concat "itemTypes.license." index)}}}
+          {{/each}}
+        </div>
+
+        {{!-- Core Bonuses --}}
+        <div class="card clipped">
+          <h2 class="lancer-header lancer-primary major clipped-top">
+            {{localize "lancer.pilot-sheet.tactical.cores"}}
+          </h2>
+          {{#each itemTypes.core_bonus as |core_bonus index|}}
+            {{{item-preview (concat "itemTypes.core_bonus." index) "delete"}}}
+          {{/each}}
+        </div>
+      </div>
+    </div>
+
+    {{!-- Loadout Tab --}}
+    {{!-- Things to put in here:
+    * ActiveMechRef (maybe just drag&drop & a link here to get to it?)
+    * Access to a full list of things unlocked by licenses (read-only)
+    --}}
+    <div class="tab loadout flexcol" data-group="primary" data-tab="loadout">
+      {{!-- Active Mech --}}
+      {{{all-mech-preview}}}
+    </div>
+
+    {{!-- Effects Tab --}}
+    <div class="tab effects flexcol" data-group="primary" data-tab="effects">
+      {{{effect-categories-view actor effect_categories}}}
+    </div>
+  </section>
+</form>

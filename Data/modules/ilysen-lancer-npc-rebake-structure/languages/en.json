@@ -1,0 +1,60 @@
+{
+	"ilysen-lancer-npc-rebake-structure": {
+		"multiple_ones": "Multiple Ones",
+		"settings": {
+			"debug_logging": {
+				"name": "Debug logging",
+				"hint": "Enables verbose debug logging. If you're reporting a bug, make sure you turn this on!"
+			},
+			"emphasize_multiple_ones": {
+				"name": "Emphasize multiple ones",
+				"hint": "Relevant structure/stress rolls will display \"Multiple Ones\" instead of just \"1\" for their results."
+			},
+			"legendary_workaround": {
+				"name": "Workaround for the Legendary trait",
+				"hint": "Before making a structure/stress roll on an Ultra, automatically removes the rebaked Legendary trait and adds the core book version in its place. This circumvents a system limitation that prevents it from being automated. Also optionally makes its name and description identical afterwards, to avoid it standing out on things like the Scan macro.",
+				"levels": {
+					"disable": "Disabled",
+					"enable": "Enabled",
+					"enableAndMask": "Enabled, and change its name"
+				}
+			},
+			"direct_hit_workaround": {
+				"name": "Workaround for Direct Hit",
+				"hint": "To accommodate the vanilla structure rules, the LANCER system is hardcoded to destroy an NPC that rolls a 1 on their structure check when they would be left at 1 structure remaining. This setting enables a workaround that should prevent that. You shouldn't need to turn this off in regular play, but it's available in case you run into any issues."
+			}
+		},
+		"structure": {
+			"glancing_blow": {
+				"title": "Glancing Blow",
+				"description": "The damage is notable but the effects are minor, and the NPC is @Compendium[world.status-items.Impaired] until the end of their next turn."
+			},
+			"system_failure": {
+				"title": "System Failure",
+				"description": "The hit was sufficient to disrupt the NPC's systems, forcing them to pass a <b>Hull</b> check or become @Compendium[world.status-items.Jammed] until the end of their next turn. On a success, they become @Compendium[world.status-items.Impaired] instead. If the NPC was already <b>Impaired,</b> they automatically fail this save."
+			},
+			"staggering_hit": {
+				"title": "Staggering Hit",
+				"description": "The NPC chooses; either they become @Compendium[world.status-items.Stunned] until the end of their next turn, or they become @Compendium[world.status-items.Impaired] and @Compendium[world.status-items.Slowed] for the rest of the scene. If they choose the second option, it can't be chosen again for the rest of the scene."
+			},
+			"target_destroyed": {
+				"title": "Target Destroyed",
+				"description": "The NPC is destroyed."
+			}
+		},
+		"stress": {
+			"emergency_shunt": {
+				"title": "Emergency Shunt",
+				"description": "The NPC overheats but emergency safeties kick in, and they become is @Compendium[world.status-items.Impaired] until the end of their next turn."
+			},
+			"instability": {
+				"title": "Instability",
+				"description": "The NPC becomes @Compendium[world.status-items.Exposed] as their reactor becomes unstable, causing emergency vents to visibly open and weakening their armor."
+			},
+			"meltdown": {
+				"title": "Meltdown",
+				"description": "The NPC suffers a <b>reactor meltdown</b> at the end of their next turn."
+			}
+		}
+	}
+}

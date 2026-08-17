@@ -1,0 +1,29 @@
+{{! TODO: this template is unused, but might serve as a starting point for
+  a tag setting editor }}
+
+<form class="{{cssClass}}" autocomplete="off">
+  {{! Sheet Header }}
+  <header class="sheet-header card clipped-bot">
+    <h1 class="name">
+      <input
+        class="lancer-input header-field"
+        name="name"
+        type="text"
+        value="{{item.name}}"
+        placeholder="{{localize 'lancer.placeholder.name'}}"
+      >
+    </h1>
+    {{{ref-portrait-img item.img "img" item}}}
+  </header>
+
+  {{! Sheet Body }}
+  <section class="sheet-body">
+    {{{textarea-card "DESCRIPTION" "system.description"}}}
+    <div class="card">
+      <span class="lancer-header lancer-primary">TAG META INFO</span>
+      {{{std-text-input "system.lid" label="ID:"}}}
+      {{{std-checkbox "system.hidden" label="Hidden:" label_classes="self-left"}}}
+      {{{std-checkbox "system.filterIgnore" label="Filter Ignore:" label_classes="self-left"}}}
+    </div>
+  </section>
+</form>

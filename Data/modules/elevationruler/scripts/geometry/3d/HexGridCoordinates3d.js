@@ -1,0 +1,79 @@
+/* globals
+*/
+/* eslint no-unused-vars: ["error", { "argsIgnorePattern": "^_" }] */
+"use strict";
+
+import { GridCoordinates3d } from "./GridCoordinates3d.js";
+import { HexCoordinateMixin } from "../HexGridCoordinates.js";
+import { pixelsToGridUnits } from "../util.js";
+
+/**
+ * Cube coordinates in a hexagonal grid. q + r + s = 0.
+ * @typedef {object} HexagonalGridCube
+ * @property {number} q    The coordinate along the E-W (columns) or SW-NE (rows) axis.
+ *                         Equal to the offset column coordinate if column orientation.
+ * @property {number} r    The coordinate along the NE-SW (columns) or N-S (rows) axis.
+ *                         Equal to the offset row coordinate if row orientation.
+ * @property {number} s    The coordinate along the SE-NW axis.
+ */
+
+/**
+ * 3d Cube coordinates, adding k for elevation unit
+ * @typedef {object} HexagonalGridCube3d extends HexagonalGridCube
+ * @property {number} k     The coordinate of the elevation
+ */
+
+/**
+ * A 3d point that can also represent a 4d hex coordinate (q, r, s, k).
+ * Links z to the elevation property.
+ */
+export class HexGridCoordinates3d extends HexCoordinateMixin(GridCoordinates3d) {
+
+  /**
+   * Create this point from hex coordinates plus optional elevation.
+   * @param {HexagonalGridCube} hexCube
+   * @param {number} [elevation]            Elevation in grid units
+   * @returns {HexGridCoordinates3d}
+   */
+  static fromHexCube(hexCube, elevation) {
+    const pt = new this();
+    return pt.setToHexCube(hexCube, elevation);
+  }
+
+  /**
+   * Faster than getting q, r, s separately.
+   * @type {HexagonalGridCube3d}
+   */
+  get hexCube() {
+    const obj = super.hexCube;
+    obj.k = this.k;
+    return obj;
+  }
+
+  /**
+   * Set {x, y, z} based on a hex cube. Faster than setting individually.
+   * @param {HexagonalGridCube3d}
+   * @param {number} [elevation]    Elevation, in grid units
+   * @returns {this} For convenience.
+   */
+  setToHexCube(hexCube, elevation) {
+    super.setToHexCube(hexCube);
+    if ( typeof elevation === "undefined" ) {
+      if ( typeof hexCube.z !== "undefined" ) elevation = pixelsToGridUnits(hexCube.z);
+      else if ( typeof hexCube.k !== "undefined" ) elevation = this.constructor.elevationForUnit(hexCube.k);
+      else elevation = 0;
+    }
+    this.elevation = elevation;
+    return this;
+  }
+
+  /**
+   * Set x, y, z to center of hex.
+   */
+  centerToHexCube() {
+    const q = Math.round(this.q);
+    const r = Math.round(this.r);
+    return this.setToHexCube({ q, r }, this.elevation);
+  }
+}
+

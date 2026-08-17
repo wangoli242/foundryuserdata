@@ -1,0 +1,2549 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automation module for the Lancer system in Foundry VTT">
+      
+      
+      
+        <link rel="canonical" href="https://agraael.github.io/lancer-automations/API_INTERACTIVE.html">
+      
+      
+        <link rel="prev" href="API_EFFECTS.html">
+      
+      
+        <link rel="next" href="API_ITEMS.html">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Interactive - Lancer Automations</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/la-theme.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-interactive-tools-deployment" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Lancer Automations" class="md-header__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lancer Automations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Interactive
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Lancer Automations" class="md-nav__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lancer Automations
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Feature guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Feature guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/AUTOMATION_ENGINE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation Engine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/EFFECTS_AND_BONUSES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects & Bonuses
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Action HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT_ADVANCED.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement Advanced
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ISOMETRIC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Isometric
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INTERACTIVE_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ATTACK_TARGETING.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Attack Targeting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/GAMEPLAY_AUTOMATION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gameplay Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/FX_AND_SOUNDS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FX and Sounds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/VISION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/WRECK.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wrecks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/BATTLE_LOG.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Battle Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SYSTEM_ADDITIONS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Additions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SETUP_AND_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup & Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INFECTION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/NPC_EXAMPLES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NPC Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MACROS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Macros
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AUTOMATION_SYSTEM.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_REFERENCE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_COMBAT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Combat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_SPATIAL.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spatial
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_EFFECTS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Interactive
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="API_INTERACTIVE.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Interactive
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#interactive-player-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interactive Player Tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployables-thrown-weapons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployables &amp; Thrown Weapons
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hard-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hard Cover
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_ITEMS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Items
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HOWTO.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How-To
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#interactive-player-tools" class="md-nav__link">
+    <span class="md-ellipsis">
+      Interactive Player Tools
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#deployables-thrown-weapons" class="md-nav__link">
+    <span class="md-ellipsis">
+      Deployables &amp; Thrown Weapons
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#hard-cover" class="md-nav__link">
+    <span class="md-ellipsis">
+      Hard Cover
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="api-interactive-tools-deployment">API - Interactive Tools &amp; Deployment<a class="headerlink" href="#api-interactive-tools-deployment" title="Permanent link">&para;</a></h1>
+<p><a href="API_REFERENCE.html">Back to API Reference</a> · Feature guide: <a href="feature/INTERACTIVE_TOOLS.html">Interactive Tools</a></p>
+<hr />
+<h2 id="interactive-player-tools">Interactive Player Tools<a class="headerlink" href="#interactive-player-tools" title="Permanent link">&para;</a></h2>
+<details>
+<summary><b><code>chooseToken</code></b> <sup>async</sup> → <code>Array&lt;Token&gt; | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">chooseToken</span><span class="p">(</span><span class="nx">casterToken</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>range</kbd></td>
+<td style="text-align: left;"><code>number\|"sensors"</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Max range for advisory highlight. <code>"sensors"</code> = caster's sensor range</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>count</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Targets to pick (-1 for unlimited)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>disposition</kbd></td>
+<td style="text-align: left;"><code>"friendly"\|"hostile"</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Keep only tokens with that disposition toward the caster (composes with <code>filter</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>filter</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Excludes tokens when returning false</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>filterWarning</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Warning text shown under a selected token when it fails <code>filter</code> in soft mode</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>soft</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Range and filter are advisory: invalid tokens can still be clicked. Cursor hover goes orange, the target's card entry gets an amber warning banner listing why. Set <code>false</code> to hard-block invalid selections.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>includeHidden</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Include hidden tokens</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>includeSelf</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Caster is selectable</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"SELECT TARGETS"</code></td>
+<td style="text-align: left;">Card header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>description</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Card description</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>icon</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"fas fa-crosshairs"</code></td>
+<td style="text-align: left;">FontAwesome icon</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>headerClass</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Extra CSS class</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>urgent</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Show the card immediately instead of waiting in the card queue</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>autoConfirm</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Resolve as soon as <code>count</code> tokens are selected, no Confirm click</td>
+</tr>
+</tbody>
+</table>
+<p>Generic range failures render as <code class="highlight"><span class="nx">Out</span><span class="w"> </span><span class="k">of</span><span class="w"> </span><span class="nx">range</span><span class="w"> </span><span class="p">(</span><span class="nx">X</span><span class="w"> </span><span class="o">&gt;</span><span class="w"> </span><span class="nx">Y</span><span class="p">)</span></code>. Filter failures render as <code>filterWarning</code> (or <code>Invalid target</code> if omitted).</p>
+</details>
+<hr />
+<details>
+<summary><b><code>openHaseContestCard</code></b> <sup>async</sup> → <code>{ completed, winner, loser, winnerToken, loserToken, tie, results } | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">openHaseContestCard</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tokenA</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Contender A</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>skillA</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Contender A stat: <code>HULL</code> / <code>AGI</code> / <code>SYS</code> / <code>ENG</code> / <code>GRIT</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>tokenB</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Contender B</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>skillB</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Contender B stat</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"HASE Contest"</code></td>
+<td style="text-align: left;">Card and chat title</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>sendToOwner</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Route each roll to its token owner</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>accuracy1</kbd> / <kbd>difficulty1</kbd> / <kbd>flatModifier1</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">Pre-fill contender A's HASE HUD. <code>2</code> variants do the same for B</td>
+</tr>
+</tbody>
+</table>
+<p>Card to set up and run a HASE contest between two tokens. Returns the <a href="API_COMBAT.html"><code>executeContestedCheck</code></a> result, or <code>null</code> if cancelled. Pre-set fields stay editable, and any missing token/skill is prompted for.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>openForceCheckCard</code></b> <sup>async</sup> → <code>{ completed, results } | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">result</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">openForceCheckCard</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tokenA</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Caster for the pickers' range pulse</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>skill</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"HULL"</code></td>
+<td style="text-align: left;">Stat every target rolls: <code>HULL</code> / <code>AGI</code> / <code>SYS</code> / <code>ENG</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>range</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Preset range on the target picker</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>saveVs</kbd></td>
+<td style="text-align: left;"><code>Token\|Actor</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Save target. Empty = plain check</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>targets</kbd></td>
+<td style="text-align: left;"><code>Token[]</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Pre-picked rollers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>sendToOwner</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Route each roll to its token owner</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>accuracy</kbd> / <kbd>difficulty</kbd> / <kbd>flatModifier</kbd></td>
+<td style="text-align: left;"><code>number \| ((rollerToken: Token) =&gt; number)</code></td>
+<td style="text-align: left;"><code>0</code></td>
+<td style="text-align: left;">Pre-fill each roller's HASE HUD</td>
+</tr>
+</tbody>
+</table>
+<p>Card to force HASE checks: targets pick like an attack roll, the save target like a stat-roll save. Returns the <a href="API_COMBAT.html"><code>executeForceCheck</code></a> result, or <code>null</code> if cancelled.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>placeZone</code></b> <sup>async</sup> → <code>Array&lt;MeasuredTemplate&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">placeZone</span><span class="p">(</span><span class="nx">casterToken</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>range</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Max range highlight</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>rangeOrigin</kbd></td>
+<td style="text-align: left;"><code>{x, y}\|Token</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Override the range-measurement origin</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>size</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Zone size</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>type</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"Blast"</code></td>
+<td style="text-align: left;"><code>"Blast"</code>, <code>"Burst"</code>, <code>"Cone"</code>, <code>"Line"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>fillColor</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"#ff6400"</code></td>
+<td style="text-align: left;">Template color</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>borderColor</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"#964611ff"</code></td>
+<td style="text-align: left;">Template border</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>texture</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Optional texture path</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>count</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Number of zones (-1 for unlimited)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>hooks</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{}</span></code></td>
+<td style="text-align: left;">templatemacro hooks (see below)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>dangerous</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">damageType</span><span class="p">,</span><span class="w"> </span><span class="nx">damageValue</span><span class="w"> </span><span class="p">}</span></code> - ENG check on entry/turn start</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>statusEffects</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;"><code>[]</code></td>
+<td style="text-align: left;">Status effect IDs applied to tokens inside</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>difficultTerrain</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">movementPenalty</span><span class="p">,</span><span class="w"> </span><span class="nx">isFlatPenalty</span><span class="w"> </span><span class="p">}</span></code> - Lancer Automations Ruler movement cost</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>centerLabel</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Text at center of template on canvas</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"PLACE ZONE"</code></td>
+<td style="text-align: left;">Card header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>expires</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;"><code>{ on: 'ownerTurnStart'\|'ownerTurnEnd', originToken?, turns? }</code> - template auto-deletes on that combat event (default origin = caster, and <code>turns</code> &gt; 1 survives that many occurrences)</td>
+</tr>
+</tbody>
+</table>
+<details>
+<summary><b>Custom Logic via <code>hooks</code></b></summary>
+<p>Each hook entry supports two formats:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Format</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">command</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">asGM</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="w"> </span><span class="p">}</span></code></td>
+<td style="text-align: left;">JS code stored in template flags (persists across reloads)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="kd">function</span><span class="o">:</span><span class="w"> </span><span class="nb">Function</span><span class="p">,</span><span class="w"> </span><span class="nx">asGM</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="w"> </span><span class="p">}</span></code></td>
+<td style="text-align: left;">JS function in runtime registry (lost on reload)</td>
+</tr>
+</tbody>
+</table>
+<p>Both formats <strong>stack</strong>.</p>
+<p><strong>Trigger List:</strong> <code>created</code>, <code>deleted</code>, <code>moved</code>, <code>hidden</code>, <code>revealed</code>, <code>entered</code>, <code>left</code>, <code>through</code>, <code>staying</code>, <code>turnStart</code>, <code>turnEnd</code>.</p>
+<p><strong>Available Variables:</strong> <code>template</code>, <code>scene</code>, <code>token</code>, <code>context</code> (<code>this</code> in command strings).</p>
+</details>
+<p><strong>Examples:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="c1">// Dangerous zone</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">placeZone</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">dangerous</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">damageType</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;kinetic&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">damageValue</span><span class="o">:</span><span class="w"> </span><span class="mf">5</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="c1">// Status effect zone</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nx">placeZone</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">statusEffects</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;impaired&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;lockon&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="c1">// Difficult terrain</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="nx">placeZone</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span><span class="w"> </span><span class="nx">difficultTerrain</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">movementPenalty</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">isFlatPenalty</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a>
+<a id="__codelineno-4-10" name="__codelineno-4-10" href="#__codelineno-4-10"></a><span class="c1">// Custom hook function</span>
+<a id="__codelineno-4-11" name="__codelineno-4-11" href="#__codelineno-4-11"></a><span class="nx">api</span><span class="p">.</span><span class="nx">placeZone</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-12" name="__codelineno-4-12" href="#__codelineno-4-12"></a><span class="w">    </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="p">,</span>
+<a id="__codelineno-4-13" name="__codelineno-4-13" href="#__codelineno-4-13"></a><span class="w">    </span><span class="nx">hooks</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-14" name="__codelineno-4-14" href="#__codelineno-4-14"></a><span class="w">        </span><span class="nx">entered</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-15" name="__codelineno-4-15" href="#__codelineno-4-15"></a><span class="w">            </span><span class="kd">function</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">template</span><span class="p">,</span><span class="w"> </span><span class="nx">scene</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">context</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-16" name="__codelineno-4-16" href="#__codelineno-4-16"></a><span class="w">                </span><span class="kd">const</span><span class="w"> </span><span class="nx">api</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">game</span><span class="p">.</span><span class="nx">modules</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lancer-automations&#39;</span><span class="p">).</span><span class="nx">api</span><span class="p">;</span>
+<a id="__codelineno-4-17" name="__codelineno-4-17" href="#__codelineno-4-17"></a><span class="w">                </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyEffectsToTokens</span><span class="p">({</span><span class="w"> </span><span class="nx">tokens</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">token</span><span class="p">],</span><span class="w"> </span><span class="nx">effectNames</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;impaired&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-4-18" name="__codelineno-4-18" href="#__codelineno-4-18"></a><span class="w">            </span><span class="p">},</span>
+<a id="__codelineno-4-19" name="__codelineno-4-19" href="#__codelineno-4-19"></a><span class="w">            </span><span class="nx">asGM</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span>
+<a id="__codelineno-4-20" name="__codelineno-4-20" href="#__codelineno-4-20"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-4-21" name="__codelineno-4-21" href="#__codelineno-4-21"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-22" name="__codelineno-4-22" href="#__codelineno-4-22"></a><span class="p">});</span>
+</code></pre></div></p>
+</details>
+<hr />
+<details>
+<summary><b><code>tokensInTemplate</code></b> → <code>Array&lt;Token&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">tokensInTemplate</span><span class="p">(</span><span class="nx">templateOrResult</span><span class="p">)</span>
+</code></pre></div>
+<p>Actor-bearing Tokens currently inside a template. Wraps templatemacro's <code>findContained</code> (elevation/terrain-aware, multi-cell + donut templates). Returns <code>[]</code> if templatemacro is inactive.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>templateOrResult</kbd></td>
+<td style="text-align: left;"><code>MeasuredTemplateDocument \| MeasuredTemplate \| { template }</code></td>
+<td style="text-align: left;">A template document, its placeable, or a <code>placeZone</code> result</td>
+</tr>
+</tbody>
+</table>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">const</span><span class="w"> </span><span class="p">[</span><span class="nx">tpl</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">placeZone</span><span class="p">(</span><span class="nx">casterToken</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Blast&quot;</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">tokensInTemplate</span><span class="p">(</span><span class="nx">tpl</span><span class="p">);</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">targets</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">executeDamageRoll</span><span class="p">(</span><span class="nx">casterToken</span><span class="p">,</span><span class="w"> </span><span class="nx">targets</span><span class="p">,</span><span class="w"> </span><span class="mf">5</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;explosive&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Javelin Missile&quot;</span><span class="p">);</span>
+</code></pre></div>
+</details>
+<hr />
+<details>
+<summary><b><code>placeToken</code></b> <sup>async</sup> → <code>Promise&lt;Array&lt;TokenDocument&gt;|null&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">placeToken</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>actor</kbd></td>
+<td style="text-align: left;"><code>Actor\|Array&lt;Actor&gt;\|Array&lt;{actor, extraData}&gt;</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Single Actor, Array of Actors, or Array of <code class="highlight"><span class="p">{</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">extraData</span><span class="p">}</span></code>. Array shows selector.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>range</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Placement range</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>count</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Total tokens to place</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>extraData</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{}</span></code></td>
+<td style="text-align: left;">Default token data overrides. Flags are shallow-merged with prototype flags.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>origin</kbd></td>
+<td style="text-align: left;"><code>Token\|{x: number, y: number}</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Measurement origin</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>onSpawn</kbd></td>
+<td style="text-align: left;"><code>(newTokenDoc: TokenDocument, origin: Token) =&gt; void \| Promise&lt;void&gt;</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">newTokenDoc</span><span class="p">,</span><span class="w"> </span><span class="nx">origin</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{}</span></code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"PLACE TOKEN"</code></td>
+<td style="text-align: left;">Card header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>noCard</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Skip info card</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>disposition</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Token disposition override</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>team</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">token-factions team override</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>elevation</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Placement elevation</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>knockBackToken</code></b> <sup>async</sup> → <code>Array | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">knockBackToken</span><span class="p">(</span><span class="nx">tokens</span><span class="p">,</span><span class="w"> </span><span class="nx">distance</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<p>Interactive knockback tool. Shows movement traces and requires confirmation per token.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tokens</kbd></td>
+<td style="text-align: left;"><code>Array&lt;Token&gt;</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Tokens to knock back</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>distance</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Knockback distance in spaces</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>options</code> Object:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"KNOCKBACK"</code></td>
+<td style="text-align: left;">Card header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>description</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"Select destination for each token."</code></td>
+<td style="text-align: left;">Card description</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>triggeringToken</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">The token causing the move (for <code>onInvoluntaryMove</code> trigger)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>actionName</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Source action name (enables <code>onlyOnSourceMatch</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>item</kbd></td>
+<td style="text-align: left;"><code>Item</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Source item</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>asVoluntary</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">If true, moves go through the voluntary path (<code>onPreMove</code>/<code>onMove</code> fire, no <code>onInvoluntaryMove</code>).</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>revertMovement</code></b> <sup>async</sup> → <code>boolean</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">revertMovement</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">destination</span><span class="p">)</span>
+</code></pre></div>
+<p>Reverts the token's last recorded movement. If the token has no movement history and <code>destination</code> is provided, moves there instead.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>token</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">The token to revert</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>destination</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">}</span></code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Override destination (world coordinates)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>pickItem</code></b> <sup>async</sup> → <code>Item | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">item</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">pickItem</span><span class="p">(</span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<p>Pick an item from a list via a Choice Card.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>items</kbd></td>
+<td style="text-align: left;"><code>Array&lt;Item&gt;</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Array of items to choose from</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"PICK ITEM"</code></td>
+<td style="text-align: left;">Card title</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>description</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"Select an item:"</code></td>
+<td style="text-align: left;">Subtitle text</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>icon</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"fas fa-box"</code></td>
+<td style="text-align: left;">FontAwesome class</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>formatText</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">string</span></code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">item</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">item</span><span class="p">.</span><span class="nx">name</span></code></td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>getWeapons</code></b> → <code>any[]</code><br><b><code>reloadOneWeapon</code></b> <sup>async</sup> → <code>Promise&lt;any | null&gt;</code><br><b><code>rechargeSystem</code></b> <sup>async</sup> → <code>Promise&lt;any | null&gt;</code><br><b><code>findAura</code></b> → <code>object | null</code><br><b><code>getTokensInAura</code></b> → <code>Token[] | null</code><br><b><code>toggleAura</code></b> <sup>async</sup> → <code>Promise&lt;boolean|null&gt;</code><br><b><code>findItemByLid</code></b> → <code>any | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getWeapons</span><span class="p">(</span><span class="nx">entity</span><span class="p">)</span><span class="w">                                </span><span class="c1">// → Array&lt;Item&gt; - all weapons on an actor</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">reloadOneWeapon</span><span class="p">(</span><span class="nx">actorOrToken</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">?</span><span class="p">)</span><span class="w">         </span><span class="c1">// → Item|null - pick &amp; reload a Loading weapon</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">rechargeSystem</span><span class="p">(</span><span class="nx">actorOrToken</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="o">?</span><span class="p">)</span><span class="w">          </span><span class="c1">// → Item|null - pick &amp; recharge a depleted system</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="nx">api</span><span class="p">.</span><span class="nx">findAura</span><span class="p">(</span><span class="nx">actorOrToken</span><span class="p">,</span><span class="w"> </span><span class="nx">auraName</span><span class="p">)</span><span class="w">                   </span><span class="c1">// → object|null - find Grid-Aware Aura by name</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getTokensInAura</span><span class="p">(</span><span class="nx">actorOrToken</span><span class="p">,</span><span class="w"> </span><span class="nx">auraName</span><span class="p">)</span><span class="w">            </span><span class="c1">// → Token[]|null - who is standing in it</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">toggleAura</span><span class="p">(</span><span class="nx">actorOrToken</span><span class="p">,</span><span class="w"> </span><span class="nx">auraName</span><span class="p">,</span><span class="w"> </span><span class="nx">on</span><span class="o">?</span><span class="p">)</span><span class="w">      </span><span class="c1">// → boolean|null - flip/set aura&#39;s enabled state</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="nx">api</span><span class="p">.</span><span class="nx">findItemByLid</span><span class="p">(</span><span class="nx">actorOrToken</span><span class="p">,</span><span class="w"> </span><span class="nx">lid</span><span class="p">)</span><span class="w">                   </span><span class="c1">// → Item|null - find item by Lancer ID</span>
+</code></pre></div>
+<p>All accept <code>Actor</code> | <code>Token</code> | <code>TokenDocument</code>. <code>reloadOneWeapon</code>/<code>rechargeSystem</code> open a picker (<code>name?</code> is only the notification label). <code>toggleAura</code>'s <code>on?</code> sets state (omit to flip). Full entry in <a href="API_HOWTO.html">API_HOWTO</a>.</p>
+<p><code>getTokensInAura</code> reads GAA's live occupancy, so it is elevation aware and skips drag previews. <code>null</code> means it could not be resolved (GAA off, or no such aura), unlike <code>[]</code> for an empty aura.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>startChoiceCard</code></b> <sup>async</sup> → <code>{ choiceIdx, responderIds } | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">startChoiceCard</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<p>Presents a choice card to the user (or GM) with custom buttons and callbacks.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>mode</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"or"</code></td>
+<td style="text-align: left;"><code>"or"</code> (pick one), <code>"and"</code> (confirm all), <code>"vote"</code> (live tally), <code>"vote-hidden"</code> (hidden tally)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>choices</kbd></td>
+<td style="text-align: left;"><code>Array&lt;Object&gt;</code></td>
+<td style="text-align: left;"><code>[]</code></td>
+<td style="text-align: left;">List of choice objects (see below)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"CHOICE"</code></td>
+<td style="text-align: left;">Card header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>description</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Subtitle text</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>icon</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">FontAwesome class</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>headerClass</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Optional CSS class</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>userIdControl</kbd></td>
+<td style="text-align: left;"><code>string\|string[]\|null</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">User IDs for broadcast/vote targets</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Choice Object:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span><span class="w"> </span><span class="nx">text</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Label&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">icon</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;fas fa-check&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">callback</span><span class="o">:</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">(</span><span class="nx">data</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div></p>
+<p>For vote modes, <code>userIdControl</code> must be a non-empty array of user IDs. The creator sees all votes and confirms the winner.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>confirmCard</code></b> <sup>async</sup> → <code>boolean</code><br><b><code>askCard</code></b> <sup>async</sup> → <code>{ confirmed, responderIds }</code><br><b><code>pickCard</code></b> <sup>async</sup> → <code>entry | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">ok</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">confirmCard</span><span class="p">({</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="p">,</span><span class="w"> </span><span class="nx">confirmText</span><span class="p">,</span><span class="w"> </span><span class="nx">confirmIcon</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">ask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">askCard</span><span class="p">({</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="p">,</span><span class="w"> </span><span class="nx">yesText</span><span class="p">,</span><span class="w"> </span><span class="nx">noText</span><span class="p">,</span><span class="w"> </span><span class="nx">owner</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="kd">const</span><span class="w"> </span><span class="nx">entry</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">pickCard</span><span class="p">(</span><span class="nx">entries</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="p">,</span><span class="w"> </span><span class="nx">entryIcon</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">})</span>
+</code></pre></div>
+<p>Sugar over <code>startChoiceCard</code>. Extra options (<code>originToken</code>, <code>relatedToken</code>, <code>item</code>, <code>userIdControl</code>, ...) pass through.</p>
+<p><code>confirmCard</code> shows a single button (<code>confirmText</code>, default <code>"Confirm"</code>). Resolves <code>true</code> when clicked, <code>false</code> on dismiss.</p>
+<p><code>askCard</code> shows two buttons (<code>yesText</code>/<code>noText</code>, default <code>"Use"</code>/<code>"Skip"</code>, plus <code>yesIcon</code>/<code>noIcon</code>). <code>owner</code> (a Token) routes control to that token's owner with active-GM fallback. An explicit <code>userIdControl</code> wins. The interrupt <code>preConfirm</code> shape: <code class="highlight"><span class="k">return</span><span class="w"> </span><span class="p">(</span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">askCard</span><span class="p">({...})).</span><span class="nx">confirmed</span></code>.</p>
+<p><code>pickCard</code> maps <code>entries</code> to buttons and resolves the picked entry (dismiss = <code>null</code>). <code>label</code>: property name or <code class="highlight"><span class="p">(</span><span class="nx">entry</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">text</span></code> (default <code>entry.name</code>). <code>entryIcon</code>: fixed icon or <code class="highlight"><span class="p">(</span><span class="nx">entry</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">icon</span></code>.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>openChoiceMenu</code></b> <sup>async</sup> → <code>void</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">openChoiceMenu</span><span class="p">()</span>
+</code></pre></div>
+<p>Opens a GM-facing wizard dialog to configure and broadcast a choice card or vote to active users.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Mode</th>
+<th style="text-align: left;">Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><strong>Vote</strong></td>
+<td style="text-align: left;">Each recipient gets a vote card. GM sees live tally, picks winner.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Hidden Vote</strong></td>
+<td style="text-align: left;">Same, but voters can't see each other's selections.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Pick One (OR)</strong></td>
+<td style="text-align: left;">First player to click wins. Others dismissed.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><strong>Pick All (AND)</strong></td>
+<td style="text-align: left;">Every recipient must confirm before flow resolves.</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>moveToken</code></b> <sup>async</sup> → <code>TokenDocument | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">moveToken</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>token</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">The token to move</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>destination</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">}</span></code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Center point (world coords), snapped to the grid. If omitted, interactive picker.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>teleport</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Blink/teleport instead of a slide: plays teleport VFX and records it as a teleport in history.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>action</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Movement action key (see below). Animates the move as that type, forced (ignores walls/cost). Takes precedence over <code>teleport</code>.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>range</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>-1</code></td>
+<td style="text-align: left;">Max range highlight (interactive mode)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>cost</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Movement cost in spaces</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>canBeBlocked</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Whether engagement/overwatch can intercept</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"TELEPORT"</code> / <code>"MOVE"</code></td>
+<td style="text-align: left;">Card header (interactive mode). Defaults to TELEPORT when <code>teleport</code> is on</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>action</code> keys</strong> (the same actions the <code>M</code> movement-type wheel offers):</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Key</th>
+<th style="text-align: left;">Wheel label</th>
+<th style="text-align: left;">Availability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>walk</code></td>
+<td style="text-align: left;">Walk</td>
+<td style="text-align: left;">always</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>fly</code></td>
+<td style="text-align: left;">Fly</td>
+<td style="text-align: left;">always</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>climb</code></td>
+<td style="text-align: left;">Climb</td>
+<td style="text-align: left;">always</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>jump</code></td>
+<td style="text-align: left;">Jump</td>
+<td style="text-align: left;">always</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>blink</code></td>
+<td style="text-align: left;">Teleport</td>
+<td style="text-align: left;">always</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>ignore</code></td>
+<td style="text-align: left;">Ignore Elevation</td>
+<td style="text-align: left;">always</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>crawl</code></td>
+<td style="text-align: left;">Crawl</td>
+<td style="text-align: left;">only while prone</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>forced</code></td>
+<td style="text-align: left;">Forced</td>
+<td style="text-align: left;">GM only</td>
+</tr>
+</tbody>
+</table>
+<p><code>swim</code> and <code>burrow</code> are disabled by the Lancer system. <code>displace</code> is the internal fallback for unknown keys. The API forwards <code>action</code> straight to <code>token.document.move</code>, so it accepts any key in <code>CONFIG.Token.movement.actions</code>. <code>canSelect</code> only governs the wheel, not code-driven moves.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>getTokenOwnerUserId</code></b> → <code>Array&lt;string&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getTokenOwnerUserId</span><span class="p">(</span><span class="nx">token</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns the user ID(s) that own a token. Checks active non-GM players first, falls back to the active GM.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>token</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;">The token to check</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<h2 id="deployables-thrown-weapons">Deployables &amp; Thrown Weapons<a class="headerlink" href="#deployables-thrown-weapons" title="Permanent link">&para;</a></h2>
+<details>
+<summary><b><code>addExtraDeploymentLids</code></b> <sup>async</sup> → <code>Promise&lt;any&gt;</code><br><b><code>addExtraDeploymentActor</code></b> <sup>async</sup> → <code>Promise&lt;any&gt;</code><br><b><code>removeExtraDeploymentActor</code></b> <sup>async</sup> → <code>Promise&lt;any&gt;</code><br><b><code>getActorDeployables</code></b> → <code>string[]</code><br><b><code>getLinkedDeployables</code></b> → <code>string[]</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">addExtraDeploymentLids</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">lids</span><span class="p">)</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">addExtraDeploymentActor</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">actors</span><span class="p">)</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeExtraDeploymentActor</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">actors</span><span class="p">)</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getActorDeployables</span><span class="p">(</span><span class="nx">tokenOrActor</span><span class="p">)</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getLinkedDeployables</span><span class="p">(</span><span class="nx">source</span><span class="p">)</span><span class="w">   </span><span class="c1">// Item/Actor/Token, combined LIDs+UUIDs</span>
+</code></pre></div>
+<p>Item / Actor / Token target. Item stores on itself. Token/Actor stores on the actor. Both feed <code>getItemDeployables</code>, and <code>getActorDeployables</code> applies the tier gate with the actor as owner.</p>
+<p><strong>NPC tier:</strong> gate each entry inline - <code class="highlight"><span class="nx">addExtraDeploymentLids</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="p">[{</span><span class="w"> </span><span class="nx">lid</span><span class="p">,</span><span class="w"> </span><span class="nx">tier</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">lid</span><span class="p">,</span><span class="w"> </span><span class="nx">tier</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="p">...])</span></code> - or separately via <code class="highlight"><span class="nx">setExtraDeployableOpts</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">tier</span><span class="w"> </span><span class="p">})</span></code> (1-3, unset = all tiers). Legacy: with no explicit tiers, 3 LIDs on an NPC still read positionally as T1/T2/T3.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>target</kbd></td>
+<td style="text-align: left;"><code>Item\|Actor\|Token</code></td>
+<td style="text-align: left;">Holder</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>lids</kbd></td>
+<td style="text-align: left;"><code>string\|Array&lt;string\|{lid,tier?,range?,count?}&gt;</code></td>
+<td style="text-align: left;">LID(s), or <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">lid</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">opts</span><span class="w"> </span><span class="p">}</span></code> to gate/size each inline</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>actors</kbd></td>
+<td style="text-align: left;"><code>Actor\|string\|Array&lt;Actor\|string&gt;</code></td>
+<td style="text-align: left;">Actor doc(s) or UUID(s)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>getExtraDeployableOpts</code></b> → <code>{ range?: number; count?: number; tier?: 1 | 2 | 3 } | null</code><br><b><code>setExtraDeployableOpts</code></b> <sup>async</sup> → <code>Promise&lt;any&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getExtraDeployableOpts</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">key</span><span class="p">)</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">setExtraDeployableOpts</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="p">)</span>
+</code></pre></div>
+<p>Per-deployable range / count / tier override keyed by LID or UUID. <code>tier</code> gates the entry to an NPC owner tier. Pass <code>null</code> / <code>''</code> to clear.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>target</kbd></td>
+<td style="text-align: left;"><code>Item\|Actor\|Token</code></td>
+<td style="text-align: left;">Holder</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>key</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">LID or actor UUID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>opts</kbd></td>
+<td style="text-align: left;"><code>{ range?: number\|null, count?: number\|null, tier?: 1\|2\|3\|null }</code></td>
+<td style="text-align: left;">Patch</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>setHidePrimaryAction</code></b> <sup>async</sup> → <code>Promise&lt;any&gt;</code><br><b><code>isPrimaryActionHidden</code></b> → <code>boolean</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">setHidePrimaryAction</span><span class="p">(</span><span class="nx">itemOrUuid</span><span class="p">,</span><span class="w"> </span><span class="nx">hidden</span><span class="p">)</span><span class="w">   </span><span class="c1">// hidden defaults to true</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="nx">api</span><span class="p">.</span><span class="nx">isPrimaryActionHidden</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span>
+</code></pre></div>
+<p>Hides an item's primary (base) action row in the HUD, leaving only its deployables / extra actions. Also toggleable via the item's Extra Config dialog ("Hide primary action" checkbox). Applies to mech systems and NPC features.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>itemOrUuid</kbd></td>
+<td style="text-align: left;"><code>Item\|string</code></td>
+<td style="text-align: left;">Item doc or its UUID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>hidden</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code> (default) hides, <code>false</code> restores</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>promptLinkOrUnlinkActor</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">promptLinkOrUnlinkActor</span><span class="p">(</span><span class="nx">ownerToken</span><span class="p">)</span>
+</code></pre></div>
+<p>Picker that toggles the deployable-owner link flag (<code>ownerActorUuid</code> + <code>ownerName</code>) on the picked token. Already-linked tokens show as invalid with a click-to-unlink warning.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>ownerToken</kbd></td>
+<td style="text-align: left;"><code>Token</code></td>
+<td style="text-align: left;">Owner</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>getItemDeployables</code></b> → <code>string[]</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getItemDeployables</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="p">)</span>
+</code></pre></div>
+<p>Effective deployable LIDs for an item: <code>system.deployables</code> + extra flags, tier-gated for NPC owners (explicit <code>tier</code> opts win, honoring <code>tier_override</code>, and no explicit tiers = legacy 1-or-3 positional slice). <code class="highlight"><span class="nx">getAllItemDeployables</span><span class="p">(</span><span class="nx">item</span><span class="p">)</span></code> = same list unfiltered. <code class="highlight"><span class="nx">linkTierGate</span><span class="p">(</span><span class="nx">entry</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="o">?</span><span class="p">)</span></code> / <code class="highlight"><span class="nx">getOwnerTier</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="o">?</span><span class="p">)</span></code> expose the gate.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>item</kbd></td>
+<td style="text-align: left;"><code>Item</code></td>
+<td style="text-align: left;">The item document</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>actor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;">Optional. Owner actor (needed for NPC tier selection)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>placeDeployable</code></b> <sup>async</sup> → <code>Promise&lt;Object|null&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">placeDeployable</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>deployable</kbd></td>
+<td style="text-align: left;"><code>Actor\|string\|Array&lt;Actor\|string&gt;</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">LID, Actor, or array (shows selector)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>ownerActor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Owner</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>systemItem</kbd></td>
+<td style="text-align: left;"><code>Item</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Parent item</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>consumeUse</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Consumes system use</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>fromCompendium</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Creates new actor if not in world</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>width</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Width override</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>height</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Height override</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>range</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Placement range (overridden by <code>deployRange</code> flag)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>count</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Total to place (overridden by <code>deployCount</code> flag)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>at</kbd></td>
+<td style="text-align: left;"><code>Token\|Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Measurement origin</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"DEPLOY"</code></td>
+<td style="text-align: left;">Card title</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>noCard</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Auto-confirm</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>beginDeploymentCard</code></b> <sup>async</sup> → <code>Promise&lt;boolean&gt;</code><br><b><code>deployWeaponToken</code></b> <sup>async</sup> → <code>Promise&lt;any&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">beginDeploymentCard</span><span class="p">({</span><span class="w"> </span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">deployableOptions</span><span class="o">:</span><span class="w"> </span><span class="p">[]</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">deployWeaponToken</span><span class="p">(</span><span class="nx">weapon</span><span class="p">,</span><span class="w"> </span><span class="nx">ownerActor</span><span class="p">,</span><span class="w"> </span><span class="nx">originToken</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>beginDeploymentCard</code></td>
+<td style="text-align: left;">Resolves all deployable LIDs on an item and opens a <code>placeDeployable</code> session with actor selector.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>deployWeaponToken</code></td>
+<td style="text-align: left;">Deploys a weapon as a token on the map (for thrown weapons). Options: <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">range</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="p">,</span><span class="w"> </span><span class="nx">description</span><span class="p">,</span><span class="w"> </span><span class="nx">at</span><span class="w"> </span><span class="p">}</span></code> (<code>at</code> = measurement origin, <code>range</code> default 1).</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>openDeployableMenu</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code><br><b><code>recallDeployable</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code><br><b><code>pickupWeaponToken</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code><br><b><code>openThrowMenu</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code><br><b><code>openItemBrowser</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">openDeployableMenu</span><span class="p">(</span><span class="nx">actor</span><span class="p">)</span><span class="w">      </span><span class="c1">// open deployable management menu</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">recallDeployable</span><span class="p">(</span><span class="nx">ownerToken</span><span class="p">)</span><span class="w">    </span><span class="c1">// recall a deployed token</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">pickupWeaponToken</span><span class="p">(</span><span class="nx">ownerToken</span><span class="p">)</span><span class="w">   </span><span class="c1">// pick up a thrown weapon token</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">openThrowMenu</span><span class="p">(</span><span class="nx">actor</span><span class="p">)</span><span class="w">            </span><span class="c1">// open throw weapon menu</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">openItemBrowser</span><span class="p">(</span><span class="nx">targetInput</span><span class="p">)</span><span class="w">    </span><span class="c1">// open item browser</span>
+</code></pre></div>
+<p><code class="highlight"><span class="nx">openThrowMenu</span><span class="p">(</span><span class="nx">actor</span><span class="o">?</span><span class="p">)</span></code> defaults to the controlled token's actor. <code>recallDeployable</code>/<code>pickupWeaponToken</code> take the owner <code>Token</code>. <code class="highlight"><span class="nx">openItemBrowser</span><span class="p">(</span><span class="nx">targetInput</span><span class="p">)</span></code> fills a jQuery input with the picked item and returns its LID.</p>
+</details>
+<hr />
+<h2 id="hard-cover">Hard Cover<a class="headerlink" href="#hard-cover" title="Permanent link">&para;</a></h2>
+<details>
+<summary><b><code>spawnHardCover</code></b> <sup>async</sup> → <code>Array&lt;TokenDocument&gt; | null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">spawnHardCover</span><span class="p">(</span><span class="nx">originToken</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<p>Spawns hard cover deployable tokens on the map.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>range</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Placement range</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>count</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Number of hard covers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>size</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Size override</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>name</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"Hard Cover"</code></td>
+<td style="text-align: left;">Display name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"PLACE HARD COVER"</code></td>
+<td style="text-align: left;">Card header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>description</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Card description</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "search.share", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="assets/la-code.js"></script>
+      
+        <script src="assets/la-header.js"></script>
+      
+    
+  </body>
+</html>

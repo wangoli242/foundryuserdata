@@ -1,0 +1,705 @@
+/* Lancer Style Library - shared dialog styles. Info box uses --talent-color. */
+
+/* Panel plate. The theme setting toggles the classes below; Follow Lancer points at
+   --background-color (declared on body.theme-*), a live reference. */
+:root {
+    --la-plate: #e7e7e7;
+}
+
+:root.la-theme-dark {
+    --la-plate: #333333;
+}
+
+body.la-theme-lancer {
+    --la-plate: var(--background-color);
+}
+
+/* Tokens on body so they resolve --la-plate whether it's set on :root or body. */
+body {
+    --la-ink: oklch(from var(--la-plate) clamp(0, (0.6 - l) * 1000, 1) 0 0);
+    --la-ink-dim: color-mix(in srgb, var(--la-ink), var(--la-plate) 45%);
+    --la-edge: color-mix(in srgb, var(--la-ink), var(--la-plate) 78%);
+    --la-raise: color-mix(in srgb, var(--la-plate), var(--la-ink) 6%);
+    --la-accent: var(--primary-color, #991e2a);
+}
+
+:root.la-dark body,
+:root.la-theme-dark body {
+    --la-accent: oklch(from var(--primary-color, #991e2a) 0.5176 0.1875 h);
+}
+
+.lancer-dialog-base {
+    font-family: var(--font-primary);
+}
+
+.window-app.lancer-dialog-base,
+.application.lancer-dialog-base {
+    --la-dialog-cut: 10px;
+    clip-path: polygon(0 0,
+            calc(100% - var(--la-dialog-cut)) 0,
+            100% var(--la-dialog-cut),
+            100% 100%,
+            var(--la-dialog-cut) 100%,
+            0 calc(100% - var(--la-dialog-cut)));
+    will-change: clip-path;
+}
+
+/* Mech finish (plate) */
+.lancer-dialog-base {
+    --la-signal: var(--secondary-color, #cf7b2a);
+    --la-mono: ui-monospace, "Cascadia Mono", Consolas, "SFMono-Regular", monospace;
+}
+
+.lancer-dialog-base input:not([type=checkbox]):not([type=radio]):not([type=color]):not([type=range]),
+.lancer-dialog-base select,
+.lancer-dialog-base textarea {
+    --input-background-color: color-mix(in srgb, var(--la-plate), var(--la-ink) 8%);
+    --input-border-color: var(--la-edge);
+    --input-text-color: var(--la-ink);
+    --input-placeholder-color: color-mix(in srgb, var(--la-ink), transparent 50%);
+    background: color-mix(in srgb, var(--la-plate), var(--la-ink) 8%);
+    color: var(--la-ink);
+    border: 1px solid var(--la-edge);
+}
+
+.lancer-dialog-base select option {
+    background: var(--la-plate);
+    color: var(--la-ink);
+}
+
+.lancer-dialog-base input[type="checkbox"],
+.lancer-dialog-base input[type="radio"] {
+    --checkbox-background-color: color-mix(in srgb, var(--la-plate), var(--la-ink) 8%);
+    --checkbox-checked-color: var(--primary-color);
+}
+
+/* Corner brackets on the two square corners */
+.window-app.lancer-dialog-base::before,
+.application.lancer-dialog-base::before,
+.window-app.lancer-dialog-base::after,
+.application.lancer-dialog-base::after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    z-index: 60;
+    pointer-events: none;
+}
+
+/* Chamfer-following border ring; replaces the top-left bracket, flips with plate. */
+.window-app.lancer-dialog-base::before,
+.application.lancer-dialog-base::before {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)) 0 0 / 100% 1px no-repeat, var(--primary-color);
+    clip-path: polygon(0 0, calc(100% - var(--la-dialog-cut)) 0, 100% var(--la-dialog-cut), 100% 100%, var(--la-dialog-cut) 100%, 0 calc(100% - var(--la-dialog-cut)), 0 0,
+            1.5px 1.5px, 1.5px calc(100% - var(--la-dialog-cut)), var(--la-dialog-cut) calc(100% - 1.5px), calc(100% - 1.5px) calc(100% - 1.5px), calc(100% - 1.5px) var(--la-dialog-cut), calc(100% - var(--la-dialog-cut)) 1.5px, 1.5px 1.5px);
+}
+
+.window-app.lancer-dialog-base::after,
+.application.lancer-dialog-base::after {
+    right: 4px;
+    bottom: 4px;
+    border-bottom: 2px solid var(--primary-color);
+    border-right: 2px solid var(--primary-color);
+}
+
+/* Instrument header: signal stripe + scanline + mono subtitle */
+.lancer-dialog-header {
+    position: relative;
+    overflow: hidden;
+    border-left: 4px solid var(--la-signal);
+}
+
+.lancer-dialog-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.35;
+    background: repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.12) 0 1px, transparent 1px 4px);
+}
+
+.lancer-dialog-header>* {
+    position: relative;
+}
+
+.lancer-dialog-subtitle {
+    font-family: var(--la-mono);
+    letter-spacing: 0.05em;
+}
+
+/* Notched tabs + signal underbar */
+.lancer-dialog-base .sheet-tabs .item,
+.lancer-dialog-base .tabs>.item {
+    border-radius: 0 !important;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.lancer-dialog-base .sheet-tabs .item.active,
+.lancer-dialog-base .tabs>.item.active {
+    box-shadow: inset 0 -2px 0 0 var(--la-signal);
+}
+
+/* Chamfered border: a real border is rectangular so clip-path cuts it on the diagonal.
+   Element bg = line colour, inset ::before = fill; the gap between them is the border. */
+.lancer-item-card,
+.lancer-toggle-card,
+.lancer-scaling-card,
+.lancer-list-item,
+.lancer-action-btn {
+    --la-cut: 9px;
+    --la-line-w: 2px;
+    --la-line: color-mix(in srgb, var(--primary-color), transparent 65%);
+    --la-fill: var(--la-plate, #e4dccd);
+    position: relative;
+    isolation: isolate;
+    border: none !important;
+    border-radius: 0 !important;
+    background: var(--la-line) !important;
+    clip-path: polygon(0 0, calc(100% - var(--la-cut)) 0, 100% var(--la-cut), 100% 100%, var(--la-cut) 100%, 0 calc(100% - var(--la-cut)));
+}
+
+.lancer-item-card::before,
+.lancer-toggle-card::before,
+.lancer-scaling-card::before,
+.lancer-list-item::before,
+.lancer-action-btn::before {
+    content: "";
+    position: absolute;
+    inset: var(--la-line-w);
+    z-index: -1;
+    background: var(--la-fill);
+    clip-path: polygon(0 0, calc(100% - var(--la-cut)) 0, 100% var(--la-cut), 100% 100%, var(--la-cut) 100%, 0 calc(100% - var(--la-cut)));
+}
+
+.lancer-action-btn {
+    --la-cut: 7px;
+    --la-line: color-mix(in srgb, var(--primary-color), transparent 40%);
+    --la-fill: color-mix(in srgb, var(--la-plate, #e4dccd), var(--la-ink) 12%);
+    font-family: var(--la-mono);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-size: 11px;
+}
+
+.lancer-item-card:hover,
+.lancer-toggle-card:hover,
+.lancer-scaling-card:hover,
+.lancer-list-item:hover,
+.lancer-action-btn:hover {
+    --la-line: var(--primary-color);
+}
+
+.lancer-toggle-card.active,
+.lancer-item-card.selected,
+.lancer-scaling-card.selected,
+.lancer-list-item.selected {
+    --la-line: var(--la-signal);
+    --la-fill: color-mix(in srgb, var(--la-signal), var(--la-plate, #fff) 82%);
+}
+
+/* inputs are replaced elements (no ::before), so keep a plain border, no chamfer */
+.lancer-search-container input {
+    border-radius: 0 !important;
+    clip-path: none !important;
+}
+
+/* v13 ships a parchment/stone texture on .window-content; replace with the plate tone. */
+.lancer-dialog-base .window-content,
+form.lancer-dialog-base,
+.lancer-dialog-base .la-config-content,
+.npc-import-dialog .window-content,
+.cloud-actor-import-dialog .window-content,
+.lancer-file-import-dialog .window-content {
+    background: var(--la-plate, #e4dccd) !important;
+    background-image: none !important;
+    color: var(--la-ink);
+}
+
+/* Inline <code> chips: primary accent */
+.lancer-dialog-base code {
+    background: color-mix(in srgb, var(--primary-color), transparent 92%);
+    color: var(--la-accent);
+    padding: 1px 4px;
+    border-radius: 3px;
+}
+
+/* No-title window header */
+.lancer-dialog-base .window-header {
+    background: var(--primary-color);
+    color: var(--light-text);
+    border: none !important;
+    border-bottom: none !important;
+    border-radius: 0 !important;
+}
+
+.lancer-no-title .window-header .window-title {
+    font-size: 0 !important;
+}
+
+.lancer-dialog-base .window-header .close {
+    color: var(--light-text);
+}
+
+.lancer-dialog-base .window-header .close:hover {
+    color: color-mix(in srgb, var(--primary-color), var(--background-color) 90%);
+}
+
+/* Dialog header */
+.lancer-dialog-header {
+    background: var(--primary-color);
+    color: var(--light-text);
+    padding: 12px 16px;
+    margin: -8px -8px 16px -8px;
+}
+
+/* Battle Log GM card: opt out of the chamfer + two-layer border entirely */
+.battelog-outcome .lancer-scaling-card,
+.battelog-mvp .lancer-list-item {
+    clip-path: none !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    border: 2px solid color-mix(in srgb, var(--primary-color), transparent 70%) !important;
+}
+
+.battelog-outcome .lancer-scaling-card.selected {
+    border-color: var(--la-signal) !important;
+    background: color-mix(in srgb, var(--la-signal), transparent 85%) !important;
+}
+
+.battelog-outcome .lancer-scaling-card::before,
+.battelog-mvp .lancer-list-item::before {
+    content: none;
+}
+
+.lancer-dialog-title {
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin: 0 0 4px 0;
+    color: var(--light-text);
+}
+
+.lancer-dialog-subtitle {
+    font-size: 12px;
+    margin: 0;
+    color: var(--light-text);
+    opacity: 0.95;
+}
+
+.lancer-items-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 4px;
+}
+
+.lancer-item-card {
+    border: 3px solid color-mix(in srgb, var(--primary-color), transparent 70%);
+    border-radius: 6px;
+    padding: 16px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    min-height: 20px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.lancer-item-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px var(--darken-3);
+    transform: translateY(-2px);
+}
+
+.lancer-item-card.selected {
+    border-color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color), transparent 85%);
+    box-shadow: 0 0 16px color-mix(in srgb, var(--primary-color), transparent 50%);
+}
+
+.lancer-item-icon {
+    font-size: 28px;
+    color: var(--primary-color);
+    flex-shrink: 0;
+}
+
+.lancer-item-content {
+    flex: 1;
+}
+
+.lancer-item-name {
+    font-weight: bold;
+    font-size: 14px;
+    margin-bottom: 4px;
+}
+
+.lancer-item-details {
+    font-size: 11px;
+    color: var(--la-ink-dim);
+    line-height: 1.4;
+}
+
+.lancer-toggle-card {
+    border: 3px solid color-mix(in srgb, var(--primary-color), transparent 70%);
+    border-radius: 6px;
+    padding: 12px 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 12px;
+}
+
+.lancer-toggle-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px var(--darken-3);
+}
+
+.lancer-toggle-card.active {
+    border-color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color), transparent 85%);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--primary-color), transparent 60%);
+}
+
+.lancer-toggle-card-icon {
+    font-size: 18px;
+    color: var(--primary-color);
+    width: 20px;
+    text-align: center;
+    flex-shrink: 0;
+}
+
+.lancer-toggle-card-text {
+    flex: 1;
+    font-weight: 600;
+    user-select: none;
+}
+
+.lancer-scaling-cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.lancer-scaling-card {
+    border: 3px solid color-mix(in srgb, var(--primary-color), transparent 70%);
+    border-radius: 6px;
+    padding: 8px 10px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    text-align: center;
+}
+
+.lancer-scaling-card:hover {
+    border-color: var(--primary-color);
+    box-shadow: 0 2px 8px var(--darken-3);
+    transform: translateY(-2px);
+}
+
+.lancer-scaling-card.selected {
+    border-color: var(--primary-color);
+    background: color-mix(in srgb, var(--primary-color), transparent 85%);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--primary-color), transparent 60%);
+}
+
+.lancer-scaling-card-icon {
+    font-size: 20px;
+    color: var(--primary-color);
+    margin-bottom: 4px;
+}
+
+.lancer-scaling-card-name {
+    font-weight: bold;
+    font-size: 12px;
+    margin-bottom: 2px;
+}
+
+.lancer-scaling-card-desc {
+    font-size: 9px;
+    color: var(--la-ink-dim);
+    line-height: 1.2;
+}
+
+.lancer-search-container {
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.lancer-search-container input {
+    width: 100%;
+    padding: 10px 40px 10px 35px;
+    border: 2px solid color-mix(in srgb, var(--primary-color), transparent 70%);
+    border-radius: 6px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+}
+
+.lancer-search-container input::placeholder {
+    font-weight: 400;
+    opacity: 0.5;
+}
+
+.lancer-search-container input:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 8px color-mix(in srgb, var(--primary-color), transparent 70%);
+}
+
+.lancer-dialog-base input::placeholder,
+.lancer-dialog-base textarea::placeholder {
+    color: var(--la-ink);
+    opacity: 0.5;
+}
+
+.lancer-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--primary-color);
+    font-size: 16px;
+    pointer-events: none;
+}
+
+.lancer-action-buttons {
+    margin-top: 15px;
+    margin-bottom: 15px;
+    display: flex;
+    gap: 10px;
+}
+
+.lancer-action-btn {
+    padding: 10px 16px;
+    background: transparent !important;
+    border: 2px solid var(--la-edge);
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: var(--la-ink) !important;
+    transition: all 0.2s ease;
+    flex: 1;
+}
+
+.lancer-action-btn:hover {
+    border-color: var(--primary-color);
+    color: var(--primary-color);
+    box-shadow: 0 2px 8px var(--darken-3);
+    transform: translateY(-2px);
+}
+
+/* Themed footer buttons (match .te-btn) for every lancer-dialog-base window. */
+.lancer-dialog-base .dialog-buttons button,
+.lancer-dialog-base .dialog-button {
+    background: var(--la-plate) !important;
+    border: 2px solid var(--la-edge) !important;
+    color: var(--la-ink) !important;
+    border-radius: 6px;
+    font-weight: 600;
+    transition: all 0.15s ease;
+}
+
+.lancer-dialog-base .dialog-buttons button:hover,
+.lancer-dialog-base .dialog-button:hover {
+    background: color-mix(in srgb, var(--primary-color) 18%, var(--la-plate)) !important;
+    border-color: var(--primary-color) !important;
+}
+
+.lancer-dialog-base .dialog-buttons button i,
+.lancer-dialog-base .dialog-button i {
+    color: var(--primary-color);
+}
+
+.lancer-action-btn i {
+    margin-right: 5px;
+    color: var(--primary-color);
+}
+
+/* Info box (blue accent via --talent-color) */
+.lancer-info-box {
+    margin-top: 12px;
+    padding: 10px;
+    background: color-mix(in srgb, var(--talent-color), transparent 85%);
+    border: 2px solid color-mix(in srgb, var(--talent-color), transparent 60%);
+    border-radius: 4px;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.lancer-info-box i {
+    color: var(--talent-color);
+    font-size: 16px;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.lancer-info-box span {
+    font-size: 12px;
+    line-height: 1.4;
+}
+
+.lancer-section-title {
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 13px;
+}
+
+.lancer-list {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 8px;
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.lancer-list-item {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border: 2px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.lancer-list-item:hover {
+    background: color-mix(in srgb, var(--primary-color), transparent 85%);
+    border-color: var(--primary-color);
+    box-shadow: 0 1px 4px var(--darken-2);
+}
+
+.lancer-list-item.selected {
+    background: color-mix(in srgb, var(--primary-color), transparent 85%);
+    border-color: var(--primary-color);
+    box-shadow: 0 0 12px color-mix(in srgb, var(--primary-color), transparent 60%);
+}
+
+.lancer-hidden {
+    display: none;
+}
+
+.lancer-text-center {
+    text-align: center;
+}
+
+.lancer-text-red {
+    color: var(--primary-color);
+}
+
+.lancer-fw-600 {
+    font-weight: 600;
+}
+
+/* Multi-select dropdown: button-triggered checkbox panel styled like a native <select> */
+
+.la-multi-select {
+    position: relative;
+    flex: 1;
+}
+
+.la-multi-select-trigger {
+    all: unset;
+    display: flex;
+    align-items: center;
+    box-sizing: border-box;
+    width: 100%;
+    height: 26px;
+    background-color: var(--la-plate);
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23555'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 7px center;
+    background-size: 8px 5px;
+    border: 2px solid var(--la-edge);
+    border-radius: 4px;
+    color: var(--la-ink);
+    font-size: 0.9em;
+    font-family: inherit;
+    padding: 0 24px 0 6px;
+    cursor: pointer;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    transition: border-color 0.2s ease;
+}
+
+.la-multi-select-trigger:focus {
+    border-color: var(--primary-color);
+    outline: none;
+}
+
+.la-multi-select-panel {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    z-index: 9999;
+    background: var(--la-plate);
+    border: 1px solid var(--la-edge);
+    min-width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    padding: 4px 0;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.la-multi-select-panel.open {
+    display: block;
+}
+
+.la-multi-select-panel label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 10px;
+    font-size: 0.9em;
+    font-family: inherit;
+    font-weight: normal !important;
+    cursor: pointer;
+    white-space: nowrap;
+    color: var(--la-ink);
+}
+
+.la-multi-select-panel label:hover {
+    background: rgba(0, 0, 0, 0.07);
+}
+
+.lancer-scroll,
+.lancer-dialog-base,
+.lancer-dialog-base * {
+    scrollbar-width: thin !important;
+    scrollbar-color: var(--primary-color) transparent !important;
+}
+
+.lancer-scroll::-webkit-scrollbar,
+.lancer-dialog-base::-webkit-scrollbar,
+.lancer-dialog-base *::-webkit-scrollbar {
+    width: 8px !important;
+    background: transparent !important;
+}
+
+.lancer-scroll::-webkit-scrollbar-track,
+.lancer-dialog-base::-webkit-scrollbar-track,
+.lancer-dialog-base *::-webkit-scrollbar-track {
+    background: transparent !important;
+}
+
+.lancer-scroll::-webkit-scrollbar-thumb,
+.lancer-dialog-base::-webkit-scrollbar-thumb,
+.lancer-dialog-base *::-webkit-scrollbar-thumb {
+    background: var(--primary-color) !important;
+    border-radius: 4px !important;
+}
+
+.lancer-scroll::-webkit-scrollbar-thumb:hover,
+.lancer-dialog-base::-webkit-scrollbar-thumb:hover,
+.lancer-dialog-base *::-webkit-scrollbar-thumb:hover {
+    background: color-mix(in srgb, var(--primary-color), white 20%) !important;
+}

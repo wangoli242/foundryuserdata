@@ -1,0 +1,60 @@
+Base ref: HEAD   (override with --base <ref>)
+Changed vs HEAD: 57 files  ->  46 reviewable, 1 assets, 10 ignored
+Reviewing 46 file(s) with model "opus" (0 unchanged, skipped) ...
+
+[1/46] README.md - docs
+[2/46] doc/API_INTERACTIVE.md - docs
+[3/46] doc/API_ITEMS.md - docs
+[4/46] doc/API_EFFECTS.md - docs
+[5/46] doc/API_HUD.md - docs
+[6/46] doc/API_COMBAT.md - docs
+[7/46] module.json - internal
+[8/46] doc/feature/AUTOMATION_ENGINE.md - docs
+[9/46] doc/API_REFERENCE.md - docs
+[10/46] scripts/Battelog/telemetry-store.js - fix
+[11/46] doc/AUTOMATION_SYSTEM.md - docs
+[12/46] scripts/activations/after-fx.js - internal
+[13/46] scripts/activations/api-reference-popup.js - improvement
+[14/46] scripts/activations/flow-wraps.js - feature
+[15/46] scripts/activations/flow-steps.js - fix
+[16/46] scripts/activations/reactions-ui.js - fix
+[17/46] scripts/activations/reaction-manager.js - feature
+[18/46] scripts/activations/statroll-target-button.js - feature
+[19/46] scripts/activations/reactions-engine.js - feature
+[20/46] scripts/bonuses/duration-widget.js - improvement
+[21/46] scripts/bonuses/flagged-effects.js - improvement
+[22/46] scripts/combat/action-limits.js - improvement
+[23/46] scripts/fx/actionFX.js - fix
+[24/46] scripts/bonuses/effectManager.js - feature
+[25/46] scripts/interactive/canvas-helpers.js - improvement
+[26/46] scripts/interactive/canvas.js - internal
+[27/46] scripts/interactive/deployables.js - feature
+[28/46] scripts/interactive/tools/forceCheck.js - improvement
+[29/46] scripts/interactive/tools/haseContest.js - improvement
+[30/46] scripts/interactive/tools/advancedMeasure.js - improvement
+[31/46] scripts/interactive/tools/pickTokensCardless.js - feature
+[32/46] scripts/main.js - feature
+[33/46] scripts/setup/settings-register.js - improvement
+[34/46] scripts/setup/codemirror-hints.js - improvement
+[35/46] effectManager.js - feature
+[36/46] scripts/setup/settingsMenus.js - improvement
+[37/46] scripts/setup/status-effects.js - fix
+[38/46] scripts/tah/hud.js - fix
+[39/46] scripts/socket.js - fix
+[40/46] scripts/tools/misc-tools.js - improvement
+[41/46] scripts/typing/types.d.ts - feature
+[42/46] scripts/vision/blindedVision.js - feature
+[43/46] templates/reaction-config.html - feature
+[44/46] scripts/vision/lancerDetectionModes.js - improvement
+[45/46] templates/reaction-editor.html - feature
+[46/46] startups/itemActivations.js - feature
+
+============================================================
+46 file note(s) written.
+15 note(s) corrected by the verify pass (flagged CORRECTED in the report).
+Completeness OK: 46 reviewed + 0 errored = 46 reviewable.
+
+Approx usage this run: $3.60 (counts against your Claude Code plan).
+Notes:  tools/release_notes/notes.json
+Report: tools/release_notes/per-file.md
+Run with --synthesize to draft the changelog and dev blog.

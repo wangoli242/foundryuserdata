@@ -1,0 +1,45 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{! Sheet Header }}
+  <header class="sheet-header card clipped-bot">
+    <h1 class="name">
+      <input
+        class="lancer-input header-field"
+        name="name"
+        type="text"
+        value="{{item.name}}"
+        placeholder="{{localize 'lancer.placeholder.name'}}"
+      >
+    </h1>
+    {{{ref-portrait-img item.img "img" item}}}
+    {{#if item.isOwned}}
+      <div class="header-details">
+        <span style="max-width: fit-content">
+          UNLOCKED RANK:
+        </span>
+        <div style="max-width: fit-content">
+          {{{l-num-input "system.curr_rank"}}}
+        </div>
+      </div>
+    {{/if}}
+  </header>
+  <div class="flexcol">
+    {{#each unlocks as |unlock_array rank|}}
+      <div class="card">
+        <div class="lancer-header lancer-primary">
+          <span class="left">
+            //RANK
+            {{rank}}
+          </span>
+        </div>
+        {{#each unlock_array as |unlock unlock_index|}}
+          {{{item-preview (concat "unlocks." rank "." unlock_index) null}}}
+        {{/each}}
+      </div>
+    {{/each}}
+  </div>
+  <div class="flexcol">
+    {{{std-text-input "system.manufacturer" label="Manufacturer"}}}
+    {{{std-text-input "system.lid" label="LID:"}}}
+    {{{std-text-input "system.key" label="Key:"}}}
+  </div>
+</form>

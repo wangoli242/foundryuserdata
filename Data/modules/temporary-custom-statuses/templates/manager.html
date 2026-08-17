@@ -1,0 +1,75 @@
+<form autocomplete="off">
+    <h3>Add New Status</h3>
+
+    <div class="form-group">
+        <label>Load Saved</label>
+        <div class="form-fields">
+            <select id="savedStatusSelect">
+                <option value="">-- Select --</option>
+                {{#each savedStatuses}}
+                <option value="{{this.name}}">{{this.name}}</option>
+                {{/each}}
+            </select>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Name</label>
+        <div class="form-fields">
+            <input type="text" name="statusName" placeholder="e.g. Frozen" required>
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Initial Stack</label>
+        <div class="form-fields">
+            <input type="number" name="initialStack" value="1" min="1" step="1">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Icon</label>
+        <div class="form-fields">
+            {{filePicker target="statusIcon" type="image"}}
+            <input class="image" type="text" name="statusIcon" placeholder="path/to/icon.svg" value="{{defaultIcon}}">
+        </div>
+    </div>
+
+    <div class="form-group">
+        <label>Save to List?</label>
+        <div class="form-fields">
+            <input type="checkbox" name="saveStatus">
+        </div>
+    </div>
+
+    <button type="submit" name="submit">
+        <i class="fas fa-plus"></i> Apply Status
+    </button>
+
+    <hr>
+
+    <h3>Active Custom Statuses</h3>
+    <ul class="custom-status-list">
+        {{#each effects}}
+        <li class="flexrow" style="align-items: center; margin-bottom: 5px;">
+            <img src="{{this.img}}" width="36" height="36" style="flex: 0 0 36px; margin-right: 10px;">
+            <span style="flex: 1;">{{this.name}}</span>
+
+            <div style="flex: 0 0 auto; display: flex; align-items: center; gap: 5px;">
+                <a class="status-minus" data-id="{{this.id}}" title="Decrease Stack">
+                    <i class="fas fa-minus"></i>
+                </a>
+                <a class="status-plus" data-id="{{this.id}}" title="Increase Stack">
+                    <i class="fas fa-plus"></i>
+                </a>
+                <a class="status-delete" data-id="{{this.id}}" title="Remove Status"
+                    style="margin-left: 5px; color: #d00;">
+                    <i class="fas fa-trash"></i>
+                </a>
+            </div>
+        </li>
+        {{else}}
+        <li class="notification info">No custom statuses applied.</li>
+        {{/each}}
+    </ul>
+</form>

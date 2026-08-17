@@ -1,8 +1,8 @@
-2026/06/23-03:29:07.325156 fa3480d9dfc0 Recovering log #4
-2026/06/23-03:29:07.331398 fa3480d9dfc0 Delete type=3 #2
-2026/06/23-03:29:07.331422 fa3480d9dfc0 Delete type=0 #4
-2026/06/23-03:41:33.602463 fa346b7eefc0 Level-0 table #9: started
-2026/06/23-03:41:33.602477 fa346b7eefc0 Level-0 table #9: 0 bytes OK
-2026/06/23-03:41:33.604494 fa346b7eefc0 Delete type=0 #7
-2026/06/23-03:41:33.604706 fa346b7eefc0 Manual compaction at level-0 from '!folders!538fh2krA5B1RlgI' @ 72057594037927935 : 1 .. '!folders!RctvWpFR0fZPus4K' @ 0 : 0; will stop at (end)
-2026/06/23-03:41:33.615136 fa346b7eefc0 Manual compaction at level-1 from '!folders!538fh2krA5B1RlgI' @ 72057594037927935 : 1 .. '!folders!RctvWpFR0fZPus4K' @ 0 : 0; will stop at (end)
+2026/07/22-04:39:11.333842 fa34815adfc0 Recovering log #12
+2026/07/22-04:39:11.341325 fa34815adfc0 Delete type=3 #10
+2026/07/22-04:39:11.341348 fa34815adfc0 Delete type=0 #12
+2026/08/06-00:55:16.926683 fa346b7eefc0 Level-0 table #17: started
+2026/08/06-00:55:16.926697 fa346b7eefc0 Level-0 table #17: 0 bytes OK
+2026/08/06-00:55:16.929779 fa346b7eefc0 Delete type=0 #15
+2026/08/06-00:55:16.935559 fa346b7eefc0 Manual compaction at level-0 from '!folders!538fh2krA5B1RlgI' @ 72057594037927935 : 1 .. '!folders!RctvWpFR0fZPus4K' @ 0 : 0; will stop at (end)
+2026/08/06-00:55:16.935587 fa346b7eefc0 Manual compaction at level-1 from '!folders!538fh2krA5B1RlgI' @ 72057594037927935 : 1 .. '!folders!RctvWpFR0fZPus4K' @ 0 : 0; will stop at (end)

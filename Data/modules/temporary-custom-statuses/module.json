@@ -1,0 +1,23 @@
+{
+    "id": "temporary-custom-statuses",
+    "title": "Temporary Custom Statuses",
+    "version": "2.0.0",
+    "compatibility": {
+        "minimum": "12",
+        "verified": "13"
+    },
+    "authors": [
+        {
+            "name": "Agraael",
+            "flags": {}
+        }
+    ],
+    "esmodules": [
+        "scripts/main.js"
+    ],
+    "styles": [],
+    "description": "Allows adding temporary custom status effects to tokens",
+    "url": "https://github.com/Agraael/temporary-custom-statuses",
+    "manifest": "https://github.com/Agraael/temporary-custom-statuses/releases/latest/download/module.json",
+    "download": "https://github.com/Agraael/temporary-custom-statuses/releases/latest/download/module.zip"
+}

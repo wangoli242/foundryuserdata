@@ -1,7 +1,15 @@
-2026/06/23-03:29:07.281677 fa3481dbdfc0 Recovering log #4
-2026/06/23-03:29:07.287305 fa3481dbdfc0 Delete type=3 #2
-2026/06/23-03:29:07.287330 fa3481dbdfc0 Delete type=0 #4
-2026/06/23-03:41:33.585789 fa346b7eefc0 Level-0 table #9: started
-2026/06/23-03:41:33.588772 fa346b7eefc0 Level-0 table #9: 50530 bytes OK
-2026/06/23-03:41:33.590768 fa346b7eefc0 Delete type=0 #7
-2026/06/23-03:41:33.593318 fa346b7eefc0 Manual compaction at level-0 from '!actors!LlKEUJqYsfQZLBgZ' @ 72057594037927935 : 1 .. '!actors.items!zj6assn7Sjp0VHgw.c1jYEGNKrWKOV4KD' @ 0 : 0; will stop at (end)
+2026/07/22-04:39:11.286143 fa3481dbdfc0 Recovering log #12
+2026/07/22-04:39:11.293743 fa3481dbdfc0 Delete type=3 #10
+2026/07/22-04:39:11.293768 fa3481dbdfc0 Delete type=0 #12
+2026/08/06-00:55:16.867020 fa346b7eefc0 Level-0 table #18: started
+2026/08/06-00:55:16.875022 fa346b7eefc0 Level-0 table #18: 537693 bytes OK
+2026/08/06-00:55:16.877433 fa346b7eefc0 Delete type=0 #16
+2026/08/06-00:55:16.882465 fa346b7eefc0 Manual compaction at level-0 from '!actors!LlKEUJqYsfQZLBgZ' @ 72057594037927935 : 1 .. '!actors.items!zj6assn7Sjp0VHgw.tl7Mfcy3HXkZw6q8' @ 0 : 0; will stop at (end)
+2026/08/06-00:55:16.883174 fa346b7eefc0 Manual compaction at level-1 from '!actors!LlKEUJqYsfQZLBgZ' @ 72057594037927935 : 1 .. '!actors.items!zj6assn7Sjp0VHgw.tl7Mfcy3HXkZw6q8' @ 0 : 0; will stop at '!actors.items!zj6assn7Sjp0VHgw.tl7Mfcy3HXkZw6q8' @ 137 : 1
+2026/08/06-00:55:16.883178 fa346b7eefc0 Compacting 1@1 + 1@2 files
+2026/08/06-00:55:16.890551 fa346b7eefc0 Generated table #19@1: 37 keys, 22187 bytes
+2026/08/06-00:55:16.890561 fa346b7eefc0 Compacted 1@1 + 1@2 files => 22187 bytes
+2026/08/06-00:55:16.892536 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
+2026/08/06-00:55:16.892591 fa346b7eefc0 Delete type=2 #14
+2026/08/06-00:55:16.892674 fa346b7eefc0 Delete type=2 #18
+2026/08/06-00:55:16.910038 fa346b7eefc0 Manual compaction at level-1 from '!actors.items!zj6assn7Sjp0VHgw.tl7Mfcy3HXkZw6q8' @ 137 : 1 .. '!actors.items!zj6assn7Sjp0VHgw.tl7Mfcy3HXkZw6q8' @ 0 : 0; will stop at (end)

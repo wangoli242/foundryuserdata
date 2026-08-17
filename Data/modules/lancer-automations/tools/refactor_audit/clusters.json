@@ -1,0 +1,2565 @@
+[
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x6",
+  "verdict": {
+   "verdict": "factor",
+   "what": "teardown of a range-pulse setup: remove wavePulse ticker, destroy rangeHighlight and pulseGraphic",
+   "helper": "teardownRangePulse(wavePulse, rangeHighlight, pulseGraphic) \u2014 removes wavePulse from ticker (null-safe) then calls destroyGraphics on both graphics",
+   "home": "scripts/interactive/canvas-helpers.js",
+   "call_sites": 6,
+   "effort": "low",
+   "notes": "Five of the six sites are byte-for-byte identical. The sixth (canvas-helpers.js:902) additionally removes a followTick first and guards wavePulse with an if \u2014 both already handled if the helper does a null-safe remove. The four tool files (chooseToken, moveToken, placeToken, placeZone) each return this triple as the teardown from their build: callback, making them ideal call sites. The helper should be exported from canvas-helpers.js since destroyGraphics and the ticker pattern already live there."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 886,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 971,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 180,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/moveToken.js",
+    "line": 210,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 213,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeZone.js",
+    "line": 138,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x5",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "wrapping three named handlers (move/click/key) with a `safe` factory and assigning to outer closure vars",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "Each `safe` is produced by a different `makeSafe(label, cleanup)` call scoped to its own closure, and the handlers are all distinct local functions. The three assignments are trivially simple \u2014 any helper would need to accept `safe` plus three handler args and return an object for destructured assignment, making the call site at least as verbose as the three lines it replaces. shape-placement-engine.js also wraps a fourth handler (safeWheel) that does not appear in the others, so no single helper fits all five sites cleanly. Repeated shape is coincidental boilerplate with zero shared logic."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 626,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/knockBackToken.js",
+    "line": 521,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/moveToken.js",
+    "line": 340,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 257,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 675,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `isEnabled` in 4 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "safely read a module setting with a false fallback via try/catch around game.settings.get(MODULE_ID, key)",
+   "helper": "getModuleSetting(key, fallback = false)",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 4,
+   "effort": "low",
+   "notes": "tokenStatBar and tokenStatHint are identical and trivially merged. speed-provider and elevation differ only in the setting key and coercion style (implicit boolean vs !! vs === true), all equivalent. The try/catch pattern is the real duplication. Helper should return !!game.settings.get(MODULE_ID, key) to normalise to boolean consistently. Each call site just passes its own SETTING constant."
+  },
+  "members": [
+   {
+    "rel": "scripts/combat/speed-provider.js",
+    "line": 11,
+    "name": "isEnabled"
+   },
+   {
+    "rel": "scripts/movement/elevation.js",
+    "line": 66,
+    "name": "isEnabled"
+   },
+   {
+    "rel": "scripts/tah/tokenStatBar.js",
+    "line": 115,
+    "name": "isEnabled"
+   },
+   {
+    "rel": "scripts/tah/tokenStatHint.js",
+    "line": 59,
+    "name": "isEnabled"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x4",
+  "verdict": {
+   "verdict": "factor",
+   "what": "disable canvas token interactivity and suppress layer click before an interactive tool operation",
+   "helper": "beginTokenInteractionSuppression() \u2192 { prevInteractive, restoreLayerClick }",
+   "home": "scripts/interactive/tools/misc-tools.js",
+   "call_sites": 4,
+   "effort": "low",
+   "notes": "The three lines are identical across all four sites and form a clear setup pair with a teardown pattern. The helper should return { prevInteractive, restoreLayerClick } so callers can restore state afterward. Confirm that suppressTokenLayerClick() is already importable from a shared location, or co-locate the helper there."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 767,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 325,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 75,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 256,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x5",
+  "verdict": {
+   "verdict": "factor",
+   "what": "registering the three interactive-mode event listeners (pointermove, click, keydown) onto canvas.stage and document",
+   "helper": "registerInteractiveListeners(safeMove, safeClick, safeKey)",
+   "home": "scripts/interactive/tools/interactive-utils.js",
+   "call_sites": 5,
+   "effort": "low",
+   "notes": "All five sites use identical variable names and identical event names/phases; the only variance is the local names of the handler functions, which become parameters. A paired removeInteractiveListeners helper for teardown is likely worthwhile too, as the off() calls probably mirror this same pattern."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 630,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1781,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/knockBackToken.js",
+    "line": 524,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 260,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 678,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x16",
+  "verdict": {
+   "verdict": "factor",
+   "what": "fully suppress a DOM/Foundry event with preventDefault + stopPropagation + stopImmediatePropagation",
+   "helper": "suppressEvent(event)",
+   "home": "scripts/interactive/tools/misc-tools.js",
+   "call_sites": 16,
+   "effort": "low",
+   "notes": "Identical three-liner across 5 files and 16 sites with no variation. A one-line call to suppressEvent(event) is clearer at each call site and the helper is trivially testable. Low risk: no logic, pure side-effects on the event object."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 565,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 574,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 587,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 605,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 595,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 681,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 810,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1690,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1706,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1722,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1736,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/knockBackToken.js",
+    "line": 482,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/knockBackToken.js",
+    "line": 497,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 227,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 638,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 653,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `rebuild` in 3 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "function named `rebuild` that re-renders a UI component or canvas region",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "All four are closures capturing completely different local state: canvas-helpers.js rebuilds a pulse-animation graphics layer, movement-reach-highlight.js repaints a movement-reach overlay, and the two item-helpers.js instances rebuild jQuery pip-UI rows for weapon/item state. They share only the name and the pattern of being a no-arg re-render closure \u2014 their inputs, outputs, and domains are entirely unrelated. Factoring them would create a meaningless abstraction with no shared logic to extract."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 934,
+    "name": "rebuild"
+   },
+   {
+    "rel": "scripts/interactive/movement-reach-highlight.js",
+    "line": 132,
+    "name": "rebuild"
+   },
+   {
+    "rel": "scripts/tah/item-helpers.js",
+    "line": 375,
+    "name": "rebuild"
+   },
+   {
+    "rel": "scripts/tah/item-helpers.js",
+    "line": 601,
+    "name": "rebuild"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `dispose` in 3 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "cleanup/teardown methods named `dispose`",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "All five `dispose` implementations tear down different combinations of resources (ticker callbacks, DOM event listeners, PIXI graphics, canvas stage listeners, layer state). The name is shared but each does entirely distinct work scoped to its own closure/object. The canvas-helpers.js instances (lines 272 and 337) share `removeEventListener` for `keydown`/`keyup` plus `destroyGraphics(label)` but differ in an extra `blur` listener, and both are tiny 3\u20134 line closures where extraction would add indirection for no real gain. The shape-placement-engine `dispose` is an orchestrator that calls other disposals. The pickSingleTargetToggle `dispose` is empty. No shared helper would serve more than one or two sites without parameterizing away all the actual logic."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 222,
+    "name": "dispose"
+   },
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 272,
+    "name": "dispose"
+   },
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 337,
+    "name": "dispose"
+   },
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 438,
+    "name": "dispose"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 46,
+    "name": "dispose"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `injectWhenReady` in 3 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Poll every 50ms up to 2000ms for a form element, then call injectButton(state, form)",
+   "helper": "pollAndInject(findForm: () => Element|null, state, onFound?: (form) => void)",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "The only meaningful differences are (1) the form-finder expression and (2) whether injectButton is awaited with .catch \u2014 both trivially parameterised. statroll doesn't use .catch so the helper should apply it uniformly or accept an optional error handler. Warning message strings differ but can be standardised or passed as a param."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/accdiff-target-button.js",
+    "line": 46,
+    "name": "injectWhenReady"
+   },
+   {
+    "rel": "scripts/activations/damage-target-button.js",
+    "line": 79,
+    "name": "injectWhenReady"
+   },
+   {
+    "rel": "scripts/activations/statroll-target-button.js",
+    "line": 38,
+    "name": "injectWhenReady"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `has` in 3 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "three unrelated `has` methods doing different things: status effect check, Map/Set membership, and array index check",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Same method name but entirely different domains and implementations. No shared logic exists to extract."
+  },
+  "members": [
+   {
+    "rel": "scripts/combat/overwatch.js",
+    "line": 501,
+    "name": "has"
+   },
+   {
+    "rel": "scripts/interactive/range-pulse-manager.js",
+    "line": 97,
+    "name": "has"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 274,
+    "name": "has"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `clear` in 3 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "functions named 'clear' that each reset their own unrelated state",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Three completely different domains: request-set cleanup, array reset, and canvas layer teardown. Sharing only the name 'clear'; no common logic whatsoever."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/range-pulse-manager.js",
+    "line": 92,
+    "name": "clear"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 292,
+    "name": "clear"
+   },
+   {
+    "rel": "scripts/movement/token-ruler.js",
+    "line": 150,
+    "name": "clear"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `enabled` in 3 files",
+  "verdict": {
+   "verdict": "maybe",
+   "what": "safely read a boolean Foundry VTT module setting with try/catch fallback to false",
+   "helper": "getSettingEnabled(moduleId, key): boolean",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "Members 1 and 2 are clearly the same pattern (try/catch + !! coercion). Member 3 is missing the try/catch guard, which is likely an oversight \u2014 factoring would also fix that inconsistency. The helper is trivial but unifies the safe-read pattern across all three feature modules. Only worth doing if the project already has a shared tools/utilities file; otherwise the cure is more overhead than the disease."
+  },
+  "members": [
+   {
+    "rel": "scripts/combat/per-frequency-tags.js",
+    "line": 7,
+    "name": "enabled"
+   },
+   {
+    "rel": "scripts/interactive/presence.js",
+    "line": 11,
+    "name": "enabled"
+   },
+   {
+    "rel": "scripts/tah/index.js",
+    "line": 12,
+    "name": "enabled"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "cancel and clear the single-target picker in one shot",
+   "helper": "cancelAndClearSingleTargetPicker() \u2192 void",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "All three sites are identical; the conditional guard is part of the pattern. Trivial to extract and reduces the risk of forgetting the clearSingleTargetShape() call in future sites."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/accdiff-target-button.js",
+    "line": 134,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/damage-target-button.js",
+    "line": 194,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/statroll-target-button.js",
+    "line": 184,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `injectButton` in 3 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "function named `injectButton` that injects targeting UI into a form",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "All three share only the name and the broad concept of 'inject something into a form'. accdiff and statroll share a small 'find-or-create .accdiff-ranges section' snippet (~6 lines, same HTML), but their post-creation logic diverges completely: accdiff calls buildTargetingUI with attack-specific options, damage builds a different DOM structure with damage-specific autoStart/pulseOwner logic, and statroll builds a standalone single-target picker button with its own click handler \u2014 no buildTargetingUI call at all. The guard checks differ (different sentinel selectors: .la-accdiff-target-button vs .la-statroll-target-button), the insertion targets differ, and the state they read differs. These are three independently authored functions that happen to be named the same by module convention. Even the accdiff/statroll section-creation overlap is too small and context-specific to justify a shared helper without complicating both callers."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/accdiff-target-button.js",
+    "line": 65,
+    "name": "injectButton"
+   },
+   {
+    "rel": "scripts/activations/damage-target-button.js",
+    "line": 98,
+    "name": "injectButton"
+   },
+   {
+    "rel": "scripts/activations/statroll-target-button.js",
+    "line": 56,
+    "name": "injectButton"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `open` in 3 files",
+  "verdict": {
+   "verdict": "maybe",
+   "what": "Panel teardown + anchor assignment + HUD-relative positioning calculation (topInHud / parentCol / leftInHud) repeated verbatim across all three open() methods",
+   "helper": "positionHudPanel(panel, anchorRow, hudEl) => { top, left } \u2014 applies position:absolute CSS and returns coordinates for optional viewport clamping",
+   "home": "scripts/tah/hud-panel-utils.js (or a shared base class _HudPanel with _resetPanel / _positionPanel instance methods)",
+   "call_sites": 3,
+   "effort": "medium",
+   "notes": "The teardown block (stop/remove/null) and anchor assignment are trivial boilerplate; the real win is the parentCol / leftInHud / topInHud calculation which is non-trivial and copy-pasted verbatim in at least glossary-panel and log-panel (status-panel is truncated but almost certainly has it too). However the three open() methods diverge immediately after positioning, so extraction is limited to a helper or base-class method rather than a full shared open(). Risk: status-panel adds viewport-clamping after positioning that the others may not share, so the helper boundary needs care. A lightweight base class with _resetPanel() and _positionPanel() would be cleaner than a standalone util function."
+  },
+  "members": [
+   {
+    "rel": "scripts/tah/glossary-panel.js",
+    "line": 68,
+    "name": "open"
+   },
+   {
+    "rel": "scripts/tah/log-panel.js",
+    "line": 53,
+    "name": "open"
+   },
+   {
+    "rel": "scripts/tah/status-panel.js",
+    "line": 166,
+    "name": "open"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Format a stat bonus label as either 'name = val' (replace mode) or 'name \u00b1val' (add mode)",
+   "helper": "formatStatBonusLabel(name, bonus) => string",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "All three sites are pure display/rendering with identical two-line logic. Only 'name' differs at the call site (detail-renderers uses bonus.stat ?? bonus.id ?? '' with a 'kind' fallback; the other two use bonus.stat with bonus.stat as fallback), so name is already computed before the snippet \u2014 the helper just takes (name, bonus) and encapsulates the statMode check and sign formatting. No behavioral risk."
+  },
+  "members": [
+   {
+    "rel": "scripts/bonuses/effectManager.js",
+    "line": 2414,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/detail-renderers.js",
+    "line": 517,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/tah/status-panel.js",
+    "line": 15,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Full `getBonusDetailStr/String(bonus)` function triplicated across three files \u2014 the flagged 3-line snippet is just the most-identical fragment of a completely duplicated display-string formatter for bonus objects",
+   "helper": "getBonusDetailString(bonus) \u2192 string",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "medium",
+   "notes": "The three copies diverge in meaningful ways that must be reconciled before factoring: (1) detail-renderers.js uses `bonus.lid ?? bonus.type` to handle both Lancer-system and LA-custom bonus shapes, while the other two use `bonus.type` only; (2) effectManager.js references the `DAMAGE_CHANGE_TYPE_ALL` constant for the change_type sentinel, while the others hardcode `'all'`; (3) range handling differs significantly \u2014 detail-renderers.js parses `range_types`/`weapon_types` maps via an `activeKeys()` helper, effectManager.js uses `bonus.rangeType`/`bonus.rangeMode`, and status-panel.js does the same but more tersely. The detail-renderers.js version is the most evolved and should be the canonical base. Consolidate into a shared helper, normalise the `lid`/`type` lookup and the `DAMAGE_CHANGE_TYPE_ALL` constant, then import it in all three sites."
+  },
+  "members": [
+   {
+    "rel": "scripts/bonuses/effectManager.js",
+    "line": 2420,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/detail-renderers.js",
+    "line": 523,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/tah/status-panel.js",
+    "line": 21,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Format a damage bonus object into a human-readable label string (change_type / replace / add_base / add modes)",
+   "helper": "formatDamageBonusLabel(bonus) \u2192 string",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "All three sites duplicate the full ~10-line block, not just the flagged 2 lines. The only divergence is effectManager.js uses a DAMAGE_CHANGE_TYPE_ALL constant where the other two hardcode 'all' \u2014 the helper should accept or import that constant. The surrounding per-bonus-type dispatch (tag, range, immunity, etc.) also differs per site, so only the damage branch needs extracting."
+  },
+  "members": [
+   {
+    "rel": "scripts/bonuses/effectManager.js",
+    "line": 2432,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/detail-renderers.js",
+    "line": 535,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/tah/status-panel.js",
+    "line": 33,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Hex cube-coordinate rounding (round q/r/s and fix largest-error axis)",
+   "helper": "hexCubeRound(q, r, s) \u2192 {q, r, s}",
+   "home": "scripts/tools/hex-utils.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "Textbook hex cube-round algorithm; all three sites do identical math for the same geometric purpose. Extract the full rounding block (including the dq>dr&&dq>ds / dr>ds branches) into one pure function. Low risk: no side effects, purely arithmetic."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/area-geometry.js",
+    "line": 44,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 599,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/movement/hex-drag-stabilizer.js",
+    "line": 11,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Create and style a fixed-position `.la-stack-picker` dropdown container div with identical CSS",
+   "helper": "createStackPickerContainer(screenX, screenY) \u2192 HTMLDivElement",
+   "home": "scripts/interactive/canvas-helpers.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "All three sites produce identical output \u2014 same class, same CSS string verbatim. The helper just takes screenX/screenY and returns the div; callers append children as before. Low risk: no behavioral differences to reconcile, only the inline style template changes."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 1115,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1568,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 158,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x4",
+  "verdict": {
+   "verdict": "factor",
+   "what": "register safeMove/safeClick/safeKey handlers onto canvas.stage and document in one block",
+   "helper": "bindStageListeners(safe, moveHandler, clickHandler, keyHandler) \u2192 { safeMove, safeClick, safeKey }",
+   "home": "scripts/interactive/tools/tool-utils.js",
+   "call_sites": 5,
+   "effort": "low",
+   "notes": "Pattern is actually 6 lines (including the safe() wrapping assignments) and appears in 5 files \u2014 the 4 flagged plus moveToken.js. In knockBackToken/pickSingleTargetToggle/placeToken/moveToken the wrapping is trivial (safe(handler)), so those 4 can use the full helper. chooseToken.js wraps safeMove and safeClick with extra logic before registering, so it can only use a narrower 3-line variant (or pass pre-built handlers in). The helper should return { safeMove, safeClick, safeKey } so each tool's cleanup closure can still .off() them. Main risk: the outer-scope variable assignments (needed for cleanup) must move to destructuring at the call site \u2014 easy mechanical change but touches 5 files."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1780,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/knockBackToken.js",
+    "line": 523,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 259,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 677,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Format a damage bonus object into a human-readable label string (handles change_type, replace, add_base, and default modes)",
+   "helper": "formatDamageBonusLabel(bonus) \u2192 string",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "All three sites duplicate the entire damage-mode block, not just the two flagged lines \u2014 the full ~10-line function is identical. Only minor divergence: effectManager.js uses the DAMAGE_CHANGE_TYPE_ALL constant where the other two use the literal 'all'; the shared helper should accept an optional constant or default to 'all'. Extracting removes a meaningful maintenance hazard since the mode strings and formatting logic would otherwise drift independently."
+  },
+  "members": [
+   {
+    "rel": "scripts/bonuses/effectManager.js",
+    "line": 2433,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/detail-renderers.js",
+    "line": 536,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/tah/status-panel.js",
+    "line": 34,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x52",
+  "verdict": {
+   "verdict": "maybe",
+   "what": "constant pair activationType:\"code\"/activationMode:\"instead\" always co-occur as the activation descriptor header before an activationCode function body",
+   "helper": "codeActivation(fn: AsyncFunction): {activationType, activationMode, activationCode}",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 20,
+   "effort": "low",
+   "notes": "The two constant properties are always paired and carry no per-site variation, so a tiny factory removes noise. However the function signature itself (triggerType, triggerData, reactorToken, item, activationName, api) also repeats but cannot be abstracted away since each body differs \u2014 the helper only sheds 2 property lines per site. Worth doing if the file already uses a consistent object shape for registrations; skip if entries are ever extended with additional per-activation keys that would break a spread-based approach."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 243,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 400,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 445,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 583,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1035,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1115,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1166,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1298,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1353,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1409,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1452,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1479,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1500,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1724,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1780,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1809,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1825,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1960,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 2051,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 2071,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 2088,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 360,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 821,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 952,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1058,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1437,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1473,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1616,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1675,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1710,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1805,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2005,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2213,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2272,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2417,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2504,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2587,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2941,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3234,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3263,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3312,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3342,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3412,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3560,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3585,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3717,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3852,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3994,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4028,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4095,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4202,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4250,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Build and display a fixed-position token-stack popup: container styling, per-token rows (icon+name+check), hover highlight, viewport-edge clamping, and outside-click dismissal",
+   "helper": "createStackPicker(tokens, screenX, screenY, { isActive(token): bool, onPick(token, event): void, onClose(): void }): HTMLElement",
+   "home": "scripts/interactive/stack-picker.js",
+   "call_sites": 3,
+   "effort": "medium",
+   "notes": "All three implementations share identical container cssText, row layout (img+span+check icon), mouseenter/mouseleave highlight, and getBoundingClientRect viewport-clamp logic. Differences are only in the selection-state predicate (callback vs Set.has vs game.user.targets) and the click action \u2014 both are trivially injected as callbacks. One caveat: canvas-helpers.js adds an Escape keydown handler that the other two omit; the helper should support an optional onEscape param or let callers register it against the returned element. The row innerHTML uses token.document.texture.src and token.name, which are uniform across all three, so no domain mismatch."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 1116,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 1569,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 159,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x12",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "three object literal properties that are the default/standard configuration for code-mode reaction hooks",
+   "helper": "",
+   "home": "",
+   "call_sites": 12,
+   "effort": "high",
+   "notes": "These three properties are part of individual object literals (registration descriptors), not standalone repeated logic. Factoring them into a shared constant or spread would add indirection without removing real duplication \u2014 each object has many other unique fields. This is boilerplate that belongs inline; extracting it would obscure the shape of each descriptor without meaningful benefit."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 399,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 645,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 715,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 819,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 887,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 911,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 943,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 974,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1315,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 359,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3932,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3955,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x29",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "object literal shape required by the activation registration API",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "These are not duplicated logic \u2014 they are framework-required property declarations on distinct activation objects, each with a different `evaluate` body. The snippet is the object shape contract imposed by the registration API. Factoring would require wrapping each unique evaluate implementation in a callback passed to a factory, which adds indirection for zero reduction in actual logic. This is boilerplate, not duplication."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 197,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 315,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 788,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1544,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1582,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1694,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 21,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 173,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 296,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 863,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 887,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 907,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1150,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1764,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1862,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1886,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1950,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2090,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2146,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2314,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2443,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2535,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2902,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2983,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3381,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3469,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3654,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3894,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4145,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "maybe",
+   "what": "Configure a PIXI text label (center-anchor, hidden, add to canvas.stage as non-interactive) \u2014 identical 3-line idiom in all three cursor-elevation label setups",
+   "helper": "makeCursorElevLabel(options) \u2192 PIXI.Text \u2014 creates via makeText, sets anchor(0.5), visible=false, adds to canvas.stage with eventMode='none', returns label",
+   "home": "scripts/interactive/tools/interactiveToolHelpers.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "The 3 flagged lines are byte-for-byte identical in purpose and execution across all three sites. However, the preceding makeText() call differs slightly (chooseToken uses fontSize:16 with align:'center'; the other two use Math.max(14, canvas.grid.size*0.22) without align), so a helper that absorbs only the 3-line idiom saves 6 lines but little cognitive load. The bigger win would be absorbing the full makeText()+setup into makeCursorElevLabel(options) and passing the differing options as a parameter \u2014 that reduces a ~6-line block to a single call at all three sites. Worth doing if a shared interactiveToolHelpers module already exists or is being introduced; marginal if it requires creating new infrastructure solely for this."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/tools/chooseToken.js",
+    "line": 265,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/knockBackToken.js",
+    "line": 84,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/moveToken.js",
+    "line": 99,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x7",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "object literal property block for activation registration entries",
+   "helper": "",
+   "home": "",
+   "call_sites": 7,
+   "effort": "high",
+   "notes": "This is a required object shape imposed by the framework's activation registration API \u2014 every entry must declare activationType, activationMode, and evaluate. The three properties always appear together because they are mandatory fields of the same schema, not because logic is duplicated. Factoring them out would not reduce code (the evaluate functions have unique bodies each time), would obscure the registration contract, and would fight the framework's expected object literal shape. Classic boilerplate false positive."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 2128,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 2173,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 2204,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 2249,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1009,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2045,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3068,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x10",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "three activation config properties always set together",
+   "helper": "",
+   "home": "",
+   "call_sites": 10,
+   "notes": "These are object literal properties spread across registration call sites \u2014 they are configuration declarations, not logic. Extracting them into a shared constant (e.g. `const BASE_ACTIVATION = {...}`) would add indirection for zero behavioral benefit: readers would have to look up what BASE_ACTIVATION means instead of reading the values inline. The properties are also likely required fields in a framework-dictated shape, making their repetition expected boilerplate rather than accidental duplication. A spread-based helper would also break if any call site needs to override one of these values. Not a genuine factorization win."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 30,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 314,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 787,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 1763,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2004,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2044,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2212,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2271,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4144,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4249,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x5",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "object literal property sequence for activation handler shape",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "This is a required framework-imposed object shape, not duplicated logic. The three properties form the mandatory signature for registering an activation handler \u2014 'activationType', 'activationMode', and the 'evaluate' function signature are all required by the registration API. Every handler must have exactly this shape, so the repetition is structural boilerplate dictated by the framework contract, not an accidental duplication. Factoring this out (e.g. a helper that constructs the object) would add indirection without removing any real duplication, since the evaluate function bodies all differ."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1879,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2471,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2623,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2695,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 3020,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "wrap move/click/key handlers in safe() and register them as canvas pointermove, canvas click, and document keydown listeners",
+   "helper": "registerToolListeners(safe, moveHandler, clickHandler, keyHandler) \u2192 { safeMove, safeClick, safeKey }",
+   "home": "scripts/interactive/tools/interactiveToolUtils.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "The flagged 3 lines are actually part of a 6-line block (lines 521-526, 257-262, 675-680) that is byte-for-byte identical across all three tools. The helper must return {safeMove, safeClick, safeKey} so each tool's doCleanup can still remove the correct listener references. Slight difference: knockBackToken and placeToken follow with startToolHeartbeat, pickSingleTargetToggle does not \u2014 but those are separate calls, so they are unaffected by the factoring."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/tools/knockBackToken.js",
+    "line": 522,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/pickSingleTargetToggle.js",
+    "line": 258,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/interactive/tools/placeToken.js",
+    "line": 676,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `apply` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "Two filter classes share identical `apply` body; two other single-line `super.apply` delegations are unrelated",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "The two identical bodies in customFilters.js (lines 195 and 500) are the real duplication \u2014 they belong to two different filter classes and could share a mixin or base-class `apply`. The two single-line super.apply calls in lancerDetectionModes.js are trivial framework overrides with no shared logic. The cluster mixes genuinely different things; the super.apply lines are not factoring candidates. The customFilters.js duplication is a separate, real opportunity but is within one file and would require extracting a base class or standalone helper \u2014 that warrants its own targeted review rather than being bundled here."
+  },
+  "members": [
+   {
+    "rel": "scripts/filters/customFilters.js",
+    "line": 195,
+    "name": "apply"
+   },
+   {
+    "rel": "scripts/filters/customFilters.js",
+    "line": 500,
+    "name": "apply"
+   },
+   {
+    "rel": "scripts/vision/lancerDetectionModes.js",
+    "line": 582,
+    "name": "apply"
+   },
+   {
+    "rel": "scripts/vision/lancerDetectionModes.js",
+    "line": 632,
+    "name": "apply"
+   }
+  ]
+ },
+ {
+  "kind": "body",
+  "label": "similar bodies: handleRemoteAttackEvent, handleRemoteDamageEvent, handleRemoteDamageUndoEvent",
+  "verdict": {
+   "verdict": "factor",
+   "what": "GM guard + combat telemetry flag check + appendEvent call",
+   "helper": "handleRemoteBattlelogEvent(combatId, event)",
+   "home": "scripts/Battelog/battelog-utils.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "All three bodies are byte-for-byte identical. The helper is pure delegation with no domain-specific logic, so extracting it loses nothing in clarity."
+  },
+  "members": [
+   {
+    "rel": "scripts/Battelog/attack-capture.js",
+    "line": 111,
+    "name": "handleRemoteAttackEvent"
+   },
+   {
+    "rel": "scripts/Battelog/damage-capture.js",
+    "line": 191,
+    "name": "handleRemoteDamageEvent"
+   },
+   {
+    "rel": "scripts/Battelog/damage-capture.js",
+    "line": 204,
+    "name": "handleRemoteDamageUndoEvent"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `place` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "function name 'place' shared across unrelated operations",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "All three snippets do fundamentally different work. Snippets 1 and 2 both use the `canvas.grid.size * 0.4` offset formula for label positioning, but snippet 1 conditionally shows a label on shift+cursor and snippet 2 queries a mark state and sets text/tint \u2014 different inputs, different logic, different outputs. Snippet 3 (shape-placement-engine.js) is entirely unrelated: it fires placement callbacks and manages lifecycle (refresh/dispose). The name collision is coincidental; no shared helper would serve all three."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 246,
+    "name": "place"
+   },
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 299,
+    "name": "place"
+   },
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 463,
+    "name": "place"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "inline object literal with triggers/onlyOnSourceMatch/actionType fields",
+   "helper": "",
+   "home": "",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "These are data literals embedded in object definitions, not callable logic. Extracting them into a shared constant would not reduce duplication in any meaningful way \u2014 the fields are boilerplate configuration for the framework's registration shape. A shared constant would obscure intent, hurt readability, and make each registration harder to understand in isolation without any real maintenance benefit."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1472,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1753,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 945,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x6",
+  "verdict": {
+   "verdict": "factor",
+   "what": "lazy-init embedButtons array then push an anchor tag with class `alt-struct-flow-button lancer-button`, varying only in data-flow-type, data-actor-id, icon, label, and optional extra data attributes",
+   "helper": "pushEmbedButton(state, flowType, actorUuid, icon, label, extraAttrs = {})",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 6,
+   "effort": "low",
+   "notes": "All 6 sites share the identical init guard and the same outer HTML shape (class, data-flow-type, data-actor-id, icon, label). The only variation is the flow type string, icon class, label text, and 1\u20132 optional extra data attributes (data-check-type, data-rem-struct). A single helper that accepts those as parameters eliminates all repetition cleanly. Indentation inconsistency across sites (tabs vs spaces) is cosmetic and not a risk. The helper can live in misc-tools.js or a new scripts/alt-struct/alt-struct-helpers.js if preferred to keep alt-struct concerns co-located."
+  },
+  "members": [
+   {
+    "rel": "scripts/alt-struct/stress.js",
+    "line": 180,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/alt-struct/stress.js",
+    "line": 247,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/alt-struct/stress.js",
+    "line": 382,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/alt-struct/stress.js",
+    "line": 408,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/alt-struct/stress.js",
+    "line": 591,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/alt-struct/structure.js",
+    "line": 1036,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x5",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "three fields that are part of a larger repeated config block in declarative registry objects",
+   "helper": "",
+   "home": "",
+   "call_sites": 5,
+   "effort": "medium",
+   "notes": "These are declarative data objects in an activation registry, not imperative logic. The three flagged fields are only part of a larger repeated block (triggerSelf, triggerOther, autoActivate, outOfCombat, activationType, activationMode are also identical). A spread-defaults constant (e.g. QUICK_SELF_ACTIVATION_DEFAULTS) would obscure the self-contained intent of each registry entry and make individual overrides less obvious. Boilerplate in declarative data registries is expected and readable; extracting it buys nothing over a comment convention. Additionally, the itemActivations.js site wraps the object inside a reactions:[] array while the reactions-registry.js sites are top-level properties, making a single shared helper awkward to apply uniformly."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1445,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1493,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1802,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1818,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 2580,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "default trigger/action config block for Full Action activations",
+   "helper": "",
+   "home": "",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "This is a data literal fragment inside object definitions, not executable logic. Each occurrence is part of a distinct activation descriptor with different surrounding fields. Extracting a shared constant or spread would add indirection with no behavioral benefit and would break the flat, declarative shape that Foundry activation registries typically expect. Framework-required boilerplate; leave as-is."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reactions-registry.js",
+    "line": 1953,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 814,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "startups/itemActivations.js",
+    "line": 4379,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `esc` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "HTML-escape a string (replace &, <, >, \", and optionally ')",
+   "helper": "escapeHtml(str: string): string",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "The two implementations differ slightly: tokenStatHint.js also escapes single-quotes (&#39;) while reaction-export-import.js does not. The shared helper should use the broader coverage (include ') since omitting it is a minor HTML-attribute safety gap. Verify reaction-export-import.js output never lands in a single-quote-delimited attribute before merging."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reaction-export-import.js",
+    "line": 89,
+    "name": "esc"
+   },
+   {
+    "rel": "scripts/tah/tokenStatHint.js",
+    "line": 327,
+    "name": "esc"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `checkOverwatch` in 2 files",
+  "verdict": {
+   "verdict": "maybe",
+   "what": "Filter candidate overwatch reactors by ownership, reaction availability, and faction/disposition hostility toward a moved token",
+   "helper": "getPotentialOverwatchReactors(movedToken, { actorArgs? }) => Token[]",
+   "home": "scripts/tools/overwatch-utils.js",
+   "call_sites": 2,
+   "effort": "medium",
+   "notes": "The disposition-filtering block is nearly identical and clearly worth extracting. However, there are two meaningful divergences: (1) reaction.js passes `.actor` objects to tokenFactions.getDisposition while overwatch.js passes token objects \u2014 one is a bug or intentional difference that must be resolved before sharing; (2) the threat-aura predicate differs (inline string compare vs isThreatAura helper) so the caller would need to pass it in or both would need to adopt isThreatAura. The post-filter triggering loop is also very similar but differs in async usage (await getActorMaxThreat in overwatch.js vs sync in reaction.js) and in how startPos is passed to getMinGridDistance. Factoring the reactor-filter step alone into a shared helper is a clear win with medium effort; factoring the full trigger loop requires reconciling the async/sync split first."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reaction.js",
+    "line": 74,
+    "name": "checkOverwatch"
+   },
+   {
+    "rel": "scripts/combat/overwatch.js",
+    "line": 89,
+    "name": "checkOverwatch"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `displayOverwatch` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Build and display the overwatch opportunity dialog/chat message for a list of reactors and a target token",
+   "helper": "displayOverwatch(reactors, target) \u2192 void",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "The two copies are character-for-character identical in logic; only a minor variable name difference (htmlConfig vs html in the render callback). Extract into a shared utility and import it in both reaction.js and overwatch.js."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reaction.js",
+    "line": 214,
+    "name": "displayOverwatch"
+   },
+   {
+    "rel": "scripts/combat/overwatch.js",
+    "line": 223,
+    "name": "displayOverwatch"
+   }
+  ]
+ },
+ {
+  "kind": "idiom",
+  "label": "repeated snippet x3",
+  "verdict": {
+   "verdict": "factor",
+   "what": "clear all three attack shape/preview layers in sequence (clearSingleTargetShape \u2192 clearAreaTargetShape \u2192 clearAttackShapePreview)",
+   "helper": "clearAllAttackShapes() \u2192 void",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 3,
+   "effort": "low",
+   "notes": "All three sites call the exact same three functions in the same order with the same comment rationale ('end session first so area clear's resync is a no-op'). The two accdiff sites and the one damage site are all inside bare try/catch-ignore blocks for the same reason. The only minor variation is that damage-target-button wraps in `if (active)` first, but that guard stays at the call site \u2014 the helper is just the three-line clear sequence. Low risk extraction."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/accdiff-target-button.js",
+    "line": 136,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/accdiff-target-button.js",
+    "line": 170,
+    "name": "(idiom)"
+   },
+   {
+    "rel": "scripts/activations/damage-target-button.js",
+    "line": 196,
+    "name": "(idiom)"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `getActorMaxThreat` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "compute an actor's maximum threat range across all weapons",
+   "helper": "getActorMaxThreat(actor) \u2014 canonical version in weapon-bonus-utils.js, delegating to getMaxWeaponRanges_WithBonus",
+   "home": "scripts/tools/weapon-bonus-utils.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "reaction.js carries an older, manual implementation that lacks bonus awareness; it should be deleted and replaced with an import of the weapon-bonus-utils version. The only behavioural delta to verify is the early-exit condition: reaction.js allows 'pilot' actors while weapon-bonus-utils guards on 'deployable' \u2014 confirm the bonus-aware path handles pilots correctly before switching."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reaction.js",
+    "line": 284,
+    "name": "getActorMaxThreat"
+   },
+   {
+    "rel": "scripts/tools/weapon-bonus-utils.js",
+    "line": 215,
+    "name": "getActorMaxThreat"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `drawThreatDebug` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Visualize token threat hexes on the debug canvas (footprint in red, threat range in green)",
+   "helper": "drawThreatDebug(token: Token): Promise<void>",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "The two copies are identical except reaction.js calls getActorMaxThreat synchronously while overwatch.js awaits it. Unify by making the shared helper async (await works on non-promises too). Minor variable rename (fp vs footprintCube) is cosmetic only."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/reaction.js",
+    "line": 333,
+    "name": "drawThreatDebug"
+   },
+   {
+    "rel": "scripts/combat/overwatch.js",
+    "line": 295,
+    "name": "drawThreatDebug"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `_battleLogEnabled` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Read the 'battleLogEnabled' game setting with a safe fallback to false",
+   "helper": "isBattleLogEnabled() => boolean",
+   "home": "scripts/Battelog/battlelog.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "Identical code, same domain (both in Battelog/), trivial to extract. Export from battlelog.js and import in combat-recorder.js, or put in a shared settings.js utility if one exists."
+  },
+  "members": [
+   {
+    "rel": "scripts/Battelog/battlelog.js",
+    "line": 35,
+    "name": "_battleLogEnabled"
+   },
+   {
+    "rel": "scripts/Battelog/combat-recorder.js",
+    "line": 60,
+    "name": "_battleLogEnabled"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `getRollCount` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "count matching die face results from a roll",
+   "helper": "",
+   "home": "",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "These are structurally identical one-liners that differ only in parameter naming. However, they live in separate domain files (stress vs structure) handling distinct game mechanics. Extracting a shared helper for a single filter expression would add indirection without meaningful benefit \u2014 the 'duplication' is trivial boilerplate at the call-site level, not a real factorization opportunity."
+  },
+  "members": [
+   {
+    "rel": "scripts/alt-struct/stress.js",
+    "line": 44,
+    "name": "getRollCount"
+   },
+   {
+    "rel": "scripts/alt-struct/structure.js",
+    "line": 45,
+    "name": "getRollCount"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `commit` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both functions are named 'commit' but do entirely different work",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "One reads form fields to build a shape state object and triggers a preview sync; the other clamps a numeric input value. Same name, different domains, no shared logic."
+  },
+  "members": [
+   {
+    "rel": "scripts/activations/targeting-ui.js",
+    "line": 592,
+    "name": "commit"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 1318,
+    "name": "commit"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `_findActiveCombatFor` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Find the active telemetry-flagged combat containing a given actorId",
+   "helper": "findActiveCombatFor(actorId) => Combat|null",
+   "home": "scripts/Battelog/battelog-utils.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "Code is byte-for-byte identical across both files. Extract to a shared Battelog utility module and import in both attack-capture.js and damage-capture.js."
+  },
+  "members": [
+   {
+    "rel": "scripts/Battelog/attack-capture.js",
+    "line": 9,
+    "name": "_findActiveCombatFor"
+   },
+   {
+    "rel": "scripts/Battelog/damage-capture.js",
+    "line": 29,
+    "name": "_findActiveCombatFor"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `log` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "prefixed console.log wrapper",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Both are local log helpers but with different prefixes (one includes a subsystem tag 'wreck'). These are trivial one-liners serving as module-scoped logging shims. Factoring them into a shared helper would either lose the subsystem distinction or require a parameter, adding complexity with no real gain. This is boilerplate, not duplication."
+  },
+  "members": [
+   {
+    "rel": "scripts/bonuses/flagged-effects.js",
+    "line": 5,
+    "name": "log"
+   },
+   {
+    "rel": "scripts/tools/wreck.js",
+    "line": 5,
+    "name": "log"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `getTokenCells` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "Same name but entirely different implementations \u2014 one is a local geometric utility, the other is an API delegation to an external module",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "terrain-utils.js computes cells from occupied offsets directly; wreck.js delegates to an external module's public API. These are not duplicates \u2014 the wreck.js version is an interop shim that calls the other module's exported function. Factoring them would conflate two different abstraction layers."
+  },
+  "members": [
+   {
+    "rel": "scripts/combat/terrain-utils.js",
+    "line": 10,
+    "name": "getTokenCells"
+   },
+   {
+    "rel": "scripts/tools/wreck.js",
+    "line": 351,
+    "name": "getTokenCells"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `registerSettings` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both functions are named `registerSettings` and call `game.settings.register` repeatedly",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "These are two independent registration blocks for completely different settings domains (speed provider colors vs. core module settings). The shared pattern \u2014 calling game.settings.register with a config object \u2014 is idiomatic Foundry boilerplate that every module/feature must follow. There is no repeated logic, only the same framework API call shape. Factoring would add indirection with zero reduction in actual code, since each call has unique keys, names, hints, types, defaults, and scopes."
+  },
+  "members": [
+   {
+    "rel": "scripts/combat/speed-provider.js",
+    "line": 157,
+    "name": "registerSettings"
+   },
+   {
+    "rel": "scripts/setup/settings-register.js",
+    "line": 3,
+    "name": "registerSettings"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `followTick` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "ticker loop that removes itself when a graphics object is destroyed and rebuilds on position change",
+   "helper": "",
+   "home": "",
+   "call_sites": 2,
+   "effort": "high",
+   "notes": "These are local closure functions inside two different feature contexts (range highlight vs movement reach highlight), each closing over their own `rangeHighlight`/`staticGfx`, `posKey`, `lastKey`, and `rebuild` variables. The bodies are structurally identical but the named variables they close over differ semantically. Extracting a shared helper would require passing all four dependencies as parameters, producing a generic factory like `makeFollowTick(gfx, posKey, getLastKey, setLastKey, rebuild)` \u2014 more complex than the current code and no clearer. This is standard Foundry ticker pattern boilerplate; the similarity is incidental to the pattern, not a factorization opportunity."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/canvas-helpers.js",
+    "line": 951,
+    "name": "followTick"
+   },
+   {
+    "rel": "scripts/interactive/movement-reach-highlight.js",
+    "line": 170,
+    "name": "followTick"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `findItemByLid` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Find an item on an actor by system.lid",
+   "helper": "findItemByLid(actor, lid)",
+   "home": "scripts/tools/misc-tools.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "deployables.js has an extra actor-or-token unwrapping step that should either be extracted into a separate helper or folded into the shared version as optional pre-processing; the core find logic is identical."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/deployables.js",
+    "line": 2906,
+    "name": "findItemByLid"
+   },
+   {
+    "rel": "scripts/tools/misc-tools.js",
+    "line": 287,
+    "name": "findItemByLid"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `executeInvade` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both functions resolve an actor, prompt for an invade choice, then dispatch a tech attack flow",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "The two implementations diverge in meaningful ways: combat.js uses TechAttackFlow directly (checking for its existence, handling weapon uuid exclusion, using actor.uuid as fallback), while misc-tools.js delegates to executeTechAttack and passes the item directly without the weapon check. combat.js also supports a bypassChoice parameter that misc-tools.js lacks. The error messaging and null-handling differ. These are two independently evolved implementations targeting the same feature but with different internal mechanics \u2014 factoring them would require reconciling the weapon-uuid-exclusion logic, the bypassChoice opt-out, and the flow vs. helper dispatch strategy, producing a helper more complex than either original."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/combat.js",
+    "line": 1435,
+    "name": "executeInvade"
+   },
+   {
+    "rel": "scripts/tools/misc-tools.js",
+    "line": 1631,
+    "name": "executeInvade"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `clearAll` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both named `clearAll` but operate on completely different state (request map vs. canvas token labels)",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Same name, different domains. One clears an internal Map and destroys active effects; the other iterates canvas tokens to remove labels. No shared logic exists."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/range-pulse-manager.js",
+    "line": 105,
+    "name": "clearAll"
+   },
+   {
+    "rel": "scripts/movement/tactical-distance.js",
+    "line": 97,
+    "name": "clearAll"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `setVisible` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "setting `.visible` on a PIXI container",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "These are methods on different classes with different fields (container+labelContainer vs gfx). Same property assignment on different objects is boilerplate, not shared logic. Factoring would add indirection with no benefit."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 184,
+    "name": "setVisible"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 296,
+    "name": "setVisible"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `renderContent` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both are named renderContent and build dialog HTML, but they serve entirely different dialogs with different data, structure, and purpose",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "notes": "The shared name is framework-required (both are methods of a dialog class). The actual logic is completely different: one builds an item extra-config UI (auto-consume toggles, deployable range/count for a single item), the other builds an extras manager UI (action rows with state badges, UUID/LID deployable lists, add-action form). The only micro-similarity is the range/count input pair HTML, but even that uses different CSS classes and data attributes across three distinct contexts. Not worth extracting."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/extra-config-dialog.js",
+    "line": 32,
+    "name": "renderContent"
+   },
+   {
+    "rel": "scripts/interactive/extras-dialog.js",
+    "line": 145,
+    "name": "renderContent"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `setAreaRange` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "Both are named `setAreaRange` but do completely different work \u2014 one is an internal state mutation + rotation recomputation in the placement engine, the other is a public API method on a tool that persists a value and delegates to the engine",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Same name, different abstraction levels and responsibilities. The advancedMeasure method is a thin adapter/setter; the engine method contains non-trivial rotation-step logic. Factoring would create a false abstraction."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 647,
+    "name": "setAreaRange"
+   },
+   {
+    "rel": "scripts/interactive/tools/advancedMeasure.js",
+    "line": 881,
+    "name": "setAreaRange"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `removeLabel` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "removing a PIXI label from its parent and destroying it",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Both functions remove a label widget, but they use completely different storage mechanisms (a Map keyed by tokenId vs a property on the token object directly), different null-handling patterns, and different error strategies (one is silent on destroy errors, the other is not). The shared logic is only the 2-line PIXI idiom `parent.removeChild(label); label.destroy()` \u2014 too trivial to warrant a helper, and extracting it would obscure the distinct lifecycles and ownership models of the two label systems."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/target-shapes.js",
+    "line": 136,
+    "name": "removeLabel"
+   },
+   {
+    "rel": "scripts/movement/tactical-distance.js",
+    "line": 82,
+    "name": "removeLabel"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `thtApi` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Return the terrainHeightTools API if the THT module is active, otherwise null",
+   "helper": "thtApi() \u2014 no parameters, returns globalThis.terrainHeightTools or null",
+   "home": "scripts/movement/movement-utils.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "Identical three-line bodies; extracting to a shared module-level helper removes the duplication cleanly. Ensure THT_ID constant is accessible from the shared location."
+  },
+  "members": [
+   {
+    "rel": "scripts/movement/cost-rules.js",
+    "line": 110,
+    "name": "thtApi"
+   },
+   {
+    "rel": "scripts/movement/elevation.js",
+    "line": 78,
+    "name": "thtApi"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `_isoActive` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "same name but completely different implementations checking isometric mode",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "iso-elevation-anim.js does a full multi-step check (module active, world setting, scene flag), while token-ruler.js delegates to a provider abstraction. These are not the same logic \u2014 one is the concrete implementation, the other may use a different/newer abstraction. Merging them risks breaking one of the two callers or forcing an inappropriate coupling between files with different dependency structures."
+  },
+  "members": [
+   {
+    "rel": "scripts/movement/iso-elevation-anim.js",
+    "line": 8,
+    "name": "_isoActive"
+   },
+   {
+    "rel": "scripts/movement/token-ruler.js",
+    "line": 28,
+    "name": "_isoActive"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `ensureContainer` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "guard-then-create two PIXI containers and attach a sin-wave alpha ticker",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "high",
+   "notes": "Structural similarity is superficial. The ticker callbacks diverge significantly: shape-placement-engine only pulses alpha on two containers and cleans up two variables, while target-shapes iterates _persistShapes/_persistLabels, calls paintShape/updateLabel per token per tick, and clears four extra collections on teardown. Container attachment also differs (addGraphicsBelowTokens/addGraphicsAboveTokens vs. canvas.stage.addChild with eventMode). A shared helper would need to accept callbacks for attachment, per-tick work, and cleanup \u2014 producing an abstraction more complex than the two originals. The shared alpha formula (0.65 + 0.35 * Math.sin(performance.now() / 280)) is the only truly identical line, but extracting a one-liner constant adds no real value."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/shape-placement-engine.js",
+    "line": 104,
+    "name": "ensureContainer"
+   },
+   {
+    "rel": "scripts/interactive/target-shapes.js",
+    "line": 32,
+    "name": "ensureContainer"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `hide` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both named `hide` but do entirely different things in different domains",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Name collision only. One removes a tooltip DOM node; the other tears down a PIXI debug container and unhooks Foundry hooks. Different domains, different logic, different state. No shared abstraction is possible or useful."
+  },
+  "members": [
+   {
+    "rel": "scripts/setup/codemirror-hints.js",
+    "line": 1092,
+    "name": "hide"
+   },
+   {
+    "rel": "scripts/vision/visionFromEdge.js",
+    "line": 573,
+    "name": "hide"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `_thtGroundAt` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Guard on globalThis.terrainHeightTools, convert pixel coords to grid offset, return getHexGroundElevation(j, i) || 0",
+   "helper": "_thtGroundAt(point: {x,y}): number",
+   "home": "scripts/movement/movement-utils.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "The only real differences are (1) the anim file destructures x/y into a point literal \u2014 trivially unified to accept a point object \u2014 and (2) the anim version wraps in try/catch while the ruler version does not. The shared helper should include the try/catch (the safer default), and the iso-elevation-anim call site simply passes { x, y } instead of the two separate args. Both files already live in scripts/movement/, so a shared movement-utils module keeps cohesion tight."
+  },
+  "members": [
+   {
+    "rel": "scripts/movement/iso-elevation-anim.js",
+    "line": 25,
+    "name": "_thtGroundAt"
+   },
+   {
+    "rel": "scripts/movement/token-ruler.js",
+    "line": 923,
+    "name": "_thtGroundAt"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `show` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both are named `show` but do completely unrelated things: one renders a tooltip DOM element, the other initializes a PIXI debug overlay",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Same function name, entirely different domains (DOM tooltip vs. Foundry/PIXI debug visualization). No shared logic, no shared types, no shared abstractions possible."
+  },
+  "members": [
+   {
+    "rel": "scripts/setup/codemirror-hints.js",
+    "line": 1099,
+    "name": "show"
+   },
+   {
+    "rel": "scripts/vision/visionFromEdge.js",
+    "line": 560,
+    "name": "show"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `_getIsoState` in 2 files",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Look up ISO provider for a token, check isTokenDisabled, and return the {reverseRotation, reverseSkewX, reverseSkewY, counterScale} object (or null)",
+   "helper": "getIsoStateForToken(token) \u2192 {reverseRotation, reverseSkewX, reverseSkewY, counterScale} | null",
+   "home": "scripts/tools/iso-tools.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "The feature-enabled guard differs between the two sites (one uses isIsoFeatureEnabled(), the other uses game.settings.get with a try/catch), so each call site keeps its own guard and calls getIsoStateForToken only after passing it. The helper encapsulates only the shared tail: provider lookup, isTokenDisabled check, and object construction."
+  },
+  "members": [
+   {
+    "rel": "scripts/movement/tactical-distance.js",
+    "line": 10,
+    "name": "_getIsoState"
+   },
+   {
+    "rel": "scripts/tah/tokenStatBar.js",
+    "line": 127,
+    "name": "_getIsoState"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `_onCreateToken` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "both are `_onCreateToken` hook handlers but do entirely different things",
+   "helper": "",
+   "home": "",
+   "call_sites": 0,
+   "effort": "low",
+   "notes": "Same lifecycle hook name, different domains: one handles detection mode augmentation and sight range settings on token creation; the other builds edge vision sources. No shared logic exists beyond the hook signature."
+  },
+  "members": [
+   {
+    "rel": "scripts/vision/lancerDetectionModes.js",
+    "line": 1100,
+    "name": "_onCreateToken"
+   },
+   {
+    "rel": "scripts/vision/visionFromEdge.js",
+    "line": 407,
+    "name": "_onCreateToken"
+   }
+  ]
+ },
+ {
+  "kind": "name",
+  "label": "function `_onRenderTokenConfig` in 2 files",
+  "verdict": {
+   "verdict": "coincidental",
+   "what": "Injecting a form-group into the token config vision tab",
+   "helper": "",
+   "home": "",
+   "call_sites": 2,
+   "effort": "high",
+   "notes": "Same hook, same tab target, same append+resize pattern \u2014 but the injected UI is completely different (checkbox vs. select), the flag semantics differ (boolean vs. on/off/default), and the jQuery normalization differs slightly. The shared scaffold (find tab, get tokenDoc flag, append block, setPosition) is only ~5 lines of boilerplate around very different domain logic. Factoring would require parameterising the inner HTML block, the flag read/transform, and the tooltip \u2014 producing an abstraction more complex than either original. Not worth it."
+  },
+  "members": [
+   {
+    "rel": "scripts/vision/tokenBlocksVision.js",
+    "line": 168,
+    "name": "_onRenderTokenConfig"
+   },
+   {
+    "rel": "scripts/vision/visionFromEdge.js",
+    "line": 494,
+    "name": "_onRenderTokenConfig"
+   }
+  ]
+ },
+ {
+  "kind": "body",
+  "label": "similar bodies: _cubeRoundFallback, cubeRound",
+  "verdict": {
+   "verdict": "factor",
+   "what": "Cube-coordinate rounding for hex grids (identical 9-line algorithm)",
+   "helper": "cubeRound(q, r, s) => {q, r, s}",
+   "home": "scripts/tools/hex-utils.js",
+   "call_sites": 2,
+   "effort": "low",
+   "notes": "Bodies are byte-for-byte identical. Extract to a shared hex-utils module and import in both files. The fallback name in hex-drag-stabilizer suggests it was copied precisely because the shared version wasn't accessible at the time."
+  },
+  "members": [
+   {
+    "rel": "scripts/interactive/area-geometry.js",
+    "line": 42,
+    "name": "cubeRound"
+   },
+   {
+    "rel": "scripts/movement/hex-drag-stabilizer.js",
+    "line": 9,
+    "name": "_cubeRoundFallback"
+   }
+  ]
+ }
+]

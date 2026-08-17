@@ -1,0 +1,205 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{! Sheet Header }}
+  <header class="sheet-header card clipped-bot">
+    <h1 class="name">
+      <input
+        class="lancer-input header-field"
+        name="name"
+        type="text"
+        value="{{item.name}}"
+        placeholder="{{localize 'lancer.placeholder.name'}}"
+      >
+    </h1>
+    <div class="header-details origin_type">
+      <span class="medium">FEATURE TYPE: </span>
+      <select class="header-field" name="system.type" data-type="String">
+        {{#select system.type}}
+          <option class="i--dark" value="Reaction">
+            REACTION
+          </option>
+          <option class="i--dark" value="System">
+            SYSTEM
+          </option>
+          <option class="i--dark" value="Tech">
+            TECH
+          </option>
+          <option class="i--dark" value="Trait">
+            TRAIT
+          </option>
+          <option class="i--dark" value="Weapon">
+            WEAPON
+          </option>
+        {{/select}}
+      </select>
+    </div>
+    {{{ref-portrait-img item.img "img" item}}}
+  </header>
+  {{! Sheet Body }}
+  <section class="sheet-body">
+    <div class="effect-box">
+      <div class="effect-title clipped-bot">SOURCE</div>
+      <div class="effect-text flexrow">
+        <div class="origin-name">
+          <input
+            name="system.origin.name"
+            type="text"
+            value="{{system.origin.name}}"
+            placeholder="Origin Name"
+          >
+        </div>
+        <div class="origin-type flexrow">
+          <select name="system.origin.type" data-type="text">
+            {{#select system.origin.type}}
+              <option class="i--dark" value="Class">
+                CLASS
+              </option>
+              <option class="i--dark" value="Template">
+                TEMPLATE
+              </option>
+            {{/select}}
+          </select>
+        </div>
+        <div class="origin_base flexrow" style="align-items: center">
+          <span class="medium" style="text-align: right">
+            {{#if system.origin.base}}
+              BASE FEATURE
+            {{else}}
+              OPTIONAL FEATURE
+            {{/if}}
+          </span>
+          <input type="checkbox" name="system.origin.base" {{checked system.origin.base}}>
+        </div>
+      </div>
+    </div>
+    {{! Limited Uses Tracking }}
+    {{#if (is-limited item)}}
+      <div class="flexrow stat-container" style="align-self: center; margin: 5px 30px; max-width: max-content">
+        <span class="medium">
+          USES:
+        </span>
+        <input
+          class="lancer-stat major"
+          type="number"
+          name="system.uses"
+          value="{{system.uses}}"
+          data-dtype="Number"
+        >
+        <span class="medium" style="max-width: min-content">
+          /
+        </span>
+        <span class="lancer-stat major" type="number">
+          {{system.maxUses}}
+        </span>
+      </div>
+    {{/if}}
+    {{! Reaction }}
+    {{#if (eq system.type "Reaction")}}
+      {{{textarea-card "TRIGGER" "system.trigger"}}}{{{textarea-card "EFFECT" "system.effect"}}}
+    {{/if}}
+    {{! System }}
+    {{#if (eq system.type "System")}}
+      {{{textarea-card "EFFECT" "system.effect"}}}
+    {{/if}}
+    {{! Trait }}
+    {{#if (eq system.type "Trait")}}
+      {{{textarea-card "EFFECT" "system.effect"}}}
+    {{/if}}
+    {{! Tech }}
+    {{#if (eq system.type "Tech")}}
+      <div class="wraprow triple">
+        <div class="flexcol">
+          <div class="flexrow" style="align-items: center">
+            <span class="medium" style="text-align: right; max-width: fit-content; padding-right: 1em">
+              TECH
+            </span>
+            <select name="system.techType" data-type="String" style="align-self: center">
+              {{#select system.techType}}
+                <option value="Quick">
+                  QUICK
+                </option>
+                <option value="Full">
+                  FULL
+                </option>
+              {{/select}}
+            </select>
+          </div>
+          <div class="flexrow" style="align-items: center">
+            <span class="medium" style="text-align: right; max-width: fit-content; padding-right: 1em">
+              TECH ATTACK?
+            </span>
+            <input type="checkbox" name="system.tech_attack" {{checked system.tech_attack}}>
+          </div>
+        </div>
+        {{#if system.tech_attack}}
+          {{{npc-clicker-statarr-card "ATTACK BONUS" "system.attack_bonus"}}}
+          {{{npc-clicker-statarr-card "ACCURACY" "system.accuracy"}}}
+        {{/if}}
+        {{{textarea-card "EFFECT" "system.effect"}}}
+      </div>
+    {{/if}}
+    {{! Weapon }}
+    {{#if (eq system.type "Weapon")}}
+      <div class="wraprow triple">
+        {{! Type }}
+        <div class="card clipped">
+          <span class="lancer-header lancer-primary major">
+            TYPE
+          </span>
+          {{! Can't use the weapon type/size selectors because NPC weapons only have
+              a single string field that combines both }}
+          <input
+            class="lancer-stat"
+            type="text"
+            name="system.weapon_type"
+            value="{{system.weapon_type}}"
+            data-dtype="String"
+          >
+        </div>
+        <div class="double"></div>
+        {{! Range }}
+        <div class="card clipped">
+          <span class="lancer-header lancer-primary major">
+            RANGE
+            <a
+              class="gen-control"
+              data-action="append"
+              data-path="system.range"
+              data-action-value="(struct)range"
+              style="float: right"
+            >
+              +
+            </a>
+          </span>
+          {{#each system.range as |range range_index|}}
+            {{{wpn-range-sel (concat "system.range." range_index)}}}
+          {{/each}}
+        </div>
+        {{! Attack Bonus }}
+        {{{npc-clicker-statarr-card "ATTACK BONUS" "system.attack_bonus"}}}
+        {{! Accuracy }}
+        {{{npc-clicker-statarr-card "ACCURACY" "system.accuracy"}}}
+        {{! All Damages }}
+        {{#each system.damage as |tier_damage_array tier_index|}}
+          <div class="card clipped">
+            <span class="lancer-header lancer-primary major">
+              <i class="cci cci-npc-tier-{{inc tier_index}} i--4 i--dark"></i>
+              T
+              {{inc tier_index}}
+              DAMAGE
+              <a class="npc-damage-append" style="float: right">
+                +
+              </a>
+            </span>
+            {{#each tier_damage_array as |damage damage_index|}}
+              {{{wpn-damage-sel (concat "system.damage." tier_index "." damage_index)}}}
+            {{/each}}
+          </div>
+        {{/each}}
+        {{! Effects }}
+        {{{textarea-card "ON HIT EFFECT" "system.on_hit"}}}
+        {{{textarea-card "EFFECT" "system.effect"}}}
+      </div>
+    {{/if}}
+    {{{item-edit-arrayed-tags "system.tags" "TAGS"}}}
+  </section>
+</form>

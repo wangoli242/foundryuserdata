@@ -1,0 +1,95 @@
+{
+  "title": "Lancer - GMing Adventures",
+  "id": "lancer-gming-adventures",
+  "system": "lancer",
+  "coreVersion": "13.351",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "systemVersion": "3.1.3",
+  "lastPlayed": "Mon Aug 17 2026 06:03:10 GMT+0000 (Coordinated Universal Time)",
+  "packs": [
+    {
+      "name": "pilot-items",
+      "type": "Item",
+      "label": "lancer.compendium.pilot-items",
+      "banner": "./systems/lancer/assets/banners/pilot-items.svg",
+      "system": "lancer",
+      "path": "packs/pilot-items",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "name": "player-actors",
+      "type": "Actor",
+      "label": "lancer.compendium.player-actors",
+      "banner": "./systems/lancer/assets/banners/player-actors.svg",
+      "system": "lancer",
+      "path": "packs/player-actors",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "name": "mech-items",
+      "type": "Item",
+      "label": "lancer.compendium.mech-items",
+      "banner": "./systems/lancer/assets/banners/mech-items.svg",
+      "system": "lancer",
+      "path": "packs/mech-items",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "name": "npc-actors",
+      "type": "Actor",
+      "label": "lancer.compendium.npc-actors",
+      "banner": "./systems/lancer/assets/banners/npc-actors.svg",
+      "system": "lancer",
+      "path": "packs/npc-actors",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "name": "npc-items",
+      "type": "Item",
+      "label": "lancer.compendium.npc-items",
+      "banner": "./systems/lancer/assets/banners/npc-items.svg",
+      "system": "lancer",
+      "path": "packs/npc-items",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    },
+    {
+      "name": "status-items",
+      "type": "Item",
+      "label": "lancer.compendium.status-items",
+      "banner": "./systems/lancer/assets/banners/status-items.svg",
+      "system": "lancer",
+      "path": "packs/status-items",
+      "ownership": {
+        "PLAYER": "OBSERVER",
+        "ASSISTANT": "OWNER"
+      },
+      "flags": {}
+    }
+  ],
+  "playtime": 11165,
+  "description": "",
+  "flags": {}
+}

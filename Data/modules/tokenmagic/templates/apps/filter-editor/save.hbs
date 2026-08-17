@@ -1,0 +1,49 @@
+<section class="flexcol" style="gap: 5px;">
+
+    <div class="form-group">    
+        <label>{{localize "TMFX.app.savePreset.name.label"}}</label>
+        <div class="form-fields">
+            <input type="text" name="name" value="{{name}}"/>
+        </div>
+        <p class="hint">{{localize "TMFX.app.savePreset.name.hint"}}</p>
+    </div>
+
+    {{#if macro}}
+    <label>{{localize "DOCUMENT.Macro"}}:</label>
+    <textarea style="width: 100%; height: 280px;" readonly>{{macro}}</textarea>
+    {{else if (eq documentName "MeasuredTemplate")}}
+    <div class="form-group">    
+        <label>{{localize "TMFX.app.savePreset.texture.label"}}</label>
+        <div class="form-fields">
+            <file-picker name="texture" type="imagevideo" value="{{texture}}"></file-picker>
+        </div>
+        <p class="hint">{{localize "TMFX.app.savePreset.texture.hint"}}</p>
+    </div>
+    {{/if}}
+
+    <div class="form-group">    
+        <label>{{localize "TMFX.app.savePreset.filterRandomized.label"}}</label>
+        <div class="form-fields">
+            <input type="checkbox" name="filterRandomized" {{checked filterRandomized}}/>
+        </div>
+        <p class="hint">{{localize "TMFX.app.savePreset.filterRandomized.hint"}}</p>
+    </div>
+
+    <div class="form-group">    
+        <label>{{localize "TMFX.app.savePreset.filterAnimated.label"}}</label>
+        <div class="form-fields">
+            <input type="checkbox" name="filterAnimated" {{checked filterAnimated}}/>
+        </div>
+        <p class="hint">{{localize "TMFX.app.savePreset.filterAnimated.hint"}}</p>
+    </div>
+
+    {{#if displayAutoDestroy}}
+    <div class="form-group">    
+        <label>{{localize "TMFX.app.savePreset.autoDestroy.label"}}</label>
+        <div class="form-fields">
+            <input type="checkbox" name="autoDestroy" {{checked autoDestroy}}/>
+        </div>
+        <p class="hint">{{localize "TMFX.app.savePreset.autoDestroy.hint"}}</p>
+    </div>
+    {{/if}}
+</section>

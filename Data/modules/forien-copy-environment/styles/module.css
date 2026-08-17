@@ -1,0 +1,31 @@
+@charset "UTF-8";
+#forien-copy-environment-settings fieldset th.property {
+  text-align: left;
+}
+#forien-copy-environment-settings fieldset td {
+  word-break: break-all;
+  vertical-align: top;
+}
+#forien-copy-environment-settings fieldset td:first-of-type {
+  width: 21%;
+}
+#forien-copy-environment-settings form {
+  max-height: 100%;
+}
+#forien-copy-environment-settings form tbody {
+  border-bottom: 1px solid #777;
+}
+#forien-copy-environment-settings form tbody tr.none {
+  display: none;
+}
+#forien-copy-environment-settings form tbody tr span.show-settings {
+  text-decoration: underline;
+  cursor: pointer;
+}
+#forien-copy-environment-settings section.import-properties {
+  overflow: auto;
+  margin-bottom: 10px;
+}
+#forien-copy-environment-settings .noflex {
+  flex: 0;
+}

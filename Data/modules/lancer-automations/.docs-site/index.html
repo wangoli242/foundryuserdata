@@ -1,0 +1,1772 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automation module for the Lancer system in Foundry VTT">
+      
+      
+      
+        <link rel="canonical" href="https://agraael.github.io/lancer-automations/index.html">
+      
+      
+      
+        <link rel="next" href="feature/AUTOMATION_ENGINE.html">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Lancer Automations</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/la-theme.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#please-read-before-you-install" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Lancer Automations" class="md-header__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lancer Automations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Home
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Lancer Automations" class="md-nav__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lancer Automations
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="index.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#please-read-before-you-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Please read before you install ⚠️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-reach-me" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where to reach me
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workshop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workshop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Community guides
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#read-the-full-api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      📘 Read the full API reference →
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Settings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature guides
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional integrations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extra-stuff" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extra stuff
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acknowledgments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acknowledgments
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Feature guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Feature guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/AUTOMATION_ENGINE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation Engine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/EFFECTS_AND_BONUSES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects & Bonuses
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Action HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT_ADVANCED.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement Advanced
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ISOMETRIC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Isometric
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INTERACTIVE_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ATTACK_TARGETING.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Attack Targeting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/GAMEPLAY_AUTOMATION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gameplay Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/FX_AND_SOUNDS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FX and Sounds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/VISION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/WRECK.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wrecks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/BATTLE_LOG.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Battle Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SYSTEM_ADDITIONS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Additions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SETUP_AND_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup & Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INFECTION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/NPC_EXAMPLES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NPC Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MACROS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Macros
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" >
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AUTOMATION_SYSTEM.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_REFERENCE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_COMBAT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Combat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_SPATIAL.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spatial
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_EFFECTS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_INTERACTIVE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_ITEMS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Items
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HOWTO.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How-To
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#please-read-before-you-install" class="md-nav__link">
+    <span class="md-ellipsis">
+      ⚠️ Please read before you install ⚠️
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#where-to-reach-me" class="md-nav__link">
+    <span class="md-ellipsis">
+      Where to reach me
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#workshop" class="md-nav__link">
+    <span class="md-ellipsis">
+      Workshop
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#community-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Community guides
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#read-the-full-api-reference" class="md-nav__link">
+    <span class="md-ellipsis">
+      📘 Read the full API reference →
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#installation" class="md-nav__link">
+    <span class="md-ellipsis">
+      Installation
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#settings" class="md-nav__link">
+    <span class="md-ellipsis">
+      Settings
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#feature-guides" class="md-nav__link">
+    <span class="md-ellipsis">
+      Feature guides
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#optional-integrations" class="md-nav__link">
+    <span class="md-ellipsis">
+      Optional integrations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#extra-stuff" class="md-nav__link">
+    <span class="md-ellipsis">
+      Extra stuff
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#acknowledgments" class="md-nav__link">
+    <span class="md-ellipsis">
+      Acknowledgments
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+  <h1>Home</h1>
+
+<div class="la-banner-wrap"><pre class="la-banner">██╗      █████╗ ███╗   ██╗ ██████╗███████╗██████╗                                            
+██║     ██╔══██╗████╗  ██║██╔════╝██╔════╝██╔══██╗                                           
+██║     ███████║██╔██╗ ██║██║     █████╗  ██████╔╝                                           
+██║     ██╔══██║██║╚██╗██║██║     ██╔══╝  ██╔══██╗                                           
+███████╗██║  ██║██║ ╚████║╚██████╗███████╗██║  ██║                                           
+╚══════╝╚═╝  ╚═╝╚═╝  ╚═══╝ ╚═════╝╚══════╝╚═╝  ╚═╝                                           
+
+ █████╗ ██╗   ██╗████████╗ ██████╗ ███╗   ███╗ █████╗ ████████╗██╗ ██████╗ ███╗   ██╗███████╗
+██╔══██╗██║   ██║╚══██╔══╝██╔═══██╗████╗ ████║██╔══██╗╚══██╔══╝██║██╔═══██╗████╗  ██║██╔════╝
+███████║██║   ██║   ██║   ██║   ██║██╔████╔██║███████║   ██║   ██║██║   ██║██╔██╗ ██║███████╗
+██╔══██║██║   ██║   ██║   ██║   ██║██║╚██╔╝██║██╔══██║   ██║   ██║██║   ██║██║╚██╗██║╚════██║
+██║  ██║╚██████╔╝   ██║   ╚██████╔╝██║ ╚═╝ ██║██║  ██║   ██║   ██║╚██████╔╝██║ ╚████║███████║
+╚═╝  ╚═╝ ╚═════╝    ╚═╝    ╚═════╝ ╚═╝     ╚═╝╚═╝  ╚═╝   ╚═╝   ╚═╝ ╚═════╝ ╚═╝  ╚═══╝╚══════╝</pre></div>
+
+<p><a href="https://github.com/Agraael/lancer-automations/releases/latest"><img alt="Latest module version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FAgraael%2Flancer-automations%2Freleases%2Flatest%2Fdownload%2Fmodule.json&amp;query=%24.version&amp;prefix=v&amp;style=for-the-badge&amp;label=module%20version" /></a>
+<img alt="Latest Foundry version" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fgithub.com%2FAgraael%2Flancer-automations%2Freleases%2Flatest%2Fdownload%2Fmodule.json&amp;query=%24.compatibility.verified&amp;style=for-the-badge&amp;label=foundry%20version&amp;color=fe6a1f" />
+<br/>
+<a href="https://github.com/Agraael/lancer-automations/releases/latest"><img alt="GitHub downloads (total)" src="https://img.shields.io/github/downloads/Agraael/lancer-automations/module.zip?style=for-the-badge&amp;label=downloads%20(total)" /></a>
+<a href="https://github.com/Agraael/lancer-automations/releases/latest"><img alt="GitHub downloads (latest version)" src="https://img.shields.io/github/downloads/Agraael/lancer-automations/latest/module.zip?style=for-the-badge&amp;label=downloads%20(latest)" /></a></p>
+<p><a href="#"><img alt="GMs counted" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fexglsurpdbmpkvqdfvid.supabase.co%2Frest%2Fv1%2Fseen_users%3Fselect%3Dcount%26role%3Deq.gm%26apikey%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4Z2xzdXJwZGJtcGt2cWRmdmlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTcyNzAsImV4cCI6MjA5MzQ5MzI3MH0.p6oLn61mhe9hxThh-bwkVIADvSU6oyG4VnAkhkJmHJU&amp;query=%24%5B0%5D.count&amp;label=GMs%20counted&amp;style=for-the-badge&amp;color=blue" /></a>
+<a href="#"><img alt="Players counted" src="https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fexglsurpdbmpkvqdfvid.supabase.co%2Frest%2Fv1%2Fseen_users%3Fselect%3Dcount%26role%3Deq.player%26apikey%3DeyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImV4Z2xzdXJwZGJtcGt2cWRmdmlkIiwicm9sZSI6ImFub24iLCJpYXQiOjE3Nzc5MTcyNzAsImV4cCI6MjA5MzQ5MzI3MH0.p6oLn61mhe9hxThh-bwkVIADvSU6oyG4VnAkhkJmHJU&amp;query=%24%5B0%5D.count&amp;label=Players%20counted&amp;style=for-the-badge&amp;color=green" /></a></p>
+<details>
+<summary>patreon...</summary>
+<p>Well, project became bigger, now there's more people. So the Patreon is starting to get real. If you wanna support my late nights, that's here.</p>
+<p>In any case, my stuff would always be free, and if I stop working on it, I'll just close that thing. <a href="https://www.patreon.com/cw/LaSossis">Patreon</a></p>
+</details>
+<p>Check out my other modules and tools: <a href="https://www.patreon.com/posts/list-of-stuff-149377511">List of stuff</a></p>
+<hr />
+<p>Welcome to Lancer Automations. What began as a tiny Lancer QoL tweak for my own games grew into something much bigger: a way to play Lancer on Foundry VTT with a layer of automation, UI, and quality-of-life on top.</p>
+<p>It keeps growing and taking on its own identity, and one day it might even outgrow the Lancer system entirely, so think of it less as a set of toggles and more as a game engine.</p>
+<p>At its heart is an automation engine that can automate almost any item from any LCP, plus a large toolbox for picking tokens, spawning tokens, handling network messages, asking players for choices, and much more.</p>
+<p>A lot of it weaves right into the interface, so if you aren't deep in the Lancer Foundry ecosystem you might assume some of these features are vanilla. They aren't, they just feel like they were always part of Lancer.</p>
+<p align="center">
+  <img src="vid/battlelog.gif" width="85%"/>
+</p>
+
+<p>A heads-up: not all of it is built to be fully customizable, a lot is just how I see the game. A game for everyone is a game for no one, and Lancer Automations will shape how you play. Once you're in, it's hard to leave, so be careful.</p>
+<details>
+<summary>
+<h2 id="please-read-before-you-install">⚠️ Please read before you install ⚠️<a class="headerlink" href="#please-read-before-you-install" title="Permanent link">&para;</a></h2>
+</summary>
+<p><br></p>
+<blockquote>
+<p><strong>First of all, I really recommend reading the feature guides.</strong> I know it's a lot, a lot, but trust me, it's important.</p>
+<p>This is a dense, heavy module, closer to a game-system extension than a simple add-on, with built-in takes on popular modules (Token Action HUD, Lancer QoL, Bar Brawl, and more). You should already know Foundry and Lancer well. If you're new to Foundry, get comfortable there first or you risk losing a lot of time.</p>
+<p><strong>The default setup is more than enough for most Lancer GMs.</strong> If you write your own activations and get stuck, ask me on Discord.</p>
+<p><strong>It does not (yet) provide full item and NPC automation.</strong> Some items and simple NPC automations are built in, that's it for now. The optional personal activation set is my own automations for my own games, shared as-is, not part of the core module.</p>
+<p><strong>Docs are split in two:</strong> feature guides for what a feature does and how to reach it, <code>doc/API_*.md</code> for the code side. The very latest additions land first on my <a href="https://www.patreon.com/cw/LaSossis">Patreon</a>, with illustrations.</p>
+<p><strong>Before asking questions</strong>, explore and try stuff first. It's a lot easier on me if I don't have to answer the same obvious questions, and it may be that I just haven't documented it yet. Thanks.</p>
+</blockquote>
+</details>
+<h2 id="where-to-reach-me">Where to reach me<a class="headerlink" href="#where-to-reach-me" title="Permanent link">&para;</a></h2>
+<p>The most common spot is <a href="https://discord.com/channels/426286410496999425/1436087781666455642">my channel</a> on the <a href="https://discord.com/invite/lancer">Pilot NET Discord</a>.</p>
+<h2 id="workshop">Workshop<a class="headerlink" href="#workshop" title="Permanent link">&para;</a></h2>
+<p><a href="https://github.com/Agraael/Lancer-automations-workshop">Lancer Automations Workshop</a> is where people share the automations they made, and grab other people's. You get a folder named after your GitHub account, and a bot merges the pull request as long as you only changed your own folder. Anything about writing or sharing automations goes in the <a href="https://discord.com/channels/426286410496999425/1537081666483527690">workshop channel</a>.</p>
+<h2 id="community-guides">Community guides<a class="headerlink" href="#community-guides" title="Permanent link">&para;</a></h2>
+<p>These are guides on how to play with Lancer Automations, from the Korean community. They're pretty good, check them out:</p>
+<ul>
+<li>Part 1 - UI &amp; Movement: <a href="https://arca.live/b/trpg/178385275">Korean Guide</a></li>
+<li>Part 2 - Attacks &amp; Reactions: <a href="https://arca.live/b/trpg/178478271">Korean Guide</a></li>
+</ul>
+<h2 id="read-the-full-api-reference">📘 <a href="API_REFERENCE.html">Read the full API reference →</a><a class="headerlink" href="#read-the-full-api-reference" title="Permanent link">&para;</a></h2>
+<p>Trigger schemas, function signatures, every option. Split across <code>doc/API_*.md</code> (Combat, Effects, Interactive, HowTo). Start there if you're writing activation code, macros, or hooking the engine from another module.</p>
+<hr />
+<h2 id="installation">Installation<a class="headerlink" href="#installation" title="Permanent link">&para;</a></h2>
+<p>In Foundry, go to <strong>Add-on Modules → Install Module</strong>, paste this into the <strong>Manifest URL</strong> field at the bottom, and hit Install:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a>https://github.com/Agraael/lancer-automations/releases/latest/download/module.json
+</code></pre></div></p>
+<h3 id="required">Required<a class="headerlink" href="#required" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://foundryvtt.com/packages/lancer">Lancer System</a></td>
+<td>The Lancer RPG system for FoundryVTT, v3.0.0 or newer</td>
+</tr>
+<tr>
+<td>FoundryVTT v13.351+</td>
+<td>The version I'm currently working on</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Agraael/lancer-style-library">Lancer Style Library</a></td>
+<td>Shared UI components and styling</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Agraael/temporary-custom-statuses">Temporary Custom Statuses</a></td>
+<td>Custom status effects with stacking</td>
+</tr>
+<tr>
+<td><a href="https://github.com/foundryvtt/lib-wrapper">lib-wrapper</a></td>
+<td>Required for API hooks</td>
+</tr>
+<tr>
+<td><a href="https://foundryvtt.com/packages/socketlib">Socketlib</a></td>
+<td>Required for API hooks</td>
+</tr>
+<tr>
+<td><a href="https://foundryvtt.com/packages/tokenmagic">Token Magic FX</a></td>
+<td>Required for API hooks</td>
+</tr>
+<tr>
+<td><a href="https://foundryvtt.com/packages/sequencer">Sequencer</a></td>
+<td>Required for API hooks</td>
+</tr>
+<tr>
+<td><a href="https://www.patreon.com/JB2A">JB2A - Patreon</a> <strong>or</strong> <a href="https://foundryvtt.com/packages/JB2A_DnD5e">JB2A - Free</a></td>
+<td>Source of most action FX visuals. Patreon is preferred since it has the full library. The free pack works too: missing assets are auto-swapped to free equivalents, sometimes recolored, so a few effects look a bit rougher.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="optional">Optional<a class="headerlink" href="#optional" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Why you'd want it</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/League-of-Foundry-Developers/codemirror-lib">CodeMirror</a></td>
+<td>Syntax highlighting in the evaluate/activation code editors</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Agraael/templatemacro">TemplateMacro</a></td>
+<td>Required for zone placement tools (effect zone, dangerous zone, difficult terrain)</td>
+</tr>
+<tr>
+<td><a href="https://foundryvtt.com/packages/statuscounter">Status Icon Counter</a></td>
+<td>Shows stack counts on effect icons</td>
+</tr>
+<tr>
+<td><a href="https://github.com/p4535992/foundryvtt-token-factions">Token Factions</a> (<a href="https://github.com/Agraael/foundryvtt-token-factions">my fork</a>)</td>
+<td>Original module for token border coloring by disposition. My fork adds an advanced multi-team disposition matrix, for more than two sides</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Wibble199/FoundryVTT-Grid-Aware-Auras">Grid-Aware Auras</a> (or <a href="https://github.com/Agraael/FoundryVTT-Grid-Aware-Auras">my fork</a>)</td>
+<td>Required for the <code>createAura</code> and <code>deleteAuras</code> API functions</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Wibble199/FoundryVTT-Terrain-Height-Tools">Terrain Height Tools</a> (or <a href="https://github.com/Agraael/FoundryVTT-Terrain-Height-Tools">my fork</a>)</td>
+<td>3D terrain height painting and line-of-sight calculation</td>
+</tr>
+<tr>
+<td><a href="https://github.com/BoltsJ/lancer-weapon-fx">Lancer Weapon FX</a></td>
+<td>Visual/audio effects on attacks and built-in action animations (Boost, Hide, Shut Down, Fall, Overcharge, etc.)</td>
+</tr>
+<tr>
+<td><a href="https://foundryvtt.com/packages/wall-height">Wall Height</a></td>
+<td>Required for elevation-aware Token Blocks Line of Sight (Bulwark / per-token blocker): walls inherit the token's height, letting same-height observers peek over. Without it, blocking is purely 2D.</td>
+</tr>
+<tr>
+<td><a href="https://gitlab.com/kimitsu_desu/force-client-settings">Force Client Settings</a></td>
+<td>Push client-scoped settings to all your players, so your whole table shares one config.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="recommended">Recommended<a class="headerlink" href="#recommended" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Module</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="https://github.com/Agraael/Lancer-vtt-NPC-import-Macro">Lancer NPC Import</a></td>
+<td>Bulk NPC import from LCP JSON, Comp/Con v3 cloud sync for pilots, pilot import with reserves/projects/organizations.</td>
+</tr>
+<tr>
+<td><a href="https://github.com/Agraael/vtt-actor-browser-fork">Actor Browser (fork)</a></td>
+<td>Browse and search actors across folders and compendiums with filtering and drag-and-drop.</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="settings">Settings<a class="headerlink" href="#settings" title="Permanent link">&para;</a></h2>
+<p><img src="img/settings-access.png" width="85%"/></p>
+<p>Almost everything in the module is configured from one place: <strong>Game Settings &gt; Configure Settings &gt; Lancer Automations</strong>.</p>
+<p>Every feature has its toggles here, and a handful of buttons open dedicated tools: the Activation Manager, export and import, the guided tour, the news popup, and a full reset.</p>
+<p>There are a lot of settings, so they aren't all listed here. Each feature guide explains the ones that matter for it, and every setting has an inline hint.</p>
+<blockquote>
+<p>[!TIP]
+Go through the settings before your first session and set a baseline. The module is largely opt-in. Many settings are client-scoped (per player), so use Force Client Settings to apply your setup to the whole table.</p>
+</blockquote>
+<h3 id="export-import">Export &amp; Import<a class="headerlink" href="#export-import" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/ae-import-review.png" width="70%"/></p>
+<p>Export your whole setup (automations, startup scripts, settings, and keybindings) to a JSON file for a backup or to share a build, then import it back through a review dialog that lets you pick exactly what comes in.</p>
+<p>A full reset is here too.</p>
+<p><br clear="right"/></p>
+<hr />
+<h2 id="feature-guides">Feature guides<a class="headerlink" href="#feature-guides" title="Permanent link">&para;</a></h2>
+<p>Short pitches below. Each links to its full guide.</p>
+<h3 id="automation-engine">Automation Engine<a class="headerlink" href="#automation-engine" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="vid/feature-automation-engine.gif" width="53%"/></p>
+<p>The core feature of Lancer Automations, and the hardest to grasp. The engine automates almost any item, effect, or event tied to Lancer gameplay.</p>
+<p>Many of Lancer's base actions, plus some items and simple NPC automations, are handled by default.</p>
+<p>I also ship my personal set of activations, but that's separate: just my own games' stuff shared as-is, not part of the core module, there for you to use, inspect, or modify to dip your toes into the engine.</p>
+<p>→ Full guide: <a href="feature/AUTOMATION_ENGINE.html"><code>doc/feature/AUTOMATION_ENGINE.md</code></a> ・ engine internals: <a href="AUTOMATION_SYSTEM.html"><code>doc/AUTOMATION_SYSTEM.md</code></a> ・ worked examples: <a href="feature/NPC_EXAMPLES.html"><code>doc/feature/NPC_EXAMPLES.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="effect-manager-bonuses">Effect Manager &amp; Bonuses<a class="headerlink" href="#effect-manager-bonuses" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="vid/feature-effect-manager.gif" width="43%"/></p>
+<p>The Effect Manager can be driven from automation code through the API, but it's also fully available by hand during play.</p>
+<p>It manages effects, custom effects, and many bonuses and status effects so you can apply almost anything you want: custom effects that grant charges, weapon range bonuses, a single reroll, and more.</p>
+<p>→ Full guide: <a href="feature/EFFECTS_AND_BONUSES.html"><code>doc/feature/EFFECTS_AND_BONUSES.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="token-action-hud">Token Action HUD<a class="headerlink" href="#token-action-hud" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="vid/feature-tah.gif" width="60%"/></p>
+<p>The TAH, or Token Action HUD, is a custom-built action menu attached right to your token: your items, skills, stats, scans, history, favorites, a search tool, range preview, and more.</p>
+<p>→ Full guide: <a href="feature/HUD.html"><code>doc/feature/HUD.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="custom-token-stat-bars">Custom Token Stat Bars<a class="headerlink" href="#custom-token-stat-bars" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-token-display.png" width="53%"/></p>
+<p>Lancer Automations draws its own token bars, tailored to Lancer and meant to replace Bar Brawl (turn Bar Brawl off on your tokens for these to show).</p>
+<p>They show the stats that matter, with per-token control over when they're visible (in combat, out of combat, hidden, GM only, owner only), icon scale, and row height.</p>
+<p>You can add extra custom bars per token, and talent counters can be injected automatically.</p>
+<p>→ Full guide: <a href="feature/TOKEN_DISPLAY.html"><code>doc/feature/TOKEN_DISPLAY.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="movement-the-lancer-ruler">Movement &amp; the Lancer Ruler<a class="headerlink" href="#movement-the-lancer-ruler" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="vid/feature-ruler.gif" width="53%"/></p>
+<p>Lancer Automations ships its own Lancer ruler, built to be as detailed as possible.</p>
+<p>There's still more work to do, but if you want accurate, detailed information about movement in Lancer, this ruler is for you.</p>
+<p>The same system powers boost detection, cancelling movement through engagement, and more, all wired into the automation engine.</p>
+<p>→ Full guide: <a href="feature/MOVEMENT.html"><code>doc/feature/MOVEMENT.md</code></a> ・ advanced/beta: <a href="feature/MOVEMENT_ADVANCED.html"><code>MOVEMENT_ADVANCED.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="isometric-handling">Isometric handling<a class="headerlink" href="#isometric-handling" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-isometric.png" width="53%"/></p>
+<p>If you run an isometric game, Lancer Automations plays nicely with the isometric modules.</p>
+<p>It animates token elevation in iso view and adapts its own UI (stat bars, tactical distance labels, waypoint labels, the target reticle, click zones, the selection marquee, scrolling text, and more) so the module's additions line up correctly in an isometric scene.</p>
+<p>Each piece can be toggled from the Isometric settings tab.</p>
+<p>Fair warning though: the module keeps growing, and these isometric adaptations aren't enough to cover all of it. In time Lancer Automations will need every visual feature brought fully into 3D, and that's a long road.</p>
+<p>Honestly, I don't play isometric myself, so it's lower on my priority list for now. What exists works, but some features built to handle 3D elevation on a flat grid don't have an isometric counterpart yet.</p>
+<p>→ Full guide: <a href="feature/ISOMETRIC.html"><code>doc/feature/ISOMETRIC.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="interactive-tools">Interactive Tools<a class="headerlink" href="#interactive-tools" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="vid/feature-interactive.gif" width="53%"/></p>
+<p>Interactive tools are meant to be used with the automation engine, and elsewhere too.</p>
+<p>Lancer Automations provides many of them to build multi-step actions: applying knockback, choosing targets, picking tokens within a defined range, spawning tokens, running votes, and more.</p>
+<p>→ Full guide: <a href="feature/INTERACTIVE_TOOLS.html"><code>doc/feature/INTERACTIVE_TOOLS.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="advanced-targeting-and-measurement">Advanced Targeting and Measurement<a class="headerlink" href="#advanced-targeting-and-measurement" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="vid/feature-attack-targeting.gif" width="53%"/></p>
+<p>An upgrade to the Lancer system's targeting flow: choose your target or place a blast, cone, or line from the attack HUD, with 3D targeting, elevation and terrain blocking through Terrain Height Tools, adjustable line angles, and multi-targeting.</p>
+<p>→ Full guide: <a href="feature/ATTACK_TARGETING.html"><code>doc/feature/ATTACK_TARGETING.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="gameplay-automation">Gameplay Automation<a class="headerlink" href="#gameplay-automation" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-gameplay.png" width="53%"/></p>
+<p>Through the automation engine and many tweaks to the Lancer system, Lancer Automations runs Lancer's actions and reactions for you, from combat to the out-of-combat flows: scanning, rest, downtime, and reserves.</p>
+<p>It also handles skill checks and contests, and tracks usage per turn, per round, or per scene.</p>
+<p>→ Full guide: <a href="feature/GAMEPLAY_AUTOMATION.html"><code>doc/feature/GAMEPLAY_AUTOMATION.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="fx-and-sounds">FX and Sounds<a class="headerlink" href="#fx-and-sounds" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-fx.png" width="53%"/></p>
+<p>There's more flavor in Lancer Automations than just JB2A and Lancer Weapon FX.</p>
+<p>Sounds and graphical effects run throughout the module, and almost all of them can be tweaked or disabled.</p>
+<p>→ Full guide: <a href="feature/FX_AND_SOUNDS.html"><code>doc/feature/FX_AND_SOUNDS.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="vision">Vision<a class="headerlink" href="#vision" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-vision.png" width="53%"/></p>
+<p>Lancer doesn't really have a concept of fog of war or vision, but personally, for immersion, I still like to play with light.</p>
+<p>To stay within the rules, Lancer Automations gives you a way to do that: two vision modes, one for units visible on sensors and one for units seen anywhere through Battlefield Awareness.</p>
+<p>A per-token "blocks line of sight" option (with Bulwark support, elevation-aware via Wall Height) lets units actually break sight.</p>
+<p>There are also performance tools for light and movement, and a system that emulates Lancer's true edge-of-token line of sight (visually only).</p>
+<p>→ Full guide: <a href="feature/VISION.html"><code>doc/feature/VISION.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="wrecks">Wrecks<a class="headerlink" href="#wrecks" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-wreck.png" width="53%"/></p>
+<p>When a unit is destroyed, the module drops a dedicated wreck on the field, with per-category art, explosion, and sound, optional difficult terrain through Terrain Height Tools, and a resurrect button to bring the unit back.</p>
+<p>Art, FX, sound, and scale can be overridden per token.</p>
+<p>→ Full guide: <a href="feature/WRECK.html"><code>doc/feature/WRECK.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="battle-log">Battle Log<a class="headerlink" href="#battle-log" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-battlelog.png" width="53%"/></p>
+<p>When a combat ends the module tracks the whole fight and hands you a recap, XCom-style. As GM you set the outcome and MVP on a card, then broadcast it: per-pilot stats, the enemies and who killed them, awards, and per-round telemetry charts.</p>
+<p>→ Full guide: <a href="feature/BATTLE_LOG.html"><code>doc/feature/BATTLE_LOG.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="system-additions">System Additions<a class="headerlink" href="#system-additions" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-system.png" width="53%"/></p>
+<p>Some of the most useful things here aren't flashy, they're changes baked directly into the Lancer system and Foundry: item-disabled state for dropped or jammed gear, smoother handling of a system's ammo, extra status effects, and extra trackable attributes for token bars (Move, Reaction).</p>
+<p>The GM setup and maintenance tools have their own guide.</p>
+<p>→ Full guide: <a href="feature/SYSTEM_ADDITIONS.html"><code>doc/feature/SYSTEM_ADDITIONS.md</code></a> ・ setup &amp; tools: <a href="feature/SETUP_AND_TOOLS.html"><code>doc/feature/SETUP_AND_TOOLS.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h3 id="infection-damage-type">Infection damage type<a class="headerlink" href="#infection-damage-type" title="Permanent link">&para;</a></h3>
+<p><img align="right" src="img/feature-infection.png" width="53%"/></p>
+<p>HORUS: Thy Hubris Manifest introduces an Infection damage type, and I liked it enough to wire it into Lancer properly.</p>
+<p>It works like Burn, but for Heat, and it asks for a Systems check instead of Engineering.</p>
+<p>You get the damage type itself, the turn-end check flow, an Infection card on the sheet, and the matching visual effects.</p>
+<p>→ Full guide: <a href="feature/INFECTION.html"><code>doc/feature/INFECTION.md</code></a></p>
+<p><br clear="right"/></p>
+<hr />
+<h2 id="optional-integrations">Optional integrations<a class="headerlink" href="#optional-integrations" title="Permanent link">&para;</a></h2>
+<p>Lancer Automations works on its own, but a few features need or improve with these optional modules. Install details are in the tables above.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>Needs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Range, threat, and custom auras (HUD hover previews, <code>createAura</code> API)</td>
+<td>Grid-Aware Auras (or my fork)</td>
+</tr>
+<tr>
+<td>Difficult terrain on wrecks, 3D terrain height and line of sight</td>
+<td>Terrain Height Tools (or my fork)</td>
+</tr>
+<tr>
+<td>Elevation-aware token-blocks-line-of-sight (peek over same-height tokens)</td>
+<td>Wall Height</td>
+</tr>
+<tr>
+<td>Built-in action animations (Boost, Hide, Shut Down, Fall, Overcharge, etc.)</td>
+<td>Lancer Weapon FX</td>
+</tr>
+<tr>
+<td>Multi-team disposition matrix in activation filters</td>
+<td>Token Factions (my fork)</td>
+</tr>
+<tr>
+<td>Zone placement tools (effect, dangerous, difficult-terrain zones)</td>
+<td>TemplateMacro</td>
+</tr>
+<tr>
+<td>Syntax highlighting in the code editors</td>
+<td>CodeMirror</td>
+</tr>
+<tr>
+<td>Stack counts shown on effect icons</td>
+<td>Status Icon Counter</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="extra-stuff">Extra stuff<a class="headerlink" href="#extra-stuff" title="Permanent link">&para;</a></h2>
+<p><strong>Personal deployables LCP.</strong> Some of my personal activations spawn deployables that aren't in any official LCP. Import <a href="https://github.com/Agraael/lancer-automations/blob/main/extra/LaSossis_Npc_Deployables.lcp"><code>extra/LaSossis_Npc_Deployables.lcp</code></a> if one won't resolve. See <a href="feature/AUTOMATION_ENGINE.html#the-personal-activation-set">the personal activation set</a>.</p>
+<p><strong>Foundry movement patch (self-hosted).</strong> On hex grids the trigger-boundary movement split can drift the resolved path from the preview. The clean fix is two source hooks. Code and locations in <a href="feature/MOVEMENT_ADVANCED.html#split-movement-at-trigger-boundaries">Split movement at trigger boundaries</a>.</p>
+<hr />
+<h2 id="acknowledgments">Acknowledgments<a class="headerlink" href="#acknowledgments" title="Permanent link">&para;</a></h2>
+<p>Inspiration, reference code, and ideas drawn from the work of:</p>
+<ul>
+<li><a href="https://github.com/Eranziel">Eranziel</a></li>
+<li><a href="https://github.com/mandatoryhashtags">mandatoryhashtags</a></li>
+<li><a href="https://github.com/caewok">caewok</a></li>
+<li><a href="https://github.com/Wibble199">Wibble199</a></li>
+<li><a href="https://gitlab.com/csmcfarland">csmcfarland</a></li>
+</ul>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "search.share", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="assets/la-code.js"></script>
+      
+        <script src="assets/la-header.js"></script>
+      
+    
+  </body>
+</html>

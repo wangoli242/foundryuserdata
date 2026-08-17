@@ -1,15 +1,8 @@
-2026/06/23-03:42:51.616046 fa3481dbdfc0 Recovering log #8
-2026/06/23-03:42:51.622687 fa3481dbdfc0 Delete type=0 #8
-2026/06/23-03:42:51.622704 fa3481dbdfc0 Delete type=3 #6
-2026/07/03-16:27:37.005721 fa346b7eefc0 Level-0 table #14: started
-2026/07/03-16:27:37.007733 fa346b7eefc0 Level-0 table #14: 11023 bytes OK
-2026/07/03-16:27:37.009289 fa346b7eefc0 Delete type=0 #12
-2026/07/03-16:27:37.012696 fa346b7eefc0 Manual compaction at level-0 from '!messages!3VeNc59dJwhqPFrL' @ 72057594037927935 : 1 .. '!messages!Y23jQWTJZdHBh6Cg' @ 0 : 0; will stop at (end)
-2026/07/03-16:27:37.015542 fa346b7eefc0 Manual compaction at level-1 from '!messages!3VeNc59dJwhqPFrL' @ 72057594037927935 : 1 .. '!messages!Y23jQWTJZdHBh6Cg' @ 0 : 0; will stop at '!messages!Y23jQWTJZdHBh6Cg' @ 9 : 1
-2026/07/03-16:27:37.015547 fa346b7eefc0 Compacting 1@1 + 1@2 files
-2026/07/03-16:27:37.018303 fa346b7eefc0 Generated table #15@1: 10 keys, 14256 bytes
-2026/07/03-16:27:37.018312 fa346b7eefc0 Compacted 1@1 + 1@2 files => 14256 bytes
-2026/07/03-16:27:37.020269 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
-2026/07/03-16:27:37.020318 fa346b7eefc0 Delete type=2 #14
-2026/07/03-16:27:37.020357 fa346b7eefc0 Delete type=2 #10
-2026/07/03-16:27:37.027571 fa346b7eefc0 Manual compaction at level-1 from '!messages!Y23jQWTJZdHBh6Cg' @ 9 : 1 .. '!messages!Y23jQWTJZdHBh6Cg' @ 0 : 0; will stop at (end)
+2026/08/14-21:12:13.588747 fa3481dbdfc0 Recovering log #18
+2026/08/14-21:12:13.595677 fa3481dbdfc0 Delete type=3 #16
+2026/08/14-21:12:13.595701 fa3481dbdfc0 Delete type=0 #18
+2026/08/16-05:47:41.271468 fa346b7eefc0 Level-0 table #24: started
+2026/08/16-05:47:41.271483 fa346b7eefc0 Level-0 table #24: 0 bytes OK
+2026/08/16-05:47:41.274183 fa346b7eefc0 Delete type=0 #22
+2026/08/16-05:47:41.281174 fa346b7eefc0 Manual compaction at level-0 from '!messages!0VAk5l86CGzlV2rp' @ 72057594037927935 : 1 .. '!messages!zVxesUkWYcs8rSEf' @ 0 : 0; will stop at (end)
+2026/08/16-05:47:41.281360 fa346b7eefc0 Manual compaction at level-1 from '!messages!0VAk5l86CGzlV2rp' @ 72057594037927935 : 1 .. '!messages!zVxesUkWYcs8rSEf' @ 0 : 0; will stop at (end)

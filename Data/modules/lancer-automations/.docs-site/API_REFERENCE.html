@@ -1,0 +1,2401 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automation module for the Lancer system in Foundry VTT">
+      
+      
+      
+        <link rel="canonical" href="https://agraael.github.io/lancer-automations/API_REFERENCE.html">
+      
+      
+        <link rel="prev" href="AUTOMATION_SYSTEM.html">
+      
+      
+        <link rel="next" href="API_COMBAT.html">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>API Reference - Lancer Automations</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/la-theme.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lancer-automations-api-reference" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Lancer Automations" class="md-header__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lancer Automations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              API Reference
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Lancer Automations" class="md-nav__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lancer Automations
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Feature guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Feature guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/AUTOMATION_ENGINE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation Engine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/EFFECTS_AND_BONUSES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects & Bonuses
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Action HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT_ADVANCED.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement Advanced
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ISOMETRIC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Isometric
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INTERACTIVE_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ATTACK_TARGETING.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Attack Targeting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/GAMEPLAY_AUTOMATION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gameplay Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/FX_AND_SOUNDS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FX and Sounds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/VISION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/WRECK.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wrecks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/BATTLE_LOG.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Battle Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SYSTEM_ADDITIONS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Additions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SETUP_AND_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup & Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INFECTION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/NPC_EXAMPLES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NPC Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MACROS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Macros
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AUTOMATION_SYSTEM.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="API_REFERENCE.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing the API
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamentals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_COMBAT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Combat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_SPATIAL.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spatial
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_EFFECTS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_INTERACTIVE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_ITEMS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Items
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HOWTO.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How-To
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#documentation-files" class="md-nav__link">
+    <span class="md-ellipsis">
+      Documentation Files
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#accessing-the-api" class="md-nav__link">
+    <span class="md-ellipsis">
+      Accessing the API
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#fundamentals" class="md-nav__link">
+    <span class="md-ellipsis">
+      Fundamentals
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#concepts" class="md-nav__link">
+    <span class="md-ellipsis">
+      Concepts
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="lancer-automations-api-reference">Lancer Automations - API Reference<a class="headerlink" href="#lancer-automations-api-reference" title="Permanent link">&para;</a></h1>
+<p><a href="index.html">← Back to the README</a></p>
+<h2 id="documentation-files">Documentation Files<a class="headerlink" href="#documentation-files" title="Permanent link">&para;</a></h2>
+<table>
+<thead>
+<tr>
+<th>File</th>
+<th>Contents</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><a href="AUTOMATION_SYSTEM.html">AUTOMATION_SYSTEM.md</a></strong></td>
+<td>How the automation engine works: trigger lifecycle, filters, callbacks, activation modes, sockets, cancel/modify, flow injection, registration, caches</td>
+</tr>
+<tr>
+<td><strong><a href="API_COMBAT.html">API_COMBAT.md</a></strong></td>
+<td>Combat &amp; execution flows, weapon/item details</td>
+</tr>
+<tr>
+<td><strong><a href="API_SPATIAL.html">API_SPATIAL.md</a></strong></td>
+<td>Distance &amp; grid math, coordinate helpers, faction/disposition, cell data, debug overlays</td>
+</tr>
+<tr>
+<td><strong><a href="API_EFFECTS.html">API_EFFECTS.md</a></strong></td>
+<td>Status effect management, global/constant bonuses, immunities, flow state injection</td>
+</tr>
+<tr>
+<td><strong><a href="API_INTERACTIVE.html">API_INTERACTIVE.md</a></strong></td>
+<td>Token picker, zones, knockback, choice/vote cards, deployables, thrown weapons, hard cover</td>
+</tr>
+<tr>
+<td><strong><a href="API_ITEMS.html">API_ITEMS.md</a></strong></td>
+<td>Item &amp; actor flags, tags, resource management, auto-consume config</td>
+</tr>
+<tr>
+<td><strong><a href="API_HUD.html">API_HUD.md</a></strong></td>
+<td>Extra actions, action locks, and combat overlays in the Token Action HUD</td>
+</tr>
+<tr>
+<td><strong><a href="API_MOVEMENT.html">API_MOVEMENT.md</a></strong></td>
+<td>Movement tracking, history, movement cap</td>
+</tr>
+<tr>
+<td><strong><a href="API_TOKEN_DISPLAY.html">API_TOKEN_DISPLAY.md</a></strong></td>
+<td>Extra token stat bars</td>
+</tr>
+<tr>
+<td><strong><a href="API_HOWTO.html">API_HOWTO.md</a></strong></td>
+<td>Registration, user helpers, how-tos, Grid-Aware Auras wrapper</td>
+</tr>
+</tbody>
+</table>
+<hr />
+<h2 id="accessing-the-api">Accessing the API<a class="headerlink" href="#accessing-the-api" title="Permanent link">&para;</a></h2>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">api</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">game</span><span class="p">.</span><span class="nx">modules</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lancer-automations&#39;</span><span class="p">).</span><span class="nx">api</span><span class="p">;</span>
+</code></pre></div>
+<p>Or via hook:
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="nx">Hooks</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s1">&#39;lancer-automations.ready&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a><span class="p">});</span>
+</code></pre></div></p>
+<hr />
+<h2 id="fundamentals">Fundamentals<a class="headerlink" href="#fundamentals" title="Permanent link">&para;</a></h2>
+<h3 id="shared-types">Shared Types<a class="headerlink" href="#shared-types" title="Permanent link">&para;</a></h3>
+<p>Source: <a href="https://github.com/Agraael/lancer-automations/blob/main/scripts/typing/types.d.ts"><code>scripts/typing/types.d.ts</code></a>.</p>
+<details>
+<summary><b><code>CancelFunction</code></b> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="p">(</span><span class="nx">reasonText</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">preConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">postChoice</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="p">.</span><span class="nx">wait</span><span class="p">()</span><span class="o">:</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span>
+</code></pre></div>
+<p>Used by <code>cancelAttack</code>, <code>cancelTechAttack</code>, <code>cancelCheck</code>, <code>cancelAction</code>, <code>cancelChange</code>, <code>cancelStructure</code>, <code>cancelStress</code>, <code>cancelStructureOutcome</code>, <code>cancelStressOutcome</code>. Aborts synchronously, so call it before any <code>await</code> in your <code>activationCode</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>reasonText</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">per-trigger</td>
+<td style="text-align: left;">Card description</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">per-trigger</td>
+<td style="text-align: left;">Card header</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>allowConfirm</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;"><code>false</code> cancels with no card</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>userIdControl</kbd></td>
+<td style="text-align: left;"><code>string \| string[] \| null</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Who sees the card. <code>null</code> = active GM</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>preConfirm</kbd></td>
+<td style="text-align: left;"><code>(() =&gt; Promise&lt;boolean&gt;) \| null</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Asked first. <code>true</code> cancels, <code>false</code> takes the ignore path</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>postChoice</kbd></td>
+<td style="text-align: left;"><code>((chose: boolean) =&gt; Promise&lt;void&gt;) \| null</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;"><code>chose</code> is <code>true</code> if it stayed cancelled</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>opts</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">item</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">originToken</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">relatedToken</span><span class="o">?</span><span class="w"> </span><span class="p">}</span></code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{}</span></code></td>
+<td style="text-align: left;">Documents shown on the card</td>
+</tr>
+</tbody>
+</table>
+<p>The ignore path re-runs the original action. Reactors already in <code>_cancelledBy</code> are skipped on the redo, so a gate is not asked twice. <code class="highlight"><span class="p">.</span><span class="nx">wait</span><span class="p">()</span></code> resolves after the card and any redo.</p>
+</details>
+<details>
+<summary><b><code>CancelMoveFunction</code></b><br><b><code>ChangeMoveFunction</code></b> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="nx">cancelTriggeredMove</span><span class="p">(</span><span class="nx">reasonText</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">preConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">postChoice</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nx">changeTriggeredMove</span><span class="p">(</span><span class="nx">position</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">},</span><span class="w"> </span><span class="nx">extraData</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">reasonText</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">preConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">postChoice</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span>
+</code></pre></div>
+<p><code>CancelFunction</code> params minus <code>title</code>. A rerouted move is a new move, so reactors may evaluate it again.</p>
+</details>
+<details>
+<summary><b><code>ModifyValueFunction</code></b><br><b><code>RerollFunction</code></b><br><b><code>ChangeRollFunction</code></b> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nx">modifyHpChange</span><span class="p">(</span><span class="nx">newValue</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="nx">reasonText</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">preConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">postChoice</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="nx">modifyHeatChange</span><span class="p">(</span><span class="nx">newValue</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">same</span><span class="p">)</span><span class="w">          </span><span class="c1">// .wait() on both</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="nx">modifyRoll</span><span class="p">(</span><span class="nx">newTotal</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="w">                 </span><span class="c1">// structure/stress, no card</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="nx">reroll</span><span class="p">(</span><span class="nx">reasonText</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">subtype</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="nx">changeRoll</span><span class="p">(</span><span class="nx">newTotal</span><span class="o">:</span><span class="w"> </span><span class="kt">number</span><span class="p">,</span><span class="w"> </span><span class="nx">reasonText</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">preConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">postChoice</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span>
+</code></pre></div>
+<p><code>subtype</code> defaults to <code>'retry'</code>. Trailing params behave as on <code>CancelFunction</code>.</p>
+</details>
+<details>
+<summary><b><code>ActivationCallback</code></b> - shape of <code>evaluate</code> and <code>activationCode</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="p">(</span><span class="nx">triggerType</span><span class="o">:</span><span class="w"> </span><span class="kt">TriggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="o">:</span><span class="w"> </span><span class="kt">TriggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="o">:</span><span class="w"> </span><span class="kt">Token</span><span class="p">,</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w"> </span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="kt">Item</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="o">:</span><span class="w"> </span><span class="kt">string</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="o">:</span><span class="w"> </span><span class="kt">LancerAutomationsAPI</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">any</span>
+</code></pre></div>
+<p><code>item</code> is <code>null</code> for general activations.</p>
+</details>
+<details>
+<summary><b><code>actionData</code></b><br><b><code>flowState</code></b> - the recurring payload objects</summary>
+<p><br></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;"><code>actionData</code> field</th>
+<th style="text-align: left;">Type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>type</kbd></td>
+<td style="text-align: left;"><code>string</code> (<code>"action"</code> / <code>"attack"</code> / <code>"tech"</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>title</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>action</kbd></td>
+<td style="text-align: left;"><code>{ name: string, activation: string } \| null</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>detail</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>tags</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="nb">Array</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">lid</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span></code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>flowState</kbd></td>
+<td style="text-align: left;"><code>FlowState</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>flowState</code> is the Lancer flow <code>state</code>: <code>state.data</code> (e.g. <code>data.damage</code>, <code>data.bonus_damage</code>), <code>state.la_extraData</code>, <code class="highlight"><span class="nx">state</span><span class="p">.</span><span class="nx">injectFlowExtraData</span><span class="p">(</span><span class="nx">obj</span><span class="p">)</span></code>, <code class="highlight"><span class="nx">state</span><span class="p">.</span><span class="nx">getFlowExtraData</span><span class="p">()</span></code>, <code>state.actor</code>, <code>state.item</code>.</p>
+</details>
+<p><br></p>
+<h3 id="trigger-types-data">Trigger Types &amp; Data<a class="headerlink" href="#trigger-types-data" title="Permanent link">&para;</a></h3>
+<p>Every trigger passes a data object. All objects receive <code>distanceToTrigger</code> and <code>canTriggerReaction</code> (reactor to triggering token), plus <code>_cancelledBy</code> on cancellable triggers.</p>
+<p><code>Tag</code> is <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">lid</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="w"> </span><span class="p">}</span></code>. <code>ActionData</code> and <code>FlowState</code> are defined above.</p>
+<h4 id="attack-triggers">Attack Triggers<a class="headerlink" href="#attack-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onInitAttack</code></b> - attack initiated, before Attack HUD</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">    </span><span class="nx">weapon</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Token</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span><span class="p">,</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">    </span><span class="nx">cancelAttack</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onAttack</code></b> - attack roll made</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="p">{</span>
+<a id="__codelineno-7-2" name="__codelineno-7-2" href="#__codelineno-7-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-7-3" name="__codelineno-7-3" href="#__codelineno-7-3"></a><span class="w">    </span><span class="nx">weapon</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-7-4" name="__codelineno-7-4" href="#__codelineno-7-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Token</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-7-5" name="__codelineno-7-5" href="#__codelineno-7-5"></a><span class="w">    </span><span class="nx">attackType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-7-6" name="__codelineno-7-6" href="#__codelineno-7-6"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-7-7" name="__codelineno-7-7" href="#__codelineno-7-7"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-7-8" name="__codelineno-7-8" href="#__codelineno-7-8"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span>
+<a id="__codelineno-7-9" name="__codelineno-7-9" href="#__codelineno-7-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onHit</code></b> - attack hit</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="p">{</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-8-3" name="__codelineno-8-3" href="#__codelineno-8-3"></a><span class="w">    </span><span class="nx">weapon</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-8-4" name="__codelineno-8-4" href="#__codelineno-8-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="nx">roll</span><span class="o">:</span><span class="w"> </span><span class="nx">Roll</span><span class="p">,</span><span class="w"> </span><span class="nx">crit</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-8-5" name="__codelineno-8-5" href="#__codelineno-8-5"></a><span class="w">    </span><span class="nx">attackType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-8-6" name="__codelineno-8-6" href="#__codelineno-8-6"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-8-7" name="__codelineno-8-7" href="#__codelineno-8-7"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-8-8" name="__codelineno-8-8" href="#__codelineno-8-8"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span>
+<a id="__codelineno-8-9" name="__codelineno-8-9" href="#__codelineno-8-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onMiss</code></b> - attack missed</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="p">{</span>
+<a id="__codelineno-9-2" name="__codelineno-9-2" href="#__codelineno-9-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-9-3" name="__codelineno-9-3" href="#__codelineno-9-3"></a><span class="w">    </span><span class="nx">weapon</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-9-4" name="__codelineno-9-4" href="#__codelineno-9-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="nx">roll</span><span class="o">:</span><span class="w"> </span><span class="nx">Roll</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-9-5" name="__codelineno-9-5" href="#__codelineno-9-5"></a><span class="w">    </span><span class="nx">attackType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-9-6" name="__codelineno-9-6" href="#__codelineno-9-6"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-9-7" name="__codelineno-9-7" href="#__codelineno-9-7"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-9-8" name="__codelineno-9-8" href="#__codelineno-9-8"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span>
+<a id="__codelineno-9-9" name="__codelineno-9-9" href="#__codelineno-9-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onPreDamage</code></b> - once per damage roll, before the damage HUD builds</summary>
+<p>Mutate <code>triggerData.flowState.data.damage</code> or <code>.bonus_damage</code> to alter base damage types/values before the player rolls.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="p">{</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-10-3" name="__codelineno-10-3" href="#__codelineno-10-3"></a><span class="w">    </span><span class="nx">weapon</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-10-4" name="__codelineno-10-4" href="#__codelineno-10-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Token</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-10-5" name="__codelineno-10-5" href="#__codelineno-10-5"></a><span class="w">    </span><span class="nx">hitTokens</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Token</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-10-6" name="__codelineno-10-6" href="#__codelineno-10-6"></a><span class="w">    </span><span class="nx">attackType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-10-7" name="__codelineno-10-7" href="#__codelineno-10-7"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-10-8" name="__codelineno-10-8" href="#__codelineno-10-8"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-10-9" name="__codelineno-10-9" href="#__codelineno-10-9"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span><span class="p">,</span>
+<a id="__codelineno-10-10" name="__codelineno-10-10" href="#__codelineno-10-10"></a><span class="w">    </span><span class="nx">cancelDamage</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-10-11" name="__codelineno-10-11" href="#__codelineno-10-11"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-10-12" name="__codelineno-10-12" href="#__codelineno-10-12"></a><span class="p">}</span>
+</code></pre></div>
+<p><code>cancelDamage</code> aborts the whole damage roll, so no damage card is printed. It is flow-wide, not per target: to spare one target of several, set that entry's <code>hit</code> to <code>false</code> in <code>flowState.data.hit_results</code> instead.</p>
+</details>
+<details>
+<summary><b><code>onDamage</code></b> - damage applied</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="p">{</span>
+<a id="__codelineno-11-2" name="__codelineno-11-2" href="#__codelineno-11-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-11-3" name="__codelineno-11-3" href="#__codelineno-11-3"></a><span class="w">    </span><span class="nx">weapon</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-11-4" name="__codelineno-11-4" href="#__codelineno-11-4"></a><span class="w">    </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-11-5" name="__codelineno-11-5" href="#__codelineno-11-5"></a><span class="w">    </span><span class="nx">damages</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">number</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-11-6" name="__codelineno-11-6" href="#__codelineno-11-6"></a><span class="w">    </span><span class="nx">types</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">string</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-11-7" name="__codelineno-11-7" href="#__codelineno-11-7"></a><span class="w">    </span><span class="nx">isCrit</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-11-8" name="__codelineno-11-8" href="#__codelineno-11-8"></a><span class="w">    </span><span class="nx">isHit</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-11-9" name="__codelineno-11-9" href="#__codelineno-11-9"></a><span class="w">    </span><span class="nx">attackType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-11-10" name="__codelineno-11-10" href="#__codelineno-11-10"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-11-11" name="__codelineno-11-11" href="#__codelineno-11-11"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-11-12" name="__codelineno-11-12" href="#__codelineno-11-12"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span>
+<a id="__codelineno-11-13" name="__codelineno-11-13" href="#__codelineno-11-13"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<h4 id="tech-triggers">Tech Triggers<a class="headerlink" href="#tech-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onInitTechAttack</code></b> - before Tech HUD</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="p">{</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="w">    </span><span class="nx">techItem</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-12-4" name="__codelineno-12-4" href="#__codelineno-12-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Token</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-12-5" name="__codelineno-12-5" href="#__codelineno-12-5"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-12-6" name="__codelineno-12-6" href="#__codelineno-12-6"></a><span class="w">    </span><span class="nx">isInvade</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-12-7" name="__codelineno-12-7" href="#__codelineno-12-7"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-12-8" name="__codelineno-12-8" href="#__codelineno-12-8"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span><span class="p">,</span>
+<a id="__codelineno-12-9" name="__codelineno-12-9" href="#__codelineno-12-9"></a><span class="w">    </span><span class="nx">cancelTechAttack</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span>
+<a id="__codelineno-12-10" name="__codelineno-12-10" href="#__codelineno-12-10"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onTechAttack</code></b> - tech roll made</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="p">{</span>
+<a id="__codelineno-13-2" name="__codelineno-13-2" href="#__codelineno-13-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-13-3" name="__codelineno-13-3" href="#__codelineno-13-3"></a><span class="w">    </span><span class="nx">techItem</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-13-4" name="__codelineno-13-4" href="#__codelineno-13-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Token</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-13-5" name="__codelineno-13-5" href="#__codelineno-13-5"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-13-6" name="__codelineno-13-6" href="#__codelineno-13-6"></a><span class="w">    </span><span class="nx">isInvade</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-13-7" name="__codelineno-13-7" href="#__codelineno-13-7"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-13-8" name="__codelineno-13-8" href="#__codelineno-13-8"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span>
+<a id="__codelineno-13-9" name="__codelineno-13-9" href="#__codelineno-13-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onTechHit</code></b> - tech attack hit</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="p">{</span>
+<a id="__codelineno-14-2" name="__codelineno-14-2" href="#__codelineno-14-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-14-3" name="__codelineno-14-3" href="#__codelineno-14-3"></a><span class="w">    </span><span class="nx">techItem</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-14-4" name="__codelineno-14-4" href="#__codelineno-14-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="nx">roll</span><span class="o">:</span><span class="w"> </span><span class="nx">Roll</span><span class="p">,</span><span class="w"> </span><span class="nx">crit</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-14-5" name="__codelineno-14-5" href="#__codelineno-14-5"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-14-6" name="__codelineno-14-6" href="#__codelineno-14-6"></a><span class="w">    </span><span class="nx">isInvade</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-14-7" name="__codelineno-14-7" href="#__codelineno-14-7"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-14-8" name="__codelineno-14-8" href="#__codelineno-14-8"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span>
+<a id="__codelineno-14-9" name="__codelineno-14-9" href="#__codelineno-14-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onTechMiss</code></b> - tech attack missed</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="p">{</span>
+<a id="__codelineno-15-2" name="__codelineno-15-2" href="#__codelineno-15-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-15-3" name="__codelineno-15-3" href="#__codelineno-15-3"></a><span class="w">    </span><span class="nx">techItem</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-15-4" name="__codelineno-15-4" href="#__codelineno-15-4"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">target</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="nx">roll</span><span class="o">:</span><span class="w"> </span><span class="nx">Roll</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-15-5" name="__codelineno-15-5" href="#__codelineno-15-5"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-15-6" name="__codelineno-15-6" href="#__codelineno-15-6"></a><span class="w">    </span><span class="nx">isInvade</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-15-7" name="__codelineno-15-7" href="#__codelineno-15-7"></a><span class="w">    </span><span class="nx">tags</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">Tag</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-15-8" name="__codelineno-15-8" href="#__codelineno-15-8"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span>
+<a id="__codelineno-15-9" name="__codelineno-15-9" href="#__codelineno-15-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<h4 id="movement-triggers">Movement Triggers<a class="headerlink" href="#movement-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onPreMove</code></b> - before movement is finalized</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="p">{</span>
+<a id="__codelineno-16-2" name="__codelineno-16-2" href="#__codelineno-16-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-16-3" name="__codelineno-16-3" href="#__codelineno-16-3"></a><span class="w">    </span><span class="nx">distanceToMove</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-16-4" name="__codelineno-16-4" href="#__codelineno-16-4"></a><span class="w">    </span><span class="nx">elevationToMove</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-16-5" name="__codelineno-16-5" href="#__codelineno-16-5"></a><span class="w">    </span><span class="nx">startPos</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-16-6" name="__codelineno-16-6" href="#__codelineno-16-6"></a><span class="w">    </span><span class="nx">endPos</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-16-7" name="__codelineno-16-7" href="#__codelineno-16-7"></a><span class="w">    </span><span class="nx">isDrag</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-16-8" name="__codelineno-16-8" href="#__codelineno-16-8"></a><span class="w">    </span><span class="nx">moveInfo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-16-9" name="__codelineno-16-9" href="#__codelineno-16-9"></a><span class="w">        </span><span class="nx">isInvoluntary</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-16-10" name="__codelineno-16-10" href="#__codelineno-16-10"></a><span class="w">        </span><span class="nx">isTeleport</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-16-11" name="__codelineno-16-11" href="#__codelineno-16-11"></a><span class="w">        </span><span class="nx">isUndo</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-16-12" name="__codelineno-16-12" href="#__codelineno-16-12"></a><span class="w">        </span><span class="nx">isModified</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-16-13" name="__codelineno-16-13" href="#__codelineno-16-13"></a><span class="w">        </span><span class="nx">pathHexes</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="p">{</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="p">,</span><span class="w"> </span><span class="nx">cx</span><span class="p">,</span><span class="w"> </span><span class="nx">cy</span><span class="p">,</span><span class="w"> </span><span class="nx">isHistory</span><span class="p">,</span><span class="w"> </span><span class="nx">hexes</span><span class="w"> </span><span class="p">}</span><span class="o">&gt;</span>
+<a id="__codelineno-16-14" name="__codelineno-16-14" href="#__codelineno-16-14"></a><span class="w">    </span><span class="p">},</span>
+<a id="__codelineno-16-15" name="__codelineno-16-15" href="#__codelineno-16-15"></a><span class="w">    </span><span class="nx">cancel</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">,</span>
+<a id="__codelineno-16-16" name="__codelineno-16-16" href="#__codelineno-16-16"></a><span class="w">    </span><span class="nx">cancelTriggeredMove</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelMoveFunction</span><span class="p">,</span>
+<a id="__codelineno-16-17" name="__codelineno-16-17" href="#__codelineno-16-17"></a><span class="w">    </span><span class="nx">changeTriggeredMove</span><span class="o">:</span><span class="w"> </span><span class="nx">ChangeMoveFunction</span>
+<a id="__codelineno-16-18" name="__codelineno-16-18" href="#__codelineno-16-18"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onMove</code></b> - movement completed</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="p">{</span>
+<a id="__codelineno-17-2" name="__codelineno-17-2" href="#__codelineno-17-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-17-3" name="__codelineno-17-3" href="#__codelineno-17-3"></a><span class="w">    </span><span class="nx">distanceMoved</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-17-4" name="__codelineno-17-4" href="#__codelineno-17-4"></a><span class="w">    </span><span class="nx">elevationMoved</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-17-5" name="__codelineno-17-5" href="#__codelineno-17-5"></a><span class="w">    </span><span class="nx">startPos</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-17-6" name="__codelineno-17-6" href="#__codelineno-17-6"></a><span class="w">    </span><span class="nx">endPos</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">x</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-17-7" name="__codelineno-17-7" href="#__codelineno-17-7"></a><span class="w">    </span><span class="nx">isDrag</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-17-8" name="__codelineno-17-8" href="#__codelineno-17-8"></a><span class="w">    </span><span class="nx">moveInfo</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-17-9" name="__codelineno-17-9" href="#__codelineno-17-9"></a><span class="w">        </span><span class="nx">isInvoluntary</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-17-10" name="__codelineno-17-10" href="#__codelineno-17-10"></a><span class="w">        </span><span class="nx">isTeleport</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-17-11" name="__codelineno-17-11" href="#__codelineno-17-11"></a><span class="w">        </span><span class="nx">pathHexes</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nb">Object</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-17-12" name="__codelineno-17-12" href="#__codelineno-17-12"></a><span class="w">        </span><span class="nx">isBoost</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-17-13" name="__codelineno-17-13" href="#__codelineno-17-13"></a><span class="w">        </span><span class="nx">boostSet</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">number</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-17-14" name="__codelineno-17-14" href="#__codelineno-17-14"></a><span class="w">        </span><span class="nx">isModified</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-17-15" name="__codelineno-17-15" href="#__codelineno-17-15"></a><span class="w">        </span><span class="nx">extraData</span><span class="o">:</span><span class="w"> </span><span class="nx">Record</span><span class="o">&lt;</span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">any</span><span class="o">&gt;</span>
+<a id="__codelineno-17-16" name="__codelineno-17-16" href="#__codelineno-17-16"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-17-17" name="__codelineno-17-17" href="#__codelineno-17-17"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onInvoluntaryMove</code></b> - before each involuntary per-token move, cancellable</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="p">{</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-18-3" name="__codelineno-18-3" href="#__codelineno-18-3"></a><span class="w">    </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-18-4" name="__codelineno-18-4" href="#__codelineno-18-4"></a><span class="w">    </span><span class="nx">distance</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-18-5" name="__codelineno-18-5" href="#__codelineno-18-5"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-18-6" name="__codelineno-18-6" href="#__codelineno-18-6"></a><span class="w">    </span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-18-7" name="__codelineno-18-7" href="#__codelineno-18-7"></a><span class="w">    </span><span class="nx">destination</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">x</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span><span class="w"> </span><span class="nx">y</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-18-8" name="__codelineno-18-8" href="#__codelineno-18-8"></a><span class="w">    </span><span class="nx">cancel</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">reason</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span>
+<a id="__codelineno-18-9" name="__codelineno-18-9" href="#__codelineno-18-9"></a><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code class="highlight"><span class="nx">cancel</span><span class="p">(</span><span class="nx">reason</span><span class="o">?</span><span class="p">)</span></code> synchronously skips this specific token's move. Other tokens in the batch still proceed.</li>
+<li>Does <strong>not</strong> fire when <code class="highlight"><span class="nx">knockBackToken</span><span class="p">()</span></code> is called with <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">asVoluntary</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span></code> - in that mode the move goes through <code>onPreMove</code>/<code>onMove</code> like a regular drag.</li>
+<li><code>actionName</code> and <code>item</code> are passed from the caller (e.g. <code>"Grapple"</code>), used by <code>onlyOnSourceMatch</code>.</li>
+</ul>
+</details>
+<h4 id="deployment-placement-triggers">Deployment &amp; Placement Triggers<a class="headerlink" href="#deployment-placement-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onDeploy</code></b> - deployable or weapon token placed on the map</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="p">{</span>
+<a id="__codelineno-19-2" name="__codelineno-19-2" href="#__codelineno-19-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-19-3" name="__codelineno-19-3" href="#__codelineno-19-3"></a><span class="w">    </span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-19-4" name="__codelineno-19-4" href="#__codelineno-19-4"></a><span class="w">    </span><span class="nx">deployedTokens</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nx">TokenDocument</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-19-5" name="__codelineno-19-5" href="#__codelineno-19-5"></a><span class="w">    </span><span class="nx">deployType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="c1">// &quot;deployable&quot; | &quot;throw&quot;</span>
+<a id="__codelineno-19-6" name="__codelineno-19-6" href="#__codelineno-19-6"></a><span class="w">    </span><span class="nx">distanceToTrigger</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-19-7" name="__codelineno-19-7" href="#__codelineno-19-7"></a><span class="w">    </span><span class="nx">canTriggerReaction</span><span class="o">?:</span><span class="w"> </span><span class="kr">boolean</span>
+<a id="__codelineno-19-8" name="__codelineno-19-8" href="#__codelineno-19-8"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<h4 id="turn-events">Turn Events<a class="headerlink" href="#turn-events" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onTurnStart</code></b> / <b><code>onTurnEnd</code></b></summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="p">{</span><span class="w"> </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onRoundStart</code></b> - once at the start of every round, including round 1</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="p">{</span><span class="w"> </span><span class="nx">combat</span><span class="o">:</span><span class="w"> </span><span class="nx">Combat</span><span class="p">,</span><span class="w"> </span><span class="nx">round</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onEnterCombat</code></b> / <b><code>onExitCombat</code></b> - token added to / removed from the combat tracker</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="p">{</span><span class="w"> </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+</details>
+<h4 id="status-effect-triggers">Status Effect Triggers<a class="headerlink" href="#status-effect-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onPreStatusApplied</code></b> - before a status is applied (non-async evaluate only)</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="p">{</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-23-3" name="__codelineno-23-3" href="#__codelineno-23-3"></a><span class="w">    </span><span class="nx">statusId</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-23-4" name="__codelineno-23-4" href="#__codelineno-23-4"></a><span class="w">    </span><span class="nx">effect</span><span class="o">:</span><span class="w"> </span><span class="nx">ActiveEffect</span><span class="p">,</span>
+<a id="__codelineno-23-5" name="__codelineno-23-5" href="#__codelineno-23-5"></a><span class="w">    </span><span class="nx">cancelChange</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span>
+<a id="__codelineno-23-6" name="__codelineno-23-6" href="#__codelineno-23-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onPreStatusRemoved</code></b> - before a status is removed (non-async evaluate only)</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="p">{</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="w">    </span><span class="nx">statusId</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-24-4" name="__codelineno-24-4" href="#__codelineno-24-4"></a><span class="w">    </span><span class="nx">effect</span><span class="o">:</span><span class="w"> </span><span class="nx">ActiveEffect</span><span class="p">,</span>
+<a id="__codelineno-24-5" name="__codelineno-24-5" href="#__codelineno-24-5"></a><span class="w">    </span><span class="nx">cancelChange</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span>
+<a id="__codelineno-24-6" name="__codelineno-24-6" href="#__codelineno-24-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onStatusApplied</code></b> / <b><code>onStatusRemoved</code></b></summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="p">{</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="w">    </span><span class="nx">statusId</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-25-4" name="__codelineno-25-4" href="#__codelineno-25-4"></a><span class="w">    </span><span class="nx">effect</span><span class="o">:</span><span class="w"> </span><span class="nx">ActiveEffect</span>
+<a id="__codelineno-25-5" name="__codelineno-25-5" href="#__codelineno-25-5"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<h4 id="structure-stress-triggers">Structure &amp; Stress Triggers<a class="headerlink" href="#structure-stress-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onPreStructure</code></b> - before the structure roll, can cancel the flow</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="p">{</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-26-3" name="__codelineno-26-3" href="#__codelineno-26-3"></a><span class="w">    </span><span class="nx">remainingStructure</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-26-4" name="__codelineno-26-4" href="#__codelineno-26-4"></a><span class="w">    </span><span class="nx">cancelStructure</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-26-5" name="__codelineno-26-5" href="#__codelineno-26-5"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-26-6" name="__codelineno-26-6" href="#__codelineno-26-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onStructure</code></b> - after the structure roll</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="p">{</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="w">    </span><span class="nx">remainingStructure</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-27-4" name="__codelineno-27-4" href="#__codelineno-27-4"></a><span class="w">    </span><span class="nx">rollResult</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-27-5" name="__codelineno-27-5" href="#__codelineno-27-5"></a><span class="w">    </span><span class="nx">rollDice</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">[],</span>
+<a id="__codelineno-27-6" name="__codelineno-27-6" href="#__codelineno-27-6"></a><span class="w">    </span><span class="nx">cancelStructureOutcome</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-27-7" name="__codelineno-27-7" href="#__codelineno-27-7"></a><span class="w">    </span><span class="nx">modifyRoll</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">newTotal</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">,</span>
+<a id="__codelineno-27-8" name="__codelineno-27-8" href="#__codelineno-27-8"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-27-9" name="__codelineno-27-9" href="#__codelineno-27-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onPreStress</code></b> - before the overheat roll, can cancel the flow</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="p">{</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-28-3" name="__codelineno-28-3" href="#__codelineno-28-3"></a><span class="w">    </span><span class="nx">remainingStress</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-28-4" name="__codelineno-28-4" href="#__codelineno-28-4"></a><span class="w">    </span><span class="nx">cancelStress</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-28-5" name="__codelineno-28-5" href="#__codelineno-28-5"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-28-6" name="__codelineno-28-6" href="#__codelineno-28-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onStress</code></b> - after the overheat roll</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="p">{</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-29-3" name="__codelineno-29-3" href="#__codelineno-29-3"></a><span class="w">    </span><span class="nx">remainingStress</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-29-4" name="__codelineno-29-4" href="#__codelineno-29-4"></a><span class="w">    </span><span class="nx">rollResult</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-29-5" name="__codelineno-29-5" href="#__codelineno-29-5"></a><span class="w">    </span><span class="nx">rollDice</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">[],</span>
+<a id="__codelineno-29-6" name="__codelineno-29-6" href="#__codelineno-29-6"></a><span class="w">    </span><span class="nx">cancelStressOutcome</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-29-7" name="__codelineno-29-7" href="#__codelineno-29-7"></a><span class="w">    </span><span class="nx">modifyRoll</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">newTotal</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="ow">void</span><span class="p">,</span>
+<a id="__codelineno-29-8" name="__codelineno-29-8" href="#__codelineno-29-8"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-29-9" name="__codelineno-29-9" href="#__codelineno-29-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onRoll</code></b> - between a roll resolving and its chat card printing</summary>
+<p>Fires for <code>attackRoll</code>, <code>techAttackRoll</code>, <code>damageRoll</code>, <code>skillRoll</code>, <code>structureRoll</code>, <code>stressRoll</code>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="p">{</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="w">    </span><span class="nx">rollType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="w">    </span><span class="nx">roll</span><span class="o">:</span><span class="w"> </span><span class="nx">Roll</span><span class="p">,</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="w">    </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="w">    </span><span class="nx">success</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-30-7" name="__codelineno-30-7" href="#__codelineno-30-7"></a><span class="w">    </span><span class="nx">targets</span><span class="o">:</span><span class="w"> </span><span class="nb">Array</span><span class="o">&lt;</span><span class="nb">Object</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-30-8" name="__codelineno-30-8" href="#__codelineno-30-8"></a><span class="w">    </span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-30-9" name="__codelineno-30-9" href="#__codelineno-30-9"></a><span class="w">    </span><span class="nx">isReroll</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-30-10" name="__codelineno-30-10" href="#__codelineno-30-10"></a><span class="w">    </span><span class="nx">rerollCount</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-30-11" name="__codelineno-30-11" href="#__codelineno-30-11"></a><span class="w">    </span><span class="nx">reroll</span><span class="o">:</span><span class="w"> </span><span class="nx">RerollFunction</span><span class="p">,</span>
+<a id="__codelineno-30-12" name="__codelineno-30-12" href="#__codelineno-30-12"></a><span class="w">    </span><span class="nx">changeRoll</span><span class="o">:</span><span class="w"> </span><span class="nx">ChangeRollFunction</span><span class="p">,</span>
+<a id="__codelineno-30-13" name="__codelineno-30-13" href="#__codelineno-30-13"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-30-14" name="__codelineno-30-14" href="#__codelineno-30-14"></a><span class="p">}</span>
+</code></pre></div>
+<ul>
+<li><code class="highlight"><span class="nx">reroll</span><span class="p">()</span></code> re-runs the Lancer flow step that produced the roll. <code class="highlight"><span class="nx">changeRoll</span><span class="p">(</span><span class="nx">newTotal</span><span class="p">)</span></code> sets the total (and recomputes hit/crit for attack flows). Both cascade: after either call, <code>onRoll</code> re-fires so later reactions see the new state.</li>
+<li>No engine-level reroll cap. Reactions that reroll should gate themselves via <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">setFlowFlag</span><span class="p">(</span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;_myReactionRerolled&#39;</span><span class="p">)</span></code> + <code>api.getFlowFlag</code> in <code>evaluate</code>.</li>
+<li><code>success</code> rule: attack/tech = any hit, skill = total &gt;= 10, damage/structure/stress = undefined.</li>
+<li><code>changeRoll</code> on structure/stress only updates <code>roll._total</code> (title/desc stay stale, prefer <code class="highlight"><span class="nx">reroll</span><span class="p">()</span></code>).</li>
+</ul>
+</details>
+<details>
+<summary><b><code>onDestroyed</code></b> - token delete when <code>structure.value &lt;= 0 || stress.value &lt;= 0</code></summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="p">{</span><span class="w"> </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="w"> </span><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onTokenCreated</code></b> - any token placed on the canvas (100ms delay, same timing as onInit)</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="p">{</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="w">    </span><span class="nx">distanceToTrigger</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-32-4" name="__codelineno-32-4" href="#__codelineno-32-4"></a><span class="w">    </span><span class="nx">canTriggerReaction</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span>
+<a id="__codelineno-32-5" name="__codelineno-32-5" href="#__codelineno-32-5"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onTokenRemoved</code></b> - any token deletion (unconditional, unlike onDestroyed)</summary>
+<p><code>triggeringToken</code> may be a fallback <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nb">document</span><span class="p">,</span><span class="w"> </span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="w"> </span><span class="p">}</span></code> object if the canvas token is already gone.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="p">{</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="w">    </span><span class="nx">distanceToTrigger</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-33-4" name="__codelineno-33-4" href="#__codelineno-33-4"></a><span class="w">    </span><span class="nx">canTriggerReaction</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span>
+<a id="__codelineno-33-5" name="__codelineno-33-5" href="#__codelineno-33-5"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onTokenVisibility</code></b> - token <code>hidden</code> flag toggled (GM eye icon)</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-34-1" name="__codelineno-34-1" href="#__codelineno-34-1"></a><span class="p">{</span>
+<a id="__codelineno-34-2" name="__codelineno-34-2" href="#__codelineno-34-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-34-3" name="__codelineno-34-3" href="#__codelineno-34-3"></a><span class="w">    </span><span class="nx">isHidden</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-34-4" name="__codelineno-34-4" href="#__codelineno-34-4"></a><span class="w">    </span><span class="nx">distanceToTrigger</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-34-5" name="__codelineno-34-5" href="#__codelineno-34-5"></a><span class="w">    </span><span class="nx">canTriggerReaction</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span>
+<a id="__codelineno-34-6" name="__codelineno-34-6" href="#__codelineno-34-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<h4 id="hp-heat-triggers">HP &amp; Heat Triggers<a class="headerlink" href="#hp-heat-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onPreHpChange</code></b> - before HP changes, can cancel or modify the value</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-35-1" name="__codelineno-35-1" href="#__codelineno-35-1"></a><span class="p">{</span>
+<a id="__codelineno-35-2" name="__codelineno-35-2" href="#__codelineno-35-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-35-3" name="__codelineno-35-3" href="#__codelineno-35-3"></a><span class="w">    </span><span class="nx">previousHP</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-35-4" name="__codelineno-35-4" href="#__codelineno-35-4"></a><span class="w">    </span><span class="nx">newHP</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-35-5" name="__codelineno-35-5" href="#__codelineno-35-5"></a><span class="w">    </span><span class="nx">delta</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-35-6" name="__codelineno-35-6" href="#__codelineno-35-6"></a><span class="w">    </span><span class="nx">cancelHpChange</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-35-7" name="__codelineno-35-7" href="#__codelineno-35-7"></a><span class="w">    </span><span class="nx">modifyHpChange</span><span class="o">:</span><span class="w"> </span><span class="nx">ModifyValueFunction</span>
+<a id="__codelineno-35-8" name="__codelineno-35-8" href="#__codelineno-35-8"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onHpGain</code></b> - after HP increases</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-36-1" name="__codelineno-36-1" href="#__codelineno-36-1"></a><span class="p">{</span>
+<a id="__codelineno-36-2" name="__codelineno-36-2" href="#__codelineno-36-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-36-3" name="__codelineno-36-3" href="#__codelineno-36-3"></a><span class="w">    </span><span class="nx">hpChange</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-36-4" name="__codelineno-36-4" href="#__codelineno-36-4"></a><span class="w">    </span><span class="nx">currentHP</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-36-5" name="__codelineno-36-5" href="#__codelineno-36-5"></a><span class="w">    </span><span class="nx">maxHP</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span>
+<a id="__codelineno-36-6" name="__codelineno-36-6" href="#__codelineno-36-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onHpLoss</code></b> - after HP decreases</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-37-1" name="__codelineno-37-1" href="#__codelineno-37-1"></a><span class="p">{</span>
+<a id="__codelineno-37-2" name="__codelineno-37-2" href="#__codelineno-37-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-37-3" name="__codelineno-37-3" href="#__codelineno-37-3"></a><span class="w">    </span><span class="nx">hpLost</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-37-4" name="__codelineno-37-4" href="#__codelineno-37-4"></a><span class="w">    </span><span class="nx">currentHP</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span>
+<a id="__codelineno-37-5" name="__codelineno-37-5" href="#__codelineno-37-5"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onPreHeatChange</code></b> - before heat changes, can cancel or modify the value</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-38-1" name="__codelineno-38-1" href="#__codelineno-38-1"></a><span class="p">{</span>
+<a id="__codelineno-38-2" name="__codelineno-38-2" href="#__codelineno-38-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-38-3" name="__codelineno-38-3" href="#__codelineno-38-3"></a><span class="w">    </span><span class="nx">previousHeat</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-38-4" name="__codelineno-38-4" href="#__codelineno-38-4"></a><span class="w">    </span><span class="nx">newHeat</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-38-5" name="__codelineno-38-5" href="#__codelineno-38-5"></a><span class="w">    </span><span class="nx">delta</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-38-6" name="__codelineno-38-6" href="#__codelineno-38-6"></a><span class="w">    </span><span class="nx">cancelHeatChange</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-38-7" name="__codelineno-38-7" href="#__codelineno-38-7"></a><span class="w">    </span><span class="nx">modifyHeatChange</span><span class="o">:</span><span class="w"> </span><span class="nx">ModifyValueFunction</span>
+<a id="__codelineno-38-8" name="__codelineno-38-8" href="#__codelineno-38-8"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onHeatGain</code></b> - after heat increases</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-39-1" name="__codelineno-39-1" href="#__codelineno-39-1"></a><span class="p">{</span>
+<a id="__codelineno-39-2" name="__codelineno-39-2" href="#__codelineno-39-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-39-3" name="__codelineno-39-3" href="#__codelineno-39-3"></a><span class="w">    </span><span class="nx">heatChange</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-39-4" name="__codelineno-39-4" href="#__codelineno-39-4"></a><span class="w">    </span><span class="nx">currentHeat</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-39-5" name="__codelineno-39-5" href="#__codelineno-39-5"></a><span class="w">    </span><span class="nx">inDangerZone</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span>
+<a id="__codelineno-39-6" name="__codelineno-39-6" href="#__codelineno-39-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onHeatLoss</code></b> - after heat decreases</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-40-1" name="__codelineno-40-1" href="#__codelineno-40-1"></a><span class="p">{</span>
+<a id="__codelineno-40-2" name="__codelineno-40-2" href="#__codelineno-40-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-40-3" name="__codelineno-40-3" href="#__codelineno-40-3"></a><span class="w">    </span><span class="nx">heatCleared</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-40-4" name="__codelineno-40-4" href="#__codelineno-40-4"></a><span class="w">    </span><span class="nx">currentHeat</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span>
+<a id="__codelineno-40-5" name="__codelineno-40-5" href="#__codelineno-40-5"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<h4 id="stat-activation-triggers">Stat &amp; Activation Triggers<a class="headerlink" href="#stat-activation-triggers" title="Permanent link">&para;</a></h4>
+<details>
+<summary><b><code>onInitCheck</code></b> - before the check roll</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-41-1" name="__codelineno-41-1" href="#__codelineno-41-1"></a><span class="p">{</span>
+<a id="__codelineno-41-2" name="__codelineno-41-2" href="#__codelineno-41-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-41-3" name="__codelineno-41-3" href="#__codelineno-41-3"></a><span class="w">    </span><span class="nx">statName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-41-4" name="__codelineno-41-4" href="#__codelineno-41-4"></a><span class="w">    </span><span class="nx">checkAgainstToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-41-5" name="__codelineno-41-5" href="#__codelineno-41-5"></a><span class="w">    </span><span class="nx">targetVal</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-41-6" name="__codelineno-41-6" href="#__codelineno-41-6"></a><span class="w">    </span><span class="nx">cancelCheck</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span>
+<a id="__codelineno-41-7" name="__codelineno-41-7" href="#__codelineno-41-7"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onCheck</code></b> - check result</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-42-1" name="__codelineno-42-1" href="#__codelineno-42-1"></a><span class="p">{</span>
+<a id="__codelineno-42-2" name="__codelineno-42-2" href="#__codelineno-42-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-42-3" name="__codelineno-42-3" href="#__codelineno-42-3"></a><span class="w">    </span><span class="nx">statName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-42-4" name="__codelineno-42-4" href="#__codelineno-42-4"></a><span class="w">    </span><span class="nx">roll</span><span class="o">:</span><span class="w"> </span><span class="nx">Roll</span><span class="p">,</span>
+<a id="__codelineno-42-5" name="__codelineno-42-5" href="#__codelineno-42-5"></a><span class="w">    </span><span class="nx">total</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span>
+<a id="__codelineno-42-6" name="__codelineno-42-6" href="#__codelineno-42-6"></a><span class="w">    </span><span class="nx">success</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-42-7" name="__codelineno-42-7" href="#__codelineno-42-7"></a><span class="w">    </span><span class="nx">checkAgainstToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-42-8" name="__codelineno-42-8" href="#__codelineno-42-8"></a><span class="w">    </span><span class="nx">targetVal</span><span class="o">:</span><span class="w"> </span><span class="nx">number</span>
+<a id="__codelineno-42-9" name="__codelineno-42-9" href="#__codelineno-42-9"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onInitActivation</code></b> - before item/action activates, before resource use (non-async evaluate only)</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-43-1" name="__codelineno-43-1" href="#__codelineno-43-1"></a><span class="p">{</span>
+<a id="__codelineno-43-2" name="__codelineno-43-2" href="#__codelineno-43-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-43-3" name="__codelineno-43-3" href="#__codelineno-43-3"></a><span class="w">    </span><span class="nx">actionType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-43-4" name="__codelineno-43-4" href="#__codelineno-43-4"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-43-5" name="__codelineno-43-5" href="#__codelineno-43-5"></a><span class="w">    </span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-43-6" name="__codelineno-43-6" href="#__codelineno-43-6"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span><span class="p">,</span>
+<a id="__codelineno-43-7" name="__codelineno-43-7" href="#__codelineno-43-7"></a><span class="w">    </span><span class="nx">deployable</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">actor</span><span class="o">:</span><span class="w"> </span><span class="nx">Actor</span><span class="p">,</span><span class="w"> </span><span class="nx">lid</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-43-8" name="__codelineno-43-8" href="#__codelineno-43-8"></a><span class="w">    </span><span class="nx">cancelAction</span><span class="o">:</span><span class="w"> </span><span class="nx">CancelFunction</span><span class="p">,</span>
+<a id="__codelineno-43-9" name="__codelineno-43-9" href="#__codelineno-43-9"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-43-10" name="__codelineno-43-10" href="#__codelineno-43-10"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onActivation</code></b> - item/action fired</summary>
+<p><code>extraData</code> carries anything injected via <code>startRelatedFlowToReactor</code> / flow-state injection.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-44-1" name="__codelineno-44-1" href="#__codelineno-44-1"></a><span class="p">{</span>
+<a id="__codelineno-44-2" name="__codelineno-44-2" href="#__codelineno-44-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-44-3" name="__codelineno-44-3" href="#__codelineno-44-3"></a><span class="w">    </span><span class="nx">actionType</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-44-4" name="__codelineno-44-4" href="#__codelineno-44-4"></a><span class="w">    </span><span class="nx">actionName</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span>
+<a id="__codelineno-44-5" name="__codelineno-44-5" href="#__codelineno-44-5"></a><span class="w">    </span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span>
+<a id="__codelineno-44-6" name="__codelineno-44-6" href="#__codelineno-44-6"></a><span class="w">    </span><span class="nx">actionData</span><span class="o">:</span><span class="w"> </span><span class="nx">ActionData</span><span class="p">,</span>
+<a id="__codelineno-44-7" name="__codelineno-44-7" href="#__codelineno-44-7"></a><span class="w">    </span><span class="nx">deployable</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">actor</span><span class="o">:</span><span class="w"> </span><span class="nx">Actor</span><span class="p">,</span><span class="w"> </span><span class="nx">lid</span><span class="o">:</span><span class="w"> </span><span class="nx">string</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="o">|</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<a id="__codelineno-44-8" name="__codelineno-44-8" href="#__codelineno-44-8"></a><span class="w">    </span><span class="nx">endActivation</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span>
+<a id="__codelineno-44-9" name="__codelineno-44-9" href="#__codelineno-44-9"></a><span class="w">    </span><span class="nx">extraData</span><span class="o">:</span><span class="w"> </span><span class="nx">Record</span><span class="o">&lt;</span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">any</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-44-10" name="__codelineno-44-10" href="#__codelineno-44-10"></a><span class="w">    </span><span class="nx">flowState</span><span class="o">:</span><span class="w"> </span><span class="nx">FlowState</span>
+<a id="__codelineno-44-11" name="__codelineno-44-11" href="#__codelineno-44-11"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<details>
+<summary><b><code>onUpdate</code></b> - any token document update (high frequency, gate tightly)</summary>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-45-1" name="__codelineno-45-1" href="#__codelineno-45-1"></a><span class="p">{</span>
+<a id="__codelineno-45-2" name="__codelineno-45-2" href="#__codelineno-45-2"></a><span class="w">    </span><span class="nx">triggeringToken</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span>
+<a id="__codelineno-45-3" name="__codelineno-45-3" href="#__codelineno-45-3"></a><span class="w">    </span><span class="nb">document</span><span class="o">:</span><span class="w"> </span><span class="nx">TokenDocument</span><span class="p">,</span>
+<a id="__codelineno-45-4" name="__codelineno-45-4" href="#__codelineno-45-4"></a><span class="w">    </span><span class="nx">change</span><span class="o">:</span><span class="w"> </span><span class="nx">Record</span><span class="o">&lt;</span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">any</span><span class="o">&gt;</span><span class="p">,</span>
+<a id="__codelineno-45-5" name="__codelineno-45-5" href="#__codelineno-45-5"></a><span class="w">    </span><span class="nx">options</span><span class="o">:</span><span class="w"> </span><span class="nx">Record</span><span class="o">&lt;</span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">any</span><span class="o">&gt;</span>
+<a id="__codelineno-45-6" name="__codelineno-45-6" href="#__codelineno-45-6"></a><span class="p">}</span>
+</code></pre></div>
+</details>
+<hr />
+<h3 id="callback-signatures">Callback Signatures<a class="headerlink" href="#callback-signatures" title="Permanent link">&para;</a></h3>
+<p>Shared params: <code>triggerType: TriggerType</code>, <code>triggerData: TriggerData</code>, <code>reactorToken: Token</code>, <code>item: Item | null</code> (null for general activations), <code>activationName: string</code>, <code>api: LancerAutomationsAPI</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Callback</th>
+<th style="text-align: left;">Signature</th>
+<th style="text-align: left;">Returns</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>evaluate</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span></code></td>
+<td style="text-align: left;"><code>boolean</code> - must be <strong>synchronous</strong> on cancellable triggers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>activationCode</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span></code></td>
+<td style="text-align: left;"><code>Promise&lt;void&gt;</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>onInit</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="o">:</span><span class="w"> </span><span class="nx">Item</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="o">:</span><span class="w"> </span><span class="nx">LancerAutomationsAPI</span><span class="p">)</span></code></td>
+<td style="text-align: left;"><code>Promise&lt;void&gt;</code> - runs when a token carrying the item is created</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>onMessage</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="nx">any</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span></code></td>
+<td style="text-align: left;"><code>Promise&lt;void&gt;</code> - runs on the client targeted by <code>sendMessageToReactor</code></td>
+</tr>
+</tbody>
+</table>
+<h4 id="triggerdatadebugactivationlabel-string"><code class="highlight"><span class="nx">triggerData</span><span class="p">.</span><span class="nx">debugActivation</span><span class="p">(</span><span class="nx">label</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="p">)</span></code><a class="headerlink" href="#triggerdatadebugactivationlabel-string" title="Permanent link">&para;</a></h4>
+<p>Console-logs everything the current callback received, including the helper functions the trigger provides. Available in <code>evaluate</code> and <code>activationCode</code>.
+- <strong>Returns</strong>: <code>Object</code> - the same content as a summary.
+- API form: <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">debugActivation</span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="p">)</span></code> → <code>Object</code>.</p>
+<hr />
+<h2 id="concepts">Concepts<a class="headerlink" href="#concepts" title="Permanent link">&para;</a></h2>
+<h3 id="consumption">Consumption<a class="headerlink" href="#consumption" title="Permanent link">&para;</a></h3>
+<p>Charge-consumption config attached to an effect. Set it via <code>extraOptions.consumption</code> on <code>applyEffectsToTokens</code>, or <code>options.consumption</code> on <code>addGlobalBonus</code>.</p>
+<p><code class="highlight"><span class="nx">consumeEffectCharge</span><span class="p">(</span><span class="nx">effect</span><span class="p">)</span></code> decrements the effect's <code>statuscounter</code> on each matching trigger and deletes the effect at 0. <code>processEffectConsumption</code> matches and spends it on every trigger. <code>grouped</code> / <code>groupId</code> make several effects share one counter (deleted together).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>trigger</kbd></td>
+<td style="text-align: left;"><code>TriggerType \| TriggerType[]</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Trigger(s) that consume a charge</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>originId</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">bearer token id</td>
+<td style="text-align: left;">Only consume if this token is involved</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>role</kbd></td>
+<td style="text-align: left;"><code>"source" \| "target"</code></td>
+<td style="text-align: left;">either</td>
+<td style="text-align: left;">How the origin must be involved: caused the trigger, or was one of its targets</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>stack</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;"><code>1</code></td>
+<td style="text-align: left;">Initial charge count. Each matching trigger removes 1</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>grouped</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Share one counter across all effects in this call (auto-fills <code>groupId</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>groupId</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">auto</td>
+<td style="text-align: left;">Shared counter id across calls</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>evaluate</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">triggerType</span><span class="o">:</span><span class="w"> </span><span class="nx">TriggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="o">:</span><span class="w"> </span><span class="nx">TriggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="nx">effect</span><span class="o">:</span><span class="w"> </span><span class="nx">ActiveEffect</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Extra gate</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>itemLid</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Only consume for this item source</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>actionName</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Only consume for this action name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>isBoost</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Consume only on boost movement</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>minDistance</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Distance filter</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>checkType</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Stat filter, e.g. <code>"Agility"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>checkAbove</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Only consume if the roll is above this</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>checkBelow</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Only consume if the roll is below this</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Resistance that lasts 3 hits</strong> (Dispersal Shield). One counter shared by all five resistance effects, so they vanish together on the third hit:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-46-1" name="__codelineno-46-1" href="#__codelineno-46-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyEffectsToTokens</span><span class="p">({</span>
+<a id="__codelineno-46-2" name="__codelineno-46-2" href="#__codelineno-46-2"></a><span class="w">    </span><span class="nx">tokens</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">target</span><span class="p">],</span>
+<a id="__codelineno-46-3" name="__codelineno-46-3" href="#__codelineno-46-3"></a><span class="w">    </span><span class="nx">effectNames</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;resistance_kinetic&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;resistance_energy&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;resistance_explosive&quot;</span><span class="p">],</span>
+<a id="__codelineno-46-4" name="__codelineno-46-4" href="#__codelineno-46-4"></a><span class="w">    </span><span class="nx">note</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Dispersal Shield&quot;</span>
+<a id="__codelineno-46-5" name="__codelineno-46-5" href="#__codelineno-46-5"></a><span class="p">},</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-46-6" name="__codelineno-46-6" href="#__codelineno-46-6"></a><span class="w">    </span><span class="nx">stack</span><span class="o">:</span><span class="w"> </span><span class="mf">3</span><span class="p">,</span>
+<a id="__codelineno-46-7" name="__codelineno-46-7" href="#__codelineno-46-7"></a><span class="w">    </span><span class="nx">consumption</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">trigger</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;onDamage&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">originId</span><span class="o">:</span><span class="w"> </span><span class="nx">target</span><span class="p">.</span><span class="nx">id</span><span class="p">,</span><span class="w"> </span><span class="nx">grouped</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-46-8" name="__codelineno-46-8" href="#__codelineno-46-8"></a><span class="p">});</span>
+</code></pre></div>
+<p><strong>+1 accuracy on the next attack only</strong>, spent when it hits:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-47-1" name="__codelineno-47-1" href="#__codelineno-47-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">addGlobalBonus</span><span class="p">(</span><span class="nx">target</span><span class="p">.</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Squad Leader&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">rollTypes</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;attack&quot;</span><span class="p">]</span><span class="w"> </span><span class="p">},</span>
+<a id="__codelineno-47-2" name="__codelineno-47-2" href="#__codelineno-47-2"></a><span class="w">    </span><span class="p">{</span><span class="w"> </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;1 Round&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">origin</span><span class="o">:</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">consumption</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">trigger</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;onHit&quot;</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+<p><strong>Only spend on a failed Agility save</strong>, using the gate:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-48-1" name="__codelineno-48-1" href="#__codelineno-48-1"></a><span class="nx">consumption</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-48-2" name="__codelineno-48-2" href="#__codelineno-48-2"></a><span class="w">    </span><span class="nx">trigger</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;onCheck&quot;</span><span class="p">,</span>
+<a id="__codelineno-48-3" name="__codelineno-48-3" href="#__codelineno-48-3"></a><span class="w">    </span><span class="nx">checkType</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Agility&quot;</span><span class="p">,</span>
+<a id="__codelineno-48-4" name="__codelineno-48-4" href="#__codelineno-48-4"></a><span class="w">    </span><span class="nx">evaluate</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">effect</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">data</span><span class="p">.</span><span class="nx">success</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="kc">false</span>
+<a id="__codelineno-48-5" name="__codelineno-48-5" href="#__codelineno-48-5"></a><span class="p">}</span>
+</code></pre></div>
+<h3 id="reaction-economy">Reaction economy<a class="headerlink" href="#reaction-economy" title="Permanent link">&para;</a></h3>
+<p>Two separate keys:
+- <strong><code>checkReaction</code></strong> (reaction config, default <code>true</code> via <code>!== false</code>) - the availability <strong>gate</strong>. When set, the reaction is skipped if the reactor has no reaction left this round.
+- <strong><code>consumeReaction</code></strong> (world setting, default off) - what <strong>spends</strong> a reaction: when a <code>Reaction</code>-type action fires, it decrements <code>system.action_tracker.reaction</code> by 1.</p>
+<h3 id="effect-flags">Effect flags<a class="headerlink" href="#effect-flags" title="Permanent link">&para;</a></h3>
+<p>Every effect this module creates stores its metadata under <code>flags['lancer-automations']</code>. Any extra keys you pass in <code>extraOptions</code> (beyond reserved meta keys like <code>stack</code> / <code>consumption</code> / <code>changes</code>) are copied there as-is: <code>extraFlags</code> on <code>removeEffectsByName*</code> deletes an effect only if ALL supplied keys equal the stored values.</p>
+<p>Two keys the module manages itself:
+- <strong><code>linkedBonusId</code></strong> - ties an effect to a bonus so removing one removes the other.
+- <strong><code>statDirect</code></strong> - stat-reversal metadata <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">key</span><span class="p">,</span><span class="w"> </span><span class="nx">value</span><span class="p">,</span><span class="w"> </span><span class="nx">preBonusValue</span><span class="w"> </span><span class="p">}</span></code> used to restore a current-resource stat by its delta when the effect ends.</p>
+<h3 id="extradata-la_extradata">extraData / la_extraData<a class="headerlink" href="#extradata-la_extradata" title="Permanent link">&para;</a></h3>
+<p>Ad-hoc state that round-trips through a flow. Pass it in (<code class="highlight"><span class="nx">startRelatedFlowToReactor</span><span class="p">(</span><span class="nx">userId</span><span class="p">,</span><span class="w"> </span><span class="nx">extraData</span><span class="p">)</span></code>, or <code class="highlight"><span class="nx">flowState</span><span class="p">.</span><span class="nx">injectFlowExtraData</span><span class="p">(</span><span class="nx">extraData</span><span class="p">)</span></code> mid-flow). It is merged onto <code>state.la_extraData</code> and resurfaces as <code>triggerData.extraData</code> on the downstream <code>onActivation</code>. Read it back inside a flow with <code class="highlight"><span class="nx">flowState</span><span class="p">.</span><span class="nx">getFlowExtraData</span><span class="p">()</span></code>.</p>
+<h3 id="immunity-subtypes">Immunity subtypes<a class="headerlink" href="#immunity-subtypes" title="Permanent link">&para;</a></h3>
+<p>Immunity bonuses (<code>type: "immunity"</code>) carry exactly one <code>subtype</code>. The engine only recognises these values. All resolve through <code class="highlight"><span class="nx">getImmunityBonuses</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">subtype</span><span class="p">)</span></code>:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Subtype</th>
+<th style="text-align: left;">Checked by</th>
+<th style="text-align: left;">Extra fields</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>effect</code></td>
+<td style="text-align: left;"><code>checkEffectImmunities</code></td>
+<td style="text-align: left;"><code>effects: [names]</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>damage</code></td>
+<td style="text-align: left;"><code>applyDamageImmunities</code></td>
+<td style="text-align: left;"><code>damageTypes: [types]</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>resistance</code></td>
+<td style="text-align: left;"><code>checkDamageResistances</code> (halves)</td>
+<td style="text-align: left;"><code>damageTypes: [types]</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>crit</code></td>
+<td style="text-align: left;"><code>hasCritImmunity</code></td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>hit</code></td>
+<td style="text-align: left;"><code>hasHitImmunity</code></td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>miss</code></td>
+<td style="text-align: left;"><code>hasMissImmunity</code></td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>elevation</code></td>
+<td style="text-align: left;"><code>isClimbingImmune</code> (movement)</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>terrain</code></td>
+<td style="text-align: left;"><code>isTerrainImmune</code> (terrain / zones)</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>obstacle</code></td>
+<td style="text-align: left;"><code>isPhasing</code> (move through other characters)</td>
+<td style="text-align: left;">-</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>provoke</code></td>
+<td style="text-align: left;">engagement + reaction gate</td>
+<td style="text-align: left;">-</td>
+</tr>
+</tbody>
+</table>
+<h3 id="duration-labels">Duration labels<a class="headerlink" href="#duration-labels" title="Permanent link">&para;</a></h3>
+<p>Accepted <code>duration.label</code> values:
+- <code>start</code> / <code>end</code> / <code>round</code> - tick down at turn start, turn end, or round change. Only these expire by time, and only in combat.
+- <code>indefinite</code> - never expires by time. <code>unlimited</code> is a retired alias, still accepted and normalized to <code>indefinite</code>.
+- <code>permanent</code> - never expires by time and <a href="feature/SYSTEM_ADDITIONS.html#permanent-statuses">survives a Full Repair</a>.
+- <code>constant</code> - bonus only: passive and invisible, no token icon or counter (same as <code>addConstantBonus</code>).</p>
+<h3 id="stat-codes">Stat codes<a class="headerlink" href="#stat-codes" title="Permanent link">&para;</a></h3>
+<p>HASE-plus-grit keys used by stat rolls and checks: <code>HULL</code>, <code>AGI</code>, <code>SYS</code>, <code>ENG</code>, <code>GRIT</code>.</p>
+<hr />
+<h3 id="activation-object-structure">Activation Object Structure<a class="headerlink" href="#activation-object-structure" title="Permanent link">&para;</a></h3>
+<p>One entry in an activation group's <code>reactions</code> array. Interface: <code>ReactionConfig</code> in <a href="https://github.com/Agraael/lancer-automations/blob/main/scripts/typing/types.d.ts"><code>types.d.ts</code></a>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Field</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>triggers</kbd></td>
+<td style="text-align: left;"><code>TriggerType[]</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Trigger names this entry listens to</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>enabled</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Master toggle</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>awaitActivationCompletion</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Required to intercept <code>onPreMove</code>, <code>onInitActivation</code>, <code>onInitAttack</code>, <code>onInitTechAttack</code>, <code>onInitCheck</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>triggerDescription</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Header text on the activation card</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effectDescription</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Body text on the activation card</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>actionType</kbd></td>
+<td style="text-align: left;"><code>"Automation" \| "Reaction" \| "Free Action" \| "Quick Action" \| "Full Action" \| "Protocol" \| "Other"</code></td>
+<td style="text-align: left;"><code>"Automation"</code></td>
+<td style="text-align: left;">Lancer action type. <code>"Reaction"</code> is what spends a reaction</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>frequency</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Display-only text</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>triggerSelf</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">React to own actions</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>triggerOther</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">React to others' actions (includes targets)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>triggerTarget</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">React when the reactor is one of the event's targets, even with <code>triggerOther</code> off. Target-capable triggers only</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>checkReaction</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Skip if the reactor has no Reaction left this round</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>outOfCombat</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Also fire outside combat</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>onlyOnSourceMatch</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Match by name (general) or by possession (item)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>dispositionFilter</kbd></td>
+<td style="text-align: left;"><code>Array&lt;"hostile" \| "friendly" \| "neutral" \| "secret"&gt;</code></td>
+<td style="text-align: left;"><code>[]</code></td>
+<td style="text-align: left;">Restrict by disposition toward the trigger</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>reactionPath</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Action path, e.g. <code>extraActions.Print</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>evaluate</kbd></td>
+<td style="text-align: left;"><code>ActivationCallback \| string</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Gate. Must be synchronous on cancellable triggers</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>activationType</kbd></td>
+<td style="text-align: left;"><code>"code" \| "macro" \| "flow" \| "none"</code></td>
+<td style="text-align: left;"><code>"flow"</code></td>
+<td style="text-align: left;">What runs</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>activationMode</kbd></td>
+<td style="text-align: left;"><code>"instead" \| "after"</code></td>
+<td style="text-align: left;">item: <code>"instead"</code>, general: <code>"after"</code></td>
+<td style="text-align: left;"><code>after</code> also fires the reaction's own flow/card; macro/code only</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>activationCode</kbd></td>
+<td style="text-align: left;"><code>ActivationCallback \| string</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">The body, for <code>activationType: "code"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>activationMacro</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Macro name, for <code>activationType: "macro"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>autoActivate</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">Skip the popup and run immediately</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>onInit</kbd></td>
+<td style="text-align: left;"><code>((token, item, api) =&gt; Promise&lt;void&gt;) \| string</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Runs on token creation</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>onMessage</kbd></td>
+<td style="text-align: left;"><code>((triggerType, data, reactorToken, item, activationName, api) =&gt; Promise&lt;void&gt;) \| string</code></td>
+<td style="text-align: left;">-</td>
+<td style="text-align: left;">Runs on the client targeted by <code>sendMessageToReactor</code></td>
+</tr>
+</tbody>
+</table>
+<p>The group wrapper (<code>ReactionGroup</code>) is <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">category</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">itemType</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">enabled</span><span class="o">?:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">,</span><span class="w"> </span><span class="nx">reactions</span><span class="o">:</span><span class="w"> </span><span class="nx">ReactionConfig</span><span class="p">[]</span><span class="w"> </span><span class="p">}</span></code>.</p>
+<p>A whole group, as registered by an item LID:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-49-1" name="__codelineno-49-1" href="#__codelineno-49-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">registerDefaultItemReactions</span><span class="p">({</span>
+<a id="__codelineno-49-2" name="__codelineno-49-2" href="#__codelineno-49-2"></a><span class="w">    </span><span class="s2">&quot;npcf_suppress_archer&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-49-3" name="__codelineno-49-3" href="#__codelineno-49-3"></a><span class="w">        </span><span class="nx">category</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;NPC&quot;</span><span class="p">,</span>
+<a id="__codelineno-49-4" name="__codelineno-49-4" href="#__codelineno-49-4"></a><span class="w">        </span><span class="nx">itemType</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;npc_feature&quot;</span><span class="p">,</span>
+<a id="__codelineno-49-5" name="__codelineno-49-5" href="#__codelineno-49-5"></a><span class="w">        </span><span class="nx">reactions</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-49-6" name="__codelineno-49-6" href="#__codelineno-49-6"></a><span class="w">            </span><span class="nx">triggers</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;onActivation&quot;</span><span class="p">],</span>
+<a id="__codelineno-49-7" name="__codelineno-49-7" href="#__codelineno-49-7"></a><span class="w">            </span><span class="nx">onlyOnSourceMatch</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">     </span><span class="c1">// only when THIS feature is used</span>
+<a id="__codelineno-49-8" name="__codelineno-49-8" href="#__codelineno-49-8"></a><span class="w">            </span><span class="nx">triggerSelf</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-49-9" name="__codelineno-49-9" href="#__codelineno-49-9"></a><span class="w">            </span><span class="nx">autoActivate</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w">          </span><span class="c1">// no popup</span>
+<a id="__codelineno-49-10" name="__codelineno-49-10" href="#__codelineno-49-10"></a><span class="w">            </span><span class="nx">outOfCombat</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-49-11" name="__codelineno-49-11" href="#__codelineno-49-11"></a><span class="w">            </span><span class="nx">actionType</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Quick Action&quot;</span><span class="p">,</span>
+<a id="__codelineno-49-12" name="__codelineno-49-12" href="#__codelineno-49-12"></a><span class="w">            </span><span class="nx">activationType</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;code&quot;</span><span class="p">,</span>
+<a id="__codelineno-49-13" name="__codelineno-49-13" href="#__codelineno-49-13"></a><span class="w">            </span><span class="nx">activationMode</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;instead&quot;</span><span class="p">,</span><span class="w">   </span><span class="c1">// replace the item&#39;s own flow</span>
+<a id="__codelineno-49-14" name="__codelineno-49-14" href="#__codelineno-49-14"></a><span class="w">            </span><span class="nx">activationCode</span><span class="o">:</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-49-15" name="__codelineno-49-15" href="#__codelineno-49-15"></a><span class="w">                </span><span class="kd">const</span><span class="w"> </span><span class="nx">targets</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">chooseToken</span><span class="p">(</span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">range</span><span class="o">:</span><span class="w"> </span><span class="mf">10</span><span class="p">,</span><span class="w"> </span><span class="nx">count</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-49-16" name="__codelineno-49-16" href="#__codelineno-49-16"></a><span class="w">                </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">targets</span><span class="o">?</span><span class="p">.</span><span class="nx">length</span><span class="p">)</span>
+<a id="__codelineno-49-17" name="__codelineno-49-17" href="#__codelineno-49-17"></a><span class="w">                    </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyMark</span><span class="p">(</span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">targets</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">effect</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;impaired&quot;</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-49-18" name="__codelineno-49-18" href="#__codelineno-49-18"></a><span class="w">            </span><span class="p">}</span>
+<a id="__codelineno-49-19" name="__codelineno-49-19" href="#__codelineno-49-19"></a><span class="w">        </span><span class="p">}]</span>
+<a id="__codelineno-49-20" name="__codelineno-49-20" href="#__codelineno-49-20"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-49-21" name="__codelineno-49-21" href="#__codelineno-49-21"></a><span class="p">});</span>
+</code></pre></div>
+<p>A setup-only entry (no trigger, runs once per token) uses <code>triggers: []</code> with <code>activationType: "none"</code> and an <code>onInit</code>.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "search.share", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="assets/la-code.js"></script>
+      
+        <script src="assets/la-header.js"></script>
+      
+    
+  </body>
+</html>

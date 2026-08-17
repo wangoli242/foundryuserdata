@@ -1,0 +1,36 @@
+{
+  "id": "hex-size-support",
+  "title": "Token Border Supplements",
+  "description": "Enhances how token borders are displayed allowing improved visual clarity, espectially for large tokens on hexagonal grids. Formerly Hex Token Size Support",
+  "authors": [
+    {
+      "name": "Bolts"
+    },
+    {
+      "name": "Kuenaimaku",
+      "url": "https://github.com/Kuenaimaku"
+    },
+    {
+      "name": "Ourobor",
+      "url": "https://github.com/Ourobor"
+    }
+  ],
+  "version": "5.7",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "esmodules": [
+    "hss.js"
+  ],
+  "url": "https://codeberg.org/Bolts/hex-size-support",
+  "manifest": "https://codeberg.org/Bolts/hex-size-support/releases/download/latest/module.json",
+  "download": "https://codeberg.org/Bolts/hex-size-support/releases/download/v5.7/hex-size-support.zip"
+}

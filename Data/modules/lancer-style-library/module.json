@@ -1,0 +1,40 @@
+{
+    "id": "lancer-style-library",
+    "title": "LaSossis Lancer Style Library",
+    "description": "Shared UI styles library for LaSossis's Lancer modules",
+    "authors": [
+        {
+            "name": "LaSossis",
+            "url": "https://github.com/Agraael",
+            "github": "Agraael",
+            "patreon": "https://www.patreon.com/c/LaSossis",
+            "discord": "232918237107453962"
+        }
+    ],
+    "version": "1.2.2",
+    "compatibility": {
+        "minimum": "12",
+        "verified": "13"
+    },
+    "styles": [
+        "styles/lancer-dialogs.css",
+        "styles/alt-sheets-perf.css"
+    ],
+    "esmodules": [
+        "scripts/theme.mjs"
+    ],
+    "relationships": {
+        "systems": [
+            {
+                "id": "lancer",
+                "type": "system",
+                "compatibility": {
+                    "minimum": "2.0.0"
+                }
+            }
+        ]
+    },
+    "url": "https://github.com/Agraael/lancer-style-library",
+    "manifest": "https://github.com/Agraael/lancer-style-library/releases/latest/download/module.json",
+    "download": "https://github.com/Agraael/lancer-style-library/releases/download/1.2.2/module.zip"
+}

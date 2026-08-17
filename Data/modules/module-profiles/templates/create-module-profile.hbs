@@ -1,0 +1,19 @@
+<form id="module-profiles-create-module-profile-form">
+	<!------------------------------ Header ------------------------------>
+	<h2 class="module-profiles-header">{{localize 'FORM_APPLICATION.create.createNewProfile'}}</h2>
+	<!------------------------------ Content ------------------------------>
+	<label for="moduleProfilesCreateNewProfileName">{{localize 'FORM_APPLICATION.header.profileName'}}</label>
+	<input type="text" name="moduleProfilesCreateNewProfileName" id="moduleProfilesCreateNewProfileName" />
+	<label for="moduleProfilesCreateNewProfileDescription">{{localize 'FORM_APPLICATION.header.profileDescription'}}</label>
+	<input type="text" name="moduleProfilesCreateNewProfileDescription" id="moduleProfilesCreateNewProfileDescription" />
+	<!------------------------------ Footer ------------------------------>
+	<hr>
+	<div class="flexrow">
+		<button type="submit" name="submit" id="moduleProfilesCreateNewProfileSubmit">
+			<i class="fa fa-check"></i> {{localize 'FORM_APPLICATION.create.submit'}}
+		</button>
+		<button type="submit" name="moduleProfilesCancel" id="moduleProfilesCancel">
+			<i class="fa fa-ban"></i> {{localize 'FORM_APPLICATION.button.cancel'}}
+		</button>
+	</div>
+</form>

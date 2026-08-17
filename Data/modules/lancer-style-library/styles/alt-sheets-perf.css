@@ -1,0 +1,84 @@
+/* Compositor-only replacements for alt-sheets' infinite animations. */
+
+@keyframes lsl-pulse-opacity { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
+
+/* animated drop-shadow never composites: static mid glow instead */
+:root .-pulse-glow-prmy, .la-common .-pulse-glow-prmy {
+    filter: drop-shadow(0 0 2px var(--la-primary-color)) !important;
+    animation: none !important;
+}
+:root .-pulse-glow-scdy, .la-common .-pulse-glow-scdy {
+    filter: drop-shadow(0 0 2px var(--la-secondary-color)) !important;
+    animation: none !important;
+}
+:root .-pulse-glow-trty, .la-common .-pulse-glow-trty {
+    filter: drop-shadow(0 0 2px var(--la-tertiary-color)) !important;
+    animation: none !important;
+}
+
+:root .-pulse-prmy, .la-common .-pulse-prmy {
+    color: var(--la-primary-color);
+    animation: lsl-pulse-opacity var(--pulse-background-time, 2.5s) ease-in-out infinite !important;
+    will-change: opacity;
+}
+:root .-pulse-scdy, .la-common .-pulse-scdy {
+    color: var(--la-secondary-color);
+    animation: lsl-pulse-opacity var(--pulse-background-time, 2.5s) ease-in-out infinite !important;
+    will-change: opacity;
+}
+:root .-pulse-trty, .la-common .-pulse-trty {
+    color: var(--la-tertiary-color);
+    animation: lsl-pulse-opacity var(--pulse-background-time, 2.5s) ease-in-out infinite !important;
+    will-change: opacity;
+}
+
+/* scrolling backgrounds: texture moved by transform on a pseudo, one tile per loop at original speed */
+@keyframes lsl-scroll-grid { to { transform: translate3d(-100px, -100px, 0); } }
+@keyframes lsl-scroll-dots { to { transform: translate3d(-50px, -50px, 0); } }
+@keyframes lsl-scroll-dots-up { to { transform: translate3d(0, -50px, 0); } }
+@keyframes lsl-scroll-ruler-up { to { transform: translate3d(0, -200px, 0); } }
+
+:root .la-bg-scroll, .la-common .la-bg-scroll,
+:root .la-bg-scroll-alt, .la-common .la-bg-scroll-alt,
+:root .la-bg-scroll-alt-vertical, .la-common .la-bg-scroll-alt-vertical,
+:root .la-ruler-scroll, .la-common .la-ruler-scroll {
+    animation: none !important;
+    background-image: none !important;
+    position: relative;
+    overflow: hidden;
+    z-index: 0;
+}
+.la-bg-scroll::before, .la-bg-scroll-alt::before,
+.la-bg-scroll-alt-vertical::before, .la-ruler-scroll::before {
+    content: "";
+    position: absolute;
+    z-index: -1;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    will-change: transform;
+}
+.la-bg-scroll::before {
+    width: calc(100% + 100px);
+    height: calc(100% + 100px);
+    background: url("/modules/lancer-alternative-sheets/assets/grid.png");
+    animation: lsl-scroll-grid 13.33s linear infinite;
+}
+.la-bg-scroll-alt::before {
+    width: calc(100% + 50px);
+    height: calc(100% + 50px);
+    background: url("/modules/lancer-alternative-sheets/assets/dots.png");
+    animation: lsl-scroll-dots 6.67s linear infinite;
+}
+.la-bg-scroll-alt-vertical::before {
+    width: 100%;
+    height: calc(100% + 50px);
+    background: url("/modules/lancer-alternative-sheets/assets/dots.png");
+    animation: lsl-scroll-dots-up 5s linear infinite;
+}
+.la-ruler-scroll::before {
+    width: 100%;
+    height: calc(100% + 200px);
+    background: url("/modules/lancer-alternative-sheets/assets/scale_1.png") repeat-y;
+    animation: lsl-scroll-ruler-up 20s linear infinite;
+}

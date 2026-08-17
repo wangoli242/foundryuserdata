@@ -1,0 +1,9 @@
+{
+  "scripts": {
+    "lint": "biome check",
+    "run:foundry": "npx @foundryvtt/foundryvtt-cli --config ./fvttrc.yml launch"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^1.9.4"
+  }
+}

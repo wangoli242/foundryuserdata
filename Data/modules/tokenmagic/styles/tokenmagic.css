@@ -1,0 +1,192 @@
+/* ============================
+ * == Auto Template Settings ==
+ * ============================ */
+
+.tokenmagic.settings .category-list .category {
+	font-size: larger;
+}
+
+.tokenmagic.settings .category-list details[open] summary {
+	margin-bottom: 10px;
+}
+
+.tokenmagic.settings .override-entry legend {
+	display: inline-flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* ====================
+ * ==== APP Common ====
+ * ==================== */ 
+
+ .tokenmagic.application .filter-list {
+	flex: 1;
+    overflow: hidden auto;
+	gap: 5px;
+ }
+
+.tokenmagic.application .filter {
+	position: relative;
+    margin-bottom: 0;
+	gap: 8px;
+	border-radius: 6px;
+    padding: 3px;
+    box-shadow: 0 0 3px dimgray;
+ 	border-top: 1px solid;
+    border-bottom: 1px solid;
+    border-color: darkgray;
+	padding-right: 8px;
+}
+
+.tokenmagic.application .filter:hover {
+	background-color: var(--sidebar-entry-hover-bg);
+}
+
+.tokenmagic.application .filter img {
+	flex: 0 0 48px;
+	height: 48px;
+    width: 48px;
+    object-fit: cover;
+    object-position: 50% 0;
+    border: none;
+	border-radius: 5px;
+	pointer-events: none;
+ }
+
+.tokenmagic.application .filter .name {
+	line-height: 48px;
+	text-shadow: none;
+	display: flex;
+	flex-direction: column;
+    gap: 3px;
+	color: var(--color-text-primary);
+ }
+
+ .tokenmagic.application .filter .name > * {
+	line-height: 1rem;
+ }
+
+ .tokenmagic.application .filter .subtext {
+	color: darkorange;
+	line-height: 0.6rem;
+    font-size: smaller;
+ }
+
+.tokenmagic.application .filter .control {
+	flex: 0 0 5px;
+	border-color: darkgray;
+}
+
+.tokenmagic.application .filter .control.active {
+	color: greenyellow;
+	outline: unset;
+    box-shadow: unset;
+}
+
+.tokenmagic.application .filter .control.delete {
+	color: orangered;
+}
+
+.tokenmagic.application .header {
+	text-align: center;
+    margin-top: -15px;
+	border-bottom: 1px solid var(--color-border);
+    font-size: x-large;
+}
+
+.tokenmagic.application .mod-control {
+	font-size: medium;
+	flex: 0;
+}
+
+.tokenmagic.application .mod-control[disabled] {
+	opacity: 0.4;
+}
+
+@-webkit-keyframes hue {
+  from {
+    -webkit-filter: hue-rotate(0deg);
+  }
+  to {
+    -webkit-filter: hue-rotate(-360deg);
+  }
+}
+
+.tokenmagic.application .mod-control.active {
+    color: darkorange;
+    background-image: -webkit-linear-gradient(37deg, #04ff00, #00ff66);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    -webkit-animation: hue 10s infinite linear;
+}
+
+/* Header Controls */
+
+.tokenmagic.application .header-controls {
+	display: flex;
+    justify-content: center;
+    gap: 5px;
+	font-size: 1.2em;
+	margin: -10px 0px 8px 0;
+}
+
+.tokenmagic.application .header-controls > a {
+	width: 1.5em;
+	height: 1.5em;
+	border: 1px solid;
+	border-radius: 5px;
+	display: flex;
+    align-items: center;
+    justify-content: center;
+	color: var(--color-text-primary);
+}
+
+.tokenmagic.application .header-controls > a[disabled] {
+	opacity: 0.5;
+}
+
+.tokenmagic.application .header-controls .active {
+	color: darkorange;
+}
+
+/* ========================
+ * == Bespoke App Styles ==
+ * ======================== */ 
+
+.tokenmagic.selector .header-controls > a { 
+	color: var(--color-light-1);
+}
+
+.tokenmagic.selector .filter .name {
+	color: white;
+}
+
+.tokenmagic.toggler .filter.active {
+    border-color: greenyellow;
+    border-width: 2px;
+}
+
+/* ====================
+ * == Filter Editor ===
+ * ==================== */ 
+
+.tokenmagic.selector {
+	background: var(--color-cool-5-75);
+}
+
+.tokenmagic.editor {
+	--color-border: crimson;
+}
+
+.tokenmagic.animate {
+	--color-border: greenyellow;
+}
+
+.tokenmagic.randomize {
+	--color-border: rgb(171 255 243);
+}
+
+.tokenmagic.editor fieldset {
+	gap: 0.1rem;
+}

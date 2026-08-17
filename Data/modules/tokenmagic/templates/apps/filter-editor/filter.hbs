@@ -1,0 +1,14 @@
+<div class="control-list" style="display: flex; gap: 0.5rem; flex-direction: column; overflow: auto;">
+    {{#each groups as |group|}}
+        {{#if group.controls}}
+        <fieldset>
+            <legend>{{group.label}}</legend>
+            {{#each group.controls}}
+                {{~>tmfx-control displayAnimationControl=true displayRandomizationControl=true}}
+            {{/each}}
+        </fieldset>
+        {{else}}
+        {{~>tmfx-control group displayAnimationControl=true displayRandomizationControl=true}}
+        {{/if}}
+    {{/each}}
+</div>

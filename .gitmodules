@@ -1,0 +1,3 @@
+[submodule "Data/Data/modules/_CodeMirror"]
+	path = Data/Data/modules/_CodeMirror
+	url = https://github.com/League-of-Foundry-Developers/codemirror-lib.git

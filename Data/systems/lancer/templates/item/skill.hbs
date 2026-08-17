@@ -1,0 +1,24 @@
+<form class="{{cssClass}}" autocomplete="off">
+  {{! Sheet Header }}
+  <header class="sheet-header card clipped-bot">
+    <h1 class="name">
+      <input
+        class="lancer-input header-field"
+        name="name"
+        type="text"
+        value="{{item.name}}"
+        placeholder="{{localize ' lancer.placeholder.name'}}"
+      >
+    </h1>
+    {{{ref-portrait-img item.img "img" item}}}
+    <div class="header-details">
+      <span>RANK:</span>
+      {{{l-num-input "system.curr_rank"}}}
+    </div>
+  </header>
+
+  {{! Sheet Body }}
+  {{{textarea-card "DESCRIPTION" "system.description"}}}
+
+  {{{textarea-card "DETAILS" "system.detail"}}}
+</form>

@@ -1,0 +1,59 @@
+<div class="form-group">
+    <label>{{localize "token-factions.tokeconfig.disableBorder"}}</label>
+    <select name="flags.token-factions.disableBorder" data-dtype="String">
+        {{selectOptions disableBorderOptions selected=disableBorderState}}
+    </select>
+</div>
+
+<div class="form-group">
+    <label>Team</label>
+    <select name="flags.token-factions.team" data-dtype="String">
+        {{selectOptions teams selected=team valueAttr="id" labelAttr="name" blank=""}}
+    </select>
+</div>
+
+<div class="form-group">
+    <label>{{localize "token-factions.tokeconfig.customBorder"}}</label>
+    <input type="checkbox" data-edit="flags.token-factions.customBorder" name="flags.token-factions.customBorder"
+        data-dtype="Boolean" value="{{customBorder}}" {{checked customBorder}} />
+</div>
+
+<div class="form-group">
+    <label>{{localize "token-factions.tokeconfig.customColorInt"}}</label>
+    <div class="form-fields">
+        <color-picker value="{{customColorInt}}" name="flags.token-factions.customColorInt">
+            <input type="text" value="{{customColorInt}}" />
+            <input type="color" />
+        </color-picker>
+    </div>
+</div>
+
+<div class="form-group">
+    <label>{{localize "token-factions.tokeconfig.customColorExt"}}</label>
+    <div class="form-fields">
+        <color-picker value="{{customColorExt}}" name="flags.token-factions.customColorExt">
+            <input type="text" value="{{customColorExt}}" />
+            <input type="color" />
+        </color-picker>
+    </div>
+</div>
+<div class="form-group">
+    <label>{{localize "token-factions.tokeconfig.customFrameOpacity"}}</label>
+    <div class="form-fields">
+        <range-picker name="flags.token-factions.customFrameOpacity" value="{{customFrameOpacity}}" min="0" max="1"
+            step="0.01">
+            <input type="range" min="0" max="1" step="0.01" />
+            <input type="number" min="0" max="1" step="0.01" />
+        </range-picker>
+    </div>
+</div>
+<div class="form-group">
+    <label>{{localize "token-factions.tokeconfig.customBaseOpacity"}}</label>
+    <div class="form-fields">
+        <range-picker name="flags.token-factions.customBaseOpacity" value="{{customBaseOpacity}}" min="0" max="1"
+            step="0.01">
+            <input type="range" min="0" max="1" step="0.01" />
+            <input type="number" min="0" max="1" step="0.01" />
+        </range-picker>
+    </div>
+</div>

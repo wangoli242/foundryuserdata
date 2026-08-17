@@ -1,0 +1,6109 @@
+/* global $, window, game, ui, CONFIG, Hooks, fromUuid, Dialog, FilePicker */
+
+import { laRenderWeaponBody, laRenderModBody, laRenderCoreBonusBody, laRenderCoreSystemBody, laFormatDetailHtml, laRenderActionDetail, laRenderActions, laPopupSectionLabel, laRenderDeployables, laRenderTags, laDetailPopup, stripDeployOwner } from '../interactive/detail-renderers.js';
+import { executeSkirmish, executeBarrage, executeFight, executeSimpleActivation, executeBasicAttack, executeDamageRoll, executeTechAttack, executeExtraActionCombat, executeReactorMeltdown, executeReactorExplosion, executeFall, executeStandingUp, executeTeleport, getActorActionItems, hasReactionAvailable, getWeaponProfiles_WithBonus, getActorMaxThreat, getMaxWeaponRanges_WithBonus, getTokenDispositionInfo } from '../tools/misc-tools.js';
+import { getPerSceneLimitFromSub, getPerRoundLimitFromSub, getPerTurnLimitFromSub, rankSubKey, getSubUsed } from '../combat/per-frequency-tags.js';
+import { executeInvade, openThrowMenu, clearMovementHistory, revertMovement, resetMovementCap } from '../interactive/combat.js';
+import { pickupWeaponToken, openDeployableMenu, recallDeployable, getItemDeployables, getActorDeployables, deployDeployable, reloadOneWeapon, resolveDeployable, getDeployableInfo, getDeployableInfoSync, isActionLocked, endItemActivation, promptLinkOrUnlinkActor, consumeExtraAction, linkTierGate, resolveDeployRangeCount, isPrimaryActionHidden } from '../interactive/deployables.js';
+import { applyActionOverlays } from '../interactive/action-overlays.js';
+import { openExtrasDialog } from '../interactive/extras-dialog.js';
+import { knockBackToken } from '../interactive/canvas.js';
+import { openHaseContestCard } from '../interactive/tools/haseContest.js';
+import { openForceCheckCard } from '../interactive/tools/forceCheck.js';
+import { eventMatchesKeybind } from '../interactive/keybindings.js';
+import { delayedTokenAppearance } from '../combat/reinforcement.js';
+import { isActionDisabledByStatus, getActionLockInfo, getStatusLockedFields, getFieldLockingStatuses, lockEntryLabel } from '../combat/action-limits.js';
+import { laHudRenderIcon, isWhiteIcon, getActivationIcon, getDeployableIcon, laHudItemChildren, getItemStatus, activationTheme, appendReservePips, appendBondPowerPips, rechargeIcon, tahScale } from './item-helpers.js';
+import { isAutoConsumeDisabled } from '../interactive/extra-config.js';
+import * as altFlags from '../integrations/alt-sheets-flags.js';
+import { onHudRowHover, deactivateRangePreview, cleanupDetachedRangePreviews } from './hover.js';
+import {
+    isAdvancedMeasureActive,
+    getAdvancedMeasureState,
+    setAdvancedMeasureState,
+    openAdvancedMeasureWithState,
+    toggleRangePin,
+    hasRangePin,
+} from '../interactive/tools/advancedMeasure.js';
+import { getActorMaxReach_WithBonus } from '../tools/weapon-bonus-utils.js';
+import { isLancerRulerActive } from '../movement/cost-rules.js';
+import { resurrect } from '../tools/wreck.js';
+import { buildStatsEl, resetStatsExpanded } from './stats-bar.js';
+import { buildCombatBar } from './combat-bar.js';
+import { collectSearchResults, openSearchResults } from './search.js';
+import { showPopupAt, toggleDetailPopup, hasAutomation } from './hud-popups.js';
+import { StatusPanel } from './status-panel.js';
+import { LogPanel } from './log-panel.js';
+import { GlossaryPanel } from './glossary-panel.js';
+import { BondPanel } from './bond-panel.js';
+import { playUiSound } from './sound.js';
+import { executeGenerateScan } from '../tools/scan.js';
+import { _resolveExtraBarValues, updateExtraBarValue } from './tokenStatBar.js';
+
+async function _toggleTokenInCombat(token)
+{
+    const tokenDoc = /** @type {any} */ (token?.document);
+    if (!tokenDoc)
+        return;
+    try
+    {
+        const existing = tokenDoc.combatant;
+        if (existing)
+        {
+            await existing.delete();
+            return;
+        }
+        await tokenDoc.toggleCombatant({ active: true });
+    }
+    catch (e)
+    {
+        console.warn('lancer-automations | toggleCombatant failed', e);
+    }
+}
+
+
+const HUD_LEFT = 120;    // right of Foundry's left toolbar
+const HUD_TOP  = 115;   // below Foundry's top nav bar
+
+const ROW_MAX_WIDTH = 250;
+
+const BG_DEFAULT   = 'var(--la-plate)';
+const BG_HOVER     = 'color-mix(in srgb, var(--la-plate), #000 12%)';
+const BG_ACTIVE    = 'var(--primary-color)';
+const TEXT_DEFAULT = 'var(--la-ink)';
+const TEXT_ACTIVE  = '#fff';
+
+/** Animate a column closed (mirror of the open slide-in). */
+function closeCol(col, duration = 90)
+{
+    col.stop(true).animate({ opacity: 0, marginLeft: -10 }, duration, function ()
+    {
+        $(this).hide().css('marginLeft', '').children(':not(.la-hud-col-label)').remove();
+        cleanupDetachedRangePreviews();
+    });
+}
+
+/** Lighten a #rrggbb color by adding `amount` to each channel. */
+function brighten(hex, amount = 25)
+{
+    const r = Math.min(255, parseInt(hex.slice(1, 3), 16) + amount);
+    const g = Math.min(255, parseInt(hex.slice(3, 5), 16) + amount);
+    const b = Math.min(255, parseInt(hex.slice(5, 7), 16) + amount);
+    return `rgb(${r},${g},${b})`;
+}
+
+// Profile switches from anywhere (TAH row, popup dot, sheet) refresh an open weapon popup in place.
+Hooks.on('updateItem', (item, changes) =>
+{
+    if (!foundry.utils.hasProperty(changes, 'system.selected_profile_index'))
+        return;
+    const popup = $('.la-hud-weapon-popup');
+    if (popup.length && popup.data('weapon-id') === item.id)
+        popup.data('laRebuild')?.();
+});
+
+/** Toggle .la-dark on <html> from the actual --la-plate luminance, so CSS can flip icon
+    filters for a dark panel. Read via a probe + canvas so any colour format resolves to bytes. */
+function applyPlateThemeClass()
+{
+    try
+    {
+        const probe = document.createElement('span');
+        probe.style.cssText = 'color:var(--la-plate);display:none';
+        document.body.appendChild(probe);
+        const resolved = getComputedStyle(probe).color;
+        probe.remove();
+        const ctx = document.createElement('canvas').getContext('2d');
+        ctx.fillStyle = '#ffffff';
+        ctx.fillStyle = resolved;
+        ctx.fillRect(0, 0, 1, 1);
+        const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+        document.documentElement.classList.toggle('la-dark', (0.2126 * r + 0.7152 * g + 0.0722 * b) < 128);
+    }
+    catch
+    { /* leave class as-is */ }
+}
+
+// Set the class once at startup too, so cards/dialogs that open without a fresh HUD render still get it.
+Hooks.once('ready', applyPlateThemeClass);
+
+
+const ICON_TECH_QUICK = 'systems/lancer/assets/icons/tech_quick.svg';
+const ICON_TECH_FULL  = 'systems/lancer/assets/icons/tech_full.svg';
+
+/** Build compact tag string for ammo allowed types/sizes (only shows restrictions). */
+function _ammoTagsHtml(checklist, label)
+{
+    if (!checklist)
+        return '';
+    const entries = Object.entries(checklist);
+    const enabled = entries.filter(([, v]) => v).map(([k]) => k);
+    if (enabled.length === 0 || enabled.length === entries.length)
+        return '';
+    return ` · ${enabled.join(', ')}`;
+}
+
+const ACTIVATION_TAGS = ['tg_quick_action', 'tg_full_action', 'tg_protocol', 'tg_reaction', 'tg_free_action'];
+
+const WEAPON_ATTACK_ACTION ={ SKIRMISH: ['Skirmish', 'Quick'], BARRAGE: ['Barrage', 'Full'], FIGHT: ['Fight', 'Full'] };
+
+// "LL7" for pilots and their mechs, "T2" for NPCs. Same text the stat hint shows.
+function rankText(actor)
+{
+    if (!actor)
+        return null;
+    if (actor.type === 'npc')
+        return `T${Number(actor.system?.tier) || 1}`;
+    if (actor.type === 'pilot')
+        return `LL${Number(actor.system?.level) || 0}`;
+    if (actor.type === 'mech')
+    {
+        const pilot = actor.system?.pilot?.value;
+        return pilot ? `LL${Number(pilot.system?.level) || 0}` : null;
+    }
+    return null;
+}
+
+// Green rank suffix appended to a HUD row label.
+function rankSuffix(actor)
+{
+    const text = rankText(actor);
+    return text ? ` <span class="la-hud-rank">${text}</span>` : '';
+}
+
+// Item / Category data builders
+//
+// Category shape: { label, colLabel, icon?, getItems: () => Item[] }
+// Item shape:     { label, childColLabel?, getChildren?: () => Item[], onClick?: () => void, onRightClick?: (rowEl) => void }
+
+export class LancerHUD
+{
+    constructor()
+    {
+        this._bindGen            = 0;
+        this._el              = null;
+        this._c2              = null;
+        this._c3              = null;
+        this._c4              = null;
+        this._c4AnchorRow       = null;
+        this._token              = null;
+        this._tokens             = [];
+        this._pendingCol4Refresh = null;
+        this._pendingCol3Refresh = null;
+        this._refreshTimer       = null;
+        this._statusPanelInstance  = null;
+        this._bondPanelInstance    = null;
+        this._suppressRefreshDepth = 0;
+        this._searchActive         = false;
+        this._pickerSuppress       = false;
+        this._collapseBonusMs      = 0;
+        this._favoritesActive      = false;
+        this._categories           = null;
+        this._pendingBlockReason   = null;
+        this._clickToOpen          = false;
+        this._narrativeMode        = false;
+        // Track what's currently open in each column for in-place refresh
+        this._c2Category    = null;   // category whose getItems() fills c2
+        this._c2AnchorRow   = null;   // c1 row that opened c2
+        this._c3SourceItem  = null;   // c2 item whose getChildren() fills c3
+        this._c3AnchorRow   = null;   // c2 row that opened c3
+        this._c4SourceItem  = null;   // c3 item whose getChildren() fills c4
+        this._kbCol = 1;
+        this._kbIdx = 0;
+        this._lastHudPointerMove = 0;
+        this._kbResetTimer = null;
+        this._kbBound = null;
+    }
+
+    async bindNarrative()
+    {
+        this.unbind();
+        this._narrativeMode = true;
+        this._tokens = [];
+        this._token = null;
+        ++this._bindGen;
+        this._render();
+    }
+
+    _getNarrativeLinkedActor()
+    {
+        const uuid = game.settings.get('lancer-automations', 'tah.narrativeLinkedActorUuid');
+        if (!uuid)
+            return null;
+        const actor = /** @type {any} */ (fromUuidSync(uuid));
+        if (!actor || actor.type !== 'pilot')
+            return null;
+        return actor;
+    }
+
+    async _openNarrativeLinkDialog()
+    {
+        const pilots = (game.actors?.contents ?? []).filter(a => a.type === 'pilot' && a.isOwner);
+        const current = game.settings.get('lancer-automations', 'tah.narrativeLinkedActorUuid');
+        const currentActor = current ? /** @type {any} */ (fromUuidSync(current)) : null;
+        const subtitle = currentActor ? `Currently linked: ${currentActor.name}` : 'No pilot linked';
+        const tokenImg = (a) => a?.prototypeToken?.texture?.src || a?.img || 'icons/svg/mystery-man.svg';
+        const cards = pilots.map(p =>
+        {
+            const sel = p.uuid === current;
+            return `<div class="la-narrative-pilot-card${sel ? ' selected' : ''}" data-uuid="${p.uuid}" style="display:flex;align-items:center;gap:8px;padding:6px 8px;border:1px solid ${sel ? 'var(--primary-color)' : '#999'};border-radius:3px;background:${sel ? BG_HOVER : BG_DEFAULT};cursor:pointer;transition:background 0.1s, border-color 0.1s;">
+                <img src="${tokenImg(p)}" style="width:40px;height:40px;object-fit:cover;border:1px solid #999;border-radius:3px;background:#1a1a1a;flex-shrink:0;">
+                <span style="flex:1;font-weight:600;color:var(--la-ink);">${p.name}</span>
+            </div>`;
+        }).join('');
+        const content = `
+            <div class="lancer-dialog-base">
+                <div class="lancer-dialog-header">
+                    <div class="lancer-dialog-title">LINK NARRATIVE HUD</div>
+                    <div class="lancer-dialog-subtitle">${subtitle}</div>
+                </div>
+                <div class="lancer-info-box">
+                    <i class="fas fa-info-circle"></i>
+                    <span>Pick a pilot to drive the narrative HUD. Stats, attributes and categories reflect this pilot.</span>
+                </div>
+                <div style="margin-top:12px;">
+                    <label style="display:block;font-size:0.85em;font-weight:600;margin-bottom:4px;">Pilot</label>
+                    <div class="la-narrative-pilot-list" style="display:flex;flex-direction:column;gap:4px;max-height:280px;overflow-y:auto;padding:2px;">
+                        ${cards || '<div style="font-size:0.85em;color:#888;font-style:italic;">No pilot found.</div>'}
+                    </div>
+                    <input type="hidden" name="pilot-uuid" value="${current || ''}">
+                </div>
+            </div>
+        `;
+        const dlg = new Dialog({
+            title: 'Link Narrative HUD',
+            content,
+            buttons: {
+                link: {
+                    icon: '<i class="fas fa-link"></i>',
+                    label: 'Link',
+                    callback: async (html) =>
+                    {
+                        const uuid = String(/** @type {any} */ (html).find('[name="pilot-uuid"]').val() || '');
+                        await game.settings.set('lancer-automations', 'tah.narrativeLinkedActorUuid', uuid);
+                        if (this._narrativeMode)
+                            this.bindNarrative();
+                    },
+                },
+                unlink: {
+                    icon: '<i class="fas fa-unlink"></i>',
+                    label: 'Unlink',
+                    callback: async () =>
+                    {
+                        await game.settings.set('lancer-automations', 'tah.narrativeLinkedActorUuid', '');
+                        if (this._narrativeMode)
+                            this.bindNarrative();
+                    },
+                },
+                cancel: { icon: '<i class="fas fa-times"></i>', label: 'Cancel' },
+            },
+            default: 'link',
+            render: (html) =>
+            {
+                const $html = /** @type {any} */ (html);
+                $html.find('.la-narrative-pilot-card').on('click', function ()
+                {
+                    const $card = $(this);
+                    $html.find('.la-narrative-pilot-card').css({
+                        background: BG_DEFAULT, 'border-color': '#999',
+                    }).removeClass('selected');
+                    $card.css({
+                        background: BG_HOVER,
+                        'border-color': 'var(--primary-color)',
+                    }).addClass('selected');
+                    $html.find('[name="pilot-uuid"]').val(String($card.attr('data-uuid') || ''));
+                });
+                $html.closest('.app').find('.dialog-buttons').css({
+                    display: 'flex', 'flex-direction': 'row', gap: '6px',
+                });
+            },
+        }, { classes: ['lancer-dialog-base', 'lancer-no-title'], width: 480 }).render(true);
+        return dlg;
+    }
+
+    async bind(tokens)
+    {
+        const tokenList = Array.isArray(tokens) ? tokens : [tokens];
+        this.unbind();
+        const valid = tokenList.filter(token => token.actor?.isOwner);
+        if (!valid.length)
+            return;
+        this._tokens = valid;
+        this._token  = valid[0];
+        const gen = ++this._bindGen;
+        // Pre-cache deployables for the primary token only
+        const actor = this._token.actor;
+        const lids = [];
+        for (const item of actor.items)
+        {
+            for (const lid of getItemDeployables(item, actor))
+                lids.push(lid);
+        }
+        if (lids.length)
+            await Promise.all(lids.map(lid => getDeployableInfo(lid, actor)));
+        if (this._bindGen !== gen)
+            return;
+        this._render();
+    }
+
+    toggleSearch()
+    {
+        if (!this._el || !this._searchIcon)
+            return false;
+        this._searchIcon.trigger('click');
+        return true;
+    }
+
+    unbind()
+    {
+        this._bindGen++;
+        const el = this._el;
+        for (const t of (this._tokens ?? []))
+            deactivateRangePreview(t);
+        this._el = this._c2 = this._c3 = this._c4 = null;
+        this._c4AnchorRow = null;
+        this._token   = null;
+        this._tokens  = [];
+        this._narrativeMode = false;
+        this._pendingCol3Refresh = null;
+        this._pendingCol4Refresh = null;
+        clearTimeout(this._refreshTimer);
+        this._refreshTimer = null;
+        this._searchActive = false;
+        this._categories   = null;
+        resetStatsExpanded();
+        $(document).off('mousedown.la-hud-cto');
+        $(document).off('mousemove.la-hud-drag mouseup.la-hud-drag');
+        if (this._kbBound)
+            window.removeEventListener('keydown', this._kbBound, true);
+        $(document).off('mousedown.la-hud-kbreset');
+        clearTimeout(this._kbResetTimer);
+        this._favResizeObserver?.disconnect();
+        this._favResizeObserver = null;
+        if (this._favDocHandlers)
+        {
+            document.removeEventListener('mousemove', this._favDocHandlers.move);
+            if (this._favDocHandlers.click)
+                document.removeEventListener('click', this._favDocHandlers.click, true);
+            this._favDocHandlers = null;
+        }
+        $('.la-hud-popup').stop(true).animate({ opacity: 0 }, 120, function()
+        {
+            $(this).remove();
+        });
+        if (el)
+            el.stop(true).animate({ opacity: 0, left: '-=18' }, 180, () => el.remove());
+    }
+
+    /** Suppress-counter handles for handlers that call actor.update() but must not re-render. */
+    _depthCallbacks()
+    {
+        return {
+            incDepth: () => this._suppressRefreshDepth++,
+            decDepth: () => this._suppressRefreshDepth--,
+        };
+    }
+
+    /** Debounced full refresh. Coalesces rapid updates into one render. */
+    scheduleRefresh(delay = 100)
+    {
+        if (this._suppressRefreshDepth > 0)
+            return;
+        clearTimeout(this._refreshTimer);
+        this._refreshTimer = setTimeout(() => this.refresh(), delay);
+    }
+
+    /** Repaint every rendered toggle knob from its item's getValue(). No column rebuild. */
+    syncToggleCells()
+    {
+        $('.la-toggle-cell').each(function()
+        {
+            const sync = $(this).data('laToggleSync');
+            if (typeof sync === 'function')
+                sync();
+        });
+    }
+
+    /** Repaint every rendered increment/input cell from its item's getValue(). No column rebuild. */
+    syncValueCells()
+    {
+        $('.la-value-cell').each(function()
+        {
+            const sync = $(this).data('laValueSync');
+            if (typeof sync === 'function')
+                sync();
+        });
+    }
+
+    /** In-place stats bar refresh. Does not collapse sub-columns. */
+    updateStatsInPlace()
+    {
+        if (!this._actor || !this._el)
+            return;
+        this.syncValueCells();
+        this._el.find('#la-hud-stats').replaceWith(buildStatsEl(this._actor, this._token));
+        if (!this._narrativeMode)
+            this._updateCombatBar();
+    }
+
+    _updateCombatBar()
+    {
+        if (!this._actor || !this._token || !this._el)
+            return;
+        const existing = this._el.find('#la-combat-bar');
+        const newBar = buildCombatBar(this._actor, this._token);
+        if (existing.length && newBar)
+            existing.replaceWith(newBar);
+        else if (existing.length && !newBar)
+        {
+            existing.stop(true).animate({ opacity: 0, marginTop: -existing.outerHeight() }, 150, function ()
+            {
+                $(this).remove();
+            });
+        }
+        else if (!existing.length && newBar)
+        {
+            const statsEl = this._el.find('#la-hud-stats');
+            if (statsEl.length)
+            {
+                const rowHeight = 30;
+                newBar.css({ overflow: 'hidden', opacity: 0, marginTop: -rowHeight });
+                statsEl.after(newBar);
+                newBar.animate({ opacity: 1, marginTop: 0 }, 200);
+            }
+        }
+    }
+
+    refresh()
+    {
+        if ((!this._token && !this._narrativeMode) || this._suppressRefreshDepth > 0)
+            return;
+        // Status panel open: sync rows in-place, never close + reopen.
+        if (this._statusPanelInstance?.isVisible)
+        {
+            this.updateStatsInPlace();
+            this._statusPanelInstance.syncRows();
+            return;
+        }
+        // Detail popup open: refresh visible columns in-place, no full rebuild.
+        if ($('.la-hud-popup').length)
+        {
+            this.updateStatsInPlace();
+            this._refreshColumnsInPlace();
+            return;
+        }
+        const openPath = this._saveOpenPath();
+        const el = this._el;
+        this._el = this._c2 = this._c3 = this._c4 = null;
+        this._c4AnchorRow = null;
+        if (el)
+            el.stop(true).remove();
+        this._render(false);
+        this._restoreOpenPath(openPath);
+    }
+
+    get _actor()
+    {
+        if (this._narrativeMode)
+            return this._getNarrativeLinkedActor();
+        return this._token?.actor;
+    }
+
+    _render(animate = true)
+    {
+        if (!this._actor && !this._narrativeMode)
+            return;
+
+        applyPlateThemeClass();
+
+        const categories = this._buildCategories();
+        this._categories = categories;
+        const clickToOpen      = game.settings.get('lancer-automations', 'tah.clickToOpen')      ?? false;
+        const hoverCloseDelay  = (game.settings.get('lancer-automations', 'tah.hoverCloseDelay') ?? 2) * 1000;
+        this._clickToOpen = clickToOpen;
+
+        const actor = this._actor;
+        const tokenName = this._narrativeMode
+            ? (actor ? (actor.name ?? 'UNLINKED') : 'UNLINKED')
+            : (this._tokens.length > 1
+                ? `${this._tokens.length} TOKENS`
+                : (this._token.name ?? actor.name ?? ''));
+        // Resolve disposition / team (only if setting is on)
+        let _dispColor = null;
+        let _dispLabel = null;
+        if (!this._narrativeMode && game.settings.get('lancer-automations', 'tah.showDisposition'))
+        {
+            const d = getTokenDispositionInfo(this._token) ?? { color: '#888', label: 'Unknown' };
+            _dispColor = d.color;
+            _dispLabel = d.label;
+        }
+
+        const titleEl = $(`<div class="la-hud-token-title"><span class="la-hud-token-name">${tokenName}</span></div>`);
+
+        if (this._narrativeMode)
+        {
+            const linked = !!actor;
+            const linkBtn = $(`<span class="la-combat-toggle${linked ? ' la-combat-toggle--in' : ''}" title="${linked ? 'Unlink / change pilot' : 'Link to pilot'}"><i class="fas fa-${linked ? 'link' : 'link-slash'}"></i></span>`);
+            linkBtn.on('mouseenter', () => playUiSound('statusHover'));
+            linkBtn.on('click', () => this._openNarrativeLinkDialog());
+            titleEl.find('.la-hud-token-name').before(linkBtn);
+        }
+        else
+        {
+            // Combat toggle icon (left of token name)
+            const inCombat = this._token.inCombat;
+            const combatToggle = $(`<span class="la-combat-toggle${inCombat ? ' la-combat-toggle--in' : ''}" title="${inCombat ? 'Remove from combat' : 'Add to combat'}"><i class="fas fa-swords"></i></span>`);
+            combatToggle.on('mouseenter', () => playUiSound('statusHover'));
+            combatToggle.on('click', async () =>
+            {
+                const targets = (this._tokens?.length ? this._tokens : [this._token]).filter(Boolean);
+                const wantActive = !this._token.inCombat;
+                for (const t of targets)
+                {
+                    if (!!t.inCombat === wantActive)
+                        continue;
+                    await _toggleTokenInCombat(t);
+                }
+                const nowInCombat = this._token.inCombat;
+                combatToggle.toggleClass('la-combat-toggle--in', nowInCombat);
+                combatToggle.attr('title', nowInCombat ? 'Remove from combat' : 'Add to combat');
+                this._updateCombatBar();
+            });
+            titleEl.find('.la-hud-token-name').before(combatToggle);
+        }
+
+        const rank = rankText(actor);
+        if (rank)
+            titleEl.find('.la-hud-token-name').before(`<span class="la-hud-token-rank">${rank}</span>`);
+
+        const statsEl = (this._narrativeMode && !actor) ? $('<div></div>') : buildStatsEl(actor, this._token);
+        const combatBar = this._narrativeMode ? $('<div></div>') : buildCombatBar(actor, this._token);
+
+        const c1 = this._makeCol('Menu');
+        c1.css('width', '180px');
+        const menuLabel = c1.find('.la-hud-col-label');
+        menuLabel.css({ display: 'flex', justifyContent: 'space-between', alignItems: 'center' });
+        const searchIcon = $(`<span class="la-hud-search-toggle" title="Search">⌕</span>`);
+        menuLabel.append(searchIcon);
+        const favIcon = $(`<div class="la-hud-fav-tab" title="Favorites"><div class="la-hud-fav-icon">★</div></div>`);
+        this._favIconPositioner = () =>
+        {
+            const c1Pos = c1.position();
+            const labelPos = menuLabel.position();
+            if (!c1Pos || !labelPos)
+                return;
+            const scale = tahScale();
+            const c1Top = c1Pos.top / scale;
+            const c1Bottom = c1Top + c1.outerHeight();
+            const labelTop = c1Top + labelPos.top / scale;
+            favIcon.css({
+                top: `${labelTop}px`,
+                left: `${c1Pos.left / scale + c1.outerWidth() + 6}px`,
+                height: `${c1Bottom - labelTop}px`,
+            });
+            favIcon.find('.la-hud-fav-icon').css({ height: `${menuLabel.outerHeight()}px` });
+        };
+        const searchBar = $(`<input type="text" class="la-hud-search-bar" placeholder="Search…">`);
+        menuLabel.after(searchBar);
+        this._favIcon = favIcon;
+        this._searchIcon = searchIcon;
+        this._searchBar = searchBar;
+        if (combatBar)
+            c1.prepend(combatBar);
+        c1.prepend(statsEl);
+        c1.prepend(titleEl);
+
+        // c1 must exist in DOM before we can measure it below, so build hud first
+        const savedPos = game.settings.get('lancer-automations', 'tah.position');
+        const startLeft = savedPos?.left ?? HUD_LEFT;
+        const startTop  = savedPos?.top  ?? HUD_TOP;
+        const hud = $(`<div id="la-hud" style="left:${startLeft}px;top:${startTop}px;"></div>`);
+        const uiScale = tahScale();
+        if (uiScale !== 1)
+            hud.css({ transform: `scale(${uiScale})`, 'transform-origin': 'top left' });
+        if (animate)
+            hud.css({ opacity: 0, left: startLeft - 18 });
+        hud.append(c1);
+        $('body').append(hud);
+        this._el = hud;
+        if (animate)
+            hud.animate({ opacity: 1, left: startLeft }, 350);
+
+        // Lock / drag / reset controls
+        let unlocked = false;
+        const lockBtn = $(`<span class="la-hud-lock" title="Unlock to drag">🔒</span>`);
+        const resetBtn = $(`<span class="la-hud-reset" title="Reset position">↺</span>`);
+        titleEl.append(lockBtn).append(resetBtn);
+
+        // Disposition / team stripe. Appended last to sit at the far right edge.
+        if (_dispColor && _dispLabel)
+        {
+            const _r = parseInt(_dispColor.slice(1, 3), 16) || 0;
+            const _g = parseInt(_dispColor.slice(3, 5), 16) || 0;
+            const _b = parseInt(_dispColor.slice(5, 7), 16) || 0;
+            const _textColor = (_r * 0.299 + _g * 0.587 + _b * 0.114) > 150 ? '#111' : '#fff';
+            const dispDetail = $(`<div class="la-disp-detail" style="background:${_dispColor};"><span class="la-disp-detail__label" style="color:${_textColor};">${_dispLabel.toUpperCase()}</span></div>`);
+            const dispToggle = $(`<div class="la-disp-toggle" style="background:${_dispColor};"><span class="la-disp-toggle__chevron" style="color:${_textColor};">▶</span></div>`);
+            titleEl.append(dispToggle);
+            titleEl.append(dispDetail);
+            let _dispExpanded = false;
+            const openDisp = () =>
+            {
+                if (_dispExpanded)
+                    return;
+                _dispExpanded = true;
+                dispDetail.stop(true).css({ display: 'flex', width: 0, opacity: 0, overflow: 'hidden' })
+                    .animate({ width: dispDetail.prop('scrollWidth'), opacity: 1 }, 150, function ()
+                    {
+                        $(this).css({ width: '', overflow: '' });
+                    });
+                dispToggle.find('span').text('◀');
+            };
+            const closeDisp = () =>
+            {
+                if (!_dispExpanded)
+                    return;
+                _dispExpanded = false;
+                dispDetail.stop(true).css('overflow', 'hidden').animate({ width: 0, opacity: 0 }, 120, function ()
+                {
+                    $(this).css({ display: 'none', width: '', opacity: '', overflow: '' });
+                });
+                dispToggle.find('span').text('▶');
+            };
+            dispToggle.on('mouseenter', () =>
+            {
+                playUiSound('statusHover'); openDisp();
+            });
+            dispToggle.on('mouseleave', closeDisp);
+            dispDetail.on('mouseenter', openDisp);
+            dispDetail.on('mouseleave', closeDisp);
+            dispToggle.on('click', (ev) =>
+            {
+                ev.stopPropagation();
+                if (_dispExpanded)
+                    closeDisp();
+                else
+                    openDisp();
+            });
+        }
+
+        // Title bar hover/click. Must be after lockBtn/resetBtn creation.
+        const nameSpan = titleEl.find('.la-hud-token-name');
+        nameSpan.on('mouseenter', () =>
+        {
+            playUiSound('statusHover');
+            nameSpan.css({ color: 'var(--primary-color)', cursor: 'pointer' });
+        });
+        nameSpan.on('mouseleave', () =>
+        {
+            nameSpan.css({ color: '', cursor: '' });
+        });
+        nameSpan.on('click', () =>
+        {
+            if (this._narrativeMode && !actor)
+                this._openNarrativeLinkDialog();
+            else
+                actor?.sheet?.render(true);
+        });
+        titleEl.on('mouseenter', () =>
+        {
+            lockBtn.css('opacity', unlocked ? 0.9 : 0.4);
+        });
+        titleEl.on('mouseleave', () =>
+        {
+            if (!unlocked)
+                lockBtn.css('opacity', 0);
+        });
+        titleEl.on('contextmenu', (ev) =>
+        {
+            ev.preventDefault(); ev.stopPropagation();
+        });
+
+        lockBtn.on('click', (ev) =>
+        {
+            ev.stopPropagation();
+            unlocked = !unlocked;
+            lockBtn.text(unlocked ? '🔓' : '🔒').css('opacity', unlocked ? 0.9 : 0).attr('title', unlocked ? 'Lock position' : 'Unlock to drag');
+            resetBtn.css('opacity', unlocked ? 0.6 : 0);
+            hud.toggleClass('la-hud-unlocked', unlocked);
+        });
+
+        resetBtn.on('click', (ev) =>
+        {
+            ev.stopPropagation();
+            game.settings.set('lancer-automations', 'tah.position', null);
+            hud.animate({ left: HUD_LEFT, top: HUD_TOP }, 200);
+        });
+
+        let dragStart = null;
+        hud.on('mousedown', (ev) =>
+        {
+            if (!unlocked || ev.button !== 0)
+                return;
+            const onHandle = $(ev.target).closest('.la-hud-col-label, .la-hud-token-title, .la-hud-lock, .la-hud-reset').length > 0;
+            if (!onHandle && $(ev.target).closest('.la-hud-col').length)
+                return; // rows stay clickable; drag only from the bars
+            ev.preventDefault();
+            dragStart = { x: ev.clientX, y: ev.clientY, left: parseInt(hud.css('left')), top: parseInt(hud.css('top')) };
+            hud.css('cursor', 'grabbing');
+        });
+        $(document).on('mousemove.la-hud-drag', (ev) =>
+        {
+            if (!dragStart)
+                return;
+            const dx = ev.clientX - dragStart.x;
+            const dy = ev.clientY - dragStart.y;
+            hud.css({ left: dragStart.left + dx, top: dragStart.top + dy });
+        });
+        $(document).on('mouseup.la-hud-drag', () =>
+        {
+            if (!dragStart)
+                return;
+            dragStart = null;
+            hud.css('cursor', '');
+            const pos = { left: parseInt(hud.css('left')), top: parseInt(hud.css('top')) };
+            game.settings.set('lancer-automations', 'tah.position', pos);
+        });
+
+        // c2/c3/c4 are absolutely positioned. They never affect c1's layout.
+        const c2 = this._makeCol('');
+        const c3 = this._makeCol('');
+        const c4 = this._makeCol('');
+        c1.css({ position: 'relative', zIndex: 4 });
+        // In v13 root CSS shifts hud padding so `top:0` no longer matches c1; pin absolute children to c1's actual y.
+        const c1Top = () => c1.position()?.top ?? 0;
+        c2.css({ position: 'absolute', top: c1Top(), left: c1.outerWidth(), display: 'none', zIndex: 3 });
+        c3.css({ position: 'absolute', top: c1Top(), left: 0,               display: 'none', zIndex: 2 });
+        c4.css({ position: 'absolute', top: c1Top(), left: 0,               display: 'none', zIndex: 1 });
+        hud.append(c2, c3, c4);
+        hud.append(favIcon);
+        requestAnimationFrame(() => this._favIconPositioner?.());
+        // Reposition the floating favorites tab whenever c1 resizes.
+        try
+        {
+            this._favResizeObserver?.disconnect();
+            this._favResizeObserver = new ResizeObserver(() => this._favIconPositioner?.());
+            this._favResizeObserver.observe(c1[0]);
+        }
+        catch
+        { /* ResizeObserver unsupported */ }
+        this._c2 = c2;
+        this._c3 = c3;
+        this._c4 = c4;
+
+        for (const cat of categories)
+        {
+            let catCount = 0;
+            if (cat.getItems && !cat.isStatusPanel && !cat.isLogPanel)
+            {
+                try
+                {
+                    catCount = cat.getItems()?.length ?? 0;
+                }
+                catch
+                { /* ignore */ }
+            }
+            const row = this._makeRow(cat.label, true, cat.icon ?? null, null, null, null, catCount);
+            const openCat = () =>
+            {
+                this._searchActive = false;
+                _cancelCollapse();
+                playUiSound();
+                if (/** @type {any} */ (cat).isStatusPanel)
+                {
+                    if (row.hasClass('la-hud-active') && this._statusPanelInstance?.isVisible)
+                    {
+                        if (clickToOpen)
+                        {
+                            this._statusPanelInstance.close(); _clearC1Active();
+                        }
+                        return;
+                    }
+                    if (this._logPanelInstance?.isVisible)
+                        this._logPanelInstance.close();
+                    if (this._bondPanelInstance?.isVisible)
+                        this._bondPanelInstance.close();
+                    this._setActive(c1, row, true);
+                    closeCol(c2, 80); closeCol(c3, 80); closeCol(c4, 80);
+                    this._statusPanelInstance.open(row);
+                    return;
+                }
+                if (row.hasClass('la-hud-active') && c2.is(':visible'))
+                {
+                    if (clickToOpen)
+                    {
+                        closeCol(c2); closeCol(c3); closeCol(c4); _clearC1Active();
+                    }
+                    return;
+                }
+                if (this._statusPanelInstance?.isVisible)
+                    this._statusPanelInstance.close();
+                if (this._logPanelInstance?.isVisible)
+                    this._logPanelInstance.close();
+                if (this._bondPanelInstance?.isVisible)
+                    this._bondPanelInstance.close();
+                this._setActive(c1, row, true);
+                closeCol(c3, 80);
+                closeCol(c4, 80);
+                this._c2Category = cat; this._c2AnchorRow = row;
+                this._c3SourceItem = null; this._c4SourceItem = null;
+                {
+                    const colLabel = /** @type {any} */ (cat).colLabel;
+                    c2.find('.la-hud-col-label').text(typeof colLabel === 'function' ? colLabel() : colLabel);
+                }
+                this._openCol(c2, /** @type {any} */ (cat).getItems(), row);
+                c2.stop(true).css({ opacity: 0, marginLeft: -10, pointerEvents: 'none' }).show().animate({ opacity: 1, marginLeft: 0 }, 140, function()
+                {
+                    $(this).css('pointerEvents', '');
+                });
+            };
+            if (clickToOpen)
+            {
+                row.on('mouseenter', () =>
+                {
+                    _cancelCollapse();
+                    if (!row.hasClass('la-hud-active'))
+                        row.css({ background: BG_HOVER });
+                });
+                row.on('mouseleave', () =>
+                {
+                    if (!row.hasClass('la-hud-active'))
+                        row.css({ background: row.data('restingBg') ?? BG_DEFAULT });
+                });
+                row.on('click', openCat);
+            }
+            else
+                row.on('mouseenter', openCat);
+            c1.append(row);
+        }
+
+        // Safe-zone collapse: fires only when mouse leaves ALL visible columns
+        let _leaveTimer = null;
+        const _clearC1Active = () =>
+        {
+            c1.find('.la-hud-row').each(function()
+            {
+                const row = $(this); row.css({ background: row.data('restingBg') ?? BG_DEFAULT, color: row.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+            });
+        };
+        const _scheduleCollapse = () =>
+        {
+            clearTimeout(_leaveTimer);
+            const delay = hoverCloseDelay + this._collapseBonusMs;
+            this._collapseBonusMs = 0;
+            _leaveTimer = setTimeout(() =>
+            {
+                if (this._searchActive || this._pickerSuppress)
+                    return;
+                closeCol(c2);
+                closeCol(c3);
+                closeCol(c4);
+                this._statusPanelInstance?.close();
+                this._logPanelInstance?.close();
+                this._glossaryPanelInstance?.close();
+                this._bondPanelInstance?.close();
+                _clearC1Active();
+                $('.la-hud-popup').stop(true).animate({ opacity: 0 }, 120, function()
+                {
+                    $(this).remove();
+                });
+            }, hoverCloseDelay);
+        };
+        const _cancelCollapse = () => clearTimeout(_leaveTimer);
+        this._scheduleCollapse = _scheduleCollapse;
+        this._cancelCollapse   = _cancelCollapse;
+        this._clearC1Active    = _clearC1Active;
+        this._statusPanelInstance?.close();
+        this._statusPanelInstance = new StatusPanel({
+            actor: this._actor,
+            token: this._token,
+            tokens: this._tokens,
+            el:    hud,
+            cancelCollapse:  _cancelCollapse,
+            scheduleCollapse: clickToOpen ? () =>
+            {} : _scheduleCollapse,
+            incDepth: () => this._suppressRefreshDepth++,
+            decDepth: () => this._suppressRefreshDepth--,
+            suppressCollapse: (on) => { this._pickerSuppress = on; },
+            extendCollapse: () => { this._collapseBonusMs = 1000; },
+        });
+        this._logPanelInstance = new LogPanel({
+            actor: this._actor,
+            token: this._token,
+            el:    hud,
+            cancelCollapse:  _cancelCollapse,
+            scheduleCollapse: clickToOpen ? () =>
+            {} : _scheduleCollapse,
+        });
+        this._glossaryPanelInstance = new GlossaryPanel({
+            el:    hud,
+            cancelCollapse:  _cancelCollapse,
+            scheduleCollapse: clickToOpen ? () =>
+            {} : _scheduleCollapse,
+        });
+        this._bondPanelInstance = new BondPanel({
+            actor: this._actor,
+            token: this._token,
+            el:    hud,
+            cancelCollapse:  _cancelCollapse,
+            scheduleCollapse: clickToOpen ? () =>
+            {} : _scheduleCollapse,
+        });
+        hud.on('mouseleave', () =>
+        {
+            if (!clickToOpen)
+                _scheduleCollapse();
+        }).on('mouseenter', _cancelCollapse);
+        hud.on('mousemove', () =>
+        {
+            this._lastHudPointerMove = Date.now();
+        });
+        if (!this._kbBound)
+            this._kbBound = (e) => this._kbHandleKey(e);
+        window.removeEventListener('keydown', this._kbBound, true);
+        window.addEventListener('keydown', this._kbBound, true);
+        $(document).off('mousedown.la-hud-kbreset').on('mousedown.la-hud-kbreset', (ev) =>
+        {
+            if (!this._el || !this._el.find('.la-hud-kbfocus').length)
+                return;
+            if (this._el[0] && $.contains(this._el[0], ev.target))
+                return;
+            if ($(ev.target).closest('.la-hud-popup, .la-hud-popup-bridge').length)
+                return;
+            this._kbReset();
+        });
+        if (!clickToOpen)
+        {
+            c2.on('mouseleave', _scheduleCollapse).on('mouseenter', _cancelCollapse);
+            c3.on('mouseleave', _scheduleCollapse).on('mouseenter', _cancelCollapse);
+            c4.on('mouseleave', _scheduleCollapse).on('mouseenter', _cancelCollapse);
+            // Leaving any c1 category row toward the header area schedules collapse
+            c1.on('mouseleave', '.la-hud-row', _scheduleCollapse);
+        }
+        else
+        {
+            c2.on('mouseenter', _cancelCollapse);
+            c3.on('mouseenter', _cancelCollapse);
+            c4.on('mouseenter', _cancelCollapse);
+            // Click outside the HUD to collapse
+            $(document).on('mousedown.la-hud-cto', (ev) =>
+            {
+                if (!this._el)
+                    return;
+                if (!$.contains(this._el[0], /** @type {Element} */ (/** @type {unknown} */ (ev.target))) && !$(ev.target).closest('.la-hud-popup, .la-hud-popup-bridge').length)
+                {
+                    closeCol(c2); closeCol(c3); closeCol(c4);
+                    this._statusPanelInstance?.close();
+                    this._logPanelInstance?.close();
+                    this._glossaryPanelInstance?.close();
+                    this._bondPanelInstance?.close();
+                    _clearC1Active();
+                    $('.la-hud-popup').stop(true).animate({ opacity: 0 }, 120, function()
+                    {
+                        $(this).remove();
+                    });
+                }
+            });
+        }
+        // Title / stats / menu-label area. Hovering it closes open columns.
+        titleEl.on('mouseenter', () =>
+        {
+            _clearC1Active();
+            if (!clickToOpen)
+                _scheduleCollapse();
+        });
+        statsEl.on('mouseenter', () =>
+        {
+            _clearC1Active();
+            if (!clickToOpen)
+                _scheduleCollapse();
+        });
+        menuLabel.on('mouseenter', () =>
+        {
+            _clearC1Active();
+            if (!clickToOpen)
+                _scheduleCollapse();
+        });
+
+        searchIcon.on('click', (ev) =>
+        {
+            ev.stopPropagation();
+            playUiSound('details');
+            if (searchBar.is(':visible'))
+            {
+                searchBar.val('').slideUp(120);
+                searchIcon.css('opacity', '0.55');
+                this._searchActive = false;
+                closeCol(c2); closeCol(c3); closeCol(c4);
+            }
+            else
+            {
+                searchBar.css({ display: 'none' }).slideDown(120, () => searchBar.trigger('focus'));
+                searchIcon.css('opacity', '1');
+            }
+        });
+        const runSearch = () =>
+        {
+            const q = String(searchBar.val()).trim().toLowerCase();
+            if (!q)
+            {
+                this._searchActive = false;
+                closeCol(c2);
+                return;
+            }
+            this._searchActive = true;
+            _cancelCollapse();
+            openSearchResults(c2, collectSearchResults(q, this._categories), { el: this._el, makeRow: (...a) => this._makeRow(...a), token: this._token, brighten });
+        };
+        searchBar.on('input', runSearch);
+        searchBar.on('mouseenter click', () =>
+        {
+            if (String(searchBar.val()).trim())
+                runSearch();
+        });
+        searchBar.on('keydown', (ev) =>
+        {
+            if (ev.key === 'Escape')
+            {
+                searchIcon.trigger('click');
+                return;
+            }
+            const bindings = /** @type {any[]} */ (game.keybindings.get('lancer-automations', 'tah.toggleSearch') ?? []);
+            const match = bindings.some(b =>
+            {
+                if (b.key !== ev.code)
+                    return false;
+                const mods = b.modifiers ?? [];
+                return ev.altKey   === mods.includes('Alt')
+                    && ev.ctrlKey  === mods.includes('Control')
+                    && ev.shiftKey === mods.includes('Shift');
+            });
+            if (match)
+            {
+                ev.preventDefault();
+                ev.stopPropagation();
+                searchIcon.trigger('click');
+            }
+        });
+        searchBar.on('focus', () => _cancelCollapse());
+
+        // Favorites tab
+        const openFavorites = () =>
+        {
+            if (searchBar.is(':visible'))
+                searchIcon.trigger('click');
+            _cancelCollapse();
+            playUiSound();
+            this._c2Category = null; this._c2AnchorRow = null;
+            this._c3SourceItem = null; this._c4SourceItem = null;
+            closeCol(c3, 80); closeCol(c4, 80);
+            openSearchResults(c2, this._collectFavorites(), { el: this._el, makeRow: (...a) => this._makeRow(...a), token: this._token, brighten });
+            c2.find('.la-hud-col-label').text('Favorites');
+        };
+        const favIconInner = favIcon.find('.la-hud-fav-icon');
+        const isFavoritesOpen = () => c2.is(':visible') && c2.find('.la-hud-col-label').text() === 'Favorites';
+        let favHovering = false;
+        const applyFavStyle = () =>
+        {
+            const open = isFavoritesOpen();
+            favIconInner
+                .toggleClass('la-hud-fav-icon--open', open)
+                .toggleClass('la-hud-fav-icon--hover', favHovering && !open);
+        };
+        const isOverFavIcon = (ev) =>
+        {
+            const r = favIconInner[0]?.getBoundingClientRect();
+            if (!r)
+                return false;
+            return ev.clientX >= r.left && ev.clientX <= r.right && ev.clientY >= r.top && ev.clientY <= r.bottom;
+        };
+        const enterFav = () =>
+        {
+            if (favHovering)
+                return;
+            favHovering = true;
+            _cancelCollapse();
+            applyFavStyle();
+            if (!clickToOpen)
+                openFavorites();
+        };
+        const leaveFav = () =>
+        {
+            if (!favHovering)
+                return;
+            favHovering = false;
+            applyFavStyle();
+        };
+        const favObserver = new MutationObserver(() => applyFavStyle());
+        favObserver.observe(c2[0], { childList: true, subtree: true, attributes: true, attributeFilter: ['style'] });
+        favIconInner.on('mouseenter', enterFav);
+        favIconInner.on('mouseleave', leaveFav);
+        if (this._favDocHandlers)
+        {
+            document.removeEventListener('mousemove', this._favDocHandlers.move);
+            if (this._favDocHandlers.click)
+                document.removeEventListener('click', this._favDocHandlers.click, true);
+        }
+        const docMoveHandler = (ev) =>
+        {
+            if (!this._el)
+                return;
+            const over = isOverFavIcon(ev);
+            if (over)
+                enterFav();
+            else
+                leaveFav();
+        };
+        document.addEventListener('mousemove', docMoveHandler);
+        let docClickHandler = null;
+        if (clickToOpen)
+        {
+            docClickHandler = (ev) =>
+            {
+                if (!this._el)
+                    return;
+                if (isOverFavIcon(ev))
+                {
+                    ev.stopPropagation();
+                    openFavorites();
+                }
+            };
+            document.addEventListener('click', docClickHandler, true);
+        }
+        this._favDocHandlers = { move: docMoveHandler, click: docClickHandler };
+    }
+
+    // Multi-token intersection filter
+
+    _filterIntersect(items)
+    {
+        if (this._tokens.length <= 1)
+            return items;
+        const others = this._tokens.slice(1).map(t => t.actor);
+        return items.filter(item =>
+        {
+            if (item.isSectionLabel || item.inputCell)
+                return true;
+            const lid = item.hoverData?.item?.system?.lid;
+            if (!lid)
+                return true; // universal action (Basic Attack, Stabilize, etc.)
+            return others.every(a => /** @type {any} */ (a).items.some(i => i.system?.lid === lid));
+        });
+    }
+
+    // Item-building helpers
+
+    /** Returns a status-kind marker for destroyed/unavailable items. The renderer maps it to a striped style. */
+    _statusColors(/** @type {any} */ status)
+    {
+        return {
+            statusKind: status.destroyed ? 'destroyed' : status.unavailable ? 'unavailable' : null,
+        };
+    }
+
+    // Shared row: destroyed-strike label + getItemStatus badge + _statusColors stripe; badge/badgeColor/statusKind overridable. Extra opts (onClick/onRightClick/getChildren/highlightBg/…) pass through.
+    _itemRow(/** @type {any} */ item, /** @type {any} */ opts = {})
+    {
+        const { label, icon = null, action = null, category, badge, badgeColor, statusKind, hoverExtra, ...rest } = opts;
+        const status = getItemStatus(item, action ?? undefined);
+        const base = label ?? item?.name;
+        return {
+            ...rest,
+            label: status.destroyed ? this._destroyedLabel(base) : base,
+            icon,
+            badge: badge !== undefined ? badge : (status.badge ?? null),
+            badgeColor: badgeColor !== undefined ? badgeColor : (status.badgeColor ?? null),
+            statusKind: statusKind !== undefined ? statusKind : this._statusColors(status).statusKind,
+            hoverData: { actor: this._actor, item, action, category, ...(hoverExtra ?? {}) },
+        };
+    }
+
+    /** Builds the standard effect + description + tags HTML for a system/item detail popup body. */
+    _bodyHtml(/** @type {any} */ sys)
+    {
+        const text = sys?.effect || sys?.description || '';
+        const effect = text ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;margin-bottom:4px;">${laFormatDetailHtml(text)}</div>` : '';
+        return laRenderTags(sys?.tags ?? []) + effect;
+    }
+
+    /** Factory for executeSimpleActivation rows. Wires onClick / broadcast / right-click popup. */
+    _simpleItem(label, icon, action, detail)
+    {
+        return this._lockable({
+            label,
+            icon,
+            onClick:      () => executeSimpleActivation(this._actor, { title: action.name, action, detail }),
+            broadcastFn:  (_t, a) => executeSimpleActivation(a, { title: action.name, action, detail }),
+            onRightClick: this._actionPopup({ ...action, detail }),
+        }, action.name, action.activation);
+    }
+
+    _lockCat(row, field)
+    {
+        if (!getStatusLockedFields(this._actor).has(field))
+            return row;
+        row.statusKind = 'unavailable';
+        const markChildren = (items) => (items ?? []).map(child =>
+        {
+            if (child?.isSectionLabel)
+                return child;
+            const marked = { ...child };
+            if (!marked.statusKind)
+                marked.statusKind = 'unavailable';
+            if (child.getChildren)
+                marked.getChildren = () => markChildren(child.getChildren());
+            return marked;
+        });
+        const origChildren = row.getChildren;
+        if (origChildren)
+            row.getChildren = () => markChildren(origChildren());
+        return row;
+    }
+
+    _lockable(item, actionName, activation = null)
+    {
+        const origClick = item.onClick;
+        const origBroadcast = item.broadcastFn;
+        const info = getActionLockInfo(this._actor, actionName, activation);
+        const byStatus = isActionDisabledByStatus(this._actor, actionName);
+        const disabledKind = [...info.itemLocks, ...info.sources].some(entry => (entry?.kind ?? null) === 'disabled');
+        if (byStatus || disabledKind)
+            item.statusKind = 'unavailable';
+        else if (info.itemLocks.length || info.sources.length)
+            item.softDisabled = true;
+        item.onClick = () =>
+        {
+            const now = getActionLockInfo(this._actor, actionName, activation);
+            if (isActionDisabledByStatus(this._actor, actionName) || now.itemLocks.length || now.sources.length)
+                ui.notifications.warn(`${actionName} is locked on ${this._actor.name}. Firing anyway.`);
+            return origClick?.();
+        };
+        if (origBroadcast)
+            item.broadcastFn = origBroadcast;
+        return item;
+    }
+
+    _lockableAttack(actionRow, weaponName)
+    {
+        const [name, activation] = WEAPON_ATTACK_ACTION[actionRow.label] ?? [];
+        return this._lockable(name ? this._lockable(actionRow, name, activation) : actionRow, weaponName);
+    }
+
+    // True when the mech's pilot already has a token on the current scene.
+    _pilotHasTokenOnScene()
+    {
+        const pilot = this._actor?.system?.pilot?.value;
+        return !!pilot && (pilot.getActiveTokens?.() ?? []).length > 0;
+    }
+
+    // Grey-stripe a row and block its click when a precondition is not met.
+    // Reason is recorded by label so the detail popup can surface it.
+    _blockIf(item, blocked, reason)
+    {
+        if (!blocked)
+            return item;
+        item.softDisabled = true;
+        item.onClick = () => ui.notifications.warn(reason);
+        item.broadcastFn = undefined;
+        const origRightClick = item.onRightClick;
+        item.onRightClick = (row) =>
+        {
+            this._pendingBlockReason = reason;
+            try
+            {
+                return origRightClick?.(row);
+            }
+            finally
+            {
+                this._pendingBlockReason = null;
+            }
+        };
+        return item;
+    }
+
+    // anchorRow: parent row this column aligns with vertically.
+
+    _openCol(col, items, anchorRow, { reposition = true } = {})
+    {
+        const filteredItems = this._filterIntersect(items);
+        col.children(':not(.la-hud-col-label)').remove();
+        // Page-relative offset minus HUD offset so it's correct whichever column anchorRow lives in (c1 or c2).
+        if (reposition && anchorRow && this._el)
+        {
+            const aOff = anchorRow.offset();
+            const eOff = this._el.offset();
+            if (aOff && eOff)
+                col.css({ top: (aOff.top - eOff.top) / tahScale() - 22 });
+        }
+
+        if (!filteredItems.length)
+        {
+            col.append(`<div class="la-hud-muted la-hud-muted--empty">Empty</div>`);
+            return;
+        }
+
+        for (const item of filteredItems)
+        {
+            if (item.isSectionLabel)
+            {
+                const iconHtml = item.icon ? laHudRenderIcon(item.icon) : '';
+                col.append(`<div class="la-hud-section-label">${iconHtml}${item.label}</div>`);
+                continue;
+            }
+            if (item.inputCell)
+            {
+                const hasMax  = item.max != null;
+                const noColor = !!item.noColor;
+                const min     = item.min ?? (hasMax ? 0 : -Infinity);
+                const max     = item.max ?? Infinity;
+                const iconHtml = item.icon ? laHudRenderIcon(item.icon) : '';
+                const invert = !!item.invertScale;
+                const atBad = (/** @type {number} */ val) => invert ? val >= max : val <= 0;
+                const atMid = (/** @type {number} */ val) => invert ? val > 0 : val < max;
+                const valColor = (/** @type {number} */ val) => noColor ? 'var(--la-ink)' : hasMax ? (atBad(val) ? '#c33' : atMid(val) ? '#cc7700' : '#3a9e6e') : 'var(--la-ink)';
+                const restingBg = (/** @type {number} */ val) => noColor ? BG_DEFAULT : hasMax ? (atBad(val) ? '#ffcccc' : atMid(val) ? '#ffe5b4' : BG_DEFAULT) : BG_DEFAULT;
+                const borderColor = (/** @type {number} */ val) => noColor ? 'var(--primary-color)' : hasMax ? (atBad(val) ? '#cc3333' : atMid(val) ? '#cc7700' : 'var(--primary-color)') : 'var(--primary-color)';
+                let cell;
+                if (item.subtype === 'increment')
+                {
+                    let cur = item.getValue();
+                    const valText = item.formatValue ? () => item.formatValue(cur) : () => hasMax ? `${cur}/${max}` : `${cur}`;
+                    cell = $(`<div class="la-hud-cell" style="background:${restingBg(cur)};border-left-color:${borderColor(cur)};">${iconHtml}<span class="la-hud-clip"><span class="la-hud-pan">${item.name}</span></span><div class="la-hud-cell__buttons"><span class="la-dec-btn la-hud-cell__btn">◄</span><span class="la-inc-val la-hud-cell__val" style="color:${valColor(cur)};">${valText()}</span><span class="la-inc-btn la-hud-cell__btn">►</span></div></div>`);
+                    const step = item.step ?? 1;
+                    const suppress = () =>
+                    {
+                        this._suppressRefreshDepth++; setTimeout(() => this._suppressRefreshDepth--, 300);
+                    };
+                    const updateDisplay = () =>
+                    {
+                        const color = valColor(cur);
+                        cell.data('restingValColor', color);
+                        if (!cell.is(':hover'))
+                            cell.find('.la-inc-val').css('color', color);
+                        cell.find('.la-inc-val').text(valText());
+                        cell.data('restingBg', restingBg(cur)).css('borderLeftColor', borderColor(cur));
+                    };
+                    cell.find('.la-dec-btn').on('click', (ev) =>
+                    {
+                        ev.stopPropagation(); if (cur <= min)
+                            return; playUiSound('toggle'); suppress(); cur = Math.max(min, cur - step); item.onValueChanged(cur); updateDisplay();
+                    });
+                    cell.find('.la-inc-btn').on('click', (ev) =>
+                    {
+                        ev.stopPropagation(); if (cur >= max)
+                            return; playUiSound('toggle'); suppress(); cur = Math.min(max, cur + step); item.onValueChanged(cur); updateDisplay();
+                    });
+                    cell.data('restingBg', restingBg(cur));
+                    cell.data('restingValColor', valColor(cur));
+                    cell.addClass('la-value-cell').data('laValueSync', () =>
+                    {
+                        const fresh = item.getValue();
+                        if (fresh !== cur)
+                        {
+                            cur = fresh;
+                            updateDisplay();
+                        }
+                    });
+                }
+                else if (item.subtype === 'toggle')
+                {
+                    let on = !!item.getValue();
+                    const onColor = 'var(--primary-color)';
+                    const offColor = '#666';
+                    const switchHtml = `<span class="la-toggle-switch" style="background:${on ? onColor : offColor};"><span class="la-toggle-knob" style="left:${on ? '14px' : '1px'};"></span></span>`;
+                    cell = $(`<div class="la-hud-cell la-toggle-cell">${iconHtml}<span class="la-hud-clip"><span class="la-hud-pan">${item.name}</span></span>${switchHtml}</div>`);
+                    const paintSwitch = () =>
+                    {
+                        const sw = cell.find('.la-toggle-switch');
+                        sw.css('background', on ? onColor : offColor);
+                        sw.find('.la-toggle-knob').css('left', on ? '14px' : '1px');
+                    };
+                    cell.data('laToggleSync', () =>
+                    {
+                        on = !!item.getValue();
+                        paintSwitch();
+                    });
+                    cell.find('.la-toggle-switch').on('click', async (ev) =>
+                    {
+                        ev.stopPropagation();
+                        playUiSound('toggle');
+                        on = !on;
+                        paintSwitch();
+                        this._suppressRefreshDepth++;
+                        try
+                        {
+                            await item.onToggle(on);
+                        }
+                        finally
+                        {
+                            this._suppressRefreshDepth--;
+                        }
+                    });
+                    cell.data('restingBg', BG_DEFAULT);
+                }
+                else
+                {
+                    cell = $(`<div class="la-hud-cell">${iconHtml}<span class="la-hud-clip"><span class="la-hud-pan">${item.name}</span></span><input type="number" class="la-type-val la-hud-cell__input" value="${item.getValue()}"></div>`);
+                    cell.find('.la-type-val').on('change', (ev) =>
+                    {
+                        ev.stopPropagation(); playUiSound('toggle'); const v = Number.parseInt(/** @type {HTMLInputElement} */(ev.target).value, 10); if (!Number.isNaN(v))
+                            item.onValueChanged(v);
+                    }).on('click mousedown', (ev) => ev.stopPropagation());
+                    cell.data('restingBg', BG_DEFAULT);
+                    cell.addClass('la-value-cell').data('laValueSync', () =>
+                    {
+                        const input = cell.find('.la-type-val');
+                        if (!input.is(':focus'))
+                            input.val(item.getValue());
+                    });
+                }
+                cell.on('mouseenter', () =>
+                {
+                    this._cancelCollapse?.();
+                    if (!this._clickToOpen)
+                    {
+                        if (this._logPanelInstance?.isVisible)
+                            this._logPanelInstance.close();
+                        if (this._glossaryPanelInstance?.isVisible)
+                            this._glossaryPanelInstance.close();
+                        if (this._bondPanelInstance?.isVisible)
+                            this._bondPanelInstance.close();
+                    }
+                    if (!this._clickToOpen && (col === this._c2 || col === this._c3))
+                    {
+                        col.find('.la-hud-active').each(function()
+                        {
+                            const activeRow = $(this);
+                            activeRow.css({ background: activeRow.data('restingBg') ?? BG_DEFAULT, color: activeRow.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        });
+                        closeCol(this._c4, 80);
+                        if (col === this._c2)
+                            closeCol(this._c3, 80);
+                    }
+                    cell.css({ background: BG_ACTIVE, color: TEXT_ACTIVE });
+                    cell.find('.la-inc-val').css('color', TEXT_ACTIVE);
+                    cell.find('.la-hud-cell__btn').css('color', TEXT_ACTIVE);
+                    playUiSound('hover');
+                    const clip = cell.find('.la-hud-clip')[0]; const pan = cell.find('.la-hud-pan')[0];
+                    if (clip && pan)
+                    {
+                        const overflow = pan.scrollWidth - clip.clientWidth; if (overflow > 4)
+                            $(clip).stop(true).delay(300).animate({ scrollLeft: overflow }, { duration: overflow * 20, easing: 'linear' });
+                    }
+                });
+                cell.on('mouseleave', () =>
+                {
+                    cell.css({ background: cell.data('restingBg') ?? BG_DEFAULT, color: '' });
+                    cell.find('.la-inc-val').css('color', cell.data('restingValColor') ?? '');
+                    cell.find('.la-hud-cell__btn').css('color', '');
+                    cell.find('.la-hud-clip').stop(true).animate({ scrollLeft: 0 }, { duration: 120, easing: 'swing' });
+                });
+                if (item.onRightClick)
+                {
+                    cell.attr('title', 'Right click for details');
+                    cell.on('contextmenu', ev =>
+                    {
+                        ev.preventDefault();
+                        playUiSound('details');
+                        item.onRightClick(cell);
+                    });
+                }
+                col.append(cell);
+                continue;
+            }
+            const rawChildren = item.getChildren ? item.getChildren() : null;
+            const hasChildren = rawChildren !== null || !!item.isLogPanel || !!item.isGlossaryPanel || !!item.isBondPanel;
+            const childCount = hasChildren && rawChildren ? rawChildren.length : 0;
+            const row = this._makeRow(item.label, hasChildren, item.icon, item.activation ?? null, item.badge ?? null, item.badgeColor ?? null, childCount);
+            if (item.onBadgeClick)
+            {
+                row.find('.la-hud-badge').css('cursor', 'pointer').on('click', (ev) =>
+                {
+                    ev.stopPropagation();
+                    item.onBadgeClick();
+                });
+            }
+            const isFavoritable = !item.isSectionLabel && !!item.onClick && !!this._favKey(item);
+            if (isFavoritable && this._isFavorite(item))
+                this._applyFavStyle(row);
+            row.on('contextmenu', async (ev) =>
+            {
+                if (!ev.ctrlKey)
+                    return;
+                ev.preventDefault();
+                ev.stopImmediatePropagation();
+                if (!isFavoritable)
+                {
+                    this._showQuickTip(ev.clientX, ev.clientY, "Can't favorite this");
+                    return;
+                }
+                const nowFav = await this._toggleFavorite(item);
+                playUiSound('toggle');
+                if (nowFav)
+                    this._applyFavStyle(row);
+                else
+                    this._clearFavStyle(row);
+            });
+
+            // if (hasChildren && rawChildren !== null && !rawChildren.length)
+            //     row.css({ opacity: 0.9 });
+
+            const _stripeStyle = (() =>
+            {
+                if (item.stripeStyle)
+                    return item.stripeStyle;
+                if (item.softDisabled)
+                {
+                    return document.documentElement.classList.contains('la-dark')
+                        ? {
+                            bg: 'repeating-linear-gradient(45deg, #707070 0 6px, #5c5c5c 6px 12px)',
+                            hoverBg: 'repeating-linear-gradient(45deg, #858585 0 6px, #6e6e6e 6px 12px)',
+                            border: '#8f8f8f',
+                            color: '#eee',
+                            hoverColor: '#fff'
+                        }
+                        : {
+                            bg: 'repeating-linear-gradient(45deg, #3a3a3a 0 6px, #2f2f2f 6px 12px)',
+                            hoverBg: 'repeating-linear-gradient(45deg, #555 0 6px, #444 6px 12px)',
+                            border: '#666',
+                            color: '#bbb',
+                            hoverColor: '#ddd'
+                        };
+                }
+                if (item.statusKind === 'destroyed')
+                {
+                    return {
+                        bg: 'repeating-linear-gradient(45deg, #5a2222 0 6px, #4a1c1c 6px 12px)',
+                        hoverBg: 'repeating-linear-gradient(45deg, #7a3535 0 6px, #6a2828 6px 12px)',
+                        border: '#a04444',
+                        color: '#e0b0b0',
+                        hoverColor: '#f0c8c8'
+                    };
+                }
+                if (item.statusKind === 'unavailable')
+                {
+                    return {
+                        bg: 'repeating-linear-gradient(45deg, #5a4422 0 6px, #4a3818 6px 12px)',
+                        hoverBg: 'repeating-linear-gradient(45deg, #7a5c30 0 6px, #6a4c25 6px 12px)',
+                        border: '#a07744',
+                        color: '#e0c8a0',
+                        hoverColor: '#f0d8b8'
+                    };
+                }
+                return null;
+            })();
+            if (_stripeStyle)
+            {
+                row.data('restingBg', _stripeStyle.bg);
+                row.data('restingBorder', _stripeStyle.border);
+                row.data('hoverBg', _stripeStyle.hoverBg);
+                row.data('restingColor', _stripeStyle.color);
+                row.data('hoverColor', _stripeStyle.hoverColor);
+                row.css({ background: _stripeStyle.bg, borderLeftColor: _stripeStyle.border, color: _stripeStyle.color });
+                if (item.softDisabled)
+                    row.css({ cursor: 'not-allowed' });
+                // Keep leading icon visible on dark stripes: flip whatever invert state laHudRenderIcon left.
+                const _leadingIcon = row.children('img').first();
+                if (_leadingIcon.length)
+                {
+                    const _styleAttr = _leadingIcon.attr('style') || '';
+                    const _wasInverted = _styleAttr.includes('invert(1)');
+                    _leadingIcon.css({ filter: _wasInverted ? 'none' : 'invert(1)', opacity: '0.55' });
+                }
+            }
+            else if (item.highlightBg)
+            {
+                const borderColor = item.highlightBorderColor ?? '#3a78b5';
+                const hoverBg = item.highlightHoverBg ?? (item.highlightBg.startsWith('#') ? brighten(item.highlightBg) : item.highlightBg);
+                row.data('restingBg', item.highlightBg);
+                row.data('restingBorder', borderColor);
+                row.data('hoverBg', hoverBg);
+                row.css({ background: item.highlightBg, borderLeftColor: borderColor });
+            }
+
+            // Subtle automation hint: tiny rightward triangle attached to the left status bar (same color as the bar).
+            if (hasAutomation(item.hoverData?.item) || hasAutomation(item.hoverData?.action?.name ?? item.label))
+            {
+                row.css('position', 'relative');
+                const _tickColor = _stripeStyle ? _stripeStyle.color : 'var(--primary-color)';
+                row.append(`<span class="la-hud-auto-tick" style="position:absolute;left:3px;top:50%;transform:translateY(-50%);width:0;height:0;border-left:4px solid ${_tickColor};border-top:3px solid transparent;border-bottom:3px solid transparent;pointer-events:none;"></span>`);
+            }
+
+            // Hover sound on leaf rows (and Log / Glossary) only in hover-mode. Click-to-open
+            // mode plays sound on click, not on hover, matching other rows.
+            if ((!hasChildren || item.isLogPanel || item.isGlossaryPanel || item.isBondPanel) && !this._clickToOpen)
+                row.on('mouseenter', () => playUiSound('hover'));
+
+            if (col !== this._c4 && !this._clickToOpen)
+            {
+                row.on('mouseenter', () =>
+                {
+                    $('.la-hud-popup').remove();
+                    if (item.isLogPanel)
+                    {
+                        if (this._statusPanelInstance?.isVisible)
+                            this._statusPanelInstance.close();
+                        if (this._glossaryPanelInstance?.isVisible)
+                            this._glossaryPanelInstance.close();
+                        col.find('.la-hud-active').each(function()
+                        {
+                            const r = $(this); r.css({ background: r.data('restingBg') ?? BG_DEFAULT, color: r.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        });
+                        closeCol(this._c3, 80);
+                        closeCol(this._c4, 80);
+                        this._logPanelInstance?.open(row);
+                        return;
+                    }
+                    if (item.isGlossaryPanel)
+                    {
+                        if (this._statusPanelInstance?.isVisible)
+                            this._statusPanelInstance.close();
+                        if (this._logPanelInstance?.isVisible)
+                            this._logPanelInstance.close();
+                        col.find('.la-hud-active').each(function()
+                        {
+                            const r = $(this); r.css({ background: r.data('restingBg') ?? BG_DEFAULT, color: r.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        });
+                        closeCol(this._c3, 80);
+                        closeCol(this._c4, 80);
+                        this._glossaryPanelInstance?.open(row);
+                        return;
+                    }
+                    if (item.isBondPanel)
+                    {
+                        if (this._statusPanelInstance?.isVisible)
+                            this._statusPanelInstance.close();
+                        if (this._logPanelInstance?.isVisible)
+                            this._logPanelInstance.close();
+                        if (this._glossaryPanelInstance?.isVisible)
+                            this._glossaryPanelInstance.close();
+                        col.find('.la-hud-active').each(function()
+                        {
+                            const rowEl = $(this); rowEl.css({ background: rowEl.data('restingBg') ?? BG_DEFAULT, color: rowEl.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        });
+                        closeCol(this._c3, 80);
+                        closeCol(this._c4, 80);
+                        this._bondPanelInstance?.open(row);
+                        return;
+                    }
+                    if (this._logPanelInstance?.isVisible)
+                        this._logPanelInstance.close();
+                    if (this._glossaryPanelInstance?.isVisible)
+                        this._glossaryPanelInstance.close();
+                    if (this._bondPanelInstance?.isVisible)
+                        this._bondPanelInstance.close();
+                    if (col === this._c2 && !hasChildren)
+                    {
+                        col.find('.la-hud-active').each(function()
+                        {
+                            const r = $(this); r.css({ background: r.data('restingBg') ?? BG_DEFAULT, color: r.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        });
+                        closeCol(this._c3, 80);
+                        closeCol(this._c4, 80);
+                    }
+                    else if (col === this._c3 && !hasChildren)
+                    {
+                        col.find('.la-hud-active').each(function()
+                        {
+                            const r = $(this); r.css({ background: r.data('restingBg') ?? BG_DEFAULT, color: r.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        });
+                        closeCol(this._c4, 80);
+                    }
+                });
+            }
+
+            // Click-to-open mode: Log / Glossary panels don't register the hover handler above,
+            // so they need an explicit click binding (hover-mode rows above already handle them).
+            if (this._clickToOpen && (item.isLogPanel || item.isGlossaryPanel || item.isBondPanel))
+            {
+                row.on('click', () =>
+                {
+                    playUiSound('open');
+                    $('.la-hud-popup').remove();
+                    // Behave like a normal row: clear sibling actives in this column, mark self active,
+                    // close any child column drilldowns and the other panel.
+                    col.find('.la-hud-active').each(function()
+                    {
+                        const r = $(this);
+                        r.css({ background: r.data('restingBg') ?? BG_DEFAULT, color: r.data('restingColor') ?? TEXT_DEFAULT })
+                            .removeClass('la-hud-active');
+                    });
+                    this._setActive(col, row);
+                    this._statusPanelInstance?.close();
+                    closeCol(this._c3, 80);
+                    closeCol(this._c4, 80);
+                    if (item.isLogPanel)
+                    {
+                        this._glossaryPanelInstance?.close();
+                        this._bondPanelInstance?.close();
+                        this._logPanelInstance?.open(row);
+                    }
+                    else if (item.isGlossaryPanel)
+                    {
+                        this._logPanelInstance?.close();
+                        this._bondPanelInstance?.close();
+                        this._glossaryPanelInstance?.open(row);
+                    }
+                    else
+                    {
+                        this._logPanelInstance?.close();
+                        this._glossaryPanelInstance?.close();
+                        this._bondPanelInstance?.open(row);
+                    }
+                });
+            }
+            if (item.onClick)
+            {
+                row.on('click', async () =>
+                {
+                    playUiSound('open');
+                    for (const t of this._tokens ?? [])
+                        deactivateRangePreview(t);
+                    if (!item.keepOpen)
+                    {
+                        row.trigger('mouseleave');
+                        closeCol(this._c2);
+                        closeCol(this._c3);
+                        closeCol(this._c4);
+                        this._clearC1Active();
+                    }
+                    const multi = this._tokens.length > 1 && item.broadcastFn;
+                    if (multi)
+                    {
+                        // Fire primary + every other token concurrently, none awaiting the others.
+                        Promise.resolve(item.onClick()).catch(e => console.error('[TAH primary]', e));
+                        for (const t of this._tokens.slice(1))
+                        {
+                            Promise.resolve(item.broadcastFn(t, t.actor))
+                                .catch(e => console.error('[TAH broadcast]', e));
+                        }
+                    }
+                    else
+                    {
+                        if (item.keepOpen && item.refreshCol4)
+                            this._suppressRefreshDepth++;
+                        try
+                        {
+                            await item.onClick();
+                        }
+                        finally
+                        {
+                            if (item.keepOpen && item.refreshCol4)
+                            {
+                                this._suppressRefreshDepth--;
+                                if (col === this._c3)
+                                    this._openCol(this._c3, item.refreshCol4(), anchorRow, { reposition: false });
+                                else if (this._c4AnchorRow)
+                                    this._openCol(this._c4, item.refreshCol4(), this._c4AnchorRow, { reposition: false });
+                            }
+                        }
+                    }
+                });
+            }
+            if (item.onRightClick)
+            {
+                row.attr('title', 'Right click for details');
+                row.on('contextmenu', ev =>
+                {
+                    ev.preventDefault();
+                    playUiSound('details');
+                    if (item.keepOpen && item.refreshCol4)
+                    {
+                        if (col === this._c3)
+                            this._pendingCol3Refresh = { fn: item.refreshCol4, anchor: anchorRow };
+                        else
+                            this._pendingCol4Refresh = { fn: item.refreshCol4, anchor: this._c4AnchorRow };
+                    }
+                    item.onRightClick(row);
+                });
+            }
+            if (item.hoverData)
+            {
+                const hd = item.hoverData;
+                const token = this._token;
+                row.on('mouseenter', () => onHudRowHover({ ...hd, token, el: row[0], isEntering: true,  isLeaving: false }));
+                row.on('mouseleave', () => onHudRowHover({ ...hd, token, el: row[0], isEntering: false, isLeaving: true  }));
+            }
+            if (hasChildren && !item.isLogPanel && !item.isGlossaryPanel && !item.isBondPanel)
+            {
+                const openChild = () =>
+                {
+                    if (col === this._c2 && row.hasClass('la-hud-active') && this._c3.is(':visible'))
+                    {
+                        if (this._clickToOpen)
+                        {
+                            closeCol(this._c3);
+                            closeCol(this._c4);
+                            row.css({ background: row.data('restingBg') ?? BG_DEFAULT, color: row.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        }
+                        else
+                            this._cancelCollapse();
+                        return;
+                    }
+                    if (col === this._c3 && row.hasClass('la-hud-active') && this._c4.is(':visible'))
+                    {
+                        if (this._clickToOpen)
+                        {
+                            closeCol(this._c4);
+                            row.css({ background: row.data('restingBg') ?? BG_DEFAULT, color: row.data('restingColor') ?? TEXT_DEFAULT }).removeClass('la-hud-active');
+                        }
+                        else
+                            this._cancelCollapse();
+                        return;
+                    }
+                    this._setActive(col, row);
+                    playUiSound();
+                    // Close any panels (log / glossary / status / bond) before drilling into a new child column.
+                    this._logPanelInstance?.close();
+                    this._glossaryPanelInstance?.close();
+                    this._statusPanelInstance?.close();
+                    this._bondPanelInstance?.close();
+                    const freshChildren = item.getChildren ? item.getChildren() : rawChildren;
+                    if (col === this._c2)
+                    {
+                        closeCol(this._c4, 80);
+                        this._openChildCol(col, this._c3, item, freshChildren, row);
+                    }
+                    else if (col === this._c3)
+                    {
+                        this._c4AnchorRow = row;
+                        this._openChildCol(this._c3, this._c4, item, freshChildren, row);
+                    }
+                };
+                if (this._clickToOpen)
+                    row.on('click', openChild);
+                else
+                    row.on('mouseenter', openChild);
+            }
+
+            col.append(row);
+        }
+
+        const maxItems = game.settings.get('lancer-automations', 'tah.maxColumnItems') ?? 0;
+        if (maxItems > 0 && filteredItems.length > maxItems)
+        {
+            const ROW_H = 32; // approx row height including 2px gap
+            const LABEL_H = 22;
+            col.css({ maxHeight: `${LABEL_H + ROW_H * maxItems}px`, overflowY: 'auto' });
+        }
+        else
+            col.css({ maxHeight: '', overflowY: '' });
+    }
+
+    /** Open a child column positioned to the right of parentCol and animate it in. */
+    _openChildCol(/** @type {any} */ parentCol, /** @type {any} */ childCol, /** @type {any} */ item, /** @type {any} */ children, /** @type {any} */ row)
+    {
+        if (childCol === this._c3)
+        {
+            this._c3SourceItem = item;
+            this._c3AnchorRow = row;
+            this._c4SourceItem = null;
+        }
+        else if (childCol === this._c4)
+            this._c4SourceItem = item;
+        childCol.find('.la-hud-col-label').text(item.childColLabel ?? '');
+        childCol.css({ left: parentCol.position().left / tahScale() + parentCol.outerWidth() });
+        this._openCol(childCol, children, row);
+        childCol.stop(true).css({ opacity: 0, marginLeft: -10, pointerEvents: 'none' })
+            .show().animate({ opacity: 1, marginLeft: 0 }, 140, function()
+            {
+                $(this).css('pointerEvents', '');
+            });
+    }
+
+    // Category / item builders
+
+    // Category list (order = HUD order)
+    _buildCategories()
+    {
+        if (this._narrativeMode)
+        {
+            const linked = !!this._actor;
+            return [
+                ...(linked ? [this._catPilot()] : []),
+                ...(linked ? [this._catSkills()] : []),
+                ...(linked ? [this._catResources()] : []),
+                this._catNarrativeUtility(linked),
+                this._catMacros(),
+            ];
+        }
+        const types        = this._tokens.map(t => t.actor?.type);
+        const isMech       = types.every(t => t === 'mech');
+        const isDeployable = types.every(t => t === 'deployable');
+        const isPilot      = types.every(t => t === 'pilot');
+        const isNpc        = types.every(t => t === 'npc');
+        return [
+            this._catActions(),
+            ...(isDeployable ? [] : [this._catWeapons()]),
+            this._catTech(),
+            ...((isDeployable || isPilot) && this._deployableRows(this._actor).length === 0 ? [] : [this._catDeployables()]),
+            ...(isDeployable ? [] : [this._catResources()]),
+            ...(isMech ? [this._catSystems()] : isNpc ? [this._catNpcSystems()] : isPilot ? [this._catPilotGear()] : []),
+            ...(isMech ? [this._catFrame()]   : isNpc ? [this._catNpcFrame()]   : isPilot ? [this._catPilot()] : []),
+            ...(isMech ? [this._catTalents()] : []),
+            this._catSkills(),
+            this._catUtility(),
+            this._catStatuses(),
+            this._catMacros(),
+        ];
+    }
+
+    _catActions()
+    {
+        const actor        = this._actor;
+        const isDeployable = actor.type === 'deployable';
+
+        if (isDeployable)
+            return this._catActionsDeployable(actor);
+        if (actor.type === 'pilot')
+            return this._catActionsPilot(actor);
+
+        return {
+            label: 'Actions',
+            colLabel: 'Actions',
+            icon: 'mdi mdi-hexagon-outline',
+            getItems: () => [
+                {
+                    label: 'Basic',
+                    icon: 'mdi mdi-hexagon-outline',
+                    childColLabel: actor.type === 'mech' ? 'Action' : 'Quick',
+                    getChildren: () => [
+                        ...(actor.type === 'mech' ? [
+                            this._lockable({ label: 'Overcharge', icon: 'systems/lancer/assets/icons/overcharge.svg', onClick: () => /** @type {any} */ (actor.beginOverchargeFlow()), broadcastFn: (_t, a) => /** @type {any} */ (a).beginOverchargeFlow(), onRightClick: this._actionPopup({ name: 'Overcharge', activation: 'Free', detail: 'Once per turn, you can OVERCHARGE your mech, allowing you to make any quick action as a free action, even actions you have already taken this turn.\n\nThe first time you OVERCHARGE, take 1 heat.\nThe second time, take 1d3 heat.\nThe third time, take 1d6 heat.\nEach time after, take 1d6+4 heat.\n\nA FULL REPAIR resets this counter.' }) }, 'Overcharge'),
+                            { isSectionLabel: true, label: 'Quick' },
+                        ] : []),
+                        ...(/** @type {any} */ (this._catQuickActions().getItems().find(i => i.label === 'Basic'))?.getChildren?.() ?? []),
+                        { isSectionLabel: true, label: 'Full' },
+                        ...(/** @type {any} */ (this._catFullAction().getItems().find(i => i.label === 'Basic'))?.getChildren?.() ?? []),
+                    ],
+                },
+                { label: 'Attacks', childColLabel: 'Attacks', icon: 'systems/lancer/assets/icons/role_striker.svg', getChildren: () => this._catAttacks().getItems() },
+                { label: 'Quick Actions', childColLabel: 'Quick Actions',    icon: getActivationIcon('Quick'), getChildren: () => this._getActionsByActivation(actor, 'Quick', 'Actions') },
+                this._lockCat({ label: 'Full Actions',  childColLabel: 'Full Actions',     icon: getActivationIcon('Full'), getChildren: () => this._getActionsByActivation(actor, 'Full', 'Actions') }, 'full'),
+                this._lockCat({ label: 'Reaction',      childColLabel: 'Reaction', icon: getActivationIcon('Reaction'), getChildren: () => this._catReactions().getItems() }, 'reaction'),
+                this._lockCat({ label: 'Protocol',      childColLabel: 'Protocol', icon: getActivationIcon('Protocol'), getChildren: () => this._catProtocols().getItems() }, 'protocol'),
+                this._lockCat({ label: 'Free Actions',  childColLabel: 'Free Actions',     icon: getActivationIcon('Free'), getChildren: () => this._catFreeActions().getItems() }, 'free'),
+                ...(() =>
+                {
+                    const deactItems = actor.items.filter(item =>
+                        item.flags?.['lancer-automations']?.activeStateData?.active
+                        || (item.system?.tags ?? []).some(tag => tag.lid === 'tg_deactivate')
+                    );
+                    if (!deactItems.length)
+                        return [];
+                    return [{
+                        label: 'Deactivate',
+                        childColLabel: 'Deactivate',
+                        icon: 'systems/lancer/assets/icons/status_shutdown.svg',
+                        getChildren: () => deactItems.map(item =>
+                        {
+                            const asd = item.flags?.['lancer-automations']?.activeStateData;
+                            const label = `<span style="color:#e8a030;font-size:0.7em;vertical-align:middle;">●</span> ${asd?.endActionDescription || `Deactivate ${item.name}`}`;
+                            const activation = asd?.endAction || 'Protocol';
+                            return {
+                                label,
+                                icon: getActivationIcon({ activation }),
+                                hoverData: { actor, item, action: { name: label, activation }, category: 'Actions' },
+                                onClick: () => endItemActivation(item, this._token),
+                                onRightClick: this._actionPopup({ name: label, activation, detail: item.system?.effect || '' }, item),
+                            };
+                        })
+                    }];
+                })(),
+            ],
+        };
+    }
+
+    _catResources()
+    {
+        return {
+            label: 'Resources',
+            icon: 'mdi mdi-database-outline',
+            // One source → use its name as the col header; two or more → "Resources".
+            colLabel: () =>
+            {
+                const hasCounters = this._resourceItems().length > 0;
+                const hasExtras = this._resourceExtras().length > 0;
+                const hasCustom = this._resourceCustomFlags().length > 0;
+                const hasAmmo = this._ammoItems().length > 0;
+                const sum = (hasCounters ? 1 : 0) + (hasExtras ? 1 : 0) + (hasCustom ? 1 : 0) + (hasAmmo ? 1 : 0);
+                if (sum === 1)
+                    return hasCounters ? 'Resources' : hasExtras ? 'Extra' : hasCustom ? 'Custom' : 'Ammo';
+                return 'Resources';
+            },
+            getItems: () =>
+            {
+                const counters = this._resourceItems();
+                const extras = this._resourceExtras();
+                const custom = this._resourceCustomFlags();
+                const ammo = this._ammoItems();
+                const out = [];
+                let pushed = false;
+                const append = (rows, label) =>
+                {
+                    if (!rows.length)
+                        return;
+                    if (pushed)
+                        out.push({ isSectionLabel: true, label });
+                    out.push(...rows);
+                    pushed = true;
+                };
+                append(counters, 'Resources');
+                append(extras, 'Extra');
+                append(custom, 'Custom');
+                append(ammo, 'Ammo');
+                return out;
+            },
+        };
+    }
+
+    _catActionsDeployable(/** @type {any} */ actor)
+    {
+        const sys = actor.system;
+        const items = [];
+
+        // Main activation action (the deployable itself)
+        if (sys.activation)
+        {
+            const deployAction = applyActionOverlays(actor, [{ name: actor.name, activation: sys.activation, detail: sys.detail ?? '' }])[0];
+            items.push({
+                label: 'Activation',
+                icon: getActivationIcon(deployAction),
+                hoverData: { actor, item: null, action: deployAction, category: 'Actions' },
+                onClick: () => executeSimpleActivation(actor, { title: actor.name, action: deployAction, detail: sys.detail ?? '' }),
+                onRightClick: this._actionPopup(deployAction),
+            });
+        }
+
+        // Recall action (no dialog, just deletes this token).
+        if (sys.recall != null)
+        {
+            items.push({
+                label: 'Recall',
+                icon: getActivationIcon({ activation: sys.recall }),
+                onClick: () => this._token.document.delete(),
+            });
+        }
+
+        for (const extra of (actor.getFlag?.('lancer-automations', 'extraActions') ?? []))
+        {
+            items.push({
+                label: extra.name,
+                icon: extra.icon ?? getActivationIcon(extra),
+                hoverData: { actor, item: null, action: extra, category: 'Actions' },
+                onClick: async () =>
+                {
+                    if (extra._addedViaExtrasUI && Array.isArray(extra.tags) && extra.tags.length && !(await consumeExtraAction(actor, extra.name)))
+                        return;
+                    await executeSimpleActivation(actor, { title: extra.name, action: extra, detail: extra.detail || '' });
+                    if (extra.laCombat)
+                        await executeExtraActionCombat(actor, extra, null);
+                },
+                onRightClick: this._actionPopup(extra),
+            });
+        }
+
+        for (const action of applyActionOverlays(actor, sys.actions ?? []))
+        {
+            items.push({
+                label: action.name,
+                icon: getActivationIcon(action),
+                hoverData: { actor, item: null, action, category: 'Actions' },
+                onClick: () => executeSimpleActivation(actor, { title: action.name, action, detail: action.detail ?? '' }),
+                onRightClick: this._actionPopup(action),
+            });
+        }
+
+        const token = this._token;
+        const toolPopup = (toolAction) => this._actionPopup(toolAction);
+        items.push({ isSectionLabel: true, label: 'Tools' });
+        items.push({
+            label: 'Basic Attack',
+            icon: 'mdi mdi-target',
+            hoverData: { actor, item: null, action: { name: 'Basic Attack', activation: 'Tool' }, category: 'Actions' },
+            onClick: () => executeBasicAttack(actor),
+            onRightClick: toolPopup({ name: 'Basic Attack', activation: 'Tool', detail: 'Tool: roll a bare attack against one target.' }),
+        });
+        items.push({
+            label: 'Basic Tech',
+            icon: ICON_TECH_QUICK,
+            hoverData: { actor, item: null, action: { name: 'Basic Tech', activation: 'Tool' }, category: 'Actions' },
+            onClick: () => executeTechAttack(actor, { title: 'Basic Tech', grit: actor.system?.tech_attack, attack_type: 'Tech' }),
+            onRightClick: toolPopup({ name: 'Basic Tech', activation: 'Tool', tech_attack: true, detail: 'Tool: roll a bare TECH ATTACK against one target\'s E-DEFENSE. No effect applied.' }),
+        });
+        items.push({
+            label: 'Damage',
+            icon: 'mdi mdi-flare',
+            hoverData: { actor, item: null, action: { name: 'Damage', activation: 'Tool' }, category: 'Actions' },
+            onClick: () => executeDamageRoll(token, [...(game.user?.targets ?? [])], '0', 'Kinetic'),
+            onRightClick: toolPopup({ name: 'Damage', activation: 'Tool', detail: 'Tool: apply arbitrary damage to your target(s).' }),
+        });
+
+        return {
+            label: 'Actions',
+            colLabel: 'Actions',
+            icon: 'mdi mdi-hexagon-outline',
+            getItems: () => items,
+        };
+    }
+
+    _catActionsPilot(/** @type {any} */ actor)
+    {
+        const actionPopup = action => this._actionPopup(action);
+        const token = this._token;
+        const showAHIS = game.settings.get('lancer-automations', 'tah.showAidHandleInteractSqueeze') ?? false;
+        const basicQuick = () => [
+            this._simpleItem('Boost',    'modules/lancer-automations/icons/speedometer.svg', { name: 'Boost',    activation: 'Quick'          }, 'When you BOOST, you move at least 1 space, up to your SPEED. This allows you to make an extra movement, on top of your standard move. Certain talents and systems can only be used when you BOOST, not when you make a standard move.'),
+            this._simpleItem('Hide',     'systems/lancer/assets/icons/status_hidden.svg',    { name: 'Hide',     activation: 'Quick'          }, 'Obscure your position, becoming HIDDEN and unable to be identified, precisely located, or targeted directly by attacks or hostile actions.'),
+            this._simpleItem('Search',   'modules/lancer-automations/icons/search.svg',      { name: 'Search',   activation: 'Quick'          }, 'Make a contested skill check, adding bonuses from triggers as normal. This can be used to reveal characters within RANGE 5. Once a HIDDEN character has been found, they immediately lose HIDDEN.'),
+            ...(showAHIS ? [this._simpleItem('Interact', 'mdi mdi-gesture-tap',       { name: 'Interact', activation: 'Protocol/Quick' }, 'Manipulate an object in some way, such as pushing a button, knocking it over, or ripping out wires. You may only Interact 1/turn. If no hostile characters are adjacent to the object, you automatically succeed. Otherwise, make a contested skill check.')] : []),
+            this._simpleItem('Prepare',  'mdi mdi-lightbulb-outline',  { name: 'Prepare',  activation: 'Quick'          }, 'Prepare any other Quick Action and specify a valid trigger in the form "When X then Y". Until the start of your next turn, when it is triggered, you can take this action as a Reaction. While holding a Prepared Action, you may not move or perform any other actions or Reactions.'),
+            { label: 'Reload', icon: 'mdi mdi-magazine-rifle', onClick: () => reloadOneWeapon(token), broadcastFn: (t) => reloadOneWeapon(t), onRightClick: actionPopup({ name: 'Reload', activation: 'Quick', detail: 'Reload one Loading weapon.' }) },
+        ];
+        const basicFull = () => [
+            this._simpleItem('Disengage', 'mdi mdi-run-fast', { name: 'Disengage', activation: 'Full' }, 'Until the end of your current turn, you ignore engagement and your movement does not provoke reactions.'),
+            this._simpleItem('Mount',     'mdi mdi-location-enter',    { name: 'Mount',     activation: 'Full' }, 'You can MOUNT as a full action. You must be adjacent your mech to MOUNT.\nAdditionally, you can also MOUNT willing allied mechs or vehicles. When you do so, move into the same space and then move with them.'),
+            this._simpleItem('Jockey',    'mdi mdi-hook',     { name: 'Jockey',    activation: 'Full' }, 'To JOCKEY, you must be adjacent to a mech. As a full action, make a contested skill check using GRIT. The mech contests with HULL. On a success, climb onto the mech, sharing its space.\nChoose one: DISTRACT (mech is IMPAIRED and SLOWED), SHRED (deal 2 heat), or DAMAGE (deal 4 kinetic damage).'),
+        ];
+        return {
+            label: 'Actions',
+            colLabel: 'Actions',
+            icon: 'mdi mdi-hexagon-outline',
+            getItems: () => [
+                {
+                    label: 'Basic',
+                    icon: 'mdi mdi-hexagon-outline',
+                    childColLabel: 'Quick',
+                    getChildren: () => [
+                        ...basicQuick(),
+                        { isSectionLabel: true, label: 'Full' },
+                        ...basicFull(),
+                    ],
+                },
+                { label: 'Attacks', childColLabel: 'Attacks', icon: 'systems/lancer/assets/icons/role_striker.svg', getChildren: () => this._catAttacks().getItems() },
+                { label: 'Quick Actions', childColLabel: 'Quick Actions', icon: getActivationIcon('Quick'), getChildren: () => this._getActionsByActivation(actor, 'Quick', 'Actions') },
+                this._lockCat({ label: 'Full Actions',  childColLabel: 'Full Actions',  icon: getActivationIcon('Full'), getChildren: () => this._getActionsByActivation(actor, 'Full',  'Actions') }, 'full'),
+                this._lockCat({ label: 'Reaction',      childColLabel: 'Reaction',      icon: getActivationIcon('Reaction'), getChildren: () => this._catReactions().getItems() }, 'reaction'),
+                this._lockCat({ label: 'Protocol',      childColLabel: 'Protocol',      icon: getActivationIcon('Protocol'), getChildren: () => this._catProtocols().getItems() }, 'protocol'),
+                this._lockCat({ label: 'Free Actions',  childColLabel: 'Free Actions',  icon: getActivationIcon('Free'), getChildren: () => this._catFreeActions().getItems() }, 'free'),
+            ],
+        };
+    }
+
+    _catDeployables()
+    {
+        const actor = this._actor;
+        const token = this._token;
+        return {
+            label: 'Deployables',
+            colLabel: 'Tools',
+            icon: 'systems/lancer/assets/icons/deployable.svg',
+            getItems: () =>
+            {
+                const deployableRows = this._deployableRows(actor);
+                return [
+                    { label: 'Deploy Item', icon: 'systems/lancer/assets/icons/deployable.svg', onClick: () => openDeployableMenu(actor) },
+                    { label: 'Recall Item', icon: 'modules/lancer-automations/icons/up-card.svg',     onClick: () => recallDeployable(token) },
+                    {
+                        label: 'Link/Unlink Actor',
+                        icon: 'modules/lancer-automations/icons/linked-rings.svg',
+                        onClick: () => promptLinkOrUnlinkActor(token),
+                    },
+                    ...(deployableRows.length ? [{ isSectionLabel: true, label: 'Deployables' }, ...deployableRows] : []),
+                ];
+            },
+        };
+    }
+
+    // Limited system whose point is its deployable: hidden from Systems (shown as a Deployable instead), uses badge stays on the deployable row.
+    _deployBodyHtml(/** @type {any} */ item, /** @type {string} */ lid, /** @type {any} */ actor, /** @type {any} */ dep)
+    {
+        const extra = item
+            ? [...(item.getFlag?.('lancer-automations', 'extraDeployables') ?? []), ...(item.getFlag?.('lancer-automations', 'extraDeployableActors') ?? [])]
+            : [];
+        const isExtra = !item || extra.includes(lid);
+        return laRenderDeployables([dep], { label: isExtra ? 'EXTRA DEPLOYABLE' : 'DEPLOYABLE', metas: [resolveDeployRangeCount(item, lid, actor)] });
+    }
+
+    _deployableRows(/** @type {any} */ actor)
+    {
+        // Mechs: equipped items only (systems + frame + weapons). NPCs: all actor.items.
+        // Loadout entries can be raw ID strings or {id,status,value} objects; handle both.
+        let equippedItems;
+        if (actor.type === 'mech')
+        {
+            const loadout = actor.system?.loadout ?? {};
+            const getId = (/** @type {any} */ s) => (typeof s === 'string' ? s : s?.id) ?? null;
+            const equippedIds = new Set([
+                ...(loadout.systems ?? []).map(getId),
+                getId(loadout.frame),
+                ...(loadout.weapon_mounts ?? []).flatMap((/** @type {any} */ m) =>
+                    (m.slots ?? []).map((/** @type {any} */ sl) => getId(sl.weapon))
+                ),
+            ].filter(Boolean));
+            equippedItems = [...actor.items].filter((/** @type {any} */ i) => equippedIds.has(i.id));
+        }
+        else
+            equippedItems = [...actor.items];
+        const deployableRows = [];
+        for (const item of equippedItems)
+        {
+            const lids = getItemDeployables(item, actor);
+            for (const lid of lids)
+            {
+                const depInfo = getDeployableInfoSync(lid, actor);
+                const label = stripDeployOwner(depInfo?.name ?? lid);
+                const icon  = getDeployableIcon(depInfo);
+                deployableRows.push(this._itemRow(item, {
+                    label,
+                    icon,
+                    category: 'Deployables',
+                    hoverExtra: { deployLid: lid },
+                    onClick: () => deployDeployable(actor, lid, item, true),
+                    onRightClick: async (/** @type {any} */ row) =>
+                    {
+                        let dep = null;
+                        if (!dep)
+                        {
+                            const resolved = await resolveDeployable(lid, actor);
+                            dep = resolved.deployable;
+                        }
+                        if (!dep)
+                            return;
+                        const srcType = item.system?.type ?? '';
+                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-deploy-popup', dataKey: 'deploy-name', dataValue: dep.name, title: stripDeployOwner(dep.name), subtitle: `Deployable · ${item.name}${srcType ? ` (${srcType})` : ''}`, bodyHtml: this._deployBodyHtml(item, lid, actor, dep), theme: 'deployable', item, skipExtras: true, row });
+                    },
+                }));
+            }
+        }
+        for (const lid of getActorDeployables(actor))
+        {
+            const depInfo = getDeployableInfoSync(lid, actor);
+            const name = stripDeployOwner(depInfo?.name ?? lid);
+            const label = `<span style="color:#e8a030;font-size:0.7em;vertical-align:middle;">●</span> ${name}`;
+            const icon  = getDeployableIcon(depInfo);
+            deployableRows.push({
+                label,
+                icon,
+                hoverData: { actor, item: null, action: null, category: 'Deployables', deployLid: lid },
+                onClick: () => deployDeployable(actor, lid, null, false),
+                onRightClick: async (/** @type {any} */ row) =>
+                {
+                    const resolved = await resolveDeployable(lid, actor);
+                    const dep = resolved.deployable;
+                    if (!dep)
+                        return;
+                    this._showItemPopup({ cssClass: 'la-hud-popup la-hud-deploy-popup', dataKey: 'deploy-name', dataValue: dep.name, title: stripDeployOwner(dep.name), subtitle: 'Extra Deployable', bodyHtml: this._deployBodyHtml(null, lid, actor, dep), theme: 'deployable', item: null, skipExtras: true, row });
+                },
+            });
+        }
+
+        return deployableRows;
+    }
+
+    _catAttacks()
+    {
+        const actor = this._actor;
+        const token = this._token;
+        const actionPopup = action => this._actionPopup(action);
+        return {
+            label: 'Attacks',
+            colLabel: 'Attacks',
+            getItems: () => this._enrichHoverData([
+                ...(actor.type === 'mech' || actor.type === 'npc' ? [
+                    this._lockable({ label: 'Skirmish',          icon: 'mdi mdi-hexagon-slice-3', onClick: () => executeSkirmish(actor),    broadcastFn: (t, a) => executeSkirmish(a),    onRightClick: actionPopup({ name: 'Skirmish',          activation: 'Quick', detail: 'When you SKIRMISH, you attack with a single weapon MOUNT. \r \n To SKIRMISH, choose a mount and a valid target within RANGE (or THREAT), then make an attack with the primary weapon on that mount. \r &bull; You may also attack with an AUXILIARY weapon on the same mount. That weapon does not deal bonus damage. \r &bull; SUPERHEAVY weapons are too cumbersome to use in a SKIRMISH, and can only be fired as part of a BARRAGE.' }) }, 'Skirmish', 'Quick'),
+                    this._lockable({ label: 'Barrage',           icon: 'mdi mdi-hexagon-slice-6', onClick: () => executeBarrage(actor),     broadcastFn: (t, a) => executeBarrage(a),     onRightClick: actionPopup({ name: 'Barrage',           activation: 'Full',  detail: 'When you BARRAGE, you attack with two weapon MOUNTS, or with one SUPERHEAVY weapon. \r \n To BARRAGE, choose your mounts (or one SUPERHEAVY) and either one target or different targets within range, then make an attack with the primary weapon on each mount. \r &bull; You may also attack with an AUXILIARY weapon on each mount that was fired, so long as it has not yet been fired this action. These AUXILIARY weapons do not deal bonus damage. \r &bull; SUPERHEAVY weapons can only be fired as part of a BARRAGE.' }) }, 'Barrage', 'Full'),
+                    this._simpleItem('Ram',     'mdi mdi-hexagon-slice-3', { name: 'Ram',     activation: 'Quick' }, 'When you RAM, you make a melee attack with the aim of knocking a target down or back. \r \n To RAM, make a melee attack against an adjacent character the same SIZE or smaller than you. On a success, your target is knocked PRONE and you may also choose to knock them back by one space, directly away from you.'),
+                    this._simpleItem('Grapple', 'mdi mdi-hexagon-slice-3', { name: 'Grapple', activation: 'Quick' }, 'When you GRAPPLE, you grab hold of a target to overpower them. \r \n To GRAPPLE, choose an adjacent character and make a melee attack. On a hit: \r &bull; both characters become ENGAGED; \r &bull; neither can BOOST or take reactions while grappled; \r &bull; the smaller becomes IMMOBILIZED and is dragged when the larger moves. If same SIZE, contested HULL check at start of turn decides who is larger. \r \n A GRAPPLE ends when adjacency breaks, the attacker ends it as a free action, or the defender wins a contested HULL check as a quick action.'),
+                    this._lockable({ label: 'Improvised Attack', icon: 'mdi mdi-hexagon-slice-6', onClick: () => executeBasicAttack(actor), broadcastFn: (t, a) => executeBasicAttack(a), onRightClick: actionPopup({ name: 'Improvised Attack', activation: 'Full',  detail: 'When you make an IMPROVISED ATTACK, you attack with a rifle butt, fist, or another improvised melee weapon. You can use anything from the butt of a weapon to a slab of concrete or a length of hull plating &mdash; the flavor of the attack is up to you! \r \n To make an IMPROVISED ATTACK, make a melee attack against an adjacent target. On a success, they take 1d6 kinetic damage.' }) }, 'Improvised Attack', 'Full'),
+                ] : []),
+                ...(actor.type === 'pilot' ? [
+                    this._lockable({ label: 'Fight', icon: 'modules/lancer-automations/icons/crossed-slashes.svg', onClick: () => executeFight(actor), broadcastFn: (t, a) => executeFight(a), onRightClick: actionPopup({ name: 'Fight', activation: 'Full', detail: 'Make a melee or ranged attack with a pilot weapon.' }) }, 'Fight', 'Full'),
+                ] : []),
+                { isSectionLabel: true, label: 'Tools' },
+                { label: 'Basic Attack',  icon: 'mdi mdi-target', onClick: () => executeBasicAttack(actor), broadcastFn: (bcToken, bcActor) => executeBasicAttack(bcActor), onRightClick: actionPopup({ name: 'Basic Attack', activation: 'Tool', detail: 'Tool: roll a bare attack against one target.' }) },
+                { label: 'Damage',        icon: 'mdi mdi-flare',       onClick: () => executeDamageRoll(token, [...(game.user?.targets ?? [])], '0', 'Kinetic'), onRightClick: actionPopup({ name: 'Damage', activation: 'Tool', detail: 'Tool: apply arbitrary damage to your target(s).' }) },
+                { label: 'Throw Weapon',  icon: 'systems/lancer/assets/icons/thrown.svg',      onClick: () => openThrowMenu(actor),    broadcastFn: (bcToken, bcActor) => openThrowMenu(bcActor), onRightClick: actionPopup({ name: 'Throw Weapon', activation: 'Tool', detail: 'Throw an equipped THROWN weapon, dropping it as a token on the map. Retrieve it with Pickup Weapon.' }) },
+                { label: 'Pickup Weapon', icon: 'modules/lancer-automations/icons/pickup.svg', onClick: () => pickupWeaponToken(token), broadcastFn: (bcToken) => pickupWeaponToken(bcToken), keepOpen: true, onRightClick: actionPopup({ name: 'Pickup Weapon', activation: 'Tool', detail: 'Pick up a weapon you previously threw, returning it to your loadout.' }) },
+            ], { actor, category: 'Attacks' }),
+        };
+    }
+
+    _catWeapons()
+    {
+        const actor = this._actor;
+        const allMounts = () =>
+        {
+            const mounts = actor?.system?.loadout?.weapon_mounts ?? [];
+            const hasWeapon = m => !m.bracing && (m.slots ?? []).some(s => s.weapon?.id);
+            return [...mounts].sort((a, b) => (hasWeapon(a) ? 0 : 1) - (hasWeapon(b) ? 0 : 1));
+        };
+        const firstMountName = () =>
+        {
+            const first = allMounts()[0];
+            return first ? `${first.type} Mount` : 'Mounts';
+        };
+        return {
+            label: 'Weapons',
+            colLabel: actor?.type === 'npc' || actor?.type === 'pilot' ? 'Weapons' : firstMountName(),
+            icon: 'systems/lancer/assets/icons/weapon.svg',
+            getItems: () =>
+            {
+                if (actor?.type === 'npc')
+                    return actor.items.filter(i => i.type === 'npc_feature' && i.system.type === 'Weapon').map(w => this._weaponItem(w, null, null));
+                if (actor?.type === 'pilot')
+                    return actor.items.filter(i => i.type === 'pilot_weapon').map(w => this._weaponItem(w, null, null));
+                const MUTED = 'color:#888;font-style:italic;';
+                const result = [];
+                allMounts().forEach((mount, idx) =>
+                {
+                    if (idx > 0)
+                        result.push({ label: `${mount.type} Mount` || `Mount ${idx + 1}`, isSectionLabel: true });
+                    if (mount.bracing)
+                    {
+                        result.push({ label: `<span style="${MUTED}">Locked</span>` });
+                        return;
+                    }
+                    // A Flex mount with a Main (or larger) weapon has no remaining capacity
+                    const flexBlocked = mount.type === 'Flex' && (mount.slots ?? []).some(s =>
+                    {
+                        if (!s.weapon?.id)
+                            return false;
+                        const w = actor.items.get(s.weapon.id);
+                        return w && (w.system?.size ?? '').toLowerCase() !== 'aux';
+                    });
+                    (mount.slots ?? []).forEach(slot =>
+                    {
+                        if (slot.weapon?.id)
+                        {
+                            const weapon = actor.items.get(slot.weapon.id);
+                            const mod    = slot.mod?.id ? actor.items.get(slot.mod.id) : null;
+                            if (weapon)
+                                result.push(this._weaponItem(weapon, mod, mount));
+                        }
+                        else if (!flexBlocked)
+                            result.push({ label: `<span style="${MUTED}">Empty</span>` });
+                    });
+                });
+                return result;
+            },
+        };
+    }
+
+    _catTech()
+    {
+        const actor = this._actor;
+        const actionPopup = action => this._actionPopup(action);
+        if (actor.type === 'deployable' || actor.type === 'pilot')
+        {
+            return {
+                label: 'Tech',
+                colLabel: 'Tech',
+                icon: 'systems/lancer/assets/icons/tech_quick.svg',
+                getItems: () => [
+                    ...this._catInvades().getItems(),
+                    ...this._getActionsByActivation(actor, 'Quick Tech', 'Tech'),
+                    ...this._getActionsByActivation(actor, 'Full Tech', 'Tech'),
+                ],
+            };
+        }
+        return {
+            label: 'Tech',
+            colLabel: 'Tech',
+            icon: 'systems/lancer/assets/icons/tech_quick.svg',
+            getItems: () => [
+                {
+                    label: 'Basic',
+                    icon: 'mdi mdi-hexagon-outline',
+                    childColLabel: 'Quick Tech',
+                    getChildren: () => this._enrichHoverData([
+                        this._lockable({ label: 'Basic Tech', icon: ICON_TECH_QUICK, onClick: () => executeTechAttack(actor, { title: 'Basic Tech', grit: actor.system?.tech_attack, attack_type: 'Tech' }), onRightClick: actionPopup({ name: 'Basic Tech', activation: 'Tool', tech_attack: true, detail: 'Tool: roll a bare TECH ATTACK against one target\'s E-DEFENSE. No effect applied.' }) }, 'Basic Tech', 'Quick Tech'),
+                        this._lockable({ label: 'Scan',       icon: 'modules/lancer-automations/icons/radar-sweep.svg', onClick: () => executeSimpleActivation(actor, { title: 'Scan',     action: { name: 'Scan',     activation: 'Quick' }, detail: 'Choose a character within SENSORS and line of sight. Make a tech attack against them. On a success, you discover all of their statistics (HP, Heat, Armor, Speed, Evasion, E-Defense, and all talent ranks, system and weapon loadouts, traits, and core systems).' }), onRightClick: actionPopup({ name: 'Scan',     activation: 'Quick Tech', tech_attack: true, detail: 'Choose a character within SENSORS and line of sight. Make a tech attack against them. On a success, you discover all of their statistics (HP, Heat, Armor, Speed, Evasion, E-Defense, and all talent ranks, system and weapon loadouts, traits, and core systems).' }) }, 'Scan', 'Quick Tech'),
+                        this._lockable({ label: 'Lock On',    icon: 'systems/lancer/assets/icons/white/condition_lockon.svg', onClick: () => executeSimpleActivation(actor, { title: 'Lock On',  action: { name: 'Lock On',  activation: 'Quick' }, detail: 'Choose a character within SENSORS and line of sight. They gain the LOCK ON condition. Any character making an attack against a character with LOCK ON may choose to gain +1 Accuracy on that attack and then clear the LOCK ON condition after that attack resolves.' }),  onRightClick: actionPopup({ name: 'Lock On',  activation: 'Quick Tech', tech_attack: true, detail: 'Choose a character within SENSORS and line of sight. They gain the LOCK ON condition. Any character making an attack against a character with LOCK ON may choose to gain +1 Accuracy on that attack and then clear the LOCK ON condition after that attack resolves.' }) }, 'Lock On', 'Quick Tech'),
+                        this._lockable({ label: 'Bolster',    icon: 'modules/lancer-automations/icons/upgrade.svg', onClick: () => executeSimpleActivation(actor, { title: 'Bolster',  action: { name: 'Bolster',  activation: 'Quick' }, detail: 'Choose a character within SENSORS. They receive +2 Accuracy on the next skill check or save they make between now and the end of their next turn. Characters can only benefit from one BOLSTER at a time.' }),                                                              onRightClick: actionPopup({ name: 'Bolster',  activation: 'Quick Tech', tech_attack: true, detail: 'Choose a character within SENSORS. They receive +2 Accuracy on the next skill check or save they make between now and the end of their next turn. Characters can only benefit from one BOLSTER at a time.' }) }, 'Bolster', 'Quick Tech'),
+                        this._lockable({ label: 'Invade',     icon: 'modules/lancer-automations/icons/cpu-shot.svg', onClick: () => executeInvade(actor),                                                                                                                                                                                                                                                                                                                                                                       onRightClick: actionPopup({ name: 'Invade',   activation: 'Full Tech',  tech_attack: true, detail: 'Make a tech attack against a target. On success, deal 2 heat and choose one of the available Invade options.' }) }, 'Invade', 'Quick Tech'),
+                    ], { actor, category: 'Tech' }),
+                },
+                { label: 'Invades',    childColLabel: 'Invades',    icon: getActivationIcon('Invade'), getChildren: () => this._catInvades().getItems() },
+                { label: 'Quick Tech', childColLabel: 'Quick Tech', icon: getActivationIcon('Quick Tech'), getChildren: () => this._getActionsByActivation(actor, 'Quick Tech', 'Tech') },
+                { label: 'Full Tech',  childColLabel: 'Full Tech',  icon: getActivationIcon('Full Tech'), getChildren: () => this._getActionsByActivation(actor, 'Full Tech', 'Tech') },
+            ],
+        };
+    }
+
+    _catInvades()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Invades',
+            colLabel: 'Invades',
+            getItems: () => this._getInvadeOptions(actor).map(opt => this._lockable({
+                label: opt.destroyed ? this._destroyedLabel(opt.name) : opt.name,
+                icon: 'modules/lancer-automations/icons/cpu-shot.svg',
+                badge: opt.badge ?? null,
+                badgeColor: opt.badgeColor ?? null,
+                ...this._statusColors(opt),
+                hoverData: { actor, item: opt.item ?? null, action: opt.action ?? { name: opt.name, activation: 'Invade' }, category: 'Tech' },
+                onClick: () => executeInvade(actor, opt),
+                onRightClick: (row) => this._buildInvadePopup(opt, row),
+            }, opt.name, 'Quick Tech')),
+        };
+    }
+
+    _catQuickActions()
+    {
+        const actor = this._actor;
+        const ap = a => this._actionPopup(a);
+        const showAHIS = game.settings.get('lancer-automations', 'tah.showAidHandleInteractSqueeze') ?? false;
+        const basicChildren = () =>
+        {
+            const items = [
+                this._simpleItem('Boost',     'modules/lancer-automations/icons/speedometer.svg',  { name: 'Boost',     activation: 'Quick'          }, 'When you BOOST, you move at least 1 space, up to your SPEED. This allows you to make an extra movement, on top of your standard move. Certain talents and systems can only be used when you BOOST, not when you make a standard move.'),
+                ...(showAHIS && actor.type !== 'npc' ? [this._simpleItem('Aid', 'modules/lancer-automations/icons/medical-pack.svg', { name: 'Aid', activation: 'Quick' }, 'You assist a mech so it can Stabilize more easily. Choose an adjacent character. On their next turn, they may Stabilize as a quick action. They can choose to take this action even if they normally would not be able to take actions (for example, by being affected by the Stunned condition).')] : []),
+                this._simpleItem('Hide',      'systems/lancer/assets/icons/status_hidden.svg',     { name: 'Hide',      activation: 'Quick'          }, 'Obscure the position of your mech, becoming HIDDEN and unable to be identified, precisely located, or be targeted directly by attacks or hostile actions.'),
+                this._simpleItem('Search',    'modules/lancer-automations/icons/search.svg',       { name: 'Search',    activation: 'Quick'          }, 'Choose a character within your SENSORS that you suspect is HIDDEN and make a contested SYSTEMS check against their AGILITY. Once a HIDDEN character has been found, they immediately lose HIDDEN.'),
+                this._blockIf(this._simpleItem('Shut Down', 'systems/lancer/assets/icons/status_shutdown.svg',   { name: 'Shut Down', activation: 'Quick'          }, 'When you SHUT DOWN, your mech powers off to end tech effects and cool down. \r \n As a quick action, your mech takes the SHUT DOWN status: \r &bull; all heat is cleared, as is EXPOSED; \r &bull; cascading NHPs return to normal; \r &bull; tech-caused statuses (LOCK ON, etc.) immediately end; \r &bull; the mech gains IMMUNITY to all tech actions and attacks; \r &bull; the mech is STUNNED indefinitely. \r \n The only way to remove SHUT DOWN is to BOOT UP.'), actor.statuses?.has('shutdown'), 'Already SHUT DOWN.'),
+                ...(showAHIS ? [this._simpleItem('Handle',    'modules/lancer-automations/icons/hand-truck.svg',   { name: 'Handle',    activation: 'Protocol/Quick' }, 'As a protocol or quick action, start to handle an adjacent object or willing character by lifting or dragging them. Mechs can drag characters or objects up to twice their SIZE but are SLOWED while doing so. They can also lift characters or objects of equal or lesser SIZE overhead but are IMMOBILIZED while doing so.')] : []),
+                ...(showAHIS ? [this._simpleItem('Interact',  'mdi mdi-gesture-tap',        { name: 'Interact',  activation: 'Protocol/Quick' }, 'Manipulate an object in some way, such as pushing a button, knocking it over, or ripping out wires. You may only Interact 1/turn. If no hostile characters are adjacent to the object, you automatically succeed. Otherwise, make a contested skill check.')] : []),
+                this._simpleItem('Prepare',   'mdi mdi-lightbulb-outline',   { name: 'Prepare',   activation: 'Quick'          }, 'Prepare any other Quick Action and specify a valid trigger in the form "When X then Y". Until the start of your next turn, when it is triggered, you can take this action as a Reaction. While holding a Prepared Action, you may not move or perform any other actions or Reactions.'),
+                ...(actor.type !== 'npc' ? [this._blockIf(this._simpleItem('Eject',     'mdi mdi-parachute',    { name: 'Eject',     activation: 'Quick'          }, 'EJECT as a quick action, flying 6 spaces in the direction of your choice; however, this is a single-use system for emergency use only – it leaves your mech IMPAIRED. Your mech remains IMPAIRED and you cannot EJECT again until your next FULL REPAIR.'), this._pilotHasTokenOnScene(), 'The pilot already has a token on this scene.')] : []),
+                this._blockIf(this._lockable({ label: 'Standing Up', icon: 'mdi mdi-eject', onClick: () => executeStandingUp(this._token), broadcastFn: (_t, a) => executeStandingUp(a.getActiveTokens()?.[0]), onRightClick: ap({ name: 'Standing Up', activation: 'Movement', detail: 'Stand up instead of taking your standard move. Removes Prone and grants +Speed movement.' }) }, 'Standing Up', 'Quick'), !actor.statuses?.has('prone'), 'Standing Up requires the PRONE status.'),
+            ];
+            if (actor.type === 'mech')
+                items.push({ label: 'Self Destruct', icon: 'mdi mdi-bomb', onClick: () => /** @type {any} */ (executeReactorMeltdown(actor)), broadcastFn: (_t, a) => executeReactorMeltdown(a), onRightClick: ap({ name: 'Self Destruct', activation: 'Quick', detail: 'When you SELF DESTRUCT, you overload your reactor in a final, catastrophic play. \r \n As a quick action, initiate a reactor meltdown. The mech explodes at the end of your next turn, or at the end of one of your turns within the following two rounds (your choice): \r &bull; the mech is annihilated, killing anyone inside; \r &bull; a BURST 2 explosion deals 4d6 explosive damage; \r &bull; characters caught who succeed on an AGILITY save take half damage.' }) });
+            return this._enrichHoverData(items, { actor, category: 'Actions' });
+        };
+        return {
+            label: 'Quick Actions',
+            colLabel: 'Quick Actions',
+            getItems: () => [{ label: 'Basic', childColLabel: 'Basic', getChildren: basicChildren }, ...this._getActionsByActivation(actor, 'Quick', 'Actions')],
+        };
+    }
+
+    _catFullAction()
+    {
+        const actor = this._actor;
+        const ap = a => this._actionPopup(a);
+        const basicChildren = () =>
+        {
+            const items = [
+                this._blockIf(this._simpleItem('Boot Up',   'modules/lancer-automations/icons/boot.svg',      { name: 'Boot Up',   activation: 'Full' }, 'You can BOOT UP a mech that you are piloting as a full action, clearing SHUT DOWN and restoring your mech to a powered state.'), !actor.statuses?.has('shutdown'), 'Boot Up requires the SHUT DOWN status.'),
+                this._simpleItem('Disengage', 'mdi mdi-run-fast', { name: 'Disengage', activation: 'Full' }, 'Until the end of your current turn, you ignore engagement and your movement does not provoke reactions.'),
+                ...(actor.type !== 'npc' ? [this._blockIf(this._simpleItem('Dismount',  'mdi mdi-location-exit',  { name: 'Dismount',  activation: 'Full' }, 'When you DISMOUNT, you climb off of a mech. You can DISMOUNT as a full action. When you DISMOUNT, you are placed in an adjacent space – if there are no free spaces, you cannot DISMOUNT. Additionally, you can also DISMOUNT willing allied mechs or vehicles you have MOUNTED.'), this._pilotHasTokenOnScene(), 'The pilot already has a token on this scene.')] : []),
+            ];
+            if (actor.type === 'mech' || actor.type === 'npc')
+                items.push({ label: 'Stabilize', icon: 'systems/lancer/assets/icons/repair.svg', onClick: () => /** @type {any} */ (actor.beginStabilizeFlow()), broadcastFn: (_t, a) => /** @type {any} */ (a).beginStabilizeFlow(), onRightClick: ap({ name: 'Stabilize', activation: 'Full', detail: 'To STABILIZE, choose ONE of these two items: \r &bull; Cool your mech (clearing all heat and ending the EXPOSED status); \r &bull; Spend ONE Repair to heal your mech to max HP. \r \n Additionally, choose ONE the following four items: \r &bull; Reload all LOADING weapons on your mech; \r &bull; Clear any burn on your mech; \r &bull; Clear ONE condition from yourself NOT caused by your own systems/talents (etc); \r &bull; Clear ONE condition from an ADJACENT ally NOT caused by their own systems/talents (etc).' }) });
+            return this._enrichHoverData(items, { actor, category: 'Actions' });
+        };
+        return {
+            label: 'Full Action',
+            colLabel: 'Full Action',
+            getItems: () => [{ label: 'Basic', childColLabel: 'Basic', getChildren: basicChildren }, ...this._getActionsByActivation(actor, 'Full', 'Actions')],
+        };
+    }
+
+    _catReactions()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Reactions',
+            colLabel: 'Reactions',
+            getItems: () =>
+            {
+                const reactionAvail = hasReactionAvailable(actor);
+                const noBrace     = actor.type === 'deployable' || actor.type === 'pilot' || actor.type === 'npc';
+                const noOverwatch = actor.type === 'deployable';
+                const items = [
+                    ...(noBrace ? [] : [
+                        this._simpleItem('Brace',     'modules/lancer-automations/icons/brace.svg', { name: 'Brace',     activation: 'Reaction' }, 'You count as having RESISTANCE to all damage, burn, and heat from the triggering attack, and until the end of your next turn, all other attacks against you are made at +1 difficulty. Due to the stress of bracing, you cannot take reactions until the end of your next turn and on that turn, you can only take one quick action – you cannot OVERCHARGE, move normally, take full actions, or take free actions.'),
+                    ]),
+                    ...(noOverwatch ? [] : [
+                        this._simpleItem('Overwatch', 'systems/lancer/assets/icons/reaction.svg',   { name: 'Overwatch', activation: 'Reaction', trigger: 'A hostile character starts any movement (including BOOST and other actions) inside one of your weapons\' THREAT.' }, 'Trigger OVERWATCH, immediately using that weapon to SKIRMISH against that character as a reaction, before they move.'),
+                    ]),
+                    ...this._getActionsByActivation(actor, 'Reaction', 'Actions'),
+                ];
+                if (!reactionAvail)
+                {
+                    items.forEach(item =>
+                    {
+                        if (item.statusKind !== 'destroyed')
+                            item.statusKind = 'unavailable';
+                    });
+                }
+                return this._enrichHoverData(items, { actor, category: 'Actions' });
+            },
+        };
+    }
+
+    _catProtocols()
+    {
+        const actor = this._actor;
+        const ap = a => this._actionPopup(a);
+        return {
+            label: 'Protocols',
+            colLabel: 'Protocols',
+            getItems: () => this._enrichHoverData([
+                ...this._getActionsByActivation(actor, 'Protocol', 'Actions'),
+            ], { actor, category: 'Actions' }),
+        };
+    }
+
+    _catFreeActions()
+    {
+        const actor = this._actor;
+        const showAHIS = game.settings.get('lancer-automations', 'tah.showAidHandleInteractSqueeze') ?? false;
+        return {
+            label: 'Free Actions',
+            colLabel: 'Free Actions',
+            getItems: () => this._enrichHoverData([
+                ...(showAHIS && actor.type !== 'deployable' ? [this._simpleItem('Squeeze', 'modules/lancer-automations/icons/contract.svg', { name: 'Squeeze', activation: 'Free' }, 'A character may squeeze as a free action, treating themselves as one Size smaller for the purposes of movement. While squeezing, the character is additionally treated as Prone. The character may stop squeezing as a free action while in a space able to accommodate their normal Size.')] : []),
+                ...this._getActionsByActivation(actor, 'Free', 'Actions'),
+            ], { actor, category: 'Actions' }),
+        };
+    }
+
+    _catSkills()
+    {
+        const actor = this._actor;
+        const isNpc = actor.type === 'npc';
+
+        const statDefs = [
+            { key: 'hull', label: 'Hull' },
+            { key: 'agi',  label: 'Agility' },
+            { key: 'sys',  label: 'Systems' },
+            { key: 'eng',  label: 'Engineering' },
+            { key: 'grit', label: 'Grit' },
+            { key: 'tier', label: 'Tier' },
+        ];
+        const statsItems = statDefs
+            .filter(stat => actor.system[stat.key] !== undefined)
+            .map(stat => ({
+                label: stat.label,
+                icon: `modules/lancer-automations/icons/stats/${stat.key}.svg`,
+                badge: (actor.system[stat.key] >= 0 ? '+' : '') + actor.system[stat.key],
+                badgeColor: '#777',
+                hoverData: { actor, item: null, action: { name: stat.label }, category: 'Skills' },
+                onClick:     () => /** @type {any} */ (actor).beginStatFlow(`system.${stat.key}`),
+                broadcastFn: (_token, targetActor) => /** @type {any} */ (targetActor)?.beginStatFlow?.(`system.${stat.key}`),
+                onRightClick: this._actionPopup({ name: stat.label, activation: 'Check', detail: `Roll 1d20 + ${stat.label.toUpperCase()} (${(actor.system[stat.key] >= 0 ? '+' : '') + actor.system[stat.key]}).` }),
+            }));
+        statsItems.push(/** @type {any} */ ({
+            label: 'Contest',
+            icon: 'mdi mdi-ab-testing',
+            hoverData: { actor, item: null, action: { name: 'Contest' }, category: 'Skills' },
+            onClick: () => openHaseContestCard({ tokenA: this._token }),
+            onRightClick: this._actionPopup({ name: 'Contest', activation: 'Tool', detail: 'Contested check between two tokens, each rolling its own stat. Higher total wins.' }),
+        }));
+        statsItems.push(/** @type {any} */ ({
+            label: 'Force Check',
+            icon: 'mdi mdi-alert-circle-check-outline',
+            hoverData: { actor, item: null, action: { name: 'Force Check' }, category: 'Skills' },
+            onClick: () => openForceCheckCard({ tokenA: this._token, saveVs: this._token }),
+            onRightClick: this._actionPopup({ name: 'Force Check', activation: 'Tool', detail: 'Send a HASE check to picked tokens, rolled by their owners. With a save target it becomes a save against it.' }),
+        }));
+
+        const skillItems = [];
+        if (!isNpc)
+        {
+            const pilot = actor.system.pilot?.value ?? actor;
+            const skills = pilot.items?.filter(i => i.type === 'skill') ?? [];
+            for (const skill of skills)
+            {
+                const bonus = (skill.system.curr_rank ?? 0) * 2;
+                const skillName = skill.name;
+                skillItems.push({
+                    label: skill.name,
+                    badge: `+${bonus}`,
+                    badgeColor: '#777',
+                    icon: skill.img ?? null,
+                    hoverData: { actor, item: skill, action: { name: skill.name }, category: 'Skills' },
+                    onClick:     () => skill.beginSkillFlow?.(),
+                    onRightClick: (row) => this._showItemPopup({
+                        cssClass: 'la-hud-popup la-hud-skill-popup',
+                        dataKey: 'skill-id',
+                        dataValue: skill.id,
+                        title: skill.name,
+                        subtitle: `Trigger · +${bonus}`,
+                        bodyHtml: (skill.system?.description ? `<div style="margin-bottom:6px;">${laPopupSectionLabel('DESCRIPTION', '#1565c0')}<div style="font-size:0.82em;color:#bbb;line-height:1.4;margin-top:2px;">${laFormatDetailHtml(skill.system.description)}</div></div>` : '')
+                            + (skill.system?.detail ? `<div>${laPopupSectionLabel('DETAIL', '#e65100')}<div style="font-size:0.82em;color:#bbb;line-height:1.4;margin-top:2px;">${laFormatDetailHtml(skill.system.detail)}</div></div>` : ''),
+                        theme: 'system',
+                        item: skill,
+                        row,
+                    }),
+                    broadcastFn: (_t, a) =>
+                    {
+                        const p = /** @type {any} */ (a)?.system?.pilot?.value ?? a;
+                        const matchedSkill = p?.items?.find(skillItem => skillItem.type === 'skill' && skillItem.name === skillName);
+                        return matchedSkill?.beginSkillFlow?.();
+                    },
+                });
+            }
+            // Generic untrained trigger (1d20+0), like alternative sheets' "Other Skill".
+            skillItems.push({
+                label: 'Other Skill',
+                badge: '+0',
+                badgeColor: '#777',
+                icon: 'systems/lancer/assets/icons/white/skill.svg',
+                hoverData: { actor, item: null, action: { name: 'Other Skill' }, category: 'Skills' },
+                onClick:     () => /** @type {any} */ (actor).beginStatFlow?.('system.other_skill', 'SKILL TRIGGER'),
+                onRightClick: (row) => this._showItemPopup({
+                    cssClass: 'la-hud-popup la-hud-skill-popup',
+                    dataKey: 'skill-name',
+                    dataValue: 'Other Skill',
+                    title: 'Other Skill',
+                    subtitle: 'Untrained Trigger · +0',
+                    bodyHtml: '<div style="font-size:0.82em;color:#bbb;line-height:1.4;">Roll a trigger you have no training in: 1d20 + 0. For improvised checks not covered by your pilot skills.</div>',
+                    theme: 'system',
+                    item: null,
+                    row,
+                }),
+                broadcastFn: (_t, a) => /** @type {any} */ (a)?.beginStatFlow?.('system.other_skill', 'SKILL TRIGGER'),
+            });
+        }
+
+        if (isNpc)
+        {
+            return {
+                label: 'Skills',
+                colLabel: 'Skills',
+                icon: 'mdi mdi-tune-vertical',
+                getItems: () => [
+                    ...statsItems,
+                ],
+            };
+        }
+
+        return {
+            label: 'Attributes',
+            colLabel: 'Attributes',
+            icon: 'mdi mdi-chart-bar',
+            getItems: () => [
+                { label: 'Skills',   childColLabel: 'Skills',   icon: 'mdi mdi-tune-vertical', getChildren: () => statsItems },
+                ...(skillItems.length ? [{ label: 'Triggers', childColLabel: 'Triggers', icon: 'modules/lancer-automations/icons/skills.svg', getChildren: () => skillItems }] : []),
+            ],
+        };
+    }
+
+    _catNarrativeUtility(linked)
+    {
+        const actor = this._actor;
+        const items = [
+            { label: 'Glossary', icon: 'systems/lancer/assets/icons/compendium.svg', isGlossaryPanel: true },
+            { label: 'Effect Manager',
+                icon: 'mdi mdi-cogs',
+                onClick: () =>
+                {
+                    const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                    if (api?.executeEffectManager)
+                        api.executeEffectManager();
+                    else
+                        /** @type {any} */ (ui.notifications).error('Lancer Automations API not found or outdated.');
+                },
+                onRightClick: this._actionPopup({ name: 'Effect Manager', activation: 'Tool', detail: 'Apply statuses, custom effects and bonuses to tokens.' }),
+            },
+            { label: 'Vote',
+                icon: 'modules/lancer-automations/icons/vote.svg',
+                onClick: () =>
+                {
+                    const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                    if (api?.openChoiceMenu)
+                        api.openChoiceMenu();
+                    else
+                        /** @type {any} */ (ui.notifications).error('Lancer Automations API not found or outdated.');
+                },
+                onRightClick: this._actionPopup({ name: 'Vote', activation: 'Tool', detail: 'Start a choice or vote card for the players.' }),
+            },
+            { label: 'Contest',
+                icon: 'mdi mdi-ab-testing',
+                onClick: () => openHaseContestCard(),
+                onRightClick: this._actionPopup({ name: 'Contest', activation: 'Tool', detail: 'Contested check between two tokens, each rolling its own stat. Higher total wins.' }),
+            },
+            { label: 'Force Check',
+                icon: 'mdi mdi-alert-circle-check-outline',
+                onClick: () => openForceCheckCard(),
+                onRightClick: this._actionPopup({ name: 'Force Check', activation: 'Tool', detail: 'Send a HASE check to picked tokens, rolled by their owners. With a save target it becomes a save against it.' }),
+            },
+        ];
+        items.push({ label: 'Downtime',
+            icon: 'systems/lancer/assets/icons/white/downtime.svg',
+            onClick: async () =>
+            {
+                const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                await api?.executeDowntime?.();
+            },
+            onRightClick: this._actionPopup({ name: 'Downtime', activation: 'Tool', detail: 'Open the downtime activities dialog, with rolls and journal logging.' }),
+        });
+        if (linked && actor)
+        {
+            items.push({ label: 'Reserve',
+                icon: 'systems/lancer/assets/icons/white/reserve_mech.svg',
+                onClick: () =>
+                {
+                    const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                    api?.openAddReserveDialog?.(actor);
+                },
+                onRightClick: this._actionPopup({ name: 'Reserve', activation: 'Tool', detail: 'Add a reserve to the pilot.' }),
+            });
+        }
+        return {
+            label: 'Utility',
+            colLabel: 'Utility',
+            icon: 'modules/lancer-automations/icons/tinker.svg',
+            getItems: () => items,
+        };
+    }
+
+    _catUtility()
+    {
+        const token = this._token;
+
+        const actor = this._actor;
+        const isMechOrNpc = actor?.type === 'mech' || actor?.type === 'npc';
+
+        const gameplayItems = [
+            { label: 'Full Repair',
+                icon: 'modules/lancer-automations/icons/auto-repair.svg',
+                onClick: async () =>
+                {
+                    const targets = (this._tokens?.length ? this._tokens : [token]).filter(Boolean);
+                    const actors = [...new Set(targets.map(t => t.actor).filter(Boolean))];
+                    if (actors.length <= 1)
+                    {
+                    /** @type {any} */ (actors[0] ?? actor)?.beginFullRepairFlow();
+                        return;
+                    }
+                    const ok = await Dialog.confirm({
+                        title: 'FULL REPAIR',
+                        content: `<p>Fully repair these ${actors.length} units?</p><p style="opacity:0.75;">${actors.map(a => a.name).join(', ')}</p>`,
+                    });
+                    if (!ok)
+                        return;
+                    // fire the flow hooks per actor so Lancer Weapon FX plays per token; skip the per-actor dialog
+                    const step = /** @type {any} */ (game).lancer?.flowSteps?.get('executeFullRepair');
+                    for (const a of actors)
+                    {
+                        if (!step)
+                        {
+                            await /** @type {any} */ (a).loadoutHelper?.fullRepair(); continue;
+                        }
+                        const flow = { state: { name: 'FullRepairFlow', actor: a, item: null, currentStep: 'executeFullRepair', data: { title: '', description: '', tags: [] } } };
+                        Hooks.callAll('lancer.preFlow.FullRepairFlow', flow);
+                        const done = await step(flow.state);
+                        Hooks.callAll('lancer.postFlow.FullRepairFlow', flow, done !== false);
+                    }
+                },
+                onRightClick: this._actionPopup({ name: 'Full Repair', activation: 'Tool', detail: 'Run a Full Repair on the selected unit(s).' }) },
+            { label: 'Link to Token',
+                icon: 'modules/lancer-automations/icons/pin.svg',
+                onClick: async () =>
+                {
+                    const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                    const picked = await api?.chooseToken?.(token, { count: 1, includeSelf: false, title: 'LINK TO TOKEN', description: `Which token should ${token.name} be linked to?`, icon: 'cci cci-deployable' });
+                    if (!picked || !picked.length)
+                        return;
+                    const target = picked[0];
+                    await token.document.setFlag('lancer-automations', 'ownerActorUuid', target.actor.uuid);
+                    await token.document.setFlag('lancer-automations', 'ownerName', target.actor.name ?? '');
+                },
+                onRightClick: this._actionPopup({ name: 'Link to Token', activation: 'Tool', detail: 'Link this token to an owner token (deployable-style ownership).' }) },
+            ...(isMechOrNpc ? [
+                {
+                    label: 'Structure',
+                    icon: 'systems/lancer/assets/icons/macro-icons/condition_shredded.svg',
+                    onClick: async () =>
+                    {
+                        await actor?.update({ 'system.hp.value': 0 });
+                        /** @type {any} */ (actor)?.beginStructureFlow();
+                    },
+                    onRightClick: this._actionPopup({ name: 'Structure', activation: 'Tool', detail: 'Drop HP to 0 and roll a structure check.' }),
+                },
+                {
+                    label: 'Overheat',
+                    icon: 'systems/lancer/assets/icons/macro-icons/damage_heat.svg',
+                    onClick: async () =>
+                    {
+                        const maxHeat = actor?.system?.heat?.max ?? 0;
+                        await actor?.update({ 'system.heat.value': maxHeat });
+                        /** @type {any} */ (actor)?.beginOverheatFlow();
+                    },
+                    onRightClick: this._actionPopup({ name: 'Overheat', activation: 'Tool', detail: 'Fill the heat track and roll an overheat check.' }),
+                },
+                { label: 'Suicide',          icon: 'modules/lancer-automations/icons/suicide.svg',   onClick: () => actor?.update({ 'system.structure.value': 0, 'system.stress.value': 0, 'system.hp.value': 0 }), onRightClick: this._actionPopup({ name: 'Suicide', activation: 'Tool', detail: 'Zero structure, stress and HP.' }) },
+                { label: 'Reactor Explosion', icon: 'modules/lancer-automations/icons/mushroom-cloud.svg', onClick: () => executeReactorExplosion(token), onRightClick: this._actionPopup({ name: 'Reactor Explosion', activation: 'Tool', detail: 'Detonate the reactor: blast damage around the token.' }) },
+            ] : []),
+            ...(token.document.getFlag('lancer-automations', 'isWreck') ? [
+                { label: 'Resurrect', icon: 'modules/lancer-automations/icons/angel-outfit.svg', onClick: () => resurrect(token), onRightClick: this._actionPopup({ name: 'Resurrect', activation: 'Tool', detail: 'Restore this wreck to a live unit.' }) },
+            ] : []),
+            ...(actor?.type === 'npc' ? [
+                { label: 'Recharge', icon: 'modules/lancer-automations/icons/ammo-box.svg', onClick: () => /** @type {any} */ (actor).beginRechargeFlow(), broadcastFn: (_token, targetActor) => /** @type {any} */ (targetActor).beginRechargeFlow(), onRightClick: this._actionPopup({ name: 'Recharge', activation: 'Tool', detail: 'Roll the NPC recharge flow for uncharged systems.' }) },
+                { label: 'Reload Weapon', icon: 'mdi mdi-magazine-rifle',       onClick: () => reloadOneWeapon(token), broadcastFn: (targetToken) => reloadOneWeapon(targetToken), onRightClick: this._actionPopup({ name: 'Reload Weapon', activation: 'Tool', detail: 'Reload one Loading weapon.' }) },
+            ] : []),
+            { label: 'Generate Scan', icon: 'mdi mdi-qrcode-scan', onClick: () => executeGenerateScan(this._tokens?.length ? this._tokens : [token]), onRightClick: this._actionPopup({ name: 'Generate Scan', activation: 'Tool', detail: 'Create the scan journal for the selected token(s).' }) },
+            { label: 'Effect Manager',
+                icon: 'mdi mdi-cogs',
+                onClick: () =>
+                {
+                    const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                    if (api?.executeEffectManager)
+                        api.executeEffectManager();
+                    else
+                        /** @type {any} */ (ui.notifications).error('Lancer Automations API not found or outdated.');
+                },
+                onRightClick: this._actionPopup({ name: 'Effect Manager', activation: 'Tool', detail: 'Apply statuses, custom effects and bonuses to tokens.' }) },
+            { label: 'Reinforcement', icon: 'modules/lancer-automations/icons/rally-the-troops.svg', onClick: () => delayedTokenAppearance(), onRightClick: this._actionPopup({ name: 'Reinforcement', activation: 'Tool', detail: 'Hide selected tokens and reveal them as reinforcements at a target round.' }) },
+            { label: token.document.hidden ? 'Reveal Token' : 'Hide Token', icon: 'systems/lancer/assets/icons/white/status_hidden.svg', onClick: () => token.document.update({ hidden: !token.document.hidden }), onRightClick: this._actionPopup({ name: 'Hide / Reveal Token', activation: 'Tool', detail: 'Toggle this token\'s hidden state.' }) },
+        ];
+
+        const capEnabled = game.settings.get('lancer-automations', 'enableMovementCapDetection')
+            || game.settings.get('lancer-automations', 'enableBoostOffer');
+
+        const ap = a => this._actionPopup(a);
+        const movementItems = [
+            { label: 'Knockback',      icon: 'modules/lancer-automations/icons/push.svg', onClick: () => knockBackToken([token], -1, { title: 'KNOCKBACK', description: 'Place each token at its knockback destination.', urgent: false }), onRightClick: ap({ name: 'Knockback', activation: 'Movement', detail: 'Move tokens to picked destinations as forced movement.' }) },
+            this._lockable({ label: 'Teleport', icon: 'modules/lancer-automations/icons/teleport.svg', onClick: () => executeTeleport(token), broadcastFn: (_token, targetActor) => executeTeleport(targetActor.getActiveTokens()?.[0]), onRightClick: ap({ name: 'Teleport', activation: 'Movement', detail: 'Teleport to a destination within your speed range. Costs speed in movement.' }) }, 'Teleport'),
+            { label: 'Fall', icon: 'modules/lancer-automations/icons/falling.svg', onClick: () => executeFall(token), onRightClick: ap({ name: 'Fall', activation: 'Movement', detail: 'Drop to ground level and take falling damage.' }) },
+            { label: 'Reset History',  icon: 'modules/lancer-automations/icons/trash-can.svg', onClick: () => clearMovementHistory(token, false), onRightClick: ap({ name: 'Reset History', activation: 'Movement', detail: 'Clear this token\'s recorded movement history.' }) },
+            { label: 'Revert Last Movement', icon: 'modules/lancer-automations/icons/anticlockwise-rotation.svg', onClick: () => revertMovement(token), onRightClick: ap({ name: 'Revert Last Movement', activation: 'Movement', detail: 'Move the token back along its last recorded move.' }) },
+            { label: 'Revert All Movements', icon: 'modules/lancer-automations/icons/backward-time.svg', onClick: () => clearMovementHistory(token, true), onRightClick: ap({ name: 'Revert All Movements', activation: 'Movement', detail: 'Move the token back to where its history started.' }) },
+            // Move Cap editable input when cap tracking is on, otherwise just show base speed.
+            ...(capEnabled ? [{
+                inputCell: true,
+                subtype: 'type',
+                name: 'Move Cap',
+                icon: 'modules/lancer-automations/icons/path-distance.svg',
+                getValue: () => game.modules.get('lancer-automations')?.api?.getMovementCap(token) ?? 0,
+                onValueChanged: (newVal) =>
+                {
+                    const api = game.modules.get('lancer-automations')?.api;
+                    if (!api)
+                        return;
+                    api.increaseMovementCap(token, newVal - api.getMovementCap(token));
+                },
+            }] : [{
+                inputCell: true,
+                subtype: 'type',
+                name: 'Speed',
+                icon: 'modules/lancer-automations/icons/path-distance.svg',
+                getValue: () => actor?.system?.speed ?? 0,
+                onValueChanged: () =>
+                {},
+            }]),
+        ];
+
+        const _showWeaponBreakdown = (row, actor, rangeType) =>
+        {
+            const items = actor?.items ?? [];
+            const lines = [];
+            for (const item of items)
+            {
+                if (!['mech_weapon', 'npc_feature', 'pilot_weapon'].includes(item.type))
+                    continue;
+                if (item.type === 'npc_feature' && item.system?.type !== 'Weapon')
+                    continue;
+                const profiles = item.system?.profiles ?? [{ range: item.system?.range ?? [] }];
+                for (const profile of profiles)
+                {
+                    const ranges = profile.all_range ?? profile.range ?? [];
+                    for (const r of ranges)
+                    {
+                        if (r.type !== rangeType)
+                            continue;
+                        const val = parseInt(r.val) || 0;
+                        if (val <= 0)
+                            continue;
+                        const pName = profiles.length > 1 && profile.name ? ` (${profile.name})` : '';
+                        lines.push(`<li>${item.name}${pName}: <b>${val}</b></li>`);
+                    }
+                }
+            }
+            if (lines.length === 0)
+                lines.push(`<li>No ${rangeType.toLowerCase()} weapons found</li>`);
+            const bodyHtml = `<ul style="list-style:none;padding:0;margin:0;">${lines.join('')}</ul>`;
+            this._showItemPopup({
+                cssClass: 'la-hud-popup',
+                dataKey: 'range-breakdown',
+                dataValue: rangeType,
+                title: `${rangeType} Breakdown`,
+                subtitle: actor.name,
+                bodyHtml,
+                theme: 'system',
+                row,
+            });
+        };
+
+        // Ranges section: Advanced Measure state proxies (no GAA auras).
+        const threatVal = getActorMaxThreat(actor);
+        const sensorVal = actor?.system?.sensor_range ?? (actor?.type === 'pilot' ? 5 : 10);
+        const reachVal = getActorMaxReach_WithBonus(actor);
+        const amIsActive = () =>
+        {
+            if (!isAdvancedMeasureActive())
+                return false;
+            const st = getAdvancedMeasureState();
+            return !!st.pulseEnabled;
+        };
+        const amSourceMatches = (source) => amIsActive() && getAdvancedMeasureState().rangeSource === source;
+        const togglePin = (source, opts) =>
+        {
+            if (!isAdvancedMeasureActive() && !hasRangePin(token, source, opts?.weaponItemId ?? null))
+                openAdvancedMeasureWithState({});
+            toggleRangePin(token, source, opts);
+        };
+
+        const rangeItems = [
+            {
+                inputCell: true,
+                subtype: 'toggle',
+                name: `Threat (${threatVal})`,
+                icon: 'systems/lancer/assets/icons/white/threat.svg',
+                getValue: () => hasRangePin(token, 'threat'),
+                onToggle: () => togglePin('threat'),
+            },
+            {
+                inputCell: true,
+                subtype: 'toggle',
+                name: `Sensors (${sensorVal})`,
+                icon: 'systems/lancer/assets/icons/white/sensor.svg',
+                getValue: () => hasRangePin(token, 'sensor'),
+                onToggle: () => togglePin('sensor'),
+            },
+            {
+                inputCell: true,
+                subtype: 'toggle',
+                name: `Max Reach (${reachVal})`,
+                icon: 'modules/lancer-automations/icons/nested-hexagons.svg',
+                getValue: () => hasRangePin(token, 'reach'),
+                onToggle: () => togglePin('reach'),
+            },
+            ...(isLancerRulerActive() ? [{
+                inputCell: true,
+                subtype: 'toggle',
+                name: `Movement (${actor?.system?.speed ?? 0})`,
+                icon: 'fa-solid fa-person-running',
+                getValue: () => isAdvancedMeasureActive() && getAdvancedMeasureState().movementReachEnabled,
+                onToggle: (on) =>
+                {
+                    if (on)
+                        openAdvancedMeasureWithState({ movementReachEnabled: true });
+                    else
+                        setAdvancedMeasureState({ movementReachEnabled: false });
+                },
+            }] : []),
+            { isSectionLabel: true, label: 'Custom' },
+            {
+                inputCell: true,
+                subtype: 'increment',
+                name: 'Size',
+                icon: 'systems/lancer/assets/icons/white/range.svg',
+                noColor: true,
+                min: 1,
+                max: 100,
+                getValue: () => token.document?.getFlag('lancer-automations', 'customMeasureSize') ?? 10,
+                onValueChanged: async (newVal) =>
+                {
+                    await token.document?.setFlag('lancer-automations', 'customMeasureSize', newVal);
+                    if (amSourceMatches('manual'))
+                        setAdvancedMeasureState({ manualRadius: newVal });
+                    if (hasRangePin(token, 'manual'))
+                    {
+                        toggleRangePin(token, 'manual');
+                        toggleRangePin(token, 'manual', { range: newVal });
+                    }
+                },
+            },
+            {
+                inputCell: true,
+                subtype: 'toggle',
+                name: 'Measure',
+                icon: 'systems/lancer/assets/icons/white/range.svg',
+                getValue: () => hasRangePin(token, 'manual'),
+                onToggle: () =>
+                {
+                    const size = token.document?.getFlag('lancer-automations', 'customMeasureSize') ?? 10;
+                    togglePin('manual', { range: size });
+                },
+            },
+        ];
+
+        return {
+            label: 'Utility',
+            colLabel: 'Utility',
+            icon: 'modules/lancer-automations/icons/tinker.svg',
+            getItems: () => [
+                { label: 'Gameplay',  childColLabel: 'Gameplay',  icon: 'modules/lancer-automations/icons/pawn.svg', getChildren: () => gameplayItems },
+                { label: 'Movement',  childColLabel: 'Movement',  icon: 'mdi mdi-arrow-right-bold-hexagon-outline', getChildren: () => movementItems },
+                ...(rangeItems.length > 0 ? [{ label: 'Measures', childColLabel: 'Measures', icon: 'mdi mdi-ruler-square-compass', getChildren: () => rangeItems }] : []),
+                { label: 'Log', icon: 'modules/lancer-automations/icons/checklist.svg', isLogPanel: true },
+                { label: 'Glossary', icon: 'systems/lancer/assets/icons/compendium.svg', isGlossaryPanel: true },
+                { label: 'Misc',
+                    childColLabel: 'Misc',
+                    icon: 'modules/lancer-automations/icons/open-folder.svg',
+                    getChildren: () => [
+                        { label: 'Vote',
+                            icon: 'mdi mdi-vote',
+                            onClick: () =>
+                            {
+                                const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api; if (api?.openChoiceMenu)
+                                    api.openChoiceMenu(); else /** @type {any} */
+                                    (ui.notifications).error('Lancer Automations API not found or outdated.');
+                            },
+                            onRightClick: ap({ name: 'Vote', activation: 'Tool', detail: 'Start a choice or vote card for the players.' }) },
+                        { label: 'Downtime',
+                            icon: 'systems/lancer/assets/icons/white/downtime.svg',
+                            onClick: async () =>
+                            {
+                                const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api; await api?.executeDowntime?.();
+                            },
+                            onRightClick: ap({ name: 'Downtime', activation: 'Tool', detail: 'Open the downtime activities dialog, with rolls and journal logging.' }) },
+                        { label: 'Reserve',
+                            icon: 'systems/lancer/assets/icons/white/reserve_mech.svg',
+                            onClick: () =>
+                            {
+                                const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api; api?.openAddReserveDialog?.(token);
+                            },
+                            onRightClick: ap({ name: 'Reserve', activation: 'Tool', detail: 'Add a reserve to the pilot.' }) },
+                        { label: 'Rest',
+                            icon: 'modules/lancer-automations/icons/night-sleep.svg',
+                            onClick: () =>
+                            {
+                                const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api; api?.executeRest?.(token);
+                            },
+                            onRightClick: ap({ name: 'Rest', activation: 'Tool', detail: 'Open the rest dialog: spend repairs, clear heat and conditions.' }) },
+                        { label: 'Add Extra',
+                            icon: 'modules/lancer-automations/icons/files.svg',
+                            onClick: () => openExtrasDialog(actor),
+                            onRightClick: ap({ name: 'Add Extra', activation: 'Tool', detail: 'Attach extra actions, deployables, or resource bars to the actor.' }) },
+                    ] },
+            ],
+        };
+    }
+
+    _catSystems()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Systems',
+            colLabel: 'Systems',
+            icon: 'systems/lancer/assets/icons/mech_system.svg',
+            getItems: () =>
+            {
+                const systems = (actor.system?.loadout?.systems ?? [])
+                    .map(/** @type {any} */ entry => entry?.value)
+                    .filter(/** @type {any} */ item => !!item);
+                if (!systems.length)
+                    return [];
+                return systems.map(item =>
+                {
+                    const sys = item.system;
+                    return this._itemRow(item, {
+                        icon: item.img ?? null,
+                        category: 'Systems',
+                        childColLabel: item.name,
+                        getChildren: () => this._systemChildren(item, actor),
+                        onRightClick: (row) =>
+                        {
+                            const actionsHtml = (sys.actions ?? []).map(/** @type {any} */ a =>
+                            {
+                                const det = a.detail ? `<div style="font-size:0.77em;color:#bbb;margin-top:2px;">${laFormatDetailHtml(a.detail)}</div>` : '';
+                                const cost = Number(a.cost) || 1;
+                                return `<div style="margin-top:6px;padding:4px;background:rgba(255,255,255,0.04);border-radius:3px;"><div style="font-size:0.78em;font-weight:bold;color:#e8a020;">[${a.activation}] ${a.name} <span style="color:#888;font-weight:normal;">Cost: ${cost}</span></div>${det}</div>`;
+                            }).join('');
+                            const depLids = getItemDeployables(item, actor);
+                            const depActors = depLids.map(lid => getDeployableInfoSync(lid, actor)).filter(Boolean);
+                            const deployablesHtml = depActors.length ? laRenderDeployables(depActors) : '';
+                            const ammoHtml = (sys.ammo ?? []).filter(a => a.name).map(a =>
+                            {
+                                const cost = a.cost ?? 1;
+                                return `<div style="margin-top:4px;padding:3px 4px;background:rgba(255,255,255,0.04);border-radius:3px;">
+                                    <div style="font-size:0.78em;font-weight:bold;color:#1a8a3a;">${a.name} <span style="color:#888;font-weight:normal;">Cost: ${cost}</span></div>
+                                    ${a.description ? `<div style="font-size:0.75em;color:#bbb;margin-top:1px;">${a.description}</div>` : ''}
+                                </div>`;
+                            }).join('');
+                            const ammoSection = ammoHtml ? `<div style="margin-top:4px;"><div style="font-size:0.72em;font-weight:bold;color:#888;text-transform:uppercase;margin-bottom:2px;">Ammo</div>${ammoHtml}</div>` : '';
+                            const bodyHtml = this._bodyHtml(sys) + actionsHtml + deployablesHtml + ammoSection;
+                            const subtitle = this._joinSubtitle(sys.type, sys.license ? `${sys.manufacturer} ${sys.license_level}` : null);
+                            this._showItemPopup({ cssClass: 'la-hud-popup la-hud-system-popup', dataKey: 'system-id', dataValue: item.id, title: item.name, subtitle, bodyHtml, theme: 'system', item, row });
+                        },
+                    });
+                });
+            },
+        };
+    }
+
+    _systemHasChildren(/** @type {any} */ item, /** @type {any} */ actor)
+    {
+        const sys = item.system;
+        const hasActivationTag = (sys.tags ?? []).some(t => ACTIVATION_TAGS.includes(t.lid));
+        if (hasActivationTag || (sys.actions ?? []).length)
+            return true;
+        if (this._getInvadeOptions(actor).some(opt => opt.item?.id === item.id))
+            return true;
+        if (getItemDeployables(item, actor).length)
+            return true;
+        return false;
+    }
+
+    _systemChildren(/** @type {any} */ item, /** @type {any} */ actor)
+    {
+        const sys = item.system;
+        const ap = act => this._actionPopup(act, item);
+        const children = [];
+        const activationTag = (sys.tags ?? []).find(/** @type {any} */ t => ACTIVATION_TAGS.includes(t.lid));
+        const sysActions = sys.actions ?? [];
+        const status = getItemStatus(item);
+        const childBadge = status.badge ?? null;
+        const childBadgeColor = status.badgeColor ?? null;
+        const childStatusKind = status.destroyed ? 'destroyed' : status.unavailable ? 'unavailable' : null;
+        const hidePrimary = isPrimaryActionHidden(item);
+        if (!hidePrimary && sysActions.length <= 1)
+        {
+            const single = sysActions[0] ?? null;
+            const actStr = single?.activation ?? (activationTag ? activationTag.lid.replace('tg_', '').replace('_action', ' action') : 'Activation');
+            children.push(this._itemRow(item, {
+                label: single?.name ?? item.name,
+                action: { name: item.name, activation: actStr },
+                category: 'Systems',
+                icon: single ? getActivationIcon(single) : (activationTag ? getActivationIcon(actStr) : 'systems/lancer/assets/icons/activate.svg'),
+                badge: childBadge,
+                badgeColor: childBadgeColor,
+                statusKind: childStatusKind,
+                onClick: single ? () => /** @type {any} */ (item).beginActivationFlow('system.actions.0') : () => /** @type {any} */ (item).beginSystemFlow(),
+                onRightClick: single ? ap(single)
+                    : activationTag ? (/** @type {any} */ row) =>
+                    {
+                        const subtitle = this._joinSubtitle(sys.type, sys.license ? `${sys.manufacturer} ${sys.license_level}` : null);
+                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-system-popup', dataKey: 'sys-activate', dataValue: item.id, title: item.name, subtitle, bodyHtml: this._bodyHtml(sys), theme: 'system', item, row });
+                    }
+                        : ap({ name: item.name, activation: 'Activation', detail: 'Default system activation.' }),
+            }));
+        }
+        else if (!hidePrimary)
+        {
+            sysActions.forEach((action, idx) =>
+            {
+                children.push(this._itemRow(item, {
+                    label: action.name,
+                    action,
+                    category: 'Systems',
+                    icon: getActivationIcon(action),
+                    badge: childBadge,
+                    badgeColor: childBadgeColor,
+                    statusKind: childStatusKind,
+                    onClick: () => /** @type {any} */ (item).beginActivationFlow(`system.actions.${idx}`),
+                    onRightClick: ap(action),
+                }));
+            });
+        }
+        const sysActionNames = new Set((sys.actions ?? []).map(/** @type {any} */ a => a.name));
+        const invadeOpts = this._getInvadeOptions(actor).filter(opt => opt.item?.id === item.id && !sysActionNames.has(opt.name));
+        for (const opt of invadeOpts)
+        {
+            children.push(this._lockable({
+                label: opt.destroyed ? this._destroyedLabel(opt.name) : opt.name,
+                icon: ICON_TECH_QUICK,
+                badge: opt.badge ?? null,
+                badgeColor: opt.badgeColor ?? null,
+                ...this._statusColors(opt),
+                hoverData: { actor, item: opt.item ?? null, action: opt.action ?? { name: opt.name, activation: 'Invade' }, category: 'Tech' },
+                onClick: () => executeInvade(actor, opt),
+                onRightClick: (/** @type {any} */ row) => this._buildInvadePopup(opt, row),
+            }, opt.name, 'Quick Tech'));
+        }
+        const lids = getItemDeployables(item, actor);
+        if (lids.length)
+        {
+            if (children.length)
+                children.push({ isSectionLabel: true, label: 'Deployables' });
+            for (const lid of lids)
+            {
+                const depInfo = getDeployableInfoSync(lid, actor);
+                children.push(this._itemRow(item, {
+                    label: stripDeployOwner(depInfo?.name ?? lid),
+                    icon: getDeployableIcon(depInfo),
+                    category: 'Deployables',
+                    hoverExtra: { deployLid: lid },
+                    onClick: () => deployDeployable(actor, lid, item, true),
+                    onRightClick: async (/** @type {any} */ row) =>
+                    {
+                        let dep = null;
+                        if (!dep)
+                        {
+                            const resolved = await resolveDeployable(lid, actor);
+                            dep = resolved.deployable;
+                        }
+                        if (!dep)
+                            return;
+                        const srcType = item.system?.type ?? '';
+                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-deploy-popup', dataKey: 'deploy-name', dataValue: dep.name, title: stripDeployOwner(dep.name), subtitle: `Deployable · ${item.name}${srcType ? ` (${srcType})` : ''}`, bodyHtml: this._deployBodyHtml(item, lid, actor, dep), theme: 'deployable', item, skipExtras: true, row });
+                    },
+                }));
+            }
+        }
+        const ammoArr = sys.ammo ?? [];
+        if (ammoArr.filter(a => a.name).length)
+        {
+            children.push({ isSectionLabel: true, label: 'Ammo' });
+            ammoArr.forEach((ammo, idx) =>
+            {
+                if (!ammo.name)
+                    return;
+                const cost = ammo.cost ?? 1;
+                children.push({
+                    label: `${ammo.name}`,
+                    badge: `${cost}`,
+                    badgeColor: '#1a8a3a',
+                    icon: 'systems/lancer/assets/icons/ammo.svg',
+                    onClick: () =>
+                    {
+                        const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                        if (api?.TriggerUseAmmoFlow)
+                            api.TriggerUseAmmoFlow(item.uuid, idx);
+                        else
+                        {
+                            // Fallback: use the flow dispatch
+                            const flowDef = game.lancer?.flows?.get('UseAmmoFlow');
+                            if (!flowDef)
+                                return;
+                            const FlowBase = typeof game.lancer.flows.get('StatRollFlow') === 'function'
+                                ? Object.getPrototypeOf(game.lancer.flows.get('StatRollFlow')) : null;
+                            if (!FlowBase)
+                                return;
+                            const GenericFlow = class extends FlowBase
+                            {
+                                constructor(uuid, data)
+                                {
+                                    super(uuid, data || {});
+                                }
+                            };
+                            GenericFlow.steps = flowDef.steps;
+                            new GenericFlow(actor.uuid, { itemUuid: item.uuid, ammoIndex: idx }).begin();
+                        }
+                    },
+                    onRightClick: (/** @type {any} */ row) =>
+                    {
+                        const sizeTags = _ammoTagsHtml(ammo.allowed_sizes, 'Size');
+                        const typeTags = _ammoTagsHtml(ammo.allowed_types, 'Type');
+                        const bodyHtml = `${ammo.description ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${ammo.description}</div>` : ''}
+                            <div style="font-size:0.75em;color:#888;margin-top:4px;">Cost: ${cost}${sizeTags}${typeTags}</div>`;
+                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-ammo-popup', dataKey: 'ammo-idx', dataValue: `${item.id}-${idx}`, title: ammo.name, subtitle: `Ammo · ${item.name}`, bodyHtml, theme: 'system', item, row });
+                    },
+                    hoverData: { actor, item, action: { name: ammo.name, activation: 'Ammo' }, category: 'Systems' },
+                });
+            });
+        }
+        return children;
+    }
+
+    _catFrame()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Frame',
+            colLabel: 'Frame',
+            icon: 'systems/lancer/assets/icons/frame.svg',
+            getItems: () =>
+            {
+                const frame = actor?.system?.loadout?.frame?.value;
+                if (!frame)
+                    return [];
+                const sys = frame.system;
+                const actorSystem = actor.system;
+                const frameSubtitle = this._joinSubtitle(sys.manufacturer, sys.license ? `LL${sys.license_level}` : null, ...(sys.mechtype ?? []), actorSystem.size != null ? `Size ${actorSystem.size}` : null);
+                const stat = (/** @type {string} */ label, /** @type {any} */ val, /** @type {any} */ base = undefined) => this._statCell(label, val, base);
+                const statGrid5 = (/** @type {string[]} */ ...cells) => this._statGrid(5, ...cells);
+                const statGrid = statGrid5;
+                const repairs = actorSystem.repairs?.max ?? actorSystem.repcap;
+                const frameStats = sys.stats ?? {};
+                const currentStats = statGrid5(
+                    stat('HP', actorSystem.hp?.max, frameStats.hp), stat('Armor', actorSystem.armor, frameStats.armor), stat('E-Def', actorSystem.edef, frameStats.edef), stat('Evasion', actorSystem.evasion, frameStats.evasion), stat('Heat', actorSystem.heat?.max, frameStats.heatcap),
+                    stat('Speed', actorSystem.speed, frameStats.speed), stat('Sensors', actorSystem.sensor_range, frameStats.sensor_range), stat('Save', actorSystem.save, frameStats.save), stat('Tech', actorSystem.tech_attack, frameStats.tech_attack), stat('Repairs', repairs, frameStats.repcap)
+                );
+                const mountCounts = (sys.mounts ?? []).reduce((/** @type {any} */ acc, /** @type {any} */ m) =>
+                {
+                    acc[m] = (acc[m] ?? 0) + 1;
+                    return acc;
+                }, {});
+                const mountsHtml = Object.keys(mountCounts).length ? `<div style="font-size:0.8em;color:#888;margin-top:2px;border-top:1px solid #2a2a2a;padding-top:5px;">${Object.entries(mountCounts).map(([m, n]) => `${n > 1 ? n + '× ' : ''}${m}`).join(' · ')}</div>` : '';
+                const baseStats = sys.stats ? `<details style="margin-top:6px;border-top:1px solid #2a2a2a;padding-top:4px;"><summary style="font-size:0.72em;color:#555;cursor:pointer;user-select:none;list-style:none;padding:2px 0;">▶ Base Stats</summary>${statGrid(stat('HP', sys.stats.hp), stat('Armor', sys.stats.armor), stat('E-Def', sys.stats.edef), stat('Evasion', sys.stats.evasion), stat('Heat', sys.stats.heatcap), stat('Speed', sys.stats.speed), stat('Sensors', sys.stats.sensor_range), stat('Save', sys.stats.save), stat('Tech', sys.stats.tech_attack), stat('Repairs', sys.stats.repcap))}</details>` : '';
+                const rows = /** @type {any[]} */ ([
+                    {
+                        label: frame.name + rankSuffix(actor),
+                        icon: 'systems/lancer/assets/icons/frame.svg',
+                        onClick: () => /** @type {any} */ (frame).sheet.render(true),
+                        onRightClick: (/** @type {any} */ row) => this._showItemPopup({ cssClass: 'la-hud-popup la-hud-frame-popup', dataKey: 'frame-id', dataValue: frame.id, title: frame.name, subtitle: frameSubtitle, bodyHtml: currentStats + mountsHtml + baseStats, theme: 'frame', item: frame, row }),
+                    },
+                    { label: 'Core Power',  childColLabel: 'Core Power',  icon: 'modules/lancer-automations/icons/materials-science.svg', getChildren: () => this._corePowerItems(frame, actor), onRightClick: (/** @type {any} */ row) => this._showItemPopup({ cssClass: 'la-hud-popup la-hud-frame-popup', dataKey: 'core-system', dataValue: frame.id, title: frame.system?.core_system?.name ?? 'Core System', subtitle: frame.name, bodyHtml: laRenderCoreSystemBody(frame.system?.core_system), theme: 'frame', item: frame, row }) },
+                    { label: 'Traits',      childColLabel: 'Traits',      icon: 'systems/lancer/assets/icons/trait.svg', getChildren: () => this._frameTraitItems(frame, actor) },
+                    { label: 'Core Bonus',  childColLabel: 'Core Bonus',  icon: 'systems/lancer/assets/icons/core_bonus.svg', getChildren: () => this._coreBonusItems(actor) },
+                ]);
+                const intLids = [
+                    ...(frame.system?.traits ?? []).flatMap((/** @type {any} */ t) => t.integrated ?? []),
+                    ...(frame.system?.core_system?.integrated ?? []),
+                ];
+                const intDepLids = /** @type {string[]} */ (frame.system?.core_system?.deployables ?? []);
+                if (intLids.length || intDepLids.length)
+                    rows.push({ label: 'Integrated', childColLabel: 'Integrated', icon: 'systems/lancer/assets/icons/system.svg', getChildren: () => this._frameIntegratedItems(frame, actor, intLids, intDepLids) });
+                rows.push({ label: 'Reserves',    childColLabel: 'Reserves',    icon: 'systems/lancer/assets/icons/white/reserve_mech.svg', getChildren: () => this._catReserves({ source: actor.system?.pilot?.value, typeFilter: 'Mech' }).getItems() });
+                if (actor?.system?.overcharge_sequence)
+                {
+                    const ocSeq = actor.system.overcharge_sequence.split(',').map(s => s.trim());
+                    rows.push({
+                        inputCell: true,
+                        subtype: 'increment',
+                        name: 'Overcharge',
+                        icon: 'systems/lancer/assets/icons/macro-icons/overcharge.svg',
+                        noColor: true,
+                        min: 0,
+                        max: ocSeq.length - 1,
+                        getValue: () => actor?.system?.overcharge ?? 0,
+                        formatValue: (v) => ocSeq[v] ?? `${v}`,
+                        onValueChanged: (newVal) => actor?.update({ 'system.overcharge': newVal }),
+                    });
+                }
+                if (actor?.system?.repairs)
+                {
+                    rows.push({
+                        inputCell: true,
+                        subtype: 'increment',
+                        name: 'Repairs',
+                        icon: 'systems/lancer/assets/icons/macro-icons/repair.svg',
+                        noColor: true,
+                        min: 0,
+                        max: actor.system.repairs.max ?? actor.system.repcap ?? 0,
+                        getValue: () => actor?.system?.repairs?.value ?? 0,
+                        onValueChanged: (newVal) => actor?.update({ 'system.repairs.value': newVal }),
+                    });
+                }
+                return rows;
+            },
+        };
+    }
+
+    /** @param {{ source?: any, typeFilter?: string|null, excludeType?: string|null, label?: string }} [opts] */
+    _catReserves({ source, typeFilter = null, excludeType = null, label = 'Reserves' } = {})
+    {
+        return {
+            label,
+            colLabel: label,
+            getItems: () =>
+            {
+                const reserves = (source?.items ?? []).filter(/** @type {any} */ i => i.type === 'reserve');
+                let filtered = typeFilter ? reserves.filter(/** @type {any} */ r => (r.system?.type ?? '') === typeFilter) : reserves;
+                if (excludeType)
+                    filtered = filtered.filter(/** @type {any} */ r => (r.system?.type ?? '') !== excludeType);
+                if (!filtered.length)
+                    return [];
+                const TYPE_ORDER  = ['Mech', 'Tactical', 'Project', 'Organization', 'Resources', 'Resource', 'Bonus'];
+                const TYPE_ICON   = { Mech: 'cci cci-reserve-mech', Organization: 'mdi mdi-account-multiple', Project: 'cci cci-orbital', Resources: 'cci cci-reserve-resource', Resource: 'cci cci-reserve-resource', Tactical: 'cci cci-reserve-tac', Bonus: 'cci cci-accuracy' };
+                const buckets = {};
+                for (const r of filtered)
+                {
+                    const t = r.system?.type ?? 'Other';
+                    (buckets[t] = buckets[t] || []).push(r);
+                }
+                const keys = TYPE_ORDER.filter(k => buckets[k]).concat(Object.keys(buckets).filter(k => !TYPE_ORDER.includes(k)));
+                const items = [];
+                const useSections = !typeFilter;
+                for (const key of keys)
+                {
+                    if (useSections && keys.length > 1)
+                        items.push({ isSectionLabel: true, label: key.toUpperCase() });
+                    // Merge identical reserves; consumable (has usage) never merges with non-consumable.
+                    const groups = new Map();
+                    const groupOrder = [];
+                    for (const res of buckets[key])
+                    {
+                        const identity = `${res.system?.consumable ? 'C' : 'N'}|${res.system?.lid || `${res.name}::${res.system?.type ?? key}`}`;
+                        if (!groups.has(identity))
+                        {
+                            groups.set(identity, []);
+                            groupOrder.push(identity);
+                        }
+                        groups.get(identity).push(res);
+                    }
+                    for (const identity of groupOrder)
+                    {
+                        const group = groups.get(identity);
+                        const rep = group[0];
+                        const sys = rep.system ?? {};
+                        const icon = TYPE_ICON[key] ?? 'cci cci-reserve-tac';
+                        const baseLabel = sys.label || rep.name;
+                        let badge = null;
+                        let badgeColor = null;
+                        let statusKind = null;
+                        if (sys.consumable)
+                        {
+                            const available = group.filter(/** @type {any} */ copy => !copy.system?.used).length;
+                            badge = `${available}/${group.length}`;
+                            badgeColor = available <= 0 ? '#c33' : (available < group.length ? '#cc7700' : '#3a9e6e');
+                            if (available <= 0)
+                                statusKind = 'unavailable';
+                        }
+                        else if (group.length > 1)
+                        {
+                            badge = `×${group.length}`;
+                            badgeColor = '#777';
+                        }
+                        items.push({
+                            label: baseLabel,
+                            icon,
+                            statusKind,
+                            badge,
+                            badgeColor,
+                            hoverData: { actor: source, item: rep, action: null, category: 'Reserves' },
+                            onClick: sys.consumable
+                                ? () => this._consumeReserveGroup(group)
+                                : () => /** @type {any} */ (rep).sheet.render(true),
+                            onRightClick: (/** @type {any} */ row) =>
+                            {
+                                const bodyHtml = this._bodyHtml(sys) + laRenderActions(sys.actions ?? []);
+                                this._showItemPopup({ cssClass: 'la-hud-popup la-hud-reserve-popup', dataKey: 'reserve-id', dataValue: rep.id, title: baseLabel, subtitle: `Reserve · ${key}`, bodyHtml, theme: 'resource', item: rep, row, pips: false, postRender: (popup) => appendReservePips(group, popup) });
+                            },
+                        });
+                    }
+                }
+                return items;
+            },
+        };
+    }
+
+    async _consumeReserveGroup(group)
+    {
+        const next = (group ?? []).find(/** @type {any} */ copy => !copy.system?.used);
+        if (!next)
+        {
+            ui.notifications?.info('All copies of this reserve are already used.');
+            return;
+        }
+        if (!isAutoConsumeDisabled(group[0], 'reserveUsed'))
+            await next.update({ 'system.used': true });
+        game.lancer?.beginItemChatFlow?.(next, {})?.catch?.(() => null);
+    }
+
+    _catPilot()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Pilot',
+            colLabel: 'Pilot',
+            icon: 'mdi mdi-card-account-details-star-outline',
+            getItems: () =>
+            {
+                const actorSys = actor.system ?? {};
+                const armor = (actorSys.loadout?.armor ?? [])[0]?.value ?? null;
+
+                const grit = actorSys.grit ?? Math.floor((actorSys.level ?? 0) / 2);
+                const base = { hp: 6 + grit, armor: 0, edef: 10, evasion: 10, speed: 4 };
+                const cur  = { hp: actorSys.hp?.max, armor: actorSys.armor, edef: actorSys.edef, evasion: actorSys.evasion, speed: actorSys.speed };
+
+                const stat = (/** @type {string} */ label, /** @type {any} */ val, /** @type {any} */ base = undefined) => this._statCell(label, val, base);
+                const grid = (/** @type {string[]} */ ...cells) => this._statGrid(5, ...cells);
+
+                const currentStats = grid(
+                    stat('HP',      cur.hp,      base.hp),
+                    stat('Armor',   cur.armor,   base.armor),
+                    stat('E-Def',   cur.edef,    base.edef),
+                    stat('Evasion', cur.evasion, base.evasion),
+                    stat('Speed',   cur.speed,   base.speed),
+                );
+                const haseRow = `<div style="margin-top:6px;border-top:1px solid #2a2a2a;padding-top:4px;">${grid(
+                    stat('HULL', actorSys.hull),
+                    stat('AGI',  actorSys.agi),
+                    stat('SYS',  actorSys.sys),
+                    stat('ENG',  actorSys.eng),
+                    stat('Grit', grit),
+                )}</div>`;
+                const baseStats = `<details style="margin-top:6px;border-top:1px solid #2a2a2a;padding-top:4px;"><summary style="font-size:0.72em;color:#555;cursor:pointer;user-select:none;list-style:none;padding:2px 0;">▶ Base Stats (no armor)</summary>${grid(
+                    stat('HP',      base.hp),
+                    stat('Armor',   base.armor),
+                    stat('E-Def',   base.edef),
+                    stat('Evasion', base.evasion),
+                    stat('Speed',   base.speed),
+                )}</details>`;
+
+                const pilotSubtitle = this._joinSubtitle(actorSys.callsign, actorSys.player_name, actorSys.level != null ? `LL${actorSys.level}` : null);
+
+                const armorBody = armor
+                    ? (laRenderTags(armor.system?.tags ?? []) + (armor.system?.description ? `<div style="margin-bottom:8px;font-size:0.82em;line-height:1.5;color:#bbb;">${laFormatDetailHtml(armor.system.description)}</div>` : '') + (armor.system?.effect ? `<div style="margin-top:6px;border-top:1px solid #2a2a2a;padding-top:4px;font-size:0.82em;line-height:1.5;color:#bbb;">${laFormatDetailHtml(armor.system.effect)}</div>` : '') + laRenderActions(armor.system?.actions ?? []))
+                    : '<div style="font-size:0.82em;color:#bbb;line-height:1.5;">The pilot wears no armor.</div>';
+
+                return [
+                    {
+                        label: actor.name + rankSuffix(actor),
+                        icon: 'systems/lancer/assets/icons/pilot.svg',
+                        onClick: () => /** @type {any} */ (actor).sheet.render(true),
+                        onRightClick: (/** @type {any} */ row) => this._showItemPopup({ cssClass: 'la-hud-popup la-hud-frame-popup', dataKey: 'pilot-id', dataValue: actor.id, title: actor.name, subtitle: pilotSubtitle, bodyHtml: currentStats + haseRow + baseStats, theme: 'frame', item: null, row }),
+                    },
+                    {
+                        label: armor ? armor.name : 'NO ARMOR',
+                        icon: armor?.img ?? 'systems/lancer/assets/icons/role_tank.svg',
+                        onClick: () => armor && /** @type {any} */ (armor).sheet.render(true),
+                        onRightClick: (/** @type {any} */ row) => this._showItemPopup({ cssClass: 'la-hud-popup la-hud-system-popup', dataKey: armor ? 'armor-id' : 'no-armor', dataValue: armor ? armor.id : actor.id, title: armor ? armor.name : 'No Armor', subtitle: 'Pilot Armor', bodyHtml: armorBody, theme: 'system', item: armor, row }),
+                    },
+                    ...(() =>
+                    {
+                        const reserveRows = this._catReserves({ source: actor, excludeType: 'Mech' }).getItems().filter(/** @type {any} */ r => !r.isSectionLabel);
+                        if (!reserveRows.length)
+                            return [];
+                        return [{ isSectionLabel: true, label: 'RESERVES' }, ...reserveRows];
+                    })(),
+                    ...this._bondRows(actor),
+                ];
+            },
+        };
+    }
+
+    _bondRows(/** @type {any} */ actor)
+    {
+        const bond = actor?.system?.bond ?? actor?.items?.find((/** @type {any} */ ownedItem) => ownedItem.type === 'bond') ?? null;
+        if (!bond)
+            return [];
+        const bondState = actor.system?.bond_state ?? {};
+        return [
+            { isSectionLabel: true, label: 'BOND' },
+            {
+                label: bond.name,
+                icon: 'systems/lancer/assets/icons/bond.svg',
+                isBondPanel: true,
+                hoverData: { actor, item: bond, category: 'Bond' },
+            },
+            {
+                inputCell: true,
+                subtype: 'increment',
+                name: 'Stress',
+                icon: 'mdi mdi-brain',
+                invertScale: true,
+                step: 1,
+                min: 0,
+                max: bondState.stress?.max ?? 8,
+                getValue: () => actor.system?.bond_state?.stress?.value ?? 0,
+                onValueChanged: (/** @type {number} */ newVal) => actor.update({ 'system.bond_state.stress.value': newVal }),
+            },
+            {
+                inputCell: true,
+                subtype: 'increment',
+                name: 'XP',
+                icon: 'mdi mdi-head-cog-outline',
+                noColor: true,
+                step: 1,
+                min: 0,
+                max: bondState.xp?.max ?? 8,
+                getValue: () => actor.system?.bond_state?.xp?.value ?? 0,
+                onValueChanged: (/** @type {number} */ newVal) => actor.update({ 'system.bond_state.xp.value': newVal }),
+            },
+            {
+                label: 'Powers',
+                icon: 'modules/lancer-automations/icons/spiked-halo.svg',
+                childColLabel: 'Powers',
+                getChildren: () => this._bondPowerItems(bond),
+            },
+        ];
+    }
+
+    _bondPowerItems(/** @type {any} */ bond)
+    {
+        const rows = /** @type {any[]} */ ([]);
+        const powers = /** @type {any[]} */ (bond.system?.powers ?? []);
+        powers.forEach((power, powerIdx) =>
+        {
+            if (!power.unlocked)
+                return;
+            const uses = power.uses;
+            const hasUses = !!uses && uses.max > 0;
+            let badgeParts = null;
+            if (hasUses)
+            {
+                const pips = [];
+                for (let pip = 0; pip < uses.max; pip++)
+                    pips.push(`<i class="mdi ${pip < uses.value ? 'mdi-calendar-today' : 'mdi-calendar-blank'}"></i>`);
+                badgeParts = { badge: pips.join(' '), badgeColor: uses.value <= 0 ? '#c33' : '#3a9e6e' };
+            }
+            rows.push({
+                label: power.name,
+                icon: power.master ? 'mdi mdi-rhombus-split' : power.veteran ? 'mdi mdi-rhombus-medium' : 'modules/lancer-automations/icons/spiked-halo.svg',
+                ...(badgeParts ?? {}),
+                onClick: () =>
+                {
+                    if (hasUses && uses.value <= 0)
+                    {
+                        ui.notifications.warn(`${power.name} has no uses left.`);
+                        return;
+                    }
+                    bond.beginBondPowerFlow?.(powerIdx);
+                },
+                onRightClick: (/** @type {any} */ row) =>
+                {
+                    const rank = power.master ? 'Master' : power.veteran ? 'Veteran' : 'Power';
+                    const desc = laFormatDetailHtml(power.description ?? '');
+                    const prereq = power.prerequisite
+                        ? `<div style="margin-top:6px;border-top:1px solid #2a2a2a;padding-top:4px;font-size:0.78em;color:#888;">${laFormatDetailHtml(power.prerequisite)}</div>`
+                        : '';
+                    const bodyHtml = ((desc ? `<div style="font-size:0.82em;line-height:1.5;color:#bbb;">${desc}</div>` : '') + prereq)
+                        || '<div style="font-size:0.82em;color:#888;">No description.</div>';
+                    this._showItemPopup({
+                        cssClass: 'la-hud-popup la-hud-talent-popup',
+                        dataKey: 'bond-power',
+                        dataValue: `${bond.id}_${powerIdx}`,
+                        title: power.name,
+                        subtitle: this._joinSubtitle(rank, power.frequency || null, bond.name),
+                        bodyHtml,
+                        theme: 'talent',
+                        item: bond,
+                        skipExtras: true,
+                        pips: false,
+                        row,
+                        postRender: (/** @type {any} */ popup) => appendBondPowerPips(bond, powerIdx, popup),
+                    });
+                },
+            });
+        });
+        rows.push({
+            label: 'Unlock power',
+            icon: 'mdi mdi-lock-open-plus-outline',
+            onClick: () => this._openUnlockPowerDialog(bond),
+        });
+        return rows;
+    }
+
+    _openUnlockPowerDialog(/** @type {any} */ bond)
+    {
+        const locked = (/** @type {any[]} */ (bond.system?.powers ?? []))
+            .map((power, powerIdx) => ({ power, powerIdx }))
+            .filter(entry => !entry.power.unlocked);
+        if (!locked.length)
+        {
+            ui.notifications.info('All powers of this bond are unlocked.');
+            return;
+        }
+        const entriesHtml = locked.map(entry =>
+        {
+            const rank = entry.power.master ? ' <span style="color:#b8860b;font-size:0.8em;">[Master]</span>'
+                : entry.power.veteran ? ' <span style="color:#4682b4;font-size:0.8em;">[Veteran]</span>'
+                    : ' <span style="color:#888;font-size:0.8em;">[Power]</span>';
+            const prereq = entry.power.prerequisite
+                ? `<div style="font-size:0.8em;color:#888;margin-top:2px;">${entry.power.prerequisite}</div>`
+                : '';
+            return `<div class="lancer-item-card la-bond-unlock-entry" data-idx="${entry.powerIdx}" style="margin-bottom:6px;padding:8px;cursor:pointer;">
+                <div class="lancer-item-content" style="flex:1;min-width:0;">
+                    <div class="lancer-item-name">${entry.power.name}${rank}</div>
+                    ${prereq}
+                </div>
+            </div>`;
+        }).join('');
+        const dialog = new Dialog({
+            title: 'Unlock Power',
+            content: `
+                <div class="lancer-dialog-header" style="margin:-8px -8px 10px -8px;">
+                    <div class="lancer-dialog-title">UNLOCK POWER</div>
+                    <div class="lancer-dialog-subtitle">${bond.name}</div>
+                </div>
+                <div style="max-height:400px;overflow-y:auto;">${entriesHtml}</div>`,
+            buttons: {
+                cancel: { label: '<i class="fas fa-times"></i> Cancel' },
+            },
+            render: (/** @type {any} */ html) =>
+            {
+                html.find('.la-bond-unlock-entry').on('click', async (/** @type {any} */ ev) =>
+                {
+                    const powerIdx = Number($(ev.currentTarget).data('idx'));
+                    await bond.update({ [`system.powers.${powerIdx}.unlocked`]: true });
+                    dialog.close();
+                });
+            },
+            default: 'cancel',
+        }, {
+            width: 420,
+            classes: ['lancer-dialog-base', 'lancer-no-title'],
+        });
+        dialog.render(true);
+    }
+
+    _catPilotGear()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Gear',
+            colLabel: 'Gear',
+            icon: 'mdi mdi-bag-personal-outline',
+            getItems: () =>
+            {
+                const gear = (actor.system?.loadout?.gear ?? [])
+                    .map(/** @type {any} */ g => g?.value)
+                    .filter(/** @type {any} */ item => !!item);
+                if (!gear.length)
+                    return [];
+                return gear.map(item =>
+                {
+                    const sys = item.system;
+                    return this._itemRow(item, {
+                        icon: item.img ?? null,
+                        category: 'Gear',
+                        childColLabel: item.name,
+                        getChildren: () => this._pilotGearChildren(item, actor),
+                        onRightClick: (/** @type {any} */ row) =>
+                        {
+                            const bodyHtml = this._bodyHtml(sys) + laRenderActions(sys.actions ?? []);
+                            this._showItemPopup({ cssClass: 'la-hud-popup la-hud-system-popup', dataKey: 'gear-id', dataValue: item.id, title: item.name, subtitle: 'Pilot Gear', bodyHtml, theme: 'system', item, row });
+                        },
+                    });
+                });
+            },
+        };
+    }
+
+    _pilotGearChildren(/** @type {any} */ item, /** @type {any} */ actor)
+    {
+        const sys = item.system;
+        const ap = act => this._actionPopup(act, item);
+        const sysActions = applyActionOverlays(item, sys.actions ?? []);
+        const status = getItemStatus(item);
+        const childBadge = status.badge ?? null;
+        const childBadgeColor = status.badgeColor ?? null;
+        const childStatusKind = status.destroyed ? 'destroyed' : status.unavailable ? 'unavailable' : null;
+
+        if (sysActions.length <= 1)
+        {
+            const single = sysActions[0] ?? null;
+            const actStr = single?.activation ?? 'Quick';
+            return [this._itemRow(item, {
+                label: single?.name ?? item.name,
+                action: single ?? { name: item.name, activation: actStr },
+                category: 'Gear',
+                icon: single ? getActivationIcon(single) : 'systems/lancer/assets/icons/activate.svg',
+                badge: childBadge,
+                badgeColor: childBadgeColor,
+                statusKind: childStatusKind,
+                onClick: single
+                    ? () => /** @type {any} */ (item).beginActivationFlow('system.actions.0')
+                    : () => executeSimpleActivation(actor, { title: item.name, action: { name: item.name, activation: actStr }, detail: sys.effect ?? '' }, { item }),
+                onRightClick: single
+                    ? ap(single)
+                    : ap({ name: item.name, activation: actStr, detail: sys.effect ?? '' }),
+            })];
+        }
+
+        return sysActions.map((/** @type {any} */ action, /** @type {number} */ idx) => this._itemRow(item, {
+            label: action.name,
+            action,
+            category: 'Gear',
+            icon: getActivationIcon(action),
+            badge: childBadge,
+            badgeColor: childBadgeColor,
+            statusKind: childStatusKind,
+            onClick: () => /** @type {any} */ (item).beginActivationFlow(`system.actions.${idx}`),
+            onRightClick: ap(action),
+        }));
+    }
+
+    _catNpcFrame()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Class',
+            colLabel: 'Class',
+            icon: `systems/lancer/assets/icons/npc_tier_${Math.min(3, Math.max(1, /** @type {any} */ (this._actor?.system)?.tier ?? 1))}.svg`,
+            getItems: () =>
+            {
+                const npcClass = /** @type {any} */ (actor.items.find(/** @type {any} */ i => i.type === 'npc_class'));
+                const tier = /** @type {any} */ (actor.system)?.tier ?? 1;
+                const tierClamped = Math.min(3, Math.max(1, tier));
+                const tierIcon = `systems/lancer/assets/icons/npc_tier_${tierClamped}.svg`;
+                if (!npcClass)
+                    return [];
+                const as = /** @type {any} */ (actor.system) ?? {};
+                const tierIdx = Math.max(0, Math.min(2, tierClamped - 1));
+                const bs = npcClass.system?.base_stats?.[tierIdx] ?? {};
+                const stat = (/** @type {string} */ label, /** @type {any} */ val, /** @type {any} */ base = undefined) => this._statCell(label, val, base);
+                const grid = (/** @type {string[]} */ ...cells) => this._statGrid(4, ...cells);
+                const currentStats = grid(
+                    stat('HP',      as.hp?.max ?? as.hp,          bs.hp),
+                    stat('Armor',   as.armor,                      bs.armor),
+                    stat('E-Def',   as.edef,                       bs.edef),
+                    stat('Evasion', as.evasion,                    bs.evasion),
+                    stat('Heat',    as.heat?.max ?? as.heatcap,    bs.heatcap),
+                    stat('Speed',   as.speed,                      bs.speed),
+                    stat('Sensors', as.sensor_range,               bs.sensor_range),
+                    stat('Save',    as.save,                       bs.save),
+                    stat('Act.',    as.activations,                bs.activations),
+                    stat('Struct',  as.structure?.max ?? as.structure, bs.structure),
+                    stat('Reactor', as.stress?.max ?? as.stress,   bs.stress),
+                    '<div></div>',
+                    stat('Hull',    as.hull,                       bs.hull),
+                    stat('Agility', as.agi,                        bs.agi),
+                    stat('Systems', as.sys,                        bs.sys),
+                    stat('Eng',     as.eng,                        bs.eng),
+                );
+                const baseStats = `<details style="margin-top:6px;border-top:1px solid #2a2a2a;padding-top:4px;"><summary style="font-size:0.72em;color:#555;cursor:pointer;user-select:none;list-style:none;padding:2px 0;">▶ Base Stats (Tier ${tierClamped})</summary>${
+                    grid(
+                        stat('HP',      bs.hp),
+                        stat('Armor',   bs.armor),
+                        stat('E-Def',   bs.edef),
+                        stat('Evasion', bs.evasion),
+                        stat('Heat',    bs.heatcap),
+                        stat('Speed',   bs.speed),
+                        stat('Sensors', bs.sensor_range),
+                        stat('Save',    bs.save),
+                        stat('Act.',    bs.activations),
+                        stat('Struct',  bs.structure),
+                        stat('Reactor', bs.stress),
+                        '<div></div>',
+                        stat('Hull',    bs.hull),
+                        stat('Agility', bs.agi),
+                        stat('Systems', bs.sys),
+                        stat('Eng',     bs.eng),
+                    )
+                }</details>`;
+                const bodyHtml = currentStats + baseStats;
+                return [
+                    {
+                        label: npcClass.name + rankSuffix(actor),
+                        icon: tierIcon,
+                        onClick: () => /** @type {any} */ (npcClass).sheet.render(true),
+                        onRightClick: (/** @type {any} */ row) => this._showItemPopup({
+                            cssClass: 'la-hud-popup la-hud-npcclass-popup',
+                            dataKey: 'npcclass-id',
+                            dataValue: npcClass.id,
+                            title: npcClass.name,
+                            subtitle: this._joinSubtitle(
+                                `Tier ${tierClamped}`,
+                                npcClass.system?.role ? npcClass.system.role.charAt(0).toUpperCase() + npcClass.system.role.slice(1) : null,
+                                as.size != null ? `Size ${as.size}` : (bs.size != null ? `Size ${bs.size}` : null),
+                            ),
+                            bodyHtml,
+                            theme: 'frame',
+                            item: npcClass,
+                            row,
+                        }),
+                    },
+                    { label: 'Templates', childColLabel: 'Templates', icon: 'systems/lancer/assets/icons/npc_template.svg', getChildren: () => this._npcTemplateItems(actor) },
+                    { label: 'Traits',    childColLabel: 'Traits',    icon: 'systems/lancer/assets/icons/trait.svg', getChildren: () => this._npcTraitItems(actor) },
+                ];
+            },
+        };
+    }
+
+    _npcTemplateItems(/** @type {any} */ actor)
+    {
+        const templates = actor.items.filter(/** @type {any} */ i => i.type === 'npc_template');
+        return templates.map(/** @type {any} */ tmpl => ({
+            label: tmpl.name,
+            icon: tmpl.img ?? null,
+            onClick: () => /** @type {any} */ (tmpl).sheet.render(true),
+            onRightClick: (/** @type {any} */ row) =>
+            {
+                const desc = tmpl.system?.description
+                    ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${laFormatDetailHtml(tmpl.system.description)}</div>` : '';
+                if (!desc)
+                    return;
+                this._showItemPopup({
+                    cssClass: 'la-hud-popup la-hud-npctemplate-popup',
+                    dataKey: 'npctemplate-id',
+                    dataValue: tmpl.id,
+                    title: tmpl.name,
+                    subtitle: 'Template',
+                    bodyHtml: desc,
+                    theme: 'frame',
+                    item: tmpl,
+                    row,
+                });
+            },
+        }));
+    }
+
+    _npcTraitItems(/** @type {any} */ actor)
+    {
+        const traits = actor.items.filter(/** @type {any} */ i => i.type === 'npc_feature' && i.system.type === 'Trait');
+        if (!traits.length)
+            return [];
+        return traits.map(/** @type {any} */ feat =>
+        {
+            const sys = feat.system;
+            return {
+                label: feat.name,
+                icon: feat.img ?? null,
+                hoverData: { actor: this._actor, item: feat, category: 'Traits' },
+                onClick: () => /** @type {any} */ (feat).beginSystemFlow(),
+                broadcastFn: (_t, a) =>
+                {
+                    const f = a.items.find(i => i.type === 'npc_feature' && i.system?.lid === sys.lid); if (f) /** @type {any} */
+                        (f).beginSystemFlow();
+                },
+                onRightClick: (/** @type {any} */ row) =>
+                {
+                    const tagsHtml = laRenderTags(sys.tags ?? []);
+                    const effect   = sys.effect ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${laFormatDetailHtml(sys.effect)}</div>` : '';
+                    const bodyHtml = tagsHtml + effect;
+                    if (!bodyHtml)
+                        return;
+                    const origin = sys.origin?.name ? `${sys.origin.name} · ${sys.origin.type}` : '';
+                    this._showItemPopup({
+                        cssClass: 'la-hud-popup la-hud-npctrait-popup',
+                        dataKey: 'npctrait-id',
+                        dataValue: feat.id,
+                        title: feat.name,
+                        subtitle: origin,
+                        bodyHtml,
+                        theme: 'trait',
+                        item: feat,
+                        row,
+                    });
+                },
+            };
+        });
+    }
+
+    _catNpcSystems()
+    {
+        const actor = this._actor;
+        const ACT_LABELS = /** @type {Record<string,string>} */ ({
+            tg_quick_action: 'Quick Action',
+            tg_full_action:  'Full Action',
+            tg_protocol:     'Protocol',
+            tg_reaction:     'Reaction',
+            tg_free_action:  'Free Action',
+        });
+        return {
+            label: 'Systems',
+            colLabel: 'Systems',
+            icon: 'systems/lancer/assets/icons/mech_system.svg',
+            getItems: () =>
+            {
+                const features = actor.items.filter(/** @type {any} */ feat =>
+                    feat.type === 'npc_feature' &&
+                    (feat.system.type === 'System' || feat.system.type === 'Reaction')
+                );
+                if (!features.length)
+                    return [];
+                return /** @type {any[]} */ (features).map(item =>
+                {
+                    const sys = item.system;
+                    const actTag = (sys.tags ?? []).find(/** @type {any} */ tag => ACTIVATION_TAGS.includes(tag.lid));
+                    const TYPE_TO_ACTIVATION = { Reaction: 'Reaction', System: null, Tech: 'Quick Tech', Trait: null, Weapon: null };
+                    const activation = actTag
+                        ? actTag.lid.replace('tg_', '').replace('_action', ' action')
+                        : (TYPE_TO_ACTIVATION[sys.type] ?? null);
+                    const actLabel = actTag ? (ACT_LABELS[actTag.lid] ?? actTag.lid) : (activation ?? null);
+                    const origin = sys.origin?.name ? `${sys.origin.name} · ${sys.origin.type}` : '';
+                    const npcSysChildren = () =>
+                    {
+                        const sysActions = /** @type {any[]} */ (applyActionOverlays(item, sys.actions ?? []));
+                        const extraActions = /** @type {any[]} */ (item.getFlag?.('lancer-automations', 'extraActions') || [])
+                            .filter(/** @type {any} */ action => linkTierGate(action, actor, item));
+                        const npcRightClick = (/** @type {any} */ row) =>
+                        {
+                            const trigger = sys.trigger ? `<div style="font-size:0.8em;color:#888;margin-bottom:4px;"><b>Trigger:</b> ${laFormatDetailHtml(sys.trigger)}</div>` : '';
+                            const effect  = sys.effect  ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${laFormatDetailHtml(sys.effect)}</div>` : '';
+                            const npcAction = /** @type {any} */ ((sys.actions ?? []).find(/** @type {any} */ a => Number(a?.cost) > 0)) ?? null;
+                            const cost = Number(npcAction?.cost) || 1;
+                            const costLine = `<div style="font-size:0.8em;color:#888;margin-bottom:4px;"><b>Cost:</b> ${cost}</div>`;
+                            const bodyHtml = laRenderTags(sys.tags ?? []) + costLine + trigger + effect;
+                            if (!bodyHtml)
+                                return;
+                            this._showItemPopup({ cssClass: 'la-hud-popup la-hud-npcsys-popup', dataKey: 'npcsys-id', dataValue: item.id, title: item.name, subtitle: this._joinSubtitle(actLabel ?? sys.type, origin), bodyHtml, theme: activation ? activationTheme(activation) : 'system', item, row });
+                        };
+                        const baseRows = [];
+                        const npcStatus = getItemStatus(item);
+                        const childBadge = npcStatus.badge ?? null;
+                        const childBadgeColor = npcStatus.badgeColor ?? null;
+                        const childStatusKind = npcStatus.destroyed ? 'destroyed' : npcStatus.unavailable ? 'unavailable' : null;
+                        const hidePrimary = isPrimaryActionHidden(item);
+                        if (!hidePrimary && sysActions.length <= 1)
+                        {
+                            const single = sysActions[0] ?? null;
+                            const actStr = single?.activation ?? activation ?? 'Activation';
+                            baseRows.push(this._itemRow(item, {
+                                label: item.name,
+                                action: { name: item.name, activation: actStr },
+                                category: 'Systems',
+                                icon: (single || activation) ? getActivationIcon({ ...(single ?? {}), name: item.name, activation: actStr }) : 'systems/lancer/assets/icons/activate.svg',
+                                badge: childBadge,
+                                badgeColor: childBadgeColor,
+                                statusKind: childStatusKind,
+                                onClick: () => /** @type {any} */ (item).beginSystemFlow(),
+                                onRightClick: npcRightClick,
+                            }));
+                        }
+                        else if (!hidePrimary)
+                        {
+                            sysActions.forEach((action, idx) => baseRows.push(this._itemRow(item, {
+                                label: action.name,
+                                action,
+                                category: 'Systems',
+                                icon: getActivationIcon(action),
+                                badge: childBadge,
+                                badgeColor: childBadgeColor,
+                                statusKind: childStatusKind,
+                                onClick: () => /** @type {any} */ (item).beginActivationFlow(`system.actions.${idx}`),
+                                onRightClick: npcRightClick,
+                            })));
+                        }
+                        const depLids = getItemDeployables(item, actor);
+                        if (depLids.length)
+                        {
+                            if (baseRows.length)
+                                baseRows.push({ isSectionLabel: true, label: 'Deployables' });
+                            for (const lid of depLids)
+                            {
+                                const depInfo = getDeployableInfoSync(lid, actor);
+                                baseRows.push(this._itemRow(item, {
+                                    label: stripDeployOwner(depInfo?.name ?? lid),
+                                    icon: getDeployableIcon(depInfo),
+                                    category: 'Deployables',
+                                    hoverExtra: { deployLid: lid },
+                                    onClick: () => deployDeployable(actor, lid, item, true),
+                                    onRightClick: async (/** @type {any} */ row) =>
+                                    {
+                                        const resolved = await resolveDeployable(lid, actor);
+                                        const dep = resolved.deployable;
+                                        if (!dep)
+                                            return;
+                                        const srcType = item.system?.type ?? '';
+                                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-deploy-popup', dataKey: 'deploy-name', dataValue: dep.name, title: stripDeployOwner(dep.name), subtitle: `Deployable · ${item.name}${srcType ? ` (${srcType})` : ''}`, bodyHtml: this._deployBodyHtml(item, lid, actor, dep), theme: 'deployable', item, skipExtras: true, row });
+                                    },
+                                }));
+                            }
+                        }
+                        // Extra actions (from addExtraActions)
+                        for (const action of extraActions)
+                        {
+                            const charged = !action.recharge || action.charged !== false;
+                            const eaBadge = action.recharge ? rechargeIcon(charged) : null;
+                            const eaBadgeColor = action.recharge ? (charged ? '#3a9e6e' : '#c33') : null;
+                            baseRows.push({
+                                label: `<span style="color:#e8a030;font-size:0.7em;vertical-align:middle;">●</span> ${action.name}`,
+                                badge: eaBadge,
+                                badgeColor: eaBadgeColor,
+                                icon: getActivationIcon(action),
+                                onClick: () => executeSimpleActivation(actor, { title: action.name, action, detail: action.detail ?? '' }, { item }),
+                                onRightClick: this._actionPopup(action, item),
+                                hoverData: { actor, item, action, category: 'Systems' },
+                            });
+                        }
+                        return baseRows;
+                    };
+                    return this._itemRow(item, {
+                        icon: item.img ?? null,
+                        category: 'Systems',
+                        childColLabel: item.name,
+                        getChildren: npcSysChildren,
+                        hoverExtra: { action: activation ? { name: item.name, activation } : null },
+                        onRightClick: (/** @type {any} */ row) =>
+                        {
+                            const trigger  = sys.trigger ? `<div style="font-size:0.8em;color:#888;margin-bottom:4px;"><b>Trigger:</b> ${laFormatDetailHtml(sys.trigger)}</div>` : '';
+                            const effect   = sys.effect  ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${laFormatDetailHtml(sys.effect)}</div>` : '';
+                            const tagsHtml = laRenderTags(sys.tags ?? []);
+                            const npcAction = /** @type {any} */ ((sys.actions ?? []).find(/** @type {any} */ a => Number(a?.cost) > 0)) ?? null;
+                            const cost = Number(npcAction?.cost) || 1;
+                            const costLine = `<div style="font-size:0.8em;color:#888;margin-bottom:4px;"><b>Cost:</b> ${cost}</div>`;
+                            const bodyHtml = tagsHtml + costLine + trigger + effect;
+                            if (!bodyHtml)
+                                return;
+                            this._showItemPopup({
+                                cssClass: 'la-hud-popup la-hud-npcsys-popup',
+                                dataKey: 'npcsys-id',
+                                dataValue: item.id,
+                                title: item.name,
+                                subtitle: this._joinSubtitle(actLabel ?? sys.type, origin),
+                                bodyHtml,
+                                theme: activation ? activationTheme(activation) : 'system',
+                                item,
+                                row,
+                            });
+                        },
+                    });
+                });
+            },
+        };
+    }
+
+    _corePowerItems(/** @type {any} */ frame, /** @type {any} */ actor)
+    {
+        const coreSystem = frame.system?.core_system;
+        const coreName = coreSystem?.active_name ?? 'Core Power';
+        const coreUsed = actor.system?.core_energy === 0;
+        const activeAction = coreSystem?.active_actions?.[0];
+        const passiveName = coreSystem?.passive_name ?? '';
+        const passiveActions = coreSystem?.passive_actions ?? [];
+        const counters = coreSystem?.counters ?? [];
+
+        const coreActivation = coreSystem?.activation ?? activeAction?.activation ?? 'Protocol';
+        const rows = /** @type {any[]} */ ([{
+            label: coreName,
+            icon: getActivationIcon(activeAction ?? coreActivation),
+            statusKind: coreUsed ? 'unavailable' : null,
+            onClick: () => /** @type {any} */ (frame.beginCoreActiveFlow('system.core_system')),
+            onRightClick: (/** @type {any} */ row) => this._showItemPopup({ cssClass: 'la-hud-popup la-hud-frame-popup', dataKey: 'core-active', dataValue: frame.id, title: coreName, subtitle: `Core Active · ${coreActivation} · ${frame.name}`, bodyHtml: `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${laFormatDetailHtml(coreSystem?.active_effect ?? coreSystem?.description ?? '')}</div>`, theme: 'frame', item: frame, row }),
+        }]);
+
+        const activeSynergies = coreSystem?.active_synergies ?? [];
+        if (activeSynergies.length)
+        {
+            const ROMAN = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
+            rows.push({ label: 'ACTIVE', isSectionLabel: true });
+            activeSynergies.forEach((/** @type {any} */ synergy, /** @type {number} */ idx) =>
+            {
+                const detail = String(synergy?.detail ?? '');
+                const name = `${coreName} Synergy ${ROMAN[idx] ?? idx + 1}`;
+                const freqSpecs = [
+                    { max: getPerRoundLimitFromSub(synergy), used: Number(frame.system?.uses_per_round?.value ?? 0), ready: 'mdi-restart', off: 'mdi-restart-off' },
+                    { max: getPerTurnLimitFromSub(synergy), used: Number(frame.system?.uses_per_turn?.value ?? 0), ready: 'mdi-circle-slice-8', off: 'mdi-circle-outline' },
+                    { max: getPerSceneLimitFromSub(synergy), used: Number(frame.system?.uses_per_scene?.value ?? 0), ready: 'mdi-cog', off: 'mdi-cog-off' },
+                ];
+                const freqIcons = [];
+                let freqDepleted = false;
+                for (const spec of freqSpecs)
+                {
+                    if (spec.max <= 0)
+                        continue;
+                    const ready = spec.used < spec.max;
+                    if (!ready)
+                        freqDepleted = true;
+                    freqIcons.push(`<i class="mdi ${ready ? spec.ready : spec.off}"></i>`);
+                }
+                rows.push({
+                    label: name,
+                    icon: 'systems/lancer/assets/icons/core_bonus.svg',
+                    ...(freqIcons.length ? {
+                        badge: freqIcons.join(' '),
+                        badgeColor: freqDepleted ? '#c33' : '#3a9e6e',
+                    } : {}),
+                    hoverData: { actor, item: frame, action: { name, activation: 'Free' }, category: 'Actions' },
+                    onClick: () => executeSimpleActivation(actor, { title: name, action: { name, activation: 'Free' }, detail }, { item: frame }),
+                    onRightClick: this._actionPopup({ name, activation: 'Free', detail }, frame, 'frame'),
+                });
+            });
+        }
+
+        rows.push({ label: 'CHARGE', isSectionLabel: true });
+        const self = this;
+        rows.push({
+            inputCell: true,
+            subtype: 'toggle',
+            name: 'Charged',
+            icon: 'systems/lancer/assets/icons/corepower.svg',
+            getValue: () => !coreUsed,
+            onToggle: async (/** @type {boolean} */ on) =>
+            {
+                await actor.update({ 'system.core_energy': on ? 1 : 0 });
+                // Rebuild visible columns in place so the Core Power highlight updates
+                // without collapsing sub-columns.
+                setTimeout(() => self._refreshColumnsInPlace(), 0);
+            },
+        });
+
+        if ((passiveName && coreSystem?.passive_effect) || passiveActions.length)
+        {
+            rows.push({ label: 'PASSIVE', isSectionLabel: true });
+            if (passiveName)
+            {
+                rows.push({
+                    label: passiveName,
+                    icon: 'systems/lancer/assets/icons/core_bonus.svg',
+                    onRightClick: (/** @type {any} */ row) => this._showItemPopup({ cssClass: 'la-hud-popup la-hud-frame-popup', dataKey: 'core-passive', dataValue: frame.id, title: passiveName, subtitle: `${frame.name} · Core Passive`, bodyHtml: `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${laFormatDetailHtml(coreSystem?.passive_effect ?? '')}</div>${laRenderActions(coreSystem?.passive_actions ?? [])}`, theme: 'frame', item: frame, row }),
+                });
+            }
+            for (const action of passiveActions)
+            {
+                const theme = action.activation === 'Invade' ? 'invade' : 'frame';
+                rows.push(this._itemRow(frame, { label: action.name, icon: getActivationIcon(action), action, category: 'Tech', onClick: () => executeSimpleActivation(actor, { title: action.name, action, detail: action.detail ?? '' }, { item: frame }), onRightClick: this._actionPopup(action, frame, theme) }));
+            }
+        }
+
+        if (counters.length)
+        {
+            rows.push({ label: 'RESOURCES', isSectionLabel: true });
+            counters.forEach((/** @type {any} */ counter, /** @type {number} */ cidx) =>
+            {
+                const path = `system.core_system.counters.${cidx}.value`;
+                rows.push(this._buildCounterRow(counter, path, frame));
+            });
+        }
+
+        return rows;
+    }
+
+    _frameTraitItems(/** @type {any} */ frame, /** @type {any} */ actor)
+    {
+        const ap = a => this._actionPopup(a, frame, 'frame');
+        const traits = frame.system?.traits ?? [];
+        if (!traits.length)
+            return [];
+        return traits.map(/** @type {any} */ (trait) =>
+        {
+            const freqSpecs = [
+                { max: getPerRoundLimitFromSub(trait), used: Number(frame.system?.uses_per_round?.value ?? 0), ready: 'mdi-restart', off: 'mdi-restart-off' },
+                { max: getPerTurnLimitFromSub(trait), used: Number(frame.system?.uses_per_turn?.value ?? 0), ready: 'mdi-circle-slice-8', off: 'mdi-circle-outline' },
+                { max: getPerSceneLimitFromSub(trait), used: Number(frame.system?.uses_per_scene?.value ?? 0), ready: 'mdi-cog', off: 'mdi-cog-off' },
+            ];
+            const freqIcons = [];
+            let freqDepleted = false;
+            for (const spec of freqSpecs)
+            {
+                if (spec.max <= 0)
+                    continue;
+                const ready = spec.used < spec.max;
+                if (!ready)
+                    freqDepleted = true;
+                freqIcons.push(`<i class="mdi ${ready ? spec.ready : spec.off}"></i>`);
+            }
+            return ({
+                label: trait.name,
+                icon: 'systems/lancer/assets/icons/trait.svg',
+                ...(freqIcons.length ? {
+                    badge: freqIcons.join(' '),
+                    badgeColor: freqDepleted ? '#c33' : '#3a9e6e',
+                } : {}),
+                hoverData: { actor, item: trait, category: 'Frame Traits' },
+                onClick: () => executeSimpleActivation(actor, { title: trait.name, action: { name: trait.name, activation: 'Passive' }, detail: trait.description ?? '' }, { item: frame }),
+                childColLabel: trait.name,
+                getChildren: () =>
+                {
+                    const children = [];
+                    for (const action of applyActionOverlays(frame, trait.actions ?? []))
+                    {
+                        children.push({
+                            label: action.name,
+                            icon: getActivationIcon(action),
+                            onClick: () => executeSimpleActivation(actor, { title: action.name, action, detail: action.detail ?? '' }, { item: frame }),
+                            onRightClick: ap(action),
+                        });
+                    }
+                    for (const lid of (trait.deployables ?? []))
+                    {
+                        const depInfo = getDeployableInfoSync(lid, actor);
+                        children.push({
+                            label: stripDeployOwner(depInfo?.name ?? lid),
+                            icon:  getDeployableIcon(depInfo),
+                            hoverData: { actor, item: frame, action: null, category: 'Deployables', deployLid: lid },
+                            onClick: () => deployDeployable(actor, lid, frame, true),
+                            onRightClick: async (/** @type {any} */ row) =>
+                            {
+                                let dep = null;
+                                if (!dep)
+                                {
+                                    const resolved = await resolveDeployable(lid, actor);
+                                    dep = resolved.deployable;
+                                }
+                                if (!dep)
+                                    return;
+                                this._showItemPopup({ cssClass: 'la-hud-popup la-hud-deploy-popup', dataKey: 'deploy-name', dataValue: dep.name, title: stripDeployOwner(dep.name), subtitle: `Deployable · ${trait.name} (Trait)`, bodyHtml: this._deployBodyHtml(frame, lid, actor, dep), theme: 'deployable', item: frame, skipExtras: true, row });
+                            },
+                        });
+                    }
+                    for (const lid of (trait.integrated ?? []))
+                    {
+                        const intItem = /** @type {any} */ (actor.items.find(/** @type {any} */ (i) => i.system?.lid === lid));
+                        if (!intItem)
+                            continue;
+                        if (intItem.type === 'mech_weapon' || intItem.type === 'pilot_weapon')
+                            children.push(this._weaponItem(intItem, null, null));
+                        else
+                        {
+                            children.push({
+                                label: intItem.name,
+                                icon: intItem.img ?? null,
+                                childColLabel: intItem.name,
+                                getChildren: () => this._systemChildren(intItem, actor),
+                            });
+                        }
+                    }
+                    return children.length ? children : null;
+                },
+                onRightClick: (/** @type {any} */ row) =>
+                {
+                    const bodyHtml = trait.description
+                        ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${laFormatDetailHtml(trait.description)}</div>`
+                        : '<div style="font-size:0.82em;color:#888;">No description.</div>';
+                    this._showItemPopup({ cssClass: 'la-hud-popup la-hud-trait-popup', dataKey: 'trait-name', dataValue: trait.name, title: trait.name, subtitle: `${frame.name} · Trait`, bodyHtml, theme: 'trait', item: frame, row, pipsArgs: { subData: trait } });
+                },
+            });
+        });
+    }
+
+    _coreBonusItems(/** @type {any} */ actor)
+    {
+        const pilotActor = actor.system?.pilot?.value;
+        const bonuses = (pilotActor?.items ?? actor.items).filter(/** @type {any} */ i => i.type === 'core_bonus');
+        return bonuses.map(/** @type {any} */ (cb) => ({
+            label: cb.name,
+            icon: cb.img ?? null,
+            onClick: () => executeSimpleActivation(actor, { title: cb.name, action: { name: cb.name, activation: cb.system?.activation || 'Passive' }, detail: cb.system?.effect ?? '' }),
+            onRightClick: (/** @type {any} */ row) =>
+            {
+                this._showItemPopup({ cssClass: 'la-hud-popup la-hud-cb-popup', dataKey: 'cb-id', dataValue: cb.id, title: cb.name, subtitle: 'Core Bonus', bodyHtml: laRenderCoreBonusBody(cb), theme: 'core_bonus', item: cb, row });
+            },
+        }));
+    }
+
+    _frameIntegratedItems(/** @type {any} */ frame, /** @type {any} */ actor, /** @type {string[]} */ lids, /** @type {string[]} */ depLids = [])
+    {
+        const items = lids
+            .map(lid => /** @type {any} */ (actor.items.find(/** @type {any} */ i => i.system?.lid === lid)))
+            .filter(/** @type {any} */ i => !!i);
+        const rows = items.map(/** @type {any} */ intItem =>
+        {
+            if (intItem.type === 'mech_weapon' || intItem.type === 'pilot_weapon')
+                return this._weaponItem(intItem, null, null);
+            return this._itemRow(intItem, {
+                icon: intItem.img ?? null,
+                category: 'Systems',
+                childColLabel: intItem.name,
+                getChildren: () => this._systemChildren(intItem, actor),
+                onRightClick: (/** @type {any} */ row) =>
+                {
+                    this._showItemPopup({ cssClass: 'la-hud-popup la-hud-system-popup', dataKey: 'system-id', dataValue: intItem.id, title: intItem.name, subtitle: `Integrated · ${frame.name}`, bodyHtml: this._bodyHtml(intItem.system), theme: 'system', item: intItem, row });
+                },
+            });
+        });
+        if (depLids.length)
+        {
+            for (const lid of depLids)
+            {
+                const depInfo = getDeployableInfoSync(lid, actor);
+                rows.push(/** @type {any} */({
+                    label: stripDeployOwner(depInfo?.name ?? lid),
+                    icon:  getDeployableIcon(depInfo),
+                    hoverData: { actor, item: frame, action: null, category: 'Deployables', deployLid: lid },
+                    onClick: () => deployDeployable(actor, lid, frame, true),
+                    onRightClick: async (/** @type {any} */ row) =>
+                    {
+                        let dep = null;
+                        if (!dep)
+                        {
+                            const resolved = await resolveDeployable(lid, actor);
+                            dep = resolved.deployable;
+                        }
+                        if (!dep)
+                            return;
+                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-deploy-popup', dataKey: 'deploy-name', dataValue: dep.name, title: stripDeployOwner(dep.name), subtitle: `Deployable · ${frame.name} (Core)`, bodyHtml: this._deployBodyHtml(frame, lid, actor, dep), theme: 'deployable', item: frame, skipExtras: true, row });
+                    },
+                }));
+            }
+        }
+        return rows;
+    }
+
+    _rankIcon(rank)
+    {
+        return `systems/lancer/assets/icons/white/rank_${Math.min(3, Math.max(1, rank))}.svg`;
+    }
+
+    _catTalents()
+    {
+        const actor = this._actor;
+        return {
+            label: 'Talents',
+            colLabel: 'Talents',
+            icon: 'systems/lancer/assets/icons/white/talent.svg',
+            getItems: () =>
+            {
+                const pilot = actor?.system?.pilot?.value ?? actor;
+                if (!pilot)
+                    return [];
+                const talents = [...pilot.items.values()].filter(i => i.type === 'talent');
+                if (!talents.length)
+                    return [];
+                return talents.map(talent => ({
+                    label: talent.name,
+                    icon: this._rankIcon(talent.system.curr_rank ?? 1),
+                    onClick: () => /** @type {any} */ (talent).sheet.render(true),
+                    childColLabel: talent.name,
+                    hoverData: { actor, item: talent, action: null, category: 'Talents' },
+                    getChildren: () => this._talentRankItems(talent),
+                }));
+            },
+        };
+    }
+
+    _rankFreqStatus(talent, rank, rankIdx)
+    {
+        let perFreqOn;
+        try
+        {
+            perFreqOn = !!game.settings.get('lancer-automations', 'enablePerRoundTurnTags');
+        }
+        catch
+        {
+            perFreqOn = false;
+        }
+        if (!perFreqOn)
+            return null;
+        const subKey = rankSubKey(rankIdx);
+        const specs = [
+            { max: getPerRoundLimitFromSub(rank), field: 'uses_per_round', ready: 'mdi-restart', off: 'mdi-restart-off' },
+            { max: getPerTurnLimitFromSub(rank), field: 'uses_per_turn', ready: 'mdi-circle-slice-8', off: 'mdi-circle-outline' },
+            { max: getPerSceneLimitFromSub(rank), field: 'uses_per_scene', ready: 'mdi-cog', off: 'mdi-cog-off' },
+        ];
+        const parts = [];
+        let unavailable = false;
+        let badgeColor = '#3a9e6e';
+        for (const spec of specs)
+        {
+            if (!spec.max)
+                continue;
+            const used = getSubUsed(talent, subKey, spec.field);
+            const ready = spec.max - Math.min(spec.max, used);
+            if (ready <= 0)
+            {
+                unavailable = true; badgeColor = '#c33';
+            }
+            else if (ready < spec.max && badgeColor !== '#c33')
+                badgeColor = '#cc7700';
+            const pips = [];
+            for (let pipIdx = 0; pipIdx < spec.max; pipIdx++)
+                pips.push(`<span class="mdi ${pipIdx < ready ? spec.ready : spec.off}" style="color:${pipIdx < ready ? '#3a9e6e' : '#c33'};"></span>`);
+            parts.push(pips.join(''));
+        }
+        if (!parts.length)
+            return null;
+        return { badge: parts.join(' '), badgeColor, unavailable };
+    }
+
+    _talentRankItems(talent)
+    {
+        const ranks    = talent.system.ranks ?? [];
+        const currRank = talent.system.curr_rank ?? 0;
+        const roman    = ['I', 'II', 'III', 'IV', 'V'];
+        return Array.from({ length: currRank }, (_, i) =>
+        {
+            const rank       = ranks[i];
+            const rankLabel  = `${rank.name}`;
+            const actions    = rank.actions ?? [];
+            const counters   = rank.counters ?? [];
+            const freq       = this._rankFreqStatus(talent, rank, i);
+            return {
+                label: rankLabel,
+                badge: freq?.badge ?? null,
+                badgeColor: freq?.badgeColor ?? null,
+                icon: this._rankIcon(i + 1),
+                onClick: () =>
+                {
+                    const F = /** @type {any} */ (game).lancer?.flows?.get('TalentFlow'); if (F)
+                        new F(talent, { title: talent.name, rank, lvl: i }).begin();
+                },
+                childColLabel: rankLabel,
+                getChildren: (actions.length || counters.length) ? () => this._talentRankActionItems(talent.system.ranks[i], talent, i) : undefined,
+                onRightClick: (row) =>
+                {
+                    const key = `${talent.id}_${i}`;
+                    const desc = laFormatDetailHtml(rank.description ?? '');
+                    const descHtml = desc ? `<div style="margin-bottom:8px;font-size:0.82em;line-height:1.5;color:#bbb;">${desc}</div>` : '';
+                    const actionsHtml = laRenderActions(rank.actions ?? []);
+                    const rankCounters = rank.counters ?? [];
+                    const countersHtml = rankCounters.length
+                        ? `<div style="margin-bottom:4px;">${laPopupSectionLabel('RESOURCES', '#1a3a5c')}${rankCounters.map(c =>
+                            `<div style="margin-top:4px;padding:4px 6px;background:rgba(255,255,255,0.04);border-radius:3px;display:flex;justify-content:space-between;align-items:center;">
+                                <span style="font-size:0.78em;font-weight:bold;color:#ccc;">${c.name}</span>
+                                <span style="font-size:0.78em;color:#aaa;">${c.value ?? 0} / ${c.max ?? 0}</span>
+                            </div>`).join('')}</div>`
+                        : '';
+                    const bodyHtml = (descHtml + actionsHtml + countersHtml) || '<div style="font-size:0.82em;color:#888;margin:0;">No description.</div>';
+                    this._showItemPopup({ cssClass: 'la-hud-popup la-hud-talent-popup', dataKey: 'rank-key', dataValue: key, title: rankLabel, subtitle: `${talent.name} · Rank ${roman[i] ?? i + 1}`, bodyHtml, theme: 'talent', item: talent, pipsArgs: { subData: rank, subKey: rankSubKey(i) }, row });
+                },
+            };
+        });
+    }
+
+    _talentRankActionItems(rank, talent, rankIdx)
+    {
+        const actions  = applyActionOverlays(talent, rank.actions ?? []);
+        const counters = rank.counters ?? [];
+        const items    = [];
+        const hasBoth  = actions.length && counters.length;
+
+        if (actions.length)
+        {
+            actions.forEach((action, actionIdx) => items.push({
+                label: action.name,
+                icon: getActivationIcon(action),
+                onClick: () =>
+                {
+                    if (action.activation === 'Invade')
+                    {
+                        const opt = this._getInvadeOptions(this._actor).find(entry => entry.item?.id === talent.id && entry.name === action.name);
+                        if (opt)
+                            executeInvade(this._actor, opt);
+                    }
+                    else
+                    {
+                        /** @type {any} */ (talent).beginActivationFlow(`system.ranks.${rankIdx}.actions.${actionIdx}`);
+                    }
+                },
+                onRightClick: this._actionPopup(action, talent, null, { subKey: rankSubKey(rankIdx) }),
+            }));
+        }
+
+        if (counters.length)
+        {
+            if (hasBoth)
+                items.push({ label: 'RESOURCES', isSectionLabel: true });
+            counters.forEach((counter, cidx) =>
+            {
+                const path    = `system.ranks.${rankIdx}.counters.${cidx}.value`;
+                items.push(this._buildCounterRow(counter, path, talent));
+            });
+        }
+
+        return items;
+    }
+
+    _resourceItems()
+    {
+        const actor = this._actor;
+        const pilot = actor?.system?.pilot?.value ?? actor;
+        const items = [];
+        const roman = ['I', 'II', 'III', 'IV', 'V'];
+        for (const talent of [...pilot.items.values()].filter(/** @type {any} */ i => i.type === 'talent'))
+        {
+            const sys      = /** @type {any} */ (talent).system;
+            const ranks    = sys?.ranks ?? [];
+            const currRank = sys?.curr_rank ?? 0;
+            // Counters sharing an lid/name supersede across ranks: keep only the highest rank.
+            const byKey = new Map();
+            for (let rankIdx = 0; rankIdx < Math.min(currRank, ranks.length); rankIdx++)
+            {
+                const rank = ranks[rankIdx];
+                if (!rank)
+                    continue;
+                const counters = rank.counters ?? [];
+                for (let cidx = 0; cidx < counters.length; cidx++)
+                {
+                    const counter = counters[cidx];
+                    const k = counter?.lid || counter?.name || `r${rankIdx}c${cidx}`;
+                    byKey.set(k, { rankIdx, cidx, counter, rank });
+                }
+            }
+            for (const { rankIdx, cidx, counter, rank } of byKey.values())
+            {
+                const path    = `system.ranks.${rankIdx}.counters.${cidx}.value`;
+                const rankLabel = `${roman[rankIdx] ?? String(rankIdx + 1)}: ${rank.name}`;
+                const onRightClick = (/** @type {any} */ row) =>
+                {
+                    const key = `${/** @type {any} */ (talent).id}_${rankIdx}_${cidx}`;
+                    const desc = laFormatDetailHtml(rank.description ?? '');
+                    const descHtml = desc ? `<div style="margin-bottom:8px;font-size:0.82em;line-height:1.5;color:#bbb;">${desc}</div>` : '';
+                    const actionsHtml = laRenderActions(rank.actions ?? []);
+                    const bodyHtml = (descHtml + actionsHtml) || '<div style="font-size:0.82em;color:#888;margin:0;">No description.</div>';
+                    this._showItemPopup({ cssClass: 'la-hud-popup la-hud-talent-popup', dataKey: 'rank-key', dataValue: key, title: rankLabel, subtitle: `${/** @type {any} */ (talent).name} · Rank ${roman[rankIdx] ?? rankIdx + 1}`, bodyHtml, theme: 'talent', item: /** @type {any} */ (talent), pipsArgs: { subData: rank, subKey: rankSubKey(rankIdx) }, row });
+                };
+                items.push(this._buildCounterRow(counter, path, /** @type {any} */ (talent), 'modules/lancer-automations/icons/perspective-dice-two.svg', onRightClick));
+            }
+        }
+        const frame = actor?.system?.loadout?.frame?.value;
+        const csCounters = frame?.system?.core_system?.counters ?? [];
+        csCounters.forEach((/** @type {any} */ counter, /** @type {number} */ cidx) =>
+        {
+            const path = `system.core_system.counters.${cidx}.value`;
+            items.push(this._buildCounterRow(counter, path, frame, 'modules/lancer-automations/icons/perspective-dice-two.svg'));
+        });
+        return items;
+    }
+
+    // Drop only talent:/frame: autoKeys (they render as counter rows above). linked:* pass through.
+    _resourceExtras()
+    {
+        const actor = this._actor;
+        const tokenDoc = /** @type {any} */ (this._token?.document);
+        const raw = (tokenDoc?.getFlag?.('lancer-automations', 'statBarExtras') ?? [])
+            .filter(/** @type {any} */ entry =>
+            {
+                const key = entry?.autoKey;
+                return !key || (!key.startsWith('talent:') && !key.startsWith('frame:'));
+            });
+        const out = [];
+        for (const entry of raw)
+        {
+            const resolved = _resolveExtraBarValues(actor, entry);
+            if (!resolved.ownerOk)
+                continue;
+            // max must be a number. inputCell stringifies it into `${cur}/${max}`.
+            out.push({
+                inputCell: true,
+                subtype: 'increment',
+                name: entry.label || 'Extra',
+                icon: entry.icon || 'modules/lancer-automations/icons/perspective-dice-two.svg',
+                step: 1,
+                min: 0,
+                max: resolved.max,
+                getValue: () => _resolveExtraBarValues(actor, entry).value,
+                onValueChanged: (newVal) => updateExtraBarValue(tokenDoc, entry.id, newVal),
+                ...(entry.linkedItemUuid ? {
+                    onRightClick: async () =>
+                    {
+                        const item = await fromUuid(entry.linkedItemUuid);
+                        if (item?.sheet)
+                            item.sheet.render(true);
+                        else
+                            ui.notifications?.warn(`Linked item not found: ${entry.linkedItemUuid}`);
+                    },
+                } : {}),
+            });
+        }
+        return out;
+    }
+
+    // alt-sheets 'value' custom flags -> plain counter rows (fraction flags render as bars via _resourceExtras).
+    _resourceCustomFlags()
+    {
+        const actor = this._actor;
+        if (!altFlags.isActive())
+            return [];
+        const out = [];
+        for (const flag of altFlags.listValueFlags(actor))
+        {
+            out.push({
+                inputCell: true,
+                subtype: 'increment',
+                name: flag.name || 'Custom',
+                icon: flag.icon || 'modules/lancer-automations/icons/perspective-dice-two.svg',
+                step: 1,
+                min: 0,
+                getValue: () => Number(foundry.utils.getProperty(actor, flag.valuePath)) || 0,
+                onValueChanged: (newVal) => altFlags.writeFlagValue(actor, flag.id, newVal),
+            });
+        }
+        return out;
+    }
+
+    _ammoItems()
+    {
+        const actor = this._actor;
+        const items = [];
+        const systems = actor.type === 'mech'
+            ? (actor.system?.loadout?.systems ?? []).map(s => s?.value).filter(Boolean)
+            : (actor.items?.filter(i => i.type === 'mech_system') ?? []);
+        for (const sysItem of systems)
+        {
+            const ammoArr = sysItem.system?.ammo ?? [];
+            if (!ammoArr.filter(a => a.name).length)
+                continue;
+            ammoArr.forEach((ammo, idx) =>
+            {
+                if (!ammo.name)
+                    return;
+                const cost = ammo.cost ?? 1;
+                items.push({
+                    label: ammo.name,
+                    badge: `${cost}`,
+                    badgeColor: '#1a8a3a',
+                    icon: 'systems/lancer/assets/icons/ammo.svg',
+                    hoverData: { actor, item: sysItem, action: { name: ammo.name, activation: 'Ammo' }, category: 'Ammo' },
+                    onClick: () =>
+                    {
+                        const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                        if (api?.TriggerUseAmmoFlow)
+                            api.TriggerUseAmmoFlow(sysItem.uuid, idx);
+                    },
+                    onRightClick: (/** @type {any} */ row) =>
+                    {
+                        const sizeTags = _ammoTagsHtml(ammo.allowed_sizes);
+                        const typeTags = _ammoTagsHtml(ammo.allowed_types);
+                        const bodyHtml = `${ammo.description ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${ammo.description}</div>` : ''}
+                            <div style="font-size:0.75em;color:#888;margin-top:4px;">Cost: ${cost}${sizeTags}${typeTags}</div>`;
+                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-ammo-popup', dataKey: 'ammo-idx', dataValue: `${sysItem.id}-${idx}`, title: ammo.name, subtitle: sysItem.name, bodyHtml, theme: 'system', item: sysItem, row });
+                    },
+                });
+            });
+        }
+        return items;
+    }
+
+    /** Build a single increment/decrement counter row item. */
+    _buildCounterRow(/** @type {any} */ counter, path, /** @type {any} */ owner, icon = null, onRightClick = null)
+    {
+        return {
+            inputCell: true,
+            subtype: 'increment',
+            name: counter.name,
+            ...(icon ? { icon } : {}),
+            ...(onRightClick ? { onRightClick } : {}),
+            step: 1,
+            min: 0,
+            max: counter.max,
+            getValue: () => counter.value,
+            onValueChanged: (newVal) => owner.update({ [path]: newVal }),
+        };
+    }
+
+    _catAmmo()
+    {
+        const actor = this._actor;
+        const ammoItems = [];
+
+        // Collect all mech systems
+        const systems = actor.type === 'mech'
+            ? (actor.system?.loadout?.systems ?? []).map(s => s?.value).filter(Boolean)
+            : (actor.items?.filter(i => i.type === 'mech_system') ?? []);
+
+        for (const item of systems)
+        {
+            const sys = item.system;
+            const ammoArr = sys?.ammo ?? [];
+            if (!ammoArr.filter(a => a.name).length)
+                continue;
+
+            const status = getItemStatus(item);
+
+            ammoArr.forEach((ammo, idx) =>
+            {
+                if (!ammo.name)
+                    return;
+                const cost = ammo.cost ?? 1;
+                ammoItems.push({
+                    label: ammo.name,
+                    badge: `${cost}`,
+                    badgeColor: '#1a8a3a',
+                    icon: 'systems/lancer/assets/icons/ammo.svg',
+                    ...this._statusColors(status),
+                    hoverData: { actor, item, action: { name: ammo.name, activation: 'Ammo' }, category: 'Ammo' },
+                    onClick: () =>
+                    {
+                        const api = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+                        if (api?.TriggerUseAmmoFlow)
+                            api.TriggerUseAmmoFlow(item.uuid, idx);
+                    },
+                    onRightClick: (/** @type {any} */ row) =>
+                    {
+                        const sizeTags = _ammoTagsHtml(ammo.allowed_sizes);
+                        const typeTags = _ammoTagsHtml(ammo.allowed_types);
+                        const bodyHtml = `${ammo.description ? `<div style="font-size:0.82em;color:#bbb;line-height:1.4;">${ammo.description}</div>` : ''}
+                            <div style="font-size:0.75em;color:#888;margin-top:4px;">Cost: ${cost}${sizeTags}${typeTags}</div>`;
+                        this._showItemPopup({ cssClass: 'la-hud-popup la-hud-ammo-popup', dataKey: 'ammo-idx', dataValue: `${item.id}-${idx}`, title: ammo.name, subtitle: `${item.name}`, bodyHtml, theme: 'system', item, row });
+                    },
+                });
+            });
+        }
+
+        return {
+            label: 'Ammo',
+            colLabel: 'Ammo',
+            getItems: () => ammoItems.length ? ammoItems : [],
+        };
+    }
+
+    // STATUSES panel
+
+    _catStatuses()
+    {
+        return { label: 'Statuses', icon: 'systems/lancer/assets/icons/white/accuracy.svg', isStatusPanel: true };
+    }
+
+    // MACROS panel (per-client list of Foundry macro shortcuts)
+
+    _catMacros()
+    {
+        return {
+            label: 'Macros',
+            colLabel: 'Macros',
+            icon: 'mdi mdi-file-code-outline',
+            getItems: () => this._buildMacroItems(),
+        };
+    }
+
+    _getMacroList()
+    {
+        const raw = game.settings.get('lancer-automations', 'tah.macroList');
+        return Array.isArray(raw) ? raw : [];
+    }
+
+    async _saveMacroList(list)
+    {
+        await game.settings.set('lancer-automations', 'tah.macroList', list);
+        Hooks.callAll('forceUpdateTokenActionHud');
+    }
+
+    // White-source SVGs render invisibly on light HUD rows; invert them to black.
+    _isWhiteSvgIcon(img)
+    {
+        return isWhiteIcon(img);
+    }
+
+    _macroIconHtml(img, size = 20, invertOverride)
+    {
+        if (!img)
+            return '';
+        const doInvert = typeof invertOverride === 'boolean'
+            ? invertOverride
+            : this._isWhiteSvgIcon(img);
+        const filter = doInvert ? 'invert(1)' : 'none';
+        const cls = doInvert ? 'la-hud-icon la-hud-icon--white' : 'la-hud-icon la-hud-icon--dark';
+        return `<img class="${cls}" src="${img}" onerror="this.onerror=null;this.src='icons/svg/dice-target.svg';" style="width:${size}px;height:${size}px;filter:${filter};margin-right:5px;vertical-align:middle;flex-shrink:0;border:none;outline:none;">`;
+    }
+
+    _buildMacroItems()
+    {
+        const list = this._getMacroList();
+        /** @type {any[]} */
+        const items = list.map(entry =>
+        {
+            const macro = game.macros.get(entry.macroId);
+            const img = entry.iconOverride ?? macro?.img ?? entry.icon;
+            const name = entry.name ?? macro?.name ?? '(missing macro)';
+            const iconHtml = this._macroIconHtml(img, 20, entry.iconInvert);
+            // Wrap in flex span so v13 TAH's column-direction row doesn't push the icon onto a separate line.
+            const labelOk = `<span style="display:inline-flex;align-items:center;gap:0;white-space:nowrap;">${iconHtml}${name}</span>`;
+            if (!macro)
+            {
+                return {
+                    label: `<span style="display:inline-flex;align-items:center;gap:0;white-space:nowrap;">${iconHtml}<s style="opacity:0.7">${name}</s></span>`,
+                    onRightClick: (row) => this._openMacroRowPopup(entry, null, row),
+                };
+            }
+            return {
+                label: labelOk,
+                onClick:      () => macro.execute(),
+                onRightClick: (row) => this._openMacroRowPopup(entry, macro, row),
+            };
+        });
+        items.push({
+            label: 'Add macro...',
+            icon: 'fas fa-plus',
+            keepOpen: true,
+            onClick: () => this._openAddMacroDialog(),
+        });
+        return items;
+    }
+
+    _openAddMacroDialog()
+    {
+        const list = this._getMacroList();
+        const known = new Set(list.map(e => e.macroId));
+        const macros = (game.macros?.contents ?? [])
+            .filter(m => !known.has(m.id))
+            .sort((a, b) => a.name.localeCompare(b.name));
+        const rowsHtml = macros.length
+            ? macros.map(m => `
+                <div class="la-tah-pick" data-id="${m.id}" style="cursor:pointer;padding:4px 8px;display:flex;align-items:center;gap:8px;border-left:3px solid transparent;background:color-mix(in srgb, var(--la-plate), #000 6%);">
+                    ${this._macroIconHtml(m.img, 22)}
+                    <span style="flex:1;font-size:0.9em;color:var(--la-ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">${m.name}</span>
+                </div>`).join('')
+            : '<div style="padding:12px;text-align:center;color:#888;font-size:0.85em;font-style:italic;">No macros available.</div>';
+        const content = `
+            <div class="lancer-dialog-header">
+                <div class="lancer-dialog-title">ADD MACRO</div>
+                <div class="lancer-dialog-subtitle">Pick from the list. Customize the icon and name before adding.</div>
+            </div>
+            <input type="text" class="la-tah-search" placeholder="Search..." style="margin-top:8px;width:100%;height:26px;padding:2px 6px;font-size:0.9em;">
+            <div class="la-tah-pick-list lancer-scroll" style="margin-top:4px;max-height:240px;overflow-y:auto;display:flex;flex-direction:column;gap:1px;border:1px solid #ccc;background:var(--la-plate, #e4dccd);">
+                ${rowsHtml}
+            </div>
+            <div class="la-tah-edit" style="margin-top:8px;display:flex;align-items:center;gap:8px;padding:6px;background:var(--la-plate);border:1px solid #cbd6e8;opacity:0.5;pointer-events:none;">
+                <span class="la-tah-edit-icon" title="Click to change icon" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid #ccc;background:#fff;flex-shrink:0;"></span>
+                <input type="text" class="la-tah-edit-name" placeholder="(select a macro)" style="flex:1;height:26px;padding:2px 6px;font-size:0.9em;">
+                <label class="la-tah-edit-invert-label" title="Invert SVG (white → black)" style="display:flex;align-items:center;gap:4px;font-size:0.78em;color:#666;opacity:0.4;">
+                    <input type="checkbox" class="la-tah-edit-invert" disabled>Invert
+                </label>
+            </div>
+            <div class="la-tah-macro-drop" style="margin-top:6px;padding:10px;border:1px dashed #888;text-align:center;font-size:0.85em;color:#888;">
+                Drop a macro here to add it.
+            </div>
+        `;
+        /** @type {{ id: string|null, name: string, img: string, iconOverride: string|null, invert: boolean }} */
+        const state = { id: null, name: '', img: '', iconOverride: null, invert: false };
+        const addEntry = async () =>
+        {
+            if (!state.id)
+                return;
+            const cur = this._getMacroList();
+            if (cur.some(e => e.macroId === state.id))
+                return;
+            const entry = { macroId: state.id, name: state.name, icon: state.img };
+            if (state.iconOverride)
+                entry.iconOverride = state.iconOverride;
+            const finalImg = state.iconOverride ?? state.img;
+            if (state.invert !== this._isWhiteSvgIcon(finalImg))
+                entry.iconInvert = state.invert;
+            cur.push(entry);
+            await this._saveMacroList(cur);
+        };
+        const dlg = new Dialog({
+            title: 'Add Macro',
+            content,
+            buttons: {
+                add: { label: 'Add', callback: () => addEntry() },
+                cancel: { label: 'Cancel' },
+            },
+            default: 'add',
+            render: (html) =>
+            {
+                const editEl     = html.find('.la-tah-edit');
+                const editIcon   = html.find('.la-tah-edit-icon');
+                const editName   = html.find('.la-tah-edit-name');
+                const editInvert = html.find('.la-tah-edit-invert');
+                const editInvertLabel = html.find('.la-tah-edit-invert-label');
+                const search    = html.find('.la-tah-search');
+                const refreshIconPreview = () =>
+                {
+                    const img = state.iconOverride ?? state.img;
+                    editIcon.html(this._macroIconHtml(img, 24, state.invert));
+                    const isSvg = !!img && img.endsWith('.svg');
+                    /** @type {HTMLInputElement} */ (editInvert[0]).disabled = !isSvg;
+                    /** @type {HTMLInputElement} */ (editInvert[0]).checked = state.invert;
+                    editInvertLabel.css('opacity', isSvg ? 1 : 0.4);
+                };
+                const select = (id, name, img) =>
+                {
+                    state.id = id;
+                    state.name = name;
+                    state.img = img;
+                    state.iconOverride = null;
+                    state.invert = this._isWhiteSvgIcon(img);
+                    refreshIconPreview();
+                    editName.val(name);
+                    editEl.css({ opacity: 1, pointerEvents: 'all' });
+                    html.find('.la-tah-pick').css({ background: 'color-mix(in srgb, var(--la-plate), #000 6%)', borderLeftColor: 'transparent' });
+                    html.find(`.la-tah-pick[data-id="${id}"]`).css({ background: 'color-mix(in srgb, var(--la-plate), #000 16%)', borderLeftColor: 'var(--primary-color)' });
+                };
+                html.find('.la-tah-pick').on('click', (ev) =>
+                {
+                    const id = $(ev.currentTarget).data('id');
+                    const m = game.macros.get(id);
+                    if (m)
+                        select(m.id, m.name, m.img);
+                });
+                editIcon.on('click', () =>
+                {
+                    if (!state.id)
+                        return;
+                    new FilePicker({
+                        type: 'image',
+                        current: state.iconOverride ?? state.img,
+                        callback: (path) =>
+                        {
+                            state.iconOverride = path;
+                            state.invert = this._isWhiteSvgIcon(path);
+                            refreshIconPreview();
+                        },
+                    }).render(true);
+                });
+                editName.on('input', () =>
+                {
+                    state.name = String(editName.val() ?? '');
+                });
+                editInvert.on('change', () =>
+                {
+                    state.invert = /** @type {HTMLInputElement} */ (editInvert[0]).checked;
+                    refreshIconPreview();
+                });
+                search.on('input', () =>
+                {
+                    const q = String(search.val() ?? '').toLowerCase().trim();
+                    html.find('.la-tah-pick').each((_i, el) =>
+                    {
+                        const name = $(el).find('span').text().toLowerCase();
+                        $(el).toggle(!q || name.includes(q));
+                    });
+                });
+                const drop = html.find('.la-tah-macro-drop');
+                drop.on('dragover', (ev) =>
+                {
+                    ev.preventDefault(); drop.css('border-color', 'var(--primary-color)');
+                });
+                drop.on('dragleave', () => drop.css('border-color', '#888'));
+                drop.on('drop', async (ev) =>
+                {
+                    ev.preventDefault();
+                    drop.css('border-color', '#888');
+                    try
+                    {
+                        const data = JSON.parse(ev.originalEvent.dataTransfer.getData('text/plain'));
+                        const doc = /** @type {any} */ (await fromUuid(data?.uuid));
+                        if (doc?.documentName === 'Macro')
+                            select(doc.id, doc.name, doc.img);
+                    }
+                    catch
+                    { /* ignore malformed drop */ }
+                });
+            },
+        }, { width: 380, classes: ['lancer-dialog-base', 'lancer-no-title'] });
+        dlg.render(true);
+    }
+
+    _openMacroRowPopup(entry, macro, anchorRow)
+    {
+        $('.la-hud-popup').remove();
+        const title = macro?.name ?? entry.name ?? 'Macro';
+        const subtitle = macro ? '' : 'Macro missing';
+        const baseStyle = 'padding:3px 8px;cursor:pointer;font-size:0.78em;display:flex;align-items:center;gap:5px;font-family:inherit;';
+        const buttons = [];
+        if (macro)
+            buttons.push(`<button class="la-tah-mr-sheet" style="${baseStyle}background:#2a2a2a;border:1px solid #444;color:#ddd;"><i class="fas fa-external-link-alt"></i>Open Sheet</button>`);
+        buttons.push(`<button class="la-tah-mr-remove" style="${baseStyle}background:#3a1818;border:1px solid #803333;color:#ffaaaa;"><i class="fas fa-trash"></i>Remove</button>`);
+        const bodyHtml = `<div style="display:flex;flex-direction:column;gap:4px;">${buttons.join('')}</div>`;
+        const popup = laDetailPopup('la-hud-popup la-tah-row-popup', title, subtitle, bodyHtml, 'default');
+        popup.css({ minWidth: 0, width: 'auto', maxWidth: 200 });
+        popup.children().eq(0).css({ padding: '4px 8px' });
+        popup.children().eq(0).find('div').first().css({ fontSize: '0.82em' });
+        popup.children().eq(1).css({ padding: '4px 8px' });
+        popup.find('.la-tah-mr-sheet').on('click', () =>
+        {
+            macro?.sheet?.render(true);
+            popup.remove();
+        });
+        popup.find('.la-tah-mr-remove').on('click', async () =>
+        {
+            const cur = this._getMacroList().filter(e => e.macroId !== entry.macroId);
+            popup.remove();
+            await this._saveMacroList(cur);
+        });
+        this._showPopupAt(popup, anchorRow);
+    }
+
+
+    _weaponItem(weapon, modItem, mount = null)
+    {
+        const row = this._itemRow(weapon, {
+            category: 'Weapons',
+            childColLabel: weapon.name,
+            getChildren: () => this._weaponChildren(weapon, modItem, mount),
+            onRightClick: (row) =>
+            {
+                const buildBody = () =>
+                {
+                    const sys = weapon.system;
+                    let profiles = getWeaponProfiles_WithBonus(weapon, this._actor);
+                    if (!profiles.length && weapon.type === 'npc_feature')
+                    {
+                        const tierOverride = sys.tier_override ?? 0;
+                        const tier = tierOverride > 0 ? tierOverride : (this._actor?.system?.tier ?? 1);
+                        const tierIdx = Math.max(0, Math.min(2, tier - 1));
+                        const atkBonus = Array.isArray(sys.attack_bonus) ? (sys.attack_bonus[tierIdx] ?? 0) : 0;
+                        const atkAcc = Array.isArray(sys.accuracy) ? (sys.accuracy[tierIdx] ?? 0) : 0;
+                        profiles = [{ name: null, damage: (sys.damage ?? [])[tierIdx] ?? [], range: sys.range ?? [], tags: sys.tags ?? [], effect: sys.effect || '', on_hit: sys.on_hit || '', attack_bonus: atkBonus, accuracy: atkAcc, tech_attack: sys.tech_attack ?? false, weapon_type: sys.weapon_type ?? '' }];
+                    }
+                    if (!profiles.length && weapon.type === 'pilot_weapon')
+                        profiles = [{ name: null, damage: sys.damage ?? [], range: sys.range ?? [], tags: sys.tags ?? [], effect: sys.effect || '', on_hit: sys.on_hit || '' }];
+                    return laRenderWeaponBody(profiles, {
+                        actions: sys.actions ?? [],
+                        modName: modItem?.name ?? null,
+                        modItem: modItem ?? null,
+                        activeProfileIndex: sys.selected_profile_index ?? 0,
+                        switchable: (sys.profiles?.length ?? 0) > 1,
+                    });
+                };
+                const weaponSubtitle = () =>
+                {
+                    const sys = weapon.system;
+                    const profileType = sys.profiles?.[sys.selected_profile_index ?? 0]?.type;
+                    return this._joinSubtitle(sys.mount_type ?? sys.size, profileType ?? sys.weapon_type);
+                };
+                const bindProfileSwitch = (popup) =>
+                {
+                    popup.data('laRebuild', () =>
+                    {
+                        popup.find('.la-weapon-body').html(buildBody());
+                        popup.find('.la-detail-subtitle').text(weaponSubtitle());
+                        bindProfileSwitch(popup);
+                    });
+                    popup.find('.la-profile-set[data-profile-idx]').on('click', async function (ev)
+                    {
+                        ev.stopPropagation();
+                        const idx = Number(this.dataset.profileIdx);
+                        if (idx === (weapon.system?.selected_profile_index ?? 0))
+                            return;
+                        playUiSound('toggle');
+                        await weapon.update({ 'system.selected_profile_index': idx });
+                    });
+                };
+                this._showItemPopup({ cssClass: 'la-hud-popup la-hud-weapon-popup', dataKey: 'weapon-id', dataValue: weapon.id, title: weapon.name, subtitle: weaponSubtitle(), bodyHtml: this._actionLockReasonHtml(weapon.name) + `<div class="la-weapon-body">${buildBody()}</div>`, theme: 'weapon', item: weapon, row, pipsArgs: this._depthCallbacks(), postRender: bindProfileSwitch });
+            },
+        });
+        const lockInfo = getActionLockInfo(this._actor, weapon.name);
+        if (lockInfo.itemLocks.length || lockInfo.sources.length)
+            row.softDisabled = true;
+        return row;
+    }
+
+    _weaponChildren(weapon, modItem, mount)
+    {
+        const sys = weapon.system;
+        const actor = this._actor;
+        const addHover = children => children.map(child =>
+        {
+            if (child.isSectionLabel || (!child.onClick && !child._profile))
+                return child;
+            return { ...child, hoverData: { actor, item: weapon, action: child.action ?? { name: child.label, activation: child.activation ?? null }, category: 'Weapons', profile: child._profile ?? null } };
+        });
+        const addRightClicks = (children, attackLabel, bypassMountArg) => children.map(child =>
+        {
+            if (child.isSectionLabel || child.onRightClick)
+                return child;
+            // Mod row may have no onClick; handle it first.
+            if (modItem && child.label === modItem.name)
+            {
+                const ms = modItem.system;
+                const subtitle = this._joinSubtitle(ms?.type, ms?.license ? `${ms.manufacturer} ${ms.license_level}` : null) || 'Weapon Mod';
+                return { ...child, onRightClick: (/** @type {any} */ row) => this._showItemPopup({ cssClass: 'la-hud-popup la-hud-mod-popup', dataKey: 'mod-id', dataValue: modItem.id, title: modItem.name, subtitle, bodyHtml: laRenderModBody(modItem), theme: 'mod', item: modItem, row, pipsArgs: this._depthCallbacks() }) };
+            }
+            if (!child.onClick)
+                return child;
+            if (child.label === attackLabel)
+            {
+                const mountWeapons = (bypassMountArg?.slots ?? []).map((/** @type {any} */ s) => s.weapon?.value?.name).filter(Boolean);
+                const weaponList = mountWeapons.length ? mountWeapons.join(', ') : weapon.name;
+                const title = attackLabel === 'FIGHT' ? 'Fight' : attackLabel === 'BARRAGE' ? 'Barrage' : 'Skirmish';
+                const activation = attackLabel === 'SKIRMISH' ? 'Quick' : 'Full';
+                const detail = `${title} with: ${weaponList}`;
+                return { ...child, onRightClick: this._actionPopup({ name: title, activation, detail }, null, 'weapon') };
+            }
+            return child;
+        });
+        const onActivate = (a, source) =>
+        {
+            const si = /** @type {any} */ (source ?? weapon);
+            // Invade on mech_weapon: TechAttackFlow rejects weapon items, use executeInvade instead
+            if (a.activation === 'Invade' && si.type === 'mech_weapon')
+            {
+                const opt = this._getInvadeOptions(actor).find(o => o.name === a.name && o.item?.id === si.id)
+                    ?? { name: a.name, detail: a.detail ?? '', item: si, action: a, unavailable: false, destroyed: false };
+                executeInvade(actor, opt);
+                return;
+            }
+            const sysActions = si.system?.actions ?? [];
+            const sysIdx = sysActions.findIndex(sa => sa.name === a.name && sa.activation === a.activation);
+            if (sysIdx >= 0)
+            {
+                si.beginActivationFlow(`system.actions.${sysIdx}`);
+                return;
+            }
+            const profIdx = si.system?.selected_profile_index ?? 0;
+            const profActions = si.system?.profiles?.[profIdx]?.actions ?? [];
+            const pIdx = profActions.findIndex(pa => pa.name === a.name && pa.activation === a.activation);
+            if (pIdx >= 0)
+            {
+                si.beginActivationFlow(`system.profiles.${profIdx}.actions.${pIdx}`);
+                return;
+            }
+            executeSimpleActivation(actor, { title: a.name, action: a, detail: a.detail ?? '' }, { item: si });
+        };
+        const rangeToggle = () =>
+        {
+            const profiles = getWeaponProfiles_WithBonus(weapon, actor);
+            const activeProfile = profiles[weapon.system?.selected_profile_index ?? 0] ?? profiles[0];
+            const rangeMap = {};
+            for (const r of (activeProfile?.range ?? []))
+            {
+                const type = r.type ?? 'Range';
+                const val = Number(r.val) || 0;
+                if (val > (rangeMap[type] ?? 0))
+                    rangeMap[type] = val;
+            }
+            const weaponRange = Math.max(0, ...Object.values(rangeMap));
+            if (weaponRange <= 0)
+                return [];
+            const RANGE_CCI = { Range: 'cci-range', Threat: 'cci-threat', Line: 'cci-line', Cone: 'cci-cone', Blast: 'cci-blast', Burst: 'cci-burst', Thrown: 'cci-thrown' };
+            const rangeLabel = 'Reach: ' + Object.entries(rangeMap)
+                .map(([type, val]) => `<i class="cci ${RANGE_CCI[type] ?? 'cci-range'}" style="font-size:1.1em;vertical-align:middle;"></i>${val}`)
+                .join(' ');
+            return [{ label: 'RANGE', isSectionLabel: true }, {
+                inputCell: true,
+                subtype: 'toggle',
+                name: rangeLabel,
+                icon: 'mdi mdi-ruler-square-compass',
+                getValue: () => hasRangePin(this._token, 'weapon', weapon.id),
+                onToggle: () =>
+                {
+                    if (!isAdvancedMeasureActive() && !hasRangePin(this._token, 'weapon', weapon.id))
+                        openAdvancedMeasureWithState({});
+                    toggleRangePin(this._token, 'weapon', { weaponItemId: weapon.id });
+                },
+            }];
+        };
+
+        const patchProfileRefresh = (children, builder) =>
+        {
+            for (const c of children)
+            {
+                if (c._profile)
+                    c.refreshCol4 = builder;
+            }
+            return children;
+        };
+
+        if (actor.type === 'pilot')
+        {
+            const buildPilot = () => patchProfileRefresh([...addRightClicks(addHover(laHudItemChildren(weapon, {
+                defaultActions: [
+                    {
+                        label: 'FIGHT',
+                        icon: 'systems/lancer/assets/icons/white/melee.svg',
+                        onClick: () => executeFight(actor, weapon),
+                        broadcastFn: (t, a) =>
+                        {
+                            const w = /** @type {any} */ (a).items.find(i => i.system?.lid === weapon.system?.lid); executeFight(a, w);
+                        },
+                    },
+                    {
+                        label: 'ATTACK',
+                        icon: 'mdi mdi-target',
+                        onClick: () => weapon.beginWeaponAttackFlow(),
+                        broadcastFn: (t, a) =>
+                        {
+                            const w = /** @type {any} */ (a).items.find(i => i.system?.lid === weapon.system?.lid); if (w) /** @type {any} */
+                                (w).beginWeaponAttackFlow();
+                        },
+                        onRightClick: this._actionPopup({ name: 'Attack', activation: 'Tool', detail: `Tool: attack with only ${weapon.name}. Prefer Skirmish or Barrage for play.` }, null, 'weapon'),
+                    },
+                ].map(actionRow => this._lockableAttack(actionRow, weapon.name)),
+                modItem,
+                showPopup: (popup, row) => this._showPopupAt(popup, row),
+                onActivate,
+            })), 'FIGHT', { slots: [{ weapon: { value: weapon } }] }), ...rangeToggle()], buildPilot);
+            return buildPilot();
+        }
+        // Mech: sys.size === "Superheavy". NPC weapons store it in sys.weapon_type ("Superheavy Rifle", etc.).
+        const isSuperHeavy = (sys.size || sys.type || '').toLowerCase() === 'superheavy'
+            || String(sys.weapon_type || '').toLowerCase().startsWith('superheavy');
+        const bypassMount = mount ?? { slots: [{ weapon: { value: weapon } }] };
+        const attackLabel = isSuperHeavy ? 'BARRAGE' : 'SKIRMISH';
+        const buildMech = () => patchProfileRefresh([...addRightClicks(addHover(laHudItemChildren(weapon, {
+            defaultActions: [
+                {
+                    label: attackLabel,
+                    icon: isSuperHeavy
+                        ? 'mdi mdi-hexagon-slice-6'
+                        : 'mdi mdi-hexagon-slice-3',
+                    onClick: () => isSuperHeavy
+                        ? executeBarrage(actor, bypassMount)
+                        : executeSkirmish(actor, bypassMount),
+                    broadcastFn: (t, a) =>
+                    {
+                        const bm = { slots: [{ weapon: { value: /** @type {any} */ (a).items.find(i => i.system?.lid === weapon.system?.lid) } }] };
+                        return isSuperHeavy ? executeBarrage(a, bm) : executeSkirmish(a, bm);
+                    },
+                },
+                {
+                    label: 'ATTACK',
+                    icon: 'mdi mdi-target',
+                    onClick: () => weapon.beginWeaponAttackFlow(),
+                    broadcastFn: (t, a) =>
+                    {
+                        const w = /** @type {any} */ (a).items.find(i => i.system?.lid === weapon.system?.lid); if (w) /** @type {any} */
+                            (w).beginWeaponAttackFlow();
+                    },
+                    onRightClick: this._actionPopup({ name: 'Attack', activation: 'Tool', detail: `Tool: attack with only ${weapon.name}. Prefer Skirmish or Barrage for play.` }, null, 'weapon'),
+                },
+            ].map(actionRow => this._lockableAttack(actionRow, weapon.name)),
+            modItem,
+            showPopup: (popup, row) => this._showPopupAt(popup, row),
+            onActivate,
+        })), attackLabel, bypassMount), ...rangeToggle()], buildMech);
+        return buildMech();
+    }
+
+    _getInvadeOptions(actor)
+    {
+        if (!actor)
+            return [];
+        const isNPC = actor.type === 'npc';
+        const fragDetail = isNPC
+            ? 'Deal 2 heat. Target becomes IMPAIRED until the end of their next turn.'
+            : 'Deal 2 heat. Target becomes IMPAIRED and SLOWED until the end of their next turn.';
+        const invades = (actor.type === 'deployable' || actor.type === 'pilot') ? [] : [{
+            name: 'Fragment Signal',
+            detail: fragDetail,
+            item: null,
+            action: null,
+            tags: [],
+            isFragmentSignal: true,
+            destroyed: false,
+            unavailable: false,
+        }];
+        const pushInvade = (name, detail, item, action, tags) =>
+        {
+            const status = item ? getItemStatus(item, action) : getItemStatus(action);
+            invades.push({ name, detail, item, action, tags, isFragmentSignal: false, destroyed: status.destroyed, unavailable: status.unavailable, badge: status.badge, badgeColor: status.badgeColor });
+        };
+        for (const { action, sourceItem } of getActorActionItems(actor, 'Invade'))
+        {
+            const tags = sourceItem?.system?.active_profile?.tags ?? sourceItem?.system?.tags ?? action.tags ?? [];
+            pushInvade(action.name, action.detail || '', sourceItem ?? null, action, tags);
+        }
+        return invades;
+    }
+
+    _actionLockReasonHtml(actionName, activationField = null, activation = null)
+    {
+        if (!this._actor || !actionName)
+            return '';
+        const info = getActionLockInfo(this._actor, actionName, activation);
+        const fieldStatuses = activationField ? getFieldLockingStatuses(this._actor, activationField) : [];
+        if (!info.statuses.length && !info.sources.length && !info.itemLocks.length && !fieldStatuses.length)
+            return '';
+        const statusLabel = (id) =>
+        {
+            const raw = CONFIG.statusEffects?.find?.(effect => effect.id === id)?.name ?? id;
+            const localized = game.i18n.localize(raw);
+            return localized === raw && raw.includes('.') ? id : localized;
+        };
+        const parts = [
+            ...[...new Set([...info.statuses, ...fieldStatuses])].map(statusLabel),
+            ...info.itemLocks.map(lock => lock.reason || lock.item?.name || ''),
+            ...info.sources.map(lockEntryLabel)
+        ].filter(Boolean);
+        const escape = (text) => String(text).replace(/[&<>]/g, ch => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[ch]));
+        return `<p class="la-hud-action-locked-reason" style="margin:0 0 6px 0;padding:4px 6px;background:rgba(160,119,68,0.18);border-left:3px solid #a07744;font-size:0.85em;color:#e0c8a0;"><strong>Locked by:</strong> ${parts.map(escape).join(', ')}</p>`;
+    }
+
+    _actionPopup(action, source = null, themeOverride = null, extraPipsArgs = null)
+    {
+        return (/** @type {any} */ row) =>
+        {
+            const sourceName = typeof source === 'string' ? source : /** @type {any} */ (source)?.name ?? null;
+            const sourceType = typeof source === 'string' ? null : /** @type {any} */ (source)?.system?.type ?? null;
+            const tier = (typeof source !== 'string' ? source?.parent?.system?.tier : null) ?? 1;
+            const ACTIVATION_FIELD = { 'Free': 'free', 'Protocol': 'protocol', 'Reaction': 'reaction', 'Full': 'full', 'Full Tech': 'full', 'Quick': 'quick', 'Quick Tech': 'quick' };
+            const blockReason = this._pendingBlockReason;
+            const blockHtml = blockReason
+                ? `<p class="la-hud-action-locked-reason" style="margin:0 0 6px 0;padding:4px 6px;background:rgba(160,119,68,0.18);border-left:3px solid #a07744;font-size:0.85em;color:#e0c8a0;"><strong>Blocked:</strong> ${blockReason}</p>`
+                : '';
+            const bodyHtml = blockHtml + this._actionLockReasonHtml(action.name, ACTIVATION_FIELD[action.activation] ?? null, action.activation) + laRenderActionDetail(action, { tier });
+            const subtitleParts = [action.activation ?? ''];
+            if (sourceName)
+                subtitleParts.push(sourceType ? `${sourceName} (${sourceType})` : sourceName);
+            const theme = themeOverride ?? activationTheme(action.activation);
+            const sourceItem = typeof source === 'string' ? null : source;
+            const actorForExtra = this._actor;
+            let actionPipsItem;
+            let actionPips = true;
+            if (sourceItem)
+                actionPipsItem = sourceItem;
+            else if (action._addedViaExtrasUI)
+                actionPipsItem = actorForExtra;
+            else if (action.recharge)
+                actionPipsItem = null;
+            else
+                actionPips = false;
+            this._showItemPopup({ cssClass: 'la-hud-popup la-hud-action-popup', dataKey: 'action-key', dataValue: action.name, title: action.name, subtitle: this._joinSubtitle(...subtitleParts), bodyHtml, theme, item: sourceItem ?? action.name, skipExtras: true, row, pips: actionPips, pipsItem: actionPipsItem, pipsArgs: { action, ...extraPipsArgs } });
+        };
+    }
+
+    _getActionsByActivation(actor, activationType, category = null)
+    {
+        if (!actor)
+            return [];
+        const coreUsed = actor.system?.core_energy === 0;
+        return getActorActionItems(actor, activationType).map((/** @type {any} */ { action, sourceItem, rankIdx, _coreActive }) =>
+        {
+            const talentSubKey = sourceItem?.type === 'talent' && rankIdx != null ? rankSubKey(rankIdx) : null;
+            const status = sourceItem ? getItemStatus(sourceItem, action, talentSubKey ? { subKey: talentSubKey } : {}) : getItemStatus(action);
+            // Core power spent: mark the core active entry as unavailable (orange).
+            if (_coreActive && coreUsed && !status.destroyed)
+                status.unavailable = true;
+            // Extra-action recharge: overlay action-level charged state onto item status
+            if (action.recharge && !status.destroyed)
+            {
+                const charged = action.charged !== false;
+                status.badge = (status.badge ? status.badge + ' ' : '') + rechargeIcon(charged);
+                status.badgeColor = charged ? (status.badgeColor ?? '#3a9e6e') : '#c33';
+                if (!charged)
+                    status.unavailable = true;
+            }
+            // Core power: battery badge mirroring system.core_energy. Click toggles.
+            if (_coreActive && !status.destroyed)
+            {
+                const charged = !coreUsed;
+                const batt = `<i class="mdi ${charged ? 'mdi-battery' : 'mdi-battery-off'}" title="Core Power: ${charged ? 'available' : 'spent'}"></i>`;
+                status.badge = (status.badge ? status.badge + ' ' : '') + batt;
+                status.badgeColor = charged ? '#3a9e6e' : '#c33';
+            }
+            return {
+                label: status.destroyed ? this._destroyedLabel(action.name)
+                    : ((action._sourceItemId || action._addedViaExtrasUI) ? `<span style="color:#e8a030;font-size:0.7em;vertical-align:middle;">●</span> ${action.name}` : action.name),
+                badge: status.badge ?? null,
+                badgeColor: status.badgeColor ?? null,
+                icon: _coreActive ? 'systems/lancer/assets/icons/corepower.svg' : (action.icon ?? getActivationIcon(action) ?? sourceItem?.img ?? null),
+                ...(_coreActive ? { onBadgeClick: async () =>
+                {
+                    await actor.update({ 'system.core_energy': coreUsed ? 1 : 0 });
+                } } : {}),
+                ...this._statusColors(status),
+                onClick: async () =>
+                {
+                    const si = /** @type {any} */ (sourceItem);
+                    if (action._addedViaExtrasUI && Array.isArray(action.tags) && action.tags.length)
+                    {
+                        const ok = await consumeExtraAction(si ?? actor, action.name);
+                        if (!ok)
+                            return;
+                    }
+                    if (action.laCombat)
+                    {
+                        await executeSimpleActivation(actor, { title: action.name, action, detail: action.detail || '' }, si ? { item: si } : {});
+                        await executeExtraActionCombat(actor, action, si);
+                        return;
+                    }
+                    if (_coreActive)
+                        si.beginCoreActiveFlow('system.core_system');
+                    else if (si?.type === 'mech_system' || si?.type === 'npc_feature' || si?.type === 'pilot_gear' || si?.type === 'pilot_armor' || si?.type === 'pilot_weapon')
+                    {
+                        if (si?.type === 'npc_feature' && si.system?.tech_attack && si.beginTechAttackFlow)
+                            si.beginTechAttackFlow();
+                        else
+                        {
+                            const actionIdx = (si.system?.actions ?? []).findIndex(/** @type {any} */ a => a === action || a.name === action.name);
+                            if (actionIdx >= 0)
+                                si.beginActivationFlow(`system.actions.${actionIdx}`);
+                            else if (action._sourceItemId || action.recharge !== undefined)
+                                executeSimpleActivation(actor, { title: action.name, action, detail: action.detail || '' }, { item: si });
+                            else if (si.beginSystemFlow)
+                                si.beginSystemFlow();
+                            else
+                                executeSimpleActivation(actor, { title: action.name, action, detail: action.detail || '' }, { item: si });
+                        }
+                    }
+                    else if (si?.type === 'talent')
+                    {
+                        if (action.activation === 'Invade')
+                        {
+                            const opt = this._getInvadeOptions(actor).find(o => o.item?.id === si.id && o.name === action.name);
+                            if (opt)
+                                executeInvade(actor, opt);
+                        }
+                        else
+                        {
+                            const ri = rankIdx ?? 0;
+                            const ai = (si.system?.ranks?.[ri]?.actions ?? []).findIndex(/** @type {any} */ a => a.name === action.name);
+                            si.beginActivationFlow(`system.ranks.${ri}.actions.${Math.max(ai, 0)}`);
+                        }
+                    }
+                    else
+                        executeSimpleActivation(actor, { title: action.name, action, detail: action.detail || '' }, si ? { item: si } : {});
+                },
+                broadcastFn: (t, a) =>
+                {
+                    const si = /** @type {any} */ (sourceItem);
+                    if (action.laCombat)
+                    {
+                        executeSimpleActivation(a, { title: action.name, action, detail: action.detail || '' });
+                        executeExtraActionCombat(a, action, null);
+                        return;
+                    }
+                    if (_coreActive)
+                    {
+                        const equiv = /** @type {any} */ (a).system?.loadout?.frame?.value;
+                        if (equiv)
+                            equiv.beginCoreActiveFlow('system.core_system');
+                    }
+                    else if (si?.type === 'mech_system' || si?.type === 'npc_feature' || si?.type === 'pilot_gear' || si?.type === 'pilot_armor' || si?.type === 'pilot_weapon')
+                    {
+                        const equiv = /** @type {any} */ (a).items.find(/** @type {any} */ i => i.system?.lid === si.system?.lid);
+                        if (equiv)
+                        {
+                            const actionIdx = (si.system?.actions ?? []).findIndex(/** @type {any} */ ac => ac === action || ac.name === action.name);
+                            if (actionIdx >= 0)
+                                equiv.beginActivationFlow(`system.actions.${actionIdx}`);
+                            else if (action._sourceItemId || action.recharge !== undefined)
+                                executeSimpleActivation(a, { title: action.name, action, detail: action.detail || '' }, { item: equiv });
+                            else if (equiv.beginSystemFlow)
+                                equiv.beginSystemFlow();
+                            else
+                                executeSimpleActivation(a, { title: action.name, action, detail: action.detail || '' }, { item: equiv });
+                        }
+                    }
+                    else if (si?.type === 'talent')
+                    {
+                        if (action.activation === 'Invade')
+                        {
+                            const opt = this._getInvadeOptions(a).find(o => o.item?.system?.lid === si.system?.lid && o.name === action.name);
+                            if (opt)
+                                executeInvade(a, opt);
+                        }
+                        else
+                        {
+                            const equiv = /** @type {any} */ (a).items.find(i => i.system?.lid === si.system?.lid);
+                            if (equiv)
+                            {
+                                const ri = rankIdx ?? 0;
+                                const ai = (equiv.system?.ranks?.[ri]?.actions ?? []).findIndex(/** @type {any} */ ac => ac.name === action.name);
+                                equiv.beginActivationFlow(`system.ranks.${ri}.actions.${ai >= 0 ? ai : 0}`);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        const equiv = si ? /** @type {any} */ (a).items.find(/** @type {any} */ ownedItem => ownedItem.system?.lid === si.system?.lid) : null;
+                        executeSimpleActivation(a, { title: action.name, action, detail: action.detail || '' }, equiv ? { item: equiv } : {});
+                    }
+                },
+                onRightClick: this._actionPopup(action, sourceItem, null, talentSubKey ? { subKey: talentSubKey } : null),
+                hoverData: { actor, item: sourceItem ?? null, action, category },
+            };
+        });
+    }
+
+    _showPopupAt(popup, anchorEl)
+    {
+        showPopupAt(popup, anchorEl, {
+            cancelCollapse:   () => this._cancelCollapse?.(),
+            scheduleCollapse: () => this._scheduleCollapse?.(),
+        });
+    }
+
+    /** Thin wrapper around `toggleDetailPopup` that auto-wires `showPopupAt`. */
+    _showItemPopup(opts)
+    {
+        const showFn = (p, r) => this._showPopupAt(p, r);
+        toggleDetailPopup({ ...opts, showPopupAt: showFn });
+    }
+
+    /** Join non-empty subtitle parts with the ` · ` separator. */
+    _joinSubtitle(...parts)
+    {
+        return parts.filter(Boolean).join(' · ');
+    }
+
+    _statCell(/** @type {string} */ label, /** @type {any} */ val, /** @type {any} */ base = undefined)
+    {
+        const delta = (val != null && base != null && val !== base)
+            ? (val > base
+                ? `<span style="position:absolute;bottom:2px;right:2px;color:#3a9e6e;font-size:0.55em;line-height:1;">▲</span>`
+                : `<span style="position:absolute;bottom:2px;right:2px;color:#c33;font-size:0.55em;line-height:1;">▼</span>`)
+            : '';
+        return `<div style="position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;">${delta}<span style="font-size:0.68em;color:#666;text-transform:uppercase;letter-spacing:0.05em;">${label}</span><span style="font-size:0.95em;color:#ccc;font-weight:bold;">${val ?? '—'}</span></div>`;
+    }
+
+    _statGrid(/** @type {number} */ cols, /** @type {string[]} */ ...cells)
+    {
+        return `<div style="display:grid;grid-template-columns:repeat(${cols},1fr);gap:6px 4px;padding:4px 2px;">${cells.join('')}</div>`;
+    }
+
+    /** Add hoverData to clickable rows; skips labels, non-clickable, and already-enriched. */
+    _enrichHoverData(items, { actor, category })
+    {
+        return items.map(/** @type {any} */ (it) =>
+            it.hoverData || it.isSectionLabel || !it.onClick
+                ? it
+                : { ...it, hoverData: { actor, item: null, action: { name: it.label }, category } }
+        );
+    }
+
+    /** Red-strike HTML for an item/action whose source item is destroyed. */
+    _destroyedLabel(name)
+    {
+        return `<s class="horus--subtle" style="opacity:0.7;color:#e50000;">${name}</s>`;
+    }
+
+    /** Build the invade popup body + subtitle and open it. */
+    _buildInvadePopup(opt, row)
+    {
+        const tier = opt.item?.parent?.system?.tier ?? 1;
+        let bodyHtml;
+        if (opt.action)
+            bodyHtml = laRenderActionDetail(opt.action, { tier });
+        else
+        {
+            const detail = laFormatDetailHtml(opt.detail);
+            bodyHtml = detail
+                ? `<div style="margin:0;font-size:0.82em;line-height:1.5;">${detail}</div>`
+                : '<div style="font-size:0.82em;color:#888;margin:0;">No description.</div>';
+        }
+        bodyHtml = this._actionLockReasonHtml(opt.name, 'quick', 'Quick Tech') + bodyHtml;
+        const isWeapon    = opt.item?.type?.includes('weapon');
+        const sourceType  = isWeapon ? ' (Weapon)' : (opt.item?.system?.type ? ` (${opt.item.system.type})` : '');
+        const sourceLabel = !opt.isFragmentSignal && opt.item?.name ? ` · ${opt.item.name}${sourceType}` : '';
+        const subtitle    = (opt.isFragmentSignal ? 'Fragment Signal · Quick Tech' : 'Invade · Quick Tech') + sourceLabel;
+        this._showItemPopup({
+            cssClass: 'la-hud-popup la-hud-invade-popup',
+            dataKey: 'invade-name',
+            dataValue: opt.name,
+            title: opt.name,
+            theme: 'invade',
+            subtitle,
+            bodyHtml,
+            item: opt.item,
+            row,
+            pips: !!(opt.item && opt.action),
+            pipsArgs: opt.action ? { action: opt.action } : undefined,
+        });
+    }
+
+    // Helpers
+
+    /** Refresh visible column contents without touching structure, popups, or timers. */
+    _refreshColumnsInPlace()
+    {
+        if (!this._c2Category?.getItems || !this._c2?.is(':visible'))
+            return;
+        this._openCol(this._c2, this._c2Category.getItems(), this._c2AnchorRow);
+
+        if (!this._c3SourceItem?.getChildren || !this._c3?.is(':visible'))
+            return;
+        // _c3AnchorRow points to a c2 row that was just rebuilt; it's detached now, skip reposition.
+        this._openCol(this._c3, this._c3SourceItem.getChildren(), null, { reposition: false });
+
+        if (!this._c4SourceItem?.getChildren || !this._c4?.is(':visible'))
+            return;
+        this._openCol(this._c4, this._c4SourceItem.getChildren(), null, { reposition: false });
+    }
+
+    _saveOpenPath()
+    {
+        if (!this._el)
+            return null;
+        const getActiveIdx = col =>
+        {
+            let idx = -1, i = 0;
+            col.find('.la-hud-row').each(function()
+            {
+                if ($(this).hasClass('la-hud-active'))
+                {
+                    idx = i;
+                    return false;
+                }
+                i++;
+            });
+            return idx;
+        };
+        const c1 = this._el.children().first();
+        // Search active: don't save column state
+        if (this._searchActive)
+            return { searchActive: true };
+        // Status panel open: c2 is hidden but c1 has an active row
+        if (this._statusPanelInstance?.isVisible)
+        {
+            const c1Idx = getActiveIdx(c1);
+            return c1Idx >= 0 ? { c1Idx, statusPanel: true } : null;
+        }
+        if (!this._c2?.is(':visible'))
+            return null;
+        const path = { c1Idx: getActiveIdx(c1) };
+        if (path.c1Idx < 0)
+            return null;
+        if (this._c3?.is(':visible'))
+            path.c2Idx = getActiveIdx(this._c2);
+        if (this._c4?.is(':visible'))
+            path.c3Idx = getActiveIdx(this._c3);
+        return path;
+    }
+
+    _restoreOpenPath(path)
+    {
+        if (!path || path.searchActive || path.c1Idx < 0)
+            return;
+        const c1 = this._el.children().first();
+        const c1Row = c1.find('.la-hud-row').eq(path.c1Idx);
+        if (!c1Row.length)
+            return;
+        c1Row.trigger('mouseenter');
+        if (path.statusPanel)
+            return;
+        if ((path.c2Idx ?? -1) < 0)
+            return;
+        const c2Row = this._c2.find('.la-hud-row').eq(path.c2Idx);
+        if (!c2Row.length)
+            return;
+        c2Row.trigger('mouseenter');
+        if ((path.c3Idx ?? -1) < 0)
+            return;
+        const c3Row = this._c3.find('.la-hud-row').eq(path.c3Idx);
+        if (!c3Row.length)
+            return;
+        c3Row.trigger('mouseenter');
+    }
+
+    _kbColEl(depth)
+    {
+        if (depth <= 1)
+            return this._el ? this._el.children().first() : null;
+        if (depth === 2)
+            return this._c2;
+        if (depth === 3)
+            return this._c3;
+        return this._c4;
+    }
+    _kbColVisible(depth)
+    {
+        const col = this._kbColEl(depth);
+        return !!(col && col.length && (depth === 1 || col.is(':visible')));
+    }
+    _kbRows(depth)
+    {
+        const col = this._kbColEl(depth);
+        return col && col.length ? col.find('.la-hud-row, .la-hud-cell') : $();
+    }
+    _kbRestore(row)
+    {
+        if (row && row.length)
+            row.triggerHandler('mouseleave'); // element's own leave handler (row or cell); no bubble, no collapse
+    }
+    _kbClearFocusMark()
+    {
+        if (this._el)
+            this._el.find('.la-hud-kbfocus').removeClass('la-hud-kbfocus');
+    }
+    // Returns true if a live cursor was adopted, false if it reset to the first cell (c1/0).
+    _kbEnsureFocus()
+    {
+        const marked = this._el ? this._el.find('.la-hud-kbfocus').first() : $();
+        if (marked.length)
+        {
+            for (let depth = 1; depth <= 4; depth++)
+            {
+                if (!this._kbColVisible(depth))
+                    continue;
+                const markedIdx = this._kbRows(depth).index(marked);
+                if (markedIdx >= 0)
+                {
+                    this._kbCol = depth;
+                    this._kbIdx = markedIdx;
+                    return true;
+                }
+            }
+        }
+        this._kbCol = 1;
+        this._kbIdx = 0;
+        return false;
+    }
+    _kbFocusRow(depth, idx)
+    {
+        const rows = this._kbRows(depth);
+        if (!rows.length)
+            return;
+        const clampedIdx = Math.max(0, Math.min(idx, rows.length - 1));
+        const prevRow = this._kbRows(this._kbCol).eq(this._kbIdx);
+        if (prevRow.length && !(this._kbCol === depth && this._kbIdx === clampedIdx))
+            this._kbRestore(prevRow);
+        this._kbClearFocusMark();
+        this._kbCol = depth;
+        this._kbIdx = clampedIdx;
+        const row = rows.eq(clampedIdx);
+        this._logPanelInstance?.close?.();
+        this._glossaryPanelInstance?.close?.();
+        this._bondPanelInstance?.close?.();
+        row.triggerHandler('mouseenter'); // reopens the panel if this row is its opener
+        row.addClass('la-hud-kbfocus');
+    }
+    _kbDeeper()
+    {
+        const currentRow = this._kbRows(this._kbCol).eq(this._kbIdx);
+        if (currentRow.length)
+            currentRow.triggerHandler('mouseenter');
+        const childDepth = this._kbCol + 1;
+        if (childDepth > 4 || !this._kbRows(childDepth).length)
+            return;
+        this._kbFocusRow(childDepth, 0);
+    }
+    _kbBack()
+    {
+        if (this._kbCol <= 1)
+            return;
+        const parentDepth = this._kbCol - 1;
+        const parentRows = this._kbRows(parentDepth);
+        if (!parentRows.length)
+            return;
+        const currentRow = this._kbRows(this._kbCol).eq(this._kbIdx);
+        const currentRect = currentRow.length ? currentRow[0].getBoundingClientRect() : null;
+        const currentY = currentRect ? currentRect.top + currentRect.height / 2 : 0;
+        currentRow.removeClass('la-hud-active'); // leaving this column: drop its highlight even if it was the path
+        this._kbRestore(currentRow);
+        let bestIdx = 0;
+        let bestDist = Infinity;
+        parentRows.each((index, element) =>
+        {
+            const rect = element.getBoundingClientRect();
+            const dist = Math.abs(rect.top + rect.height / 2 - currentY);
+            if (dist < bestDist)
+            {
+                bestDist = dist;
+                bestIdx = index;
+            }
+        });
+        this._kbFocusRow(parentDepth, bestIdx);
+    }
+    // At a column edge, continue into the child column of the sibling above/below the origin row.
+    _kbEdgeJump(down)
+    {
+        if (this._kbCol <= 1)
+            return false;
+        const parentDepth = this._kbCol - 1;
+        const parentRows = this._kbRows(parentDepth);
+        if (!parentRows.length)
+            return false;
+        let originIdx = parentRows.index(parentRows.filter('.la-hud-active').first());
+        if (originIdx < 0)
+        {
+            const currentRow = this._kbRows(this._kbCol).eq(this._kbIdx);
+            const currentRect = currentRow.length ? currentRow[0].getBoundingClientRect() : null;
+            const currentY = currentRect ? currentRect.top + currentRect.height / 2 : 0;
+            let bestDist = Infinity;
+            parentRows.each((index, element) =>
+            {
+                const rect = element.getBoundingClientRect();
+                const dist = Math.abs(rect.top + rect.height / 2 - currentY);
+                if (dist < bestDist)
+                {
+                    bestDist = dist;
+                    originIdx = index;
+                }
+            });
+        }
+        const targetIdx = originIdx + (down ? 1 : -1);
+        if (targetIdx < 0 || targetIdx >= parentRows.length)
+            return false;
+        if (!parentRows.eq(targetIdx).find('.la-hud-arrow').length)
+            return false;
+        this._kbFocusRow(parentDepth, targetIdx);
+        this._kbDeeper();
+        return true;
+    }
+    _kbActivate(rightClick)
+    {
+        const row = this._kbRows(this._kbCol).eq(this._kbIdx);
+        if (!row.length)
+            return;
+        if (row.hasClass('la-hud-cell'))
+        {
+            const incBtn = row.find('.la-inc-btn');
+            if (incBtn.length)
+                (rightClick ? row.find('.la-dec-btn') : incBtn).trigger('click');
+            else if (!rightClick)
+                row.find('.la-toggle-switch').trigger('click');
+            return;
+        }
+        row.trigger(rightClick ? 'contextmenu' : 'click');
+    }
+    _kbReset()
+    {
+        if (this._clickToOpen)
+            return;
+        clearTimeout(this._kbResetTimer);
+        this._kbResetTimer = null;
+        this._kbClearFocusMark();
+        closeCol(this._c2);
+        closeCol(this._c3);
+        closeCol(this._c4);
+        this._clearC1Active?.();
+    }
+    _kbArmInactivityReset()
+    {
+        clearTimeout(this._kbResetTimer);
+        if (this._clickToOpen)
+            return;
+        const delay = (game.settings.get('lancer-automations', 'tah.keyboardNavResetDelay') ?? 5) * 1000;
+        this._kbResetTimer = setTimeout(() => this._kbReset(), delay);
+    }
+    _kbHandleKey(event)
+    {
+        if (!this._el)
+            return;
+        try
+        {
+            if (!game.settings.get('lancer-automations', 'tah.keyboardNav'))
+                return;
+        }
+        catch
+        {
+            return;
+        }
+        const focused = document.activeElement;
+        const inInput = !!(focused && (focused.tagName === 'INPUT' || focused.tagName === 'TEXTAREA' || focused.isContentEditable));
+        const inHudInput = inInput && !!(this._el[0] && $.contains(this._el[0], focused));
+        if (inInput && !inHudInput)
+            return;
+        let action = null;
+        if (eventMatchesKeybind(event, 'tahNavUp'))
+            action = 'up';
+        else if (eventMatchesKeybind(event, 'tahNavDown'))
+            action = 'down';
+        else if (eventMatchesKeybind(event, 'tahNavLeft'))
+            action = 'left';
+        else if (eventMatchesKeybind(event, 'tahNavRight'))
+            action = 'right';
+        else if (eventMatchesKeybind(event, 'tahNavActivate'))
+            action = 'click';
+        else if (eventMatchesKeybind(event, 'tahNavContext'))
+            action = 'context';
+        if (!action)
+        {
+            if (this._el.find('.la-hud-kbfocus').length)
+                this._kbReset();
+            return;
+        }
+        event.preventDefault();
+        event.stopImmediatePropagation();
+        if (!inHudInput && Date.now() - this._lastHudPointerMove < 350)
+            return;
+        this._cancelCollapse?.();
+        if (!this._kbEnsureFocus())
+        {
+            this._kbFocusRow(this._kbCol, this._kbIdx);
+            this._kbArmInactivityReset();
+            return;
+        }
+        if (action === 'up')
+        {
+            if (this._kbIdx <= 0)
+                this._kbEdgeJump(false);
+            else
+                this._kbFocusRow(this._kbCol, this._kbIdx - 1);
+        }
+        else if (action === 'down')
+        {
+            if (this._kbIdx >= this._kbRows(this._kbCol).length - 1)
+                this._kbEdgeJump(true);
+            else
+                this._kbFocusRow(this._kbCol, this._kbIdx + 1);
+        }
+        else if (action === 'right')
+            this._kbDeeper();
+        else if (action === 'left')
+            this._kbBack();
+        else if (action === 'click')
+            this._kbActivate(false);
+        else if (action === 'context')
+            this._kbActivate(true);
+        this._kbArmInactivityReset();
+    }
+
+    _makeCol(label)
+    {
+        return $(`<div class="la-hud-col lancer-scroll"><div class="la-hud-col-label">${label}</div></div>`);
+    }
+
+    _makeRow(label, hasArrow, icon = null, activation = null, badge = null, badgeColor = null, count = 0)
+    {
+        const iconHtml = icon ? laHudRenderIcon(icon) : '';
+        const countHtml = hasArrow && count > 0 ? `<span class="la-hud-count">${count}</span>` : '';
+        const arrow = hasArrow ? `<span class="la-hud-arrow">▶</span>` : '';
+        const actHtml = activation ? `<span class="la-hud-activation">[${activation}]</span>` : '';
+        const badgeHtml = badge ? `<span class="la-hud-badge" style="color:${badgeColor ?? '#3a9e6e'};">${badge}</span>` : '';
+        const row = $(`<div class="la-hud-row">${iconHtml}<span class="la-hud-clip"><span class="la-hud-pan">${label}${actHtml}</span></span>${badgeHtml}${countHtml}${arrow}</div>`);
+        row.on('mouseenter', () =>
+        {
+            if (!row.hasClass('la-hud-active'))
+            {
+                const specialBg = row.data('hoverBg');
+                if (specialBg)
+                    row.css({ background: specialBg, color: row.data('hoverColor') ?? TEXT_DEFAULT });
+                else
+                    row.css({ background: BG_ACTIVE, color: TEXT_ACTIVE });
+            }
+            const clip = row.find('.la-hud-clip')[0];
+            const pan  = row.find('.la-hud-pan')[0];
+            if (clip && pan)
+            {
+                const overflow = pan.scrollWidth - clip.clientWidth;
+                if (overflow > 4)
+                    $(clip).stop(true).delay(300).animate({ scrollLeft: overflow }, { duration: overflow * 20, easing: 'linear' });
+            }
+        });
+        row.on('mouseleave', () =>
+        {
+            if (!row.hasClass('la-hud-active'))
+            {
+                const css = { background: row.data('restingBg') ?? BG_DEFAULT, color: row.data('restingColor') ?? TEXT_DEFAULT };
+                const rb  = row.data('restingBorder');
+                if (rb)
+                    css.borderLeftColor = rb;
+                row.css(css);
+            }
+            row.find('.la-hud-clip').stop(true).animate({ scrollLeft: 0 }, { duration: 120, easing: 'swing' });
+        });
+        return row;
+    }
+
+    _collectFavorites()
+    {
+        const favs = /** @type {any} */ (game.user).getFlag('lancer-automations', 'tahFavorites') || [];
+        if (!favs.length)
+            return [];
+        const favSet = new Set(favs);
+        const results = [];
+        const seen = new Set();
+        const walk = (items, catLabel) =>
+        {
+            for (const item of (items ?? []))
+            {
+                if (item.isSectionLabel)
+                    continue;
+                if (item.onClick)
+                {
+                    const key = this._favKey(item);
+                    if (key && favSet.has(key) && !seen.has(key))
+                    {
+                        seen.add(key);
+                        results.push({ ...item, _catLabel: catLabel });
+                    }
+                }
+                if (item.getChildren)
+                    walk(item.getChildren(), catLabel);
+            }
+        };
+        for (const cat of (this._categories ?? []))
+        {
+            if (cat.isStatusPanel)
+                continue;
+            walk(cat.getItems?.(), cat.label);
+        }
+        return results;
+    }
+
+    _showQuickTip(x, y, text)
+    {
+        const tip = $(`<div style="position:fixed;left:${x + 12}px;top:${y + 12}px;background:#111;color:#fff;padding:4px 8px;border-radius:3px;font-size:0.8em;pointer-events:none;z-index:200;opacity:0;transition:opacity 0.1s;">${text}</div>`);
+        $('body').append(tip);
+        requestAnimationFrame(() => tip.css('opacity', 1));
+        setTimeout(() => tip.css('opacity', 0), 800);
+        setTimeout(() => tip.remove(), 1000);
+    }
+
+    _applyFavStyle(row)
+    {
+        row.css({ position: 'relative' });
+        row.find('.la-hud-fav-mark').remove();
+        row.append('<span class="la-hud-fav-mark">★</span>');
+    }
+
+    _clearFavStyle(row)
+    {
+        row.find('.la-hud-fav-mark').remove();
+    }
+
+    _favKey(item)
+    {
+        return item?.hoverData?.item?.uuid ?? item?.label ?? null;
+    }
+
+    _isFavorite(item)
+    {
+        const key = this._favKey(item);
+        if (!key)
+            return false;
+        const favs = /** @type {any} */ (game.user).getFlag('lancer-automations', 'tahFavorites') || [];
+        return favs.includes(key);
+    }
+
+    async _toggleFavorite(item)
+    {
+        const key = this._favKey(item);
+        if (!key)
+            return false;
+        const favs = [...(/** @type {any} */ (game.user).getFlag('lancer-automations', 'tahFavorites') || [])];
+        const idx = favs.indexOf(key);
+        if (idx >= 0)
+            favs.splice(idx, 1);
+        else
+            favs.push(key);
+        await /** @type {any} */ (game.user).setFlag('lancer-automations', 'tahFavorites', favs);
+        return idx < 0;
+    }
+
+    _setActive(col, activeRow, isCategory = false)
+    {
+        col.find('.la-hud-row').each(function()
+        {
+            const r = $(this);
+            const css = { background: r.data('restingBg') ?? BG_DEFAULT, color: r.data('restingColor') ?? TEXT_DEFAULT };
+            const rb  = r.data('restingBorder');
+            if (rb)
+                css.borderLeftColor = rb;
+            r.css(css).removeClass('la-hud-active');
+        });
+        const specialBg = activeRow.data('hoverBg');
+        if (specialBg)
+            activeRow.css({ background: specialBg, color: activeRow.data('hoverColor') ?? TEXT_DEFAULT }).addClass('la-hud-active');
+        else
+            activeRow.css({ background: BG_ACTIVE, color: TEXT_ACTIVE }).addClass('la-hud-active');
+    }
+}

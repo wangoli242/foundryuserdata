@@ -1,0 +1,2375 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automation module for the Lancer system in Foundry VTT">
+      
+      
+      
+        <link rel="canonical" href="https://agraael.github.io/lancer-automations/API_EFFECTS.html">
+      
+      
+        <link rel="prev" href="API_SPATIAL.html">
+      
+      
+        <link rel="next" href="API_INTERACTIVE.html">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Effects - Lancer Automations</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/la-theme.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#api-effects-bonuses" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Lancer Automations" class="md-header__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lancer Automations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Effects
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Lancer Automations" class="md-nav__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lancer Automations
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Feature guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Feature guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/AUTOMATION_ENGINE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation Engine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/EFFECTS_AND_BONUSES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects & Bonuses
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Action HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT_ADVANCED.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement Advanced
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ISOMETRIC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Isometric
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INTERACTIVE_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ATTACK_TARGETING.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Attack Targeting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/GAMEPLAY_AUTOMATION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gameplay Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/FX_AND_SOUNDS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FX and Sounds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/VISION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/WRECK.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wrecks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/BATTLE_LOG.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Battle Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SYSTEM_ADDITIONS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Additions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SETUP_AND_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup & Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INFECTION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/NPC_EXAMPLES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NPC Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MACROS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Macros
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="AUTOMATION_SYSTEM.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation System
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_REFERENCE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_COMBAT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Combat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_SPATIAL.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spatial
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Effects
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="API_EFFECTS.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Effects
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#effect-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Effect Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#global-constant-bonuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global &amp; Constant Bonuses
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attach-to-items-and-prototype-actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attach to items and prototype actors
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_INTERACTIVE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_ITEMS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Items
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HOWTO.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How-To
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#effect-management" class="md-nav__link">
+    <span class="md-ellipsis">
+      Effect Management
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#global-constant-bonuses" class="md-nav__link">
+    <span class="md-ellipsis">
+      Global &amp; Constant Bonuses
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#attach-to-items-and-prototype-actors" class="md-nav__link">
+    <span class="md-ellipsis">
+      Attach to items and prototype actors
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="api-effects-bonuses">API - Effects &amp; Bonuses<a class="headerlink" href="#api-effects-bonuses" title="Permanent link">&para;</a></h1>
+<p><a href="API_REFERENCE.html">Back to API Reference</a></p>
+<hr />
+<h2 id="effect-management">Effect Management<a class="headerlink" href="#effect-management" title="Permanent link">&para;</a></h2>
+<details>
+<summary><b><code>applyEffectsToTokens</code></b> <sup>async</sup> → <code>Array&lt;Token&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyEffectsToTokens</span><span class="p">(</span><span class="nx">options</span><span class="p">,</span><span class="w"> </span><span class="nx">extraOptions</span><span class="p">)</span>
+</code></pre></div>
+<p><strong><code>options</code> Object:</strong></p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tokens</kbd></td>
+<td style="text-align: left;"><code>Array&lt;Token&gt;</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Targets</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effectNames</kbd></td>
+<td style="text-align: left;"><code>string\|{ name?: string; icon?: string; isCustom?: boolean }\|Array</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;"><code>"prone"</code> or <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">name</span><span class="p">,</span><span class="w"> </span><span class="nx">icon</span><span class="p">,</span><span class="w"> </span><span class="nx">isCustom</span><span class="w"> </span><span class="p">}</span></code>. <code>isCustom: true</code> marks a Temporary-Custom-Statuses effect, not a built-in status</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>note</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>undefined</code></td>
+<td style="text-align: left;">Flavor note</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>duration</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>undefined</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="p">,</span><span class="w"> </span><span class="nx">turns</span><span class="p">,</span><span class="w"> </span><span class="nx">rounds</span><span class="p">,</span><span class="w"> </span><span class="nx">overrideTurnOriginId</span><span class="w"> </span><span class="p">}</span></code> - <code>label</code> is a <a href="API_REFERENCE.html#duration-labels">duration label</a>. When <code>overrideTurnOriginId</code> is set, duration ticks down from that token's turn instead of the target's</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>checkEffectCallback</kbd></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">token</span><span class="o">:</span><span class="w"> </span><span class="nx">Token</span><span class="p">,</span><span class="w"> </span><span class="nx">effectData</span><span class="o">:</span><span class="w"> </span><span class="nx">object</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Dup-check predicate <code class="highlight"><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">effectData</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code>. Returning <code>true</code> blocks the apply with a warning</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>notify</kbd></td>
+<td style="text-align: left;"><code>Object\|boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Notification config <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">prefixText</span><span class="p">,</span><span class="w"> </span><span class="nx">source</span><span class="p">,</span><span class="w"> </span><span class="nx">whisper</span><span class="w"> </span><span class="p">}</span></code> (or <code>true</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><strong><code>extraOptions</code> Object:</strong>
+<code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">stack</span><span class="o">?:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span><span class="w"> </span><span class="nx">linkedBonusId</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">consumption</span><span class="o">?:</span><span class="w"> </span><span class="nx">object</span><span class="p">,</span><span class="w"> </span><span class="nx">statDirect</span><span class="o">?:</span><span class="w"> </span><span class="nx">object</span><span class="p">,</span><span class="w"> </span><span class="nx">changes</span><span class="o">?:</span><span class="w"> </span><span class="nb">Array</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">customFlags</span><span class="w"> </span><span class="p">}</span></code></p>
+<ul>
+<li><code>consumption</code> → <a href="API_REFERENCE.html#consumption">Concepts: Consumption</a>.</li>
+<li><code>linkedBonusId</code>, <code>statDirect</code>, and any extra <code>...customFlags</code> → <a href="API_REFERENCE.html#effect-flags">Concepts: Effect flags</a>. Extra keys (e.g. <code>suppressSourceId</code>) are stored as-is in <code>flags['lancer-automations']</code> on each created effect and become removal filters via <code>extraFlags</code> in <code>removeEffectsByNameFromTokens</code>.</li>
+</ul>
+</details>
+<hr />
+<details>
+<summary><b><code>removeEffectsByNameFromTokens</code></b> <sup>async</sup> → <code>Array&lt;Token|TokenDocument&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeEffectsByNameFromTokens</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<p>Removes every effect matching the given name(s). Use <code>deleteEffect</code> for one specific effect by ID.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tokens</kbd></td>
+<td style="text-align: left;"><code>Array&lt;Token\|TokenDocument&gt;</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Tokens to remove from</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effectNames</kbd></td>
+<td style="text-align: left;"><code>string\|{ name?: string; icon?: string; isCustom?: boolean }\|Array</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Effect name(s) to match and remove</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>originId</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Only remove effects whose stored <code>originID</code> flag matches this value</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>extraFlags</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Key/value pairs that must ALL match the effect's <code>flags['lancer-automations']</code> data</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>notify</kbd></td>
+<td style="text-align: left;"><code>Object\|boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Notification config</td>
+</tr>
+</tbody>
+</table>
+<p><code>originId</code> and <code>extraFlags</code> are independent filters, both applied when provided.</p>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeEffectsByNameFromTokens</span><span class="p">({</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="nx">tokens</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">targetToken</span><span class="p">],</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">    </span><span class="nx">effectNames</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;Suppress&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;impaired&quot;</span><span class="p">],</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">    </span><span class="nx">extraFlags</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">suppressSourceId</span><span class="o">:</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="p">});</span>
+</code></pre></div></p>
+</details>
+<hr />
+<details>
+<summary><b><code>applyMark</code></b> <sup>async</sup> → <code>Promise&lt;any&gt;</code><br><b><code>findMarkedTokens</code></b> → <code>Token[]</code><br><b><code>clearMarks</code></b> <sup>async</sup> → <code>Promise&lt;Token[]&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyMark</span><span class="p">(</span><span class="nx">sourceToken</span><span class="p">,</span><span class="w"> </span><span class="nx">targets</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">effect</span><span class="p">,</span><span class="w"> </span><span class="nx">note</span><span class="p">,</span><span class="w"> </span><span class="nx">duration</span><span class="p">,</span><span class="w"> </span><span class="nx">flagKey</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="nx">api</span><span class="p">.</span><span class="nx">findMarkedTokens</span><span class="p">(</span><span class="nx">sourceToken</span><span class="p">,</span><span class="w"> </span><span class="nx">effectName</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">flagKey</span><span class="w"> </span><span class="p">})</span><span class="w">   </span><span class="c1">// → Token[]</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">clearMarks</span><span class="p">(</span><span class="nx">sourceToken</span><span class="p">,</span><span class="w"> </span><span class="nx">effectName</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">flagKey</span><span class="w"> </span><span class="p">})</span><span class="w">   </span><span class="c1">// → Token[] cleared</span>
+</code></pre></div>
+<p>Source-stamped effect lifecycle: <code>applyMark</code> applies the effect with <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="p">[</span><span class="nx">flagKey</span><span class="p">]</span><span class="o">:</span><span class="w"> </span><span class="nx">sourceToken</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="p">}</span></code> stamped on it, <code>findMarkedTokens</code> scans the scene for tokens carrying it, <code>clearMarks</code> sweeps them all. The Suppress / Engineer's Mark / Sniper's Mark pattern.</p>
+<p><code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">findEffectFrom</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">effectName</span><span class="p">,</span><span class="w"> </span><span class="nx">sourceToken</span><span class="p">)</span></code> is the <code>originID</code> variant: finds the effect a specific source applied via <code>addGlobalBonus</code>/<code>applyEffectsToTokens</code> <code>origin</code>.</p>
+<p><code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">findEffectsOnToken</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">effectName</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">extraFlags</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">hasFlags</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">excludeId</span><span class="o">?</span><span class="w"> </span><span class="p">})</span></code> returns ALL matching effects on one token (same name/status rules as <code>findEffectOnToken</code>, which now delegates to it): <code>extraFlags</code> must match exactly, <code>hasFlags</code> keys must be present, <code>excludeId</code> skips one effect (the onStatusRemoved "any other left?" checks).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>effect</kbd></td>
+<td style="text-align: left;"><code>string\|{ name, icon, isCustom }</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">What to apply</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>note</kbd> / <kbd>duration</kbd></td>
+<td style="text-align: left;"></td>
+<td style="text-align: left;"><code>""</code> / indefinite</td>
+<td style="text-align: left;">Forwarded to <code>applyEffectsToTokens</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>flagKey</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>'markSourceId'</code></td>
+<td style="text-align: left;">Stamp key. Pass a feature-specific one to keep marks independent</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>extraOptions</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{}</span></code></td>
+<td style="text-align: left;">Extra flags stamped alongside</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>removeEffectsByName</code></b> <sup>async</sup> → <code>void</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeEffectsByName</span><span class="p">(</span><span class="nx">targetID</span><span class="p">,</span><span class="w"> </span><span class="nx">effectName</span><span class="p">,</span><span class="w"> </span><span class="nx">originID</span><span class="p">,</span><span class="w"> </span><span class="nx">extraFlags</span><span class="p">)</span>
+</code></pre></div>
+<p>Single-token version of <code>removeEffectsByNameFromTokens</code>.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>targetID</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">The token ID to remove effects from</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effectName</kbd></td>
+<td style="text-align: left;"><code>string\|{ name: string }</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Effect name to match and remove</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>originID</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Only remove effects whose stored <code>originID</code> flag matches</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>extraFlags</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Key/value pairs that must ALL match the effect's <code>flags['lancer-automations']</code> data</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>deleteEffect</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">deleteEffect</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">effect</span><span class="p">)</span>
+</code></pre></div>
+<p>Deletes one active effect by object or ID, no name matching. Routes through the GM socket automatically for non-GM users.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>token</kbd></td>
+<td style="text-align: left;"><code>Token\|TokenDocument\|string</code></td>
+<td style="text-align: left;">The token (or its ID) that owns the effect</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effect</kbd></td>
+<td style="text-align: left;"><code>ActiveEffect\|string</code></td>
+<td style="text-align: left;">The effect (or its ID) to delete</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">effects</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">getAllEffects</span><span class="p">(</span><span class="nx">target</span><span class="p">);</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">deleteEffect</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">effects</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span>
+</code></pre></div></p>
+</details>
+<hr />
+<details>
+<summary><b><code>findEffectOnToken</code></b> → <code>ActiveEffect | undefined</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">findEffectOnToken</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">identifier</span><span class="p">)</span>
+</code></pre></div>
+<p>Searches for an effect on a token by name or predicate function. The string form uses the house name rules (exact name, custom-status originalName, effect flags, loose includes, status id) and returns the first match. It delegates to <code>findEffectsOnToken</code>, which is the one to use for flag filters or all matches.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>token</kbd></td>
+<td style="text-align: left;"><code>Token\|TokenDocument</code></td>
+<td style="text-align: left;">The token to search</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>identifier</kbd></td>
+<td style="text-align: left;"><code>string\|((e: ActiveEffect) =&gt; boolean)</code></td>
+<td style="text-align: left;">Effect name (string) or predicate <code class="highlight"><span class="p">(</span><span class="nx">effect</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code></td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-8-1" name="__codelineno-8-1" href="#__codelineno-8-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">cover</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">findEffectOnToken</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Soft Cover&quot;</span><span class="p">);</span>
+<a id="__codelineno-8-2" name="__codelineno-8-2" href="#__codelineno-8-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">mark</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">findEffectsOnToken</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Suppress&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">extraFlags</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">suppressSourceId</span><span class="o">:</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="p">}</span><span class="w"> </span><span class="p">})[</span><span class="mf">0</span><span class="p">];</span>
+</code></pre></div></p>
+</details>
+<hr />
+<details>
+<summary><b><code>hasStatus</code></b> → <code>boolean</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-9-1" name="__codelineno-9-1" href="#__codelineno-9-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">hasStatus</span><span class="p">(</span><span class="nx">tokenOrActor</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="nx">statusIds</span><span class="p">)</span>
+</code></pre></div>
+<p>True when any of the given status ids is active. Use this instead of reaching into <code>actor.statuses</code> by hand.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tokenOrActor</kbd></td>
+<td style="text-align: left;"><code>Token\|TokenDocument\|Actor</code></td>
+<td style="text-align: left;">Whose statuses to read</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>statusIds</kbd></td>
+<td style="text-align: left;"><code>...(string\|string[])</code></td>
+<td style="text-align: left;">Status ids, or arrays of them. Matches if any is present</td>
+</tr>
+</tbody>
+</table>
+<p>Takes status <strong>ids</strong> (<code>'cover_hard'</code>), not display names. For effects by name, or for flag filters, use <a href="#"><code>findEffectOnToken</code></a>.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-10-1" name="__codelineno-10-1" href="#__codelineno-10-1"></a><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">api</span><span class="p">.</span><span class="nx">hasStatus</span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;prone&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;cover_hard&#39;</span><span class="p">,</span><span class="w"> </span><span class="s1">&#39;cover_soft&#39;</span><span class="p">))</span>
+<a id="__codelineno-10-2" name="__codelineno-10-2" href="#__codelineno-10-2"></a><span class="w">    </span><span class="k">return</span><span class="p">;</span>
+</code></pre></div>
+</details>
+<hr />
+<details>
+<summary><b><code>inDangerZone</code></b> → <code>boolean</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-11-1" name="__codelineno-11-1" href="#__codelineno-11-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">inDangerZone</span><span class="p">(</span><span class="nx">tokenOrActor</span><span class="p">)</span>
+</code></pre></div>
+<p>True when heat is at or above half the heat cap. Same rule the <code>onHeatGain</code> trigger reports as <code>inDangerZone</code>.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>untilEndOfTurn</code></b><br><b><code>untilStartOfTurn</code></b> → <code>object</code><br><b><code>currentTurnKey</code></b> → <code>string|null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-12-1" name="__codelineno-12-1" href="#__codelineno-12-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">untilEndOfTurn</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">turns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span><span class="w">      </span><span class="c1">// → duration object</span>
+<a id="__codelineno-12-2" name="__codelineno-12-2" href="#__codelineno-12-2"></a><span class="nx">api</span><span class="p">.</span><span class="nx">untilStartOfTurn</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">turns</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">)</span>
+<a id="__codelineno-12-3" name="__codelineno-12-3" href="#__codelineno-12-3"></a><span class="nx">api</span><span class="p">.</span><span class="nx">currentTurnKey</span><span class="p">()</span><span class="w">                       </span><span class="c1">// → &quot;round:turn&quot;, null out of combat</span>
+</code></pre></div>
+<p><code>untilEndOfTurn</code> / <code>untilStartOfTurn</code> build the "until the end of <em>their</em> next turn" duration: the token becomes the turn origin, and the count is bumped by one when it is already that token's turn. Use these instead of hand-writing <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;end&#39;</span><span class="p">,</span><span class="w"> </span><span class="nx">turns</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="nx">rounds</span><span class="o">:</span><span class="w"> </span><span class="mf">0</span><span class="w"> </span><span class="p">}</span></code>, which is off by one if applied on the target's own turn.</p>
+<p><code>currentTurnKey</code> stamps "the turn this happened on", so a later turn-end handler can tell whether it is looking at the same turn.</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-13-1" name="__codelineno-13-1" href="#__codelineno-13-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyEffectsToTokens</span><span class="p">({</span><span class="w"> </span><span class="nx">tokens</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="nx">target</span><span class="p">],</span><span class="w"> </span><span class="nx">effectNames</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s1">&#39;slowed&#39;</span><span class="p">],</span><span class="w"> </span><span class="nx">duration</span><span class="o">:</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">untilEndOfTurn</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+</details>
+<hr />
+<details>
+<summary><b><code>getAllEffects</code></b> → <code>Array&lt;ActiveEffect&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-14-1" name="__codelineno-14-1" href="#__codelineno-14-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getAllEffects</span><span class="p">(</span><span class="nx">target</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns all active effects on the target, including unflagged player-added ones.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>target</kbd></td>
+<td style="text-align: left;"><code>Token\|TokenDocument\|Actor</code></td>
+<td style="text-align: left;">The target to inspect</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>consumeEffectCharge</code></b> <sup>async</sup> → <code>boolean</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-15-1" name="__codelineno-15-1" href="#__codelineno-15-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">consumeEffectCharge</span><span class="p">(</span><span class="nx">effect</span><span class="p">)</span>
+</code></pre></div>
+<p>Decrements the effect's stack counter by 1. If the counter reaches 0, the effect is deleted. Grouped effects (via <a href="API_REFERENCE.html#consumption"><code>consumption</code></a><code>.groupId</code>) share a counter and are all deleted together.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>effect</kbd></td>
+<td style="text-align: left;"><code>ActiveEffect</code></td>
+<td style="text-align: left;">The effect to consume a charge from</td>
+</tr>
+</tbody>
+</table>
+<p>Returns <code>true</code> if consumed, <code>false</code> if the effect has no consumption data.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>triggerEffectImmunity</code></b> <sup>async</sup> → <code>void</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-16-1" name="__codelineno-16-1" href="#__codelineno-16-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">triggerEffectImmunity</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">effectNames</span><span class="p">,</span><span class="w"> </span><span class="nx">source</span><span class="p">,</span><span class="w"> </span><span class="nx">notify</span><span class="p">)</span>
+</code></pre></div>
+<p>Removes the named effects from the token and announces immunity in chat.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>token</kbd></td>
+<td style="text-align: left;"><code>Token\|TokenDocument</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">The immune token</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effectNames</kbd></td>
+<td style="text-align: left;"><code>string\|Array&lt;string&gt;</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Effect name(s) to remove</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>source</kbd></td>
+<td style="text-align: left;"><code>Item\|string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Source of immunity (item or text)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>notify</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>true</code></td>
+<td style="text-align: left;">Post chat notification</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>checkEffectImmunities</code></b> → <code>Array&lt;string&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-17-1" name="__codelineno-17-1" href="#__codelineno-17-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">checkEffectImmunities</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">effectIdOrName</span><span class="p">,</span><span class="w"> </span><span class="nx">effect</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns an array of source names (e.g. <code>["Immunity Bonus", "Armor Plating"]</code>) if the actor is immune to the named effect.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>actor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">The actor to check</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effectIdOrName</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Effect ID or name to check immunity for</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effect</kbd></td>
+<td style="text-align: left;"><code>ActiveEffect</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Optional effect object for additional context</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>state</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Optional flow state</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>deleteAllEffects</code></b> → <code>Promise&lt;void&gt;</code><br><b><code>executeEffectManager</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-18-1" name="__codelineno-18-1" href="#__codelineno-18-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">deleteAllEffects</span><span class="p">(</span><span class="nx">tokens</span><span class="p">)</span><span class="w">     </span><span class="c1">// Removes ALL active effects from the provided tokens</span>
+<a id="__codelineno-18-2" name="__codelineno-18-2" href="#__codelineno-18-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">executeEffectManager</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span><span class="w"> </span><span class="c1">// Opens the Effect Manager UI</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tokens</kbd></td>
+<td style="text-align: left;"><code>Array&lt;Token\|TokenDocument&gt;</code></td>
+<td style="text-align: left;">Tokens to clear (<code>deleteAllEffects</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><code class="highlight"><span class="nx">executeEffectManager</span><span class="p">(</span><span class="nx">options</span><span class="p">)</span></code> - <code>options</code>: <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">item</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">forcePrototype</span><span class="o">?</span><span class="w"> </span><span class="p">}</span></code>, pre-selecting the target (an item's prototype, an actor's active token, or the actor prototype when <code>forcePrototype</code>).</p>
+</details>
+<hr />
+<h2 id="global-constant-bonuses">Global &amp; Constant Bonuses<a class="headerlink" href="#global-constant-bonuses" title="Permanent link">&para;</a></h2>
+<details>
+<summary><b><code>addGlobalBonus</code></b> <sup>async</sup> → <code>string</code> (Bonus ID)</summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-19-1" name="__codelineno-19-1" href="#__codelineno-19-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">bonusId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">addGlobalBonus</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusData</span><span class="p">,</span><span class="w"> </span><span class="nx">options</span><span class="p">)</span>
+</code></pre></div>
+<p><strong><code>bonusData</code> Object:</strong></p>
+<details>
+<summary>Core fields (all bonus types)</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>id</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">Optional custom ID</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>name</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">Display name</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>type</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"accuracy"</code>, <code>"difficulty"</code>, <code>"damage"</code>, <code>"stat"</code>, <code>"immunity"</code>, <code>"tag"</code>, <code>"range"</code>, <code>"multi"</code>, <code>"target_modifier"</code>, <code>"reroll"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>val</kbd></td>
+<td style="text-align: left;"><code>number\|string</code></td>
+<td style="text-align: left;">Value for stat, accuracy, difficulty, tag, or range bonuses</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>uses</kbd></td>
+<td style="text-align: left;"><code>number</code></td>
+<td style="text-align: left;">Stack count</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>consumeOnUsage</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;">Burn 1 use only when the bonus actually applies (still checked at roll time / immunity blocked / reroll accepted). Supported: accuracy, difficulty, damage, target_modifier, reroll, immunity (effect/crit/hit/miss/damage/provoke/terrain). Default true, except immunity which defaults false. The <code>Auto-consume on:</code> triggers burn regardless and take precedence.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>rollTypes</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;"><code>["attack"]</code>, <code>["check"]</code>, etc.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>condition</kbd></td>
+<td style="text-align: left;"><code>string\|fn</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">(</span><span class="nx">state</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">context</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code>. <strong>Per-bonus</strong> gate - if false, the whole bonus is skipped.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>itemLids</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;">LID filters</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>applyTo</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;">Token ID filters. Static - set at bonus creation. For dynamic per-target filters on <code>target_modifier</code>, see <code>applyToCondition</code> below.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>tier</kbd></td>
+<td style="text-align: left;"><code>1\|2\|3</code></td>
+<td style="text-align: left;">Gate to an NPC owner tier. Unset = any. Non-NPC owners ignore it</td>
+</tr>
+</tbody>
+</table>
+</details>
+<details>
+<summary>Immunity fields (type: "immunity")</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>subtype</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">One of the <a href="API_REFERENCE.html#immunity-subtypes">immunity subtypes</a></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effects</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;">Only for <code>subtype: "effect"</code>. List of effect/status names (e.g. <code>["Prone", "Immobilized"]</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>damageTypes</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;">Only for <code>subtype: "damage"</code> or <code>"resistance"</code>. List of damage types (e.g. <code>["Energy", "Kinetic"]</code>)</td>
+</tr>
+</tbody>
+</table>
+<p><code>"provoke"</code> acts like permanent DISENGAGE. No extra fields required.</p>
+</details>
+<details>
+<summary>Target modifier fields (type: "target_modifier")</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>subtype</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">Attack: <code>"invisible"</code>, <code>"no_invisible"</code>, <code>"no_cover"</code>, <code>"soft_cover"</code>, <code>"hard_cover"</code>. Damage: <code>"ap"</code>, <code>"half_damage"</code>, <code>"paracausal"</code>, <code>"crit"</code>, <code>"hit"</code>, <code>"miss"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>applyToCondition</kbd></td>
+<td style="text-align: left;"><code>string\|fn</code></td>
+<td style="text-align: left;"><strong>Per-target</strong> gate (complements <code>applyTo</code> and <code>condition</code>). Lambda <code class="highlight"><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code> evaluated once per target during the attack / damage / toggle pass. Must be synchronous. Serialized via <code>@@fn:</code> - survives reloads.</td>
+</tr>
+</tbody>
+</table>
+<p><code>"no_invisible"</code> forces <code>plugins.invisibility.data = 0</code> on the target, bypassing <code>"invisible"</code>.</p>
+<p><strong>Example - ignore invisibility only within range 3:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-20-1" name="__codelineno-20-1" href="#__codelineno-20-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">addConstantBonus</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-2" name="__codelineno-20-2" href="#__codelineno-20-2"></a><span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;lesser-sight&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-3" name="__codelineno-20-3" href="#__codelineno-20-3"></a><span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;Lesser Sight&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-4" name="__codelineno-20-4" href="#__codelineno-20-4"></a><span class="w">    </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;target_modifier&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-5" name="__codelineno-20-5" href="#__codelineno-20-5"></a><span class="w">    </span><span class="nx">subtype</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;no_invisible&#39;</span><span class="p">,</span>
+<a id="__codelineno-20-6" name="__codelineno-20-6" href="#__codelineno-20-6"></a><span class="w">    </span><span class="nx">applyToCondition</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">target</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-20-7" name="__codelineno-20-7" href="#__codelineno-20-7"></a><span class="w">        </span><span class="kd">const</span><span class="w"> </span><span class="nx">api</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">game</span><span class="p">.</span><span class="nx">modules</span><span class="p">.</span><span class="nx">get</span><span class="p">(</span><span class="s1">&#39;lancer-automations&#39;</span><span class="p">)</span><span class="o">?</span><span class="p">.</span><span class="nx">api</span><span class="p">;</span>
+<a id="__codelineno-20-8" name="__codelineno-20-8" href="#__codelineno-20-8"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="nx">api</span><span class="o">?</span><span class="p">.</span><span class="nx">getTokenDistance</span><span class="p">(</span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">target</span><span class="p">.</span><span class="nx">target</span><span class="p">)</span><span class="w"> </span><span class="o">&lt;=</span><span class="w"> </span><span class="mf">3</span>
+<a id="__codelineno-20-9" name="__codelineno-20-9" href="#__codelineno-20-9"></a><span class="w">            </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">target</span><span class="p">.</span><span class="nx">target</span><span class="o">?</span><span class="p">.</span><span class="nx">actor</span><span class="o">?</span><span class="p">.</span><span class="nx">effects</span><span class="o">?</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="nx">e</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">e</span><span class="p">.</span><span class="nx">statuses</span><span class="o">?</span><span class="p">.</span><span class="nx">has</span><span class="p">(</span><span class="s1">&#39;invisible&#39;</span><span class="p">));</span>
+<a id="__codelineno-20-10" name="__codelineno-20-10" href="#__codelineno-20-10"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-20-11" name="__codelineno-20-11" href="#__codelineno-20-11"></a><span class="p">});</span>
+</code></pre></div></p>
+</details>
+<details>
+<summary>Tag fields (type: "tag")</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>tagName</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">Name of the custom tag (e.g. <code>"Inaccurate"</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>tagMode</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"add"</code> or <code>"override"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>removeTag</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;">If true, negates the tag instead of adding it</td>
+</tr>
+</tbody>
+</table>
+</details>
+<details>
+<summary>Range fields (type: "range")</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>rangeType</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"Range"</code>, <code>"Threat"</code>, <code>"Line"</code>, <code>"Blast"</code>, <code>"Burst"</code>, <code>"Cone"</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>rangeMode</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"add"</code> (default, accepts negative val), <code>"override"</code> (set existing or create), or <code>"change"</code> (replace all ranges with a single entry)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<details>
+<summary>Reroll fields (type: "reroll")</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>subtype</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"retry"</code> (default), <code>"highest"</code>, <code>"lowest"</code>, or <code>"choose"</code>. See resolution table below.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>rollTypes</kbd></td>
+<td style="text-align: left;"><code>Array&lt;string&gt;</code></td>
+<td style="text-align: left;"><code>"attackRoll"</code>, <code>"techAttackRoll"</code>, <code>"damageRoll"</code>, <code>"skillRoll"</code>, <code>"structureRoll"</code>, <code>"stressRoll"</code>. Empty = all.</td>
+</tr>
+</tbody>
+</table>
+<p>Offered via a choice card before <code>onRoll</code> fires. Consumed only on <strong>Use</strong> (Keep leaves the charge).</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Subtype</th>
+<th style="text-align: left;">Resolution after the alt roll runs</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>"retry"</code></td>
+<td style="text-align: left;">Replace original with the alt (current default behavior).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>"highest"</code></td>
+<td style="text-align: left;">Auto-keep <code class="highlight"><span class="nx">max</span><span class="p">(</span><span class="nx">originalTotal</span><span class="p">,</span><span class="w"> </span><span class="nx">altTotal</span><span class="p">)</span></code>. Stacking gives best-of-N+1.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>"lowest"</code></td>
+<td style="text-align: left;">Auto-keep <code class="highlight"><span class="nx">min</span><span class="p">(</span><span class="nx">originalTotal</span><span class="p">,</span><span class="w"> </span><span class="nx">altTotal</span><span class="p">)</span></code>. Stacking gives worst-of-N+1.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>"choose"</code></td>
+<td style="text-align: left;">Second card prompts <code class="highlight"><span class="nx">Original</span><span class="w"> </span><span class="p">(</span><span class="nx">X</span><span class="p">)</span></code> / <code class="highlight"><span class="nx">Alt</span><span class="w"> </span><span class="p">(</span><span class="nx">Y</span><span class="p">)</span></code> and the user picks.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Stacking:</strong> when an actor has multiple <code>reroll</code> bonuses matching a roll, they fire sequentially, each operating on the <em>current</em> total. Candidates are sorted by subtype priority (<code>retry</code> → <code>highest</code>/<code>lowest</code> → <code>choose</code>). Damage rolls deep-snapshot <code>damage_results</code>/<code>reliable_results</code>/<code>targets</code>, so "keep original" restores the full breakdown.</p>
+</details>
+<details>
+<summary>Multi / Damage fields</summary>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Property</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>bonuses</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;">Only for <code>type: "multi"</code>. Array of sub-bonus objects.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>damage</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;">Damage bonus. Shape depends on <code>damageMode</code>: <code class="highlight"><span class="p">[{</span><span class="w"> </span><span class="nx">type</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="w"> </span><span class="p">}]</span></code> for <code>add</code>/<code>add_base</code>/<code>replace</code>, <code class="highlight"><span class="p">[{</span><span class="w"> </span><span class="kr">from</span><span class="p">,</span><span class="w"> </span><span class="nx">to</span><span class="w"> </span><span class="p">}]</span></code> for <code>change_type</code> (use <code>from: "all"</code> as a fallback catch-all, and specific <code>from</code> types win over <code>"all"</code>).</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>damageMode</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"add"</code> (default, adds bonus damage rows in the Bonus Damage section), <code>"add_base"</code> (appends extra damage rows to the weapon's Base Damage), <code>"replace"</code> (weapon's base damage is fully replaced), <code>"change_type"</code> (weapon's damage values kept, types remapped). All modes except <code>add</code> are actor-wide only. <code>applyTo</code> is stripped on save for those.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>stat</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">Property path (e.g. <code>system.hp.max</code>)</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>statMode</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>"add"</code> (default, adds <code>val</code> to the current stat) or <code>"replace"</code> (sets the stat to <code>val</code>). Reversal preserves any damage / healing taken during the effect (delta-based, see <a href="API_REFERENCE.html#effect-flags"><code>statDirect</code></a>).</td>
+</tr>
+</tbody>
+</table>
+</details>
+<p><br></p>
+<p><strong><code>options</code> Object:</strong>
+<code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">duration</span><span class="o">?:</span><span class="w"> </span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">durationTurns</span><span class="o">?:</span><span class="w"> </span><span class="nx">number</span><span class="p">,</span><span class="w"> </span><span class="nx">origin</span><span class="o">?:</span><span class="w"> </span><span class="nx">Token</span><span class="o">|</span><span class="nx">TokenDocument</span><span class="o">|</span><span class="nx">string</span><span class="p">,</span><span class="w"> </span><span class="nx">consumption</span><span class="o">?:</span><span class="w"> </span><span class="nx">ConsumptionConfig</span><span class="w"> </span><span class="p">}</span></code></p>
+<p><code>duration</code> is a <a href="API_REFERENCE.html#duration-labels">duration label</a>. <code>consumption</code> is a <a href="API_REFERENCE.html#consumption">Consumption</a> config.</p>
+<p><code>durationTurns</code> counts origin turns until the effect ends:
+- <code>0</code>: next matching trigger. If applied during origin's own turn with <code>duration: "end"</code>, ends at end of that same turn. With <code>duration: "start"</code>, it ends at start of the next turn. Off-combat / off-origin's-turn, <code>0</code> clamps to <code>1</code>.
+- <code>1</code>: one full origin turn (default). With <code>duration: "end"</code> applied during origin's own turn, ends at end of origin's <em>next</em> turn.
+- <code>n ≥ 2</code>: <code>n</code> origin turns.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>removeGlobalBonus</code></b> <sup>async</sup> → <code>boolean</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-21-1" name="__codelineno-21-1" href="#__codelineno-21-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeGlobalBonus</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusIdOrPredicate</span><span class="p">,</span><span class="w"> </span><span class="nx">skipEffectRemoval</span><span class="p">)</span>
+</code></pre></div>
+<p>Removes one or more global bonuses from an actor. Also deletes linked active effects unless <code>skipEffectRemoval</code> is true.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>actor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">The actor to modify</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>bonusIdOrPredicate</kbd></td>
+<td style="text-align: left;"><code>string\|((bonus) =&gt; boolean)</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Bonus ID string, or predicate <code class="highlight"><span class="p">(</span><span class="nx">bonus</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code> to match multiple</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>skipEffectRemoval</kbd></td>
+<td style="text-align: left;"><code>boolean</code></td>
+<td style="text-align: left;"><code>false</code></td>
+<td style="text-align: left;">If true, keeps the linked active effects</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example:</strong>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-22-1" name="__codelineno-22-1" href="#__codelineno-22-1"></a><span class="c1">// Remove by ID</span>
+<a id="__codelineno-22-2" name="__codelineno-22-2" href="#__codelineno-22-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeGlobalBonus</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;defense-net-abc123&quot;</span><span class="p">);</span>
+<a id="__codelineno-22-3" name="__codelineno-22-3" href="#__codelineno-22-3"></a>
+<a id="__codelineno-22-4" name="__codelineno-22-4" href="#__codelineno-22-4"></a><span class="c1">// Remove by predicate</span>
+<a id="__codelineno-22-5" name="__codelineno-22-5" href="#__codelineno-22-5"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeGlobalBonus</span><span class="p">(</span><span class="nx">token</span><span class="p">.</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">context</span><span class="o">?</span><span class="p">.</span><span class="nx">ownerTokenId</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">.</span><span class="nx">id</span><span class="p">);</span>
+</code></pre></div></p>
+</details>
+<hr />
+<details>
+<summary><b><code>getGlobalBonuses</code></b> → <code>any[]</code><br><b><code>getGlobalBonus</code></b> → <code>object|null</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-23-1" name="__codelineno-23-1" href="#__codelineno-23-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">all</span><span class="w">    </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">getGlobalBonuses</span><span class="p">(</span><span class="nx">actor</span><span class="p">)</span><span class="w">        </span><span class="c1">// → Array&lt;BonusData&gt; (empty if falsy)</span>
+<a id="__codelineno-23-2" name="__codelineno-23-2" href="#__codelineno-23-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">single</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">getGlobalBonus</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusId</span><span class="p">)</span><span class="w">  </span><span class="c1">// → BonusData | null</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>actor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;">The actor to inspect</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>bonusId</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;">The bonus ID (for <code>getGlobalBonus</code> only)</td>
+</tr>
+</tbody>
+</table>
+</details>
+<hr />
+<details>
+<summary><b><code>addConstantBonus</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code><br><b><code>getConstantBonuses</code></b> → <code>any[]</code><br><b><code>removeConstantBonus</code></b> <sup>async</sup> → <code>Promise&lt;void&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-24-1" name="__codelineno-24-1" href="#__codelineno-24-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">addConstantBonus</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusData</span><span class="p">)</span><span class="w">              </span><span class="c1">// same bonusData shape as addGlobalBonus</span>
+<a id="__codelineno-24-2" name="__codelineno-24-2" href="#__codelineno-24-2"></a><span class="kd">const</span><span class="w"> </span><span class="nx">bonuses</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">getConstantBonuses</span><span class="p">(</span><span class="nx">actor</span><span class="p">)</span><span class="w">              </span><span class="c1">// → Array&lt;BonusData&gt; (empty if falsy)</span>
+<a id="__codelineno-24-3" name="__codelineno-24-3" href="#__codelineno-24-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">removeConstantBonus</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusIdOrPredicate</span><span class="p">)</span><span class="w">   </span><span class="c1">// string ID or predicate</span>
+</code></pre></div>
+<p>Constant bonuses are permanent (stored in flags, not linked to an active effect). Auto-generates an <code>id</code> if not provided.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>actor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;">The actor to modify/inspect</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>bonusData</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;">Same shape as <code>addGlobalBonus</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>bonusIdOrPredicate</kbd></td>
+<td style="text-align: left;"><code>string\|((bonus) =&gt; boolean)</code></td>
+<td style="text-align: left;">Bonus ID or predicate <code class="highlight"><span class="p">(</span><span class="nx">bonus</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code></td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p>When the target is an <strong>item</strong> or a <strong>prototype actor</strong>, use <code>linkBonusToItem</code> / <code>linkBonusToActor</code> instead.</p>
+</blockquote>
+</details>
+<hr />
+<h2 id="attach-to-items-and-prototype-actors">Attach to items and prototype actors<a class="headerlink" href="#attach-to-items-and-prototype-actors" title="Permanent link">&para;</a></h2>
+<p>Statuses and bonuses can be attached directly to an <strong>item</strong> or a <strong>prototype actor</strong> instead of a token. The entry lives on the source doc, and applies to the token's actor on item-add, token-spawn, or re-enable. It's cleaned up on remove / destroy / disable. Charges persist across the cycle.</p>
+<details>
+<summary><b><code>linkEffectToItem</code></b><br><b><code>linkEffectToActor</code></b><br><b><code>ensureLinkedEffect</code></b> <sup>async</sup> → <code>Array</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-25-1" name="__codelineno-25-1" href="#__codelineno-25-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">linkEffectToItem</span><span class="p">({</span><span class="w"> </span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">effectNames</span><span class="p">,</span><span class="w"> </span><span class="nx">note</span><span class="p">,</span><span class="w"> </span><span class="nx">duration</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">extraOptions</span><span class="p">)</span>
+<a id="__codelineno-25-2" name="__codelineno-25-2" href="#__codelineno-25-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">linkEffectToActor</span><span class="p">({</span><span class="w"> </span><span class="nx">actors</span><span class="p">,</span><span class="w"> </span><span class="nx">effectNames</span><span class="p">,</span><span class="w"> </span><span class="nx">note</span><span class="p">,</span><span class="w"> </span><span class="nx">duration</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">extraOptions</span><span class="p">)</span>
+<a id="__codelineno-25-3" name="__codelineno-25-3" href="#__codelineno-25-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">ensureLinkedEffect</span><span class="p">({</span><span class="w"> </span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">effectNames</span><span class="p">,</span><span class="w"> </span><span class="nx">note</span><span class="p">,</span><span class="w"> </span><span class="nx">duration</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">extraOptions</span><span class="p">)</span><span class="w">  </span><span class="c1">// idempotent</span>
+</code></pre></div>
+<p>Attaches a status to each source doc. Fires immediately on any active tokens.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>items</kbd> / <kbd>actors</kbd></td>
+<td style="text-align: left;"><code>Array</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Source docs</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>effectNames</kbd></td>
+<td style="text-align: left;"><code>string\|Object\|Array</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">Same shape as <code>applyEffectsToTokens</code></td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>note</kbd></td>
+<td style="text-align: left;"><code>string</code></td>
+<td style="text-align: left;"><code>""</code></td>
+<td style="text-align: left;">Flavor note</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>duration</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="o">:</span><span class="w"> </span><span class="s1">&#39;permanent&#39;</span><span class="w"> </span><span class="p">}</span></code></td>
+<td style="text-align: left;"><code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">label</span><span class="p">,</span><span class="w"> </span><span class="nx">turns</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">rounds</span><span class="o">?</span><span class="w"> </span><span class="p">}</span></code></td>
+</tr>
+</tbody>
+</table>
+<p><code>extraOptions</code> keys are stored on the source and copied to every effect that comes from it. <code>extraOptions.tier</code> (1-3) gates materialization to NPC owners of that tier.</p>
+<p><code>ensureLinkedEffect</code> is <code>linkEffectToItem</code> that skips effects the item already carries as a template (match = effect name + every <code>extraOptions</code> flag). The onInit way to link: no hand-written guard needed.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>unlinkEffectFromItem</code></b><br><b><code>unlinkEffectFromActor</code></b> <sup>async</sup> → <code>Array</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-26-1" name="__codelineno-26-1" href="#__codelineno-26-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">unlinkEffectFromItem</span><span class="p">({</span><span class="w"> </span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">effectName</span><span class="p">,</span><span class="w"> </span><span class="nx">extraFlags</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-26-2" name="__codelineno-26-2" href="#__codelineno-26-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">unlinkEffectFromActor</span><span class="p">({</span><span class="w"> </span><span class="nx">actors</span><span class="p">,</span><span class="w"> </span><span class="nx">effectName</span><span class="p">,</span><span class="w"> </span><span class="nx">extraFlags</span><span class="w"> </span><span class="p">})</span>
+</code></pre></div>
+<p>Removes the entry from the source doc. Every effect that came from it is removed from active tokens too.</p>
+<p>Keys: <code>items</code>/<code>actors</code> (<code>Item[]</code>/<code>Actor[]</code>), <code>effectName</code> <code>string</code>, <code>extraFlags</code> <code>Object</code> (optional, must match the linked entry).</p>
+</details>
+<hr />
+<details>
+<summary><b><code>linkBonusToItem</code></b><br><b><code>linkBonusToActor</code></b><br><b><code>ensureLinkedBonus</code></b> <sup>async</sup> → <code>Array</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-27-1" name="__codelineno-27-1" href="#__codelineno-27-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">linkBonusToItem</span><span class="p">({</span><span class="w"> </span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusData</span><span class="p">,</span><span class="w"> </span><span class="nx">addOptions</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">extraOptions</span><span class="p">)</span>
+<a id="__codelineno-27-2" name="__codelineno-27-2" href="#__codelineno-27-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">linkBonusToActor</span><span class="p">({</span><span class="w"> </span><span class="nx">actors</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusData</span><span class="p">,</span><span class="w"> </span><span class="nx">addOptions</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">extraOptions</span><span class="p">)</span>
+<a id="__codelineno-27-3" name="__codelineno-27-3" href="#__codelineno-27-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">ensureLinkedBonus</span><span class="p">({</span><span class="w"> </span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">bonusData</span><span class="p">,</span><span class="w"> </span><span class="nx">addOptions</span><span class="w"> </span><span class="p">},</span><span class="w"> </span><span class="nx">extraOptions</span><span class="p">)</span><span class="w">  </span><span class="c1">// idempotent, needs bonusData.id</span>
+</code></pre></div>
+<p>Attaches a bonus to each source doc. Applies immediately on active tokens.</p>
+<p>The <code>duration</code> in <code>addOptions</code> decides how it shows up:</p>
+<ul>
+<li><code>'constant'</code>: passive, invisible, no token icon (same as <code>addConstantBonus</code>).</li>
+<li>anything else (<code>'permanent'</code>, <code>'indefinite'</code>, <code>'end'</code>, <code>'start'</code>, <code>'round'</code>): full bonus with icon, uses / consumption, and turn tracking (same as <code>addGlobalBonus</code>).</li>
+</ul>
+<p><code>bonusData</code> and <code>addOptions</code> shapes match <code>addGlobalBonus</code>.</p>
+<p><code>ensureLinkedBonus</code> is <code>linkBonusToItem</code> that skips items already carrying a template with the same <code>bonusData.id</code>. The onInit way to link a bonus.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>unlinkBonusFromItem</code></b><br><b><code>unlinkBonusFromActor</code></b> <sup>async</sup> → <code>Array</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-28-1" name="__codelineno-28-1" href="#__codelineno-28-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">unlinkBonusFromItem</span><span class="p">({</span><span class="w"> </span><span class="nx">items</span><span class="p">,</span><span class="w"> </span><span class="nx">templateId</span><span class="w"> </span><span class="p">})</span>
+<a id="__codelineno-28-2" name="__codelineno-28-2" href="#__codelineno-28-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">unlinkBonusFromActor</span><span class="p">({</span><span class="w"> </span><span class="nx">actors</span><span class="p">,</span><span class="w"> </span><span class="nx">templateId</span><span class="w"> </span><span class="p">})</span>
+</code></pre></div>
+<p>Removes the entry from the source doc. Every bonus that came from it is removed from active tokens too. Charge counts are saved back to the source first, so a re-link picks them back up.</p>
+<p>Keys: <code>items</code>/<code>actors</code> (<code>Item[]</code>/<code>Actor[]</code>), <code>templateId</code> <code>string</code> (the linked bonus's id).</p>
+</details>
+<hr />
+<details>
+<summary><b><code>getLinkedEffects</code></b> → <code>any[]</code><br><b><code>getLinkedBonuses</code></b> → <code>any[]</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-29-1" name="__codelineno-29-1" href="#__codelineno-29-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getLinkedEffects</span><span class="p">(</span><span class="nx">source</span><span class="p">)</span><span class="w">   </span><span class="c1">// → ActiveEffect[]  status templates on Item or Actor</span>
+<a id="__codelineno-29-2" name="__codelineno-29-2" href="#__codelineno-29-2"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getLinkedBonuses</span><span class="p">(</span><span class="nx">source</span><span class="p">)</span><span class="w">   </span><span class="c1">// → Object[]        bonus templates on Item or Actor</span>
+</code></pre></div>
+<p>Read-side helpers, symmetric with <code>getConstantBonuses</code> / <code>getGlobalBonuses</code>. Returns the LINKED entries only (not merged with runtime state on the actor).</p>
+</details>
+<hr />
+<details>
+<summary>Manual apply / cleanup helpers <sup>all async</sup></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-30-1" name="__codelineno-30-1" href="#__codelineno-30-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyItemTemplatesToTokens</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">tokens</span><span class="p">)</span><span class="w">         </span><span class="c1">// apply the item&#39;s statuses to given tokens</span>
+<a id="__codelineno-30-2" name="__codelineno-30-2" href="#__codelineno-30-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyActorTemplatesToTokens</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">tokens</span><span class="p">)</span><span class="w">       </span><span class="c1">// apply the actor&#39;s statuses to given tokens</span>
+<a id="__codelineno-30-3" name="__codelineno-30-3" href="#__codelineno-30-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyItemBonusTemplatesToTokens</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">tokens</span><span class="p">)</span><span class="w">    </span><span class="c1">// apply the item&#39;s bonuses</span>
+<a id="__codelineno-30-4" name="__codelineno-30-4" href="#__codelineno-30-4"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">applyActorBonusTemplatesToTokens</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">tokens</span><span class="p">)</span><span class="w">  </span><span class="c1">// apply the actor&#39;s bonuses</span>
+<a id="__codelineno-30-5" name="__codelineno-30-5" href="#__codelineno-30-5"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">cleanupItemBonusesFromActor</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="p">)</span><span class="w">          </span><span class="c1">// remove bonuses that came from this item</span>
+<a id="__codelineno-30-6" name="__codelineno-30-6" href="#__codelineno-30-6"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">cleanupActorBonusesFromTokens</span><span class="p">(</span><span class="nx">actor</span><span class="p">)</span><span class="w">              </span><span class="c1">// remove bonuses that came from this actor</span>
+</code></pre></div>
+<p>The lifecycle hooks call these for you. Only reach for them if you need to force a pass from custom code. All safe to call repeatedly - they skip anything already applied.</p>
+<p>Args: <code>item</code>/<code>actor</code> source doc. The <code>apply*</code> helpers also take <code>tokens</code> (<code>Array&lt;Token\|TokenDocument&gt;</code>). <code class="highlight"><span class="nx">cleanupItemBonusesFromActor</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">actor</span><span class="p">)</span></code> and <code class="highlight"><span class="nx">cleanupActorBonusesFromTokens</span><span class="p">(</span><span class="nx">actor</span><span class="p">)</span></code>.</p>
+</details>
+<hr />
+<h3 id="flow-state-data-injection">Flow State Data Injection<a class="headerlink" href="#flow-state-data-injection" title="Permanent link">&para;</a></h3>
+<p>During an active flow (attack, check, etc.), <code>triggerData</code> contains a <code>flowState</code> object. Inject ephemeral bonuses or share variables across triggers for the flow's lifespan.</p>
+<details>
+<summary><b><code>flowState.injectBonus</code></b><br><b><code>flowState.injectFlowExtraData</code></b><br><b><code>flowState.getFlowExtraData</code></b></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-31-1" name="__codelineno-31-1" href="#__codelineno-31-1"></a><span class="nx">triggerData</span><span class="p">.</span><span class="nx">flowState</span><span class="p">.</span><span class="nx">injectBonus</span><span class="p">(</span><span class="nx">bonus</span><span class="p">)</span><span class="w">            </span><span class="c1">// add ephemeral bonus to current flow</span>
+<a id="__codelineno-31-2" name="__codelineno-31-2" href="#__codelineno-31-2"></a><span class="nx">triggerData</span><span class="p">.</span><span class="nx">flowState</span><span class="p">.</span><span class="nx">injectFlowExtraData</span><span class="p">(</span><span class="nx">extraData</span><span class="p">)</span><span class="w"> </span><span class="c1">// merge into state.la_extraData</span>
+<a id="__codelineno-31-3" name="__codelineno-31-3" href="#__codelineno-31-3"></a><span class="nx">triggerData</span><span class="p">.</span><span class="nx">flowState</span><span class="p">.</span><span class="nx">getFlowExtraData</span><span class="p">()</span><span class="w">             </span><span class="c1">// read la_extraData</span>
+</code></pre></div>
+<ul>
+<li><strong><code>injectBonus</code></strong> - ephemeral bonus (e.g. an accuracy bonus) applied to this flow's rolls, discarded when the flow completes.</li>
+<li><strong><code>injectFlowExtraData</code></strong> - Merges properties into <code>state.la_extraData</code>, passing variables between trigger phases (e.g. from <code>onHit</code> to <code>onDamage</code>).</li>
+<li><strong><code>getFlowExtraData</code></strong> - Returns the <code>la_extraData</code> object attached to the current flow state.</li>
+</ul>
+</details>
+<hr />
+<h3 id="immunity-queries">Immunity Queries<a class="headerlink" href="#immunity-queries" title="Permanent link">&para;</a></h3>
+<details>
+<summary><b><code>getImmunityBonuses</code></b> → <code>any[]</code><br><b><code>checkDamageResistances</code></b> → <code>any[]</code><br><b><code>applyDamageImmunities</code></b> → <code>Array&lt;{ type: string; val: any }&gt;</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-32-1" name="__codelineno-32-1" href="#__codelineno-32-1"></a><span class="nx">api</span><span class="p">.</span><span class="nx">getImmunityBonuses</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">subtype</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">)</span><span class="w">    </span><span class="c1">// → Array&lt;object&gt;</span>
+<a id="__codelineno-32-2" name="__codelineno-32-2" href="#__codelineno-32-2"></a><span class="nx">api</span><span class="p">.</span><span class="nx">checkDamageResistances</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">damageType</span><span class="p">)</span><span class="w">     </span><span class="c1">// → Array&lt;object&gt;</span>
+<a id="__codelineno-32-3" name="__codelineno-32-3" href="#__codelineno-32-3"></a><span class="nx">api</span><span class="p">.</span><span class="nx">applyDamageImmunities</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">damages</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">)</span><span class="w">  </span><span class="c1">// → Array&lt;object&gt;</span>
+</code></pre></div>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Function</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><code>getImmunityBonuses</code></td>
+<td style="text-align: left;">Returns all immunity bonuses of the specified <a href="API_REFERENCE.html#immunity-subtypes">subtype</a> for the actor.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>checkDamageResistances</code></td>
+<td style="text-align: left;">Returns all "resistance" subtype immunity bonuses matching the given damage type.</td>
+</tr>
+<tr>
+<td style="text-align: left;"><code>applyDamageImmunities</code></td>
+<td style="text-align: left;">Takes an array of damage objects <code class="highlight"><span class="p">{</span><span class="nx">type</span><span class="p">,</span><span class="w"> </span><span class="nx">val</span><span class="p">}</span></code> and returns a new array where immune types are zeroed out.</td>
+</tr>
+</tbody>
+</table>
+<p><code>getImmunityBonuses</code> and <code>applyDamageImmunities</code> accept an optional <kbd>state</kbd> (<code>Object</code>, default <code>null</code>) for conditional immunity evaluation.</p>
+</details>
+<hr />
+<details>
+<summary><b><code>hasCritImmunity</code></b><br><b><code>hasHitImmunity</code></b><br><b><code>hasMissImmunity</code></b> <sup>async</sup> → <code>boolean</code></summary>
+<p><br></p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-33-1" name="__codelineno-33-1" href="#__codelineno-33-1"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">hasCritImmunity</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">attackerActor</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">)</span>
+<a id="__codelineno-33-2" name="__codelineno-33-2" href="#__codelineno-33-2"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">hasHitImmunity</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">attackerActor</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">)</span>
+<a id="__codelineno-33-3" name="__codelineno-33-3" href="#__codelineno-33-3"></a><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">hasMissImmunity</span><span class="p">(</span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">attackerActor</span><span class="p">,</span><span class="w"> </span><span class="nx">state</span><span class="p">)</span>
+</code></pre></div>
+<p>Returns <code>true</code> if the actor has any immunity bonuses of the corresponding subtype.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Param</th>
+<th style="text-align: left;">Type</th>
+<th style="text-align: left;">Default</th>
+<th style="text-align: left;">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;"><kbd>actor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;"><em>required</em></td>
+<td style="text-align: left;">The actor to check</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>attackerActor</kbd></td>
+<td style="text-align: left;"><code>Actor</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Optional attacker for conditional immunity checks</td>
+</tr>
+<tr>
+<td style="text-align: left;"><kbd>state</kbd></td>
+<td style="text-align: left;"><code>Object</code></td>
+<td style="text-align: left;"><code>null</code></td>
+<td style="text-align: left;">Optional flow state</td>
+</tr>
+</tbody>
+</table>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "search.share", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="assets/la-code.js"></script>
+      
+        <script src="assets/la-header.js"></script>
+      
+    
+  </body>
+</html>

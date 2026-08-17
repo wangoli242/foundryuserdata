@@ -1,0 +1,56 @@
+{
+  "id": "terrain-height-tools",
+  "title": "Terrain Height Tools (LaSossis's Fork)",
+  "description": "Tools for painting grid cells with terrain heights and calculating line of sight with respect to these heights.",
+  "version": "0.7.19",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13",
+    "maximum": "13"
+  },
+  "authors": [
+    {
+      "name": "Will Bennion",
+      "discord": "@wibble199"
+    },
+    {
+      "name": "LaSossis",
+      "url": "https://github.com/Agraael",
+      "github": "Agraael",
+      "patreon": "https://www.patreon.com/c/LaSossis",
+      "discord": "232918237107453962"
+    }
+  ],
+  "scripts": [
+    "dist/module.js"
+  ],
+  "styles": [
+    "dist/module.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "relationships": {
+    "requires": [
+      {
+        "id": "lib-wrapper",
+        "type": "module"
+      }
+    ],
+    "recommends": [
+      {
+        "id": "_CodeMirror",
+        "type": "module",
+        "reason": "Provides syntax highlighting in the inline JavaScript editor for terrain triggers."
+      }
+    ]
+  },
+  "socket": true,
+  "url": "https://github.com/Agraael/FoundryVTT-Terrain-Height-Tools",
+  "manifest": "https://github.com/Agraael/FoundryVTT-Terrain-Height-Tools/releases/latest/download/module.json",
+  "download": "https://github.com/Agraael/FoundryVTT-Terrain-Height-Tools/releases/download/v0.7.19/release.zip"
+}

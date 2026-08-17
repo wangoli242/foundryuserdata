@@ -1,0 +1,2335 @@
+
+<!doctype html>
+<html lang="en" class="no-js">
+  <head>
+    
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width,initial-scale=1">
+      
+        <meta name="description" content="Automation module for the Lancer system in Foundry VTT">
+      
+      
+      
+        <link rel="canonical" href="https://agraael.github.io/lancer-automations/AUTOMATION_SYSTEM.html">
+      
+      
+        <link rel="prev" href="MACROS.html">
+      
+      
+        <link rel="next" href="API_REFERENCE.html">
+      
+      
+      <link rel="icon" href="assets/images/favicon.png">
+      <meta name="generator" content="mkdocs-1.6.1, mkdocs-material-9.5.44">
+    
+    
+      
+        <title>Automation System - Lancer Automations</title>
+      
+    
+    
+      <link rel="stylesheet" href="assets/stylesheets/main.0253249f.min.css">
+      
+        
+        <link rel="stylesheet" href="assets/stylesheets/palette.06af60db.min.css">
+      
+      
+
+
+    
+    
+      
+    
+    
+      
+        
+        
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,300i,400,400i,700,700i%7CRoboto+Mono:400,400i,700,700i&display=fallback">
+        <style>:root{--md-text-font:"Roboto";--md-code-font:"Roboto Mono"}</style>
+      
+    
+    
+      <link rel="stylesheet" href="assets/la-theme.css">
+    
+    <script>__md_scope=new URL(".",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+    
+      
+
+    
+    
+    
+  </head>
+  
+  
+    
+    
+      
+    
+    
+    
+    
+    <body dir="ltr" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange">
+  
+    
+    <input class="md-toggle" data-md-toggle="drawer" type="checkbox" id="__drawer" autocomplete="off">
+    <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
+    <label class="md-overlay" for="__drawer"></label>
+    <div data-md-component="skip">
+      
+        
+        <a href="#lancer-automations-how-the-automation-system-works" class="md-skip">
+          Skip to content
+        </a>
+      
+    </div>
+    <div data-md-component="announce">
+      
+    </div>
+    
+    
+      
+
+  
+
+<header class="md-header md-header--shadow" data-md-component="header">
+  <nav class="md-header__inner md-grid" aria-label="Header">
+    <a href="index.html" title="Lancer Automations" class="md-header__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    <label class="md-header__button md-icon" for="__drawer">
+      
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"/></svg>
+    </label>
+    <div class="md-header__title" data-md-component="header-title">
+      <div class="md-header__ellipsis">
+        <div class="md-header__topic">
+          <span class="md-ellipsis">
+            Lancer Automations
+          </span>
+        </div>
+        <div class="md-header__topic" data-md-component="header-topic">
+          <span class="md-ellipsis">
+            
+              Automation System
+            
+          </span>
+        </div>
+      </div>
+    </div>
+    
+      
+        <form class="md-header__option" data-md-component="palette">
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-scheme="slate" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Light mode"  type="radio" name="__palette" id="__palette_0">
+    
+      <label class="md-header__button md-icon" title="Light mode" for="__palette_1" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"/></svg>
+      </label>
+    
+  
+    
+    
+    
+    <input class="md-option" data-md-color-media="(prefers-color-scheme: light)" data-md-color-scheme="default" data-md-color-primary="deep-orange" data-md-color-accent="orange"  aria-label="Dark mode"  type="radio" name="__palette" id="__palette_1">
+    
+      <label class="md-header__button md-icon" title="Dark mode" for="__palette_0" hidden>
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"/></svg>
+      </label>
+    
+  
+</form>
+      
+    
+    
+      <script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+    
+    
+    
+      <label class="md-header__button md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+      </label>
+      <div class="md-search" data-md-component="search" role="dialog">
+  <label class="md-search__overlay" for="__search"></label>
+  <div class="md-search__inner" role="search">
+    <form class="md-search__form" name="search">
+      <input type="text" class="md-search__input" name="query" aria-label="Search" placeholder="Search" autocapitalize="off" autocorrect="off" autocomplete="off" spellcheck="false" data-md-component="search-query" required>
+      <label class="md-search__icon md-icon" for="__search">
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M9.5 3A6.5 6.5 0 0 1 16 9.5c0 1.61-.59 3.09-1.56 4.23l.27.27h.79l5 5-1.5 1.5-5-5v-.79l-.27-.27A6.52 6.52 0 0 1 9.5 16 6.5 6.5 0 0 1 3 9.5 6.5 6.5 0 0 1 9.5 3m0 2C7 5 5 7 5 9.5S7 14 9.5 14 14 12 14 9.5 12 5 9.5 5"/></svg>
+        
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M20 11v2H8l5.5 5.5-1.42 1.42L4.16 12l7.92-7.92L13.5 5.5 8 11z"/></svg>
+      </label>
+      <nav class="md-search__options" aria-label="Search">
+        
+          <a href="javascript:void(0)" class="md-search__icon md-icon" title="Share" aria-label="Share" data-clipboard data-clipboard-text="" data-md-component="search-share" tabindex="-1">
+            
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9a3 3 0 0 0-3 3 3 3 0 0 0 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.15c-.05.21-.08.43-.08.66 0 1.61 1.31 2.91 2.92 2.91s2.92-1.3 2.92-2.91A2.92 2.92 0 0 0 18 16.08"/></svg>
+          </a>
+        
+        <button type="reset" class="md-search__icon md-icon" title="Clear" aria-label="Clear" tabindex="-1">
+          
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/></svg>
+        </button>
+      </nav>
+      
+        <div class="md-search__suggest" data-md-component="search-suggest"></div>
+      
+    </form>
+    <div class="md-search__output">
+      <div class="md-search__scrollwrap" tabindex="0" data-md-scrollfix>
+        <div class="md-search-result" data-md-component="search-result">
+          <div class="md-search-result__meta">
+            Initializing search
+          </div>
+          <ol class="md-search-result__list" role="presentation"></ol>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+    
+    
+      <div class="md-header__source">
+        <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+      </div>
+    
+  </nav>
+  
+</header>
+    
+    <div class="md-container" data-md-component="container">
+      
+      
+        
+          
+        
+      
+      <main class="md-main" data-md-component="main">
+        <div class="md-main__inner md-grid">
+          
+            
+              
+              <div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+
+
+<nav class="md-nav md-nav--primary" aria-label="Navigation" data-md-level="0">
+  <label class="md-nav__title" for="__drawer">
+    <a href="index.html" title="Lancer Automations" class="md-nav__button md-logo" aria-label="Lancer Automations" data-md-component="logo">
+      
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 8a3 3 0 0 0 3-3 3 3 0 0 0-3-3 3 3 0 0 0-3 3 3 3 0 0 0 3 3m0 3.54C9.64 9.35 6.5 8 3 8v11c3.5 0 6.64 1.35 9 3.54 2.36-2.19 5.5-3.54 9-3.54V8c-3.5 0-6.64 1.35-9 3.54"/></svg>
+
+    </a>
+    Lancer Automations
+  </label>
+  
+    <div class="md-nav__source">
+      <a href="https://github.com/Agraael/lancer-automations" title="Go to repository" class="md-source" data-md-component="source">
+  <div class="md-source__icon md-icon">
+    
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 496 512"><!--! Font Awesome Free 6.6.0 by @fontawesome - https://fontawesome.com License - https://fontawesome.com/license/free (Icons: CC BY 4.0, Fonts: SIL OFL 1.1, Code: MIT License) Copyright 2024 Fonticons, Inc.--><path d="M165.9 397.4c0 2-2.3 3.6-5.2 3.6-3.3.3-5.6-1.3-5.6-3.6 0-2 2.3-3.6 5.2-3.6 3-.3 5.6 1.3 5.6 3.6m-31.1-4.5c-.7 2 1.3 4.3 4.3 4.9 2.6 1 5.6 0 6.2-2s-1.3-4.3-4.3-5.2c-2.6-.7-5.5.3-6.2 2.3m44.2-1.7c-2.9.7-4.9 2.6-4.6 4.9.3 2 2.9 3.3 5.9 2.6 2.9-.7 4.9-2.6 4.6-4.6-.3-1.9-3-3.2-5.9-2.9M244.8 8C106.1 8 0 113.3 0 252c0 110.9 69.8 205.8 169.5 239.2 12.8 2.3 17.3-5.6 17.3-12.1 0-6.2-.3-40.4-.3-61.4 0 0-70 15-84.7-29.8 0 0-11.4-29.1-27.8-36.6 0 0-22.9-15.7 1.6-15.4 0 0 24.9 2 38.6 25.8 21.9 38.6 58.6 27.5 72.9 20.9 2.3-16 8.8-27.1 16-33.7-55.9-6.2-112.3-14.3-112.3-110.5 0-27.5 7.6-41.3 23.6-58.9-2.6-6.5-11.1-33.3 2.6-67.9 20.9-6.5 69 27 69 27 20-5.6 41.5-8.5 62.8-8.5s42.8 2.9 62.8 8.5c0 0 48.1-33.6 69-27 13.7 34.7 5.2 61.4 2.6 67.9 16 17.7 25.8 31.5 25.8 58.9 0 96.5-58.9 104.2-114.8 110.5 9.2 7.9 17 22.9 17 46.4 0 33.7-.3 75.4-.3 83.6 0 6.5 4.6 14.4 17.3 12.1C428.2 457.8 496 362.9 496 252 496 113.3 383.5 8 244.8 8M97.2 352.9c-1.3 1-1 3.3.7 5.2 1.6 1.6 3.9 2.3 5.2 1 1.3-1 1-3.3-.7-5.2-1.6-1.6-3.9-2.3-5.2-1m-10.8-8.1c-.7 1.3.3 2.9 2.3 3.9 1.6 1 3.6.7 4.3-.7.7-1.3-.3-2.9-2.3-3.9-2-.6-3.6-.3-4.3.7m32.4 35.6c-1.6 1.3-1 4.3 1.3 6.2 2.3 2.3 5.2 2.6 6.5 1 1.3-1.3.7-4.3-1.3-6.2-2.2-2.3-5.2-2.6-6.5-1m-11.4-14.7c-1.6 1-1.6 3.6 0 5.9s4.3 3.3 5.6 2.3c1.6-1.3 1.6-3.9 0-6.2-1.4-2.3-4-3.3-5.6-2"/></svg>
+  </div>
+  <div class="md-source__repository">
+    Agraael/lancer-automations
+  </div>
+</a>
+    </div>
+  
+  <ul class="md-nav__list" data-md-scrollfix>
+    
+      
+      
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="index.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Home
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+    
+      
+      
+  
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_2" >
+        
+          
+          <label class="md-nav__link" for="__nav_2" id="__nav_2_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    Feature guides
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_2_label" aria-expanded="false">
+          <label class="md-nav__title" for="__nav_2">
+            <span class="md-nav__icon md-icon"></span>
+            Feature guides
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/AUTOMATION_ENGINE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Automation Engine
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/EFFECTS_AND_BONUSES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects & Bonuses
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Action HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/MOVEMENT_ADVANCED.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement Advanced
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ISOMETRIC.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Isometric
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INTERACTIVE_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/ATTACK_TARGETING.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Attack Targeting
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/GAMEPLAY_AUTOMATION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Gameplay Automation
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/FX_AND_SOUNDS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    FX and Sounds
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/VISION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Vision
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/WRECK.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Wrecks
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/BATTLE_LOG.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Battle Log
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SYSTEM_ADDITIONS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    System Additions
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/SETUP_AND_TOOLS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Setup & Tools
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/INFECTION.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Infection
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="feature/NPC_EXAMPLES.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    NPC Examples
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="MACROS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Macros
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+      
+      
+  
+  
+    
+  
+  
+  
+    
+    
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+        
+      
+    
+    
+      
+        
+        
+      
+    
+    
+    <li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+      
+        
+        
+        <input class="md-nav__toggle md-toggle " type="checkbox" id="__nav_3" checked>
+        
+          
+          <label class="md-nav__link" for="__nav_3" id="__nav_3_label" tabindex="">
+            
+  
+  <span class="md-ellipsis">
+    API
+  </span>
+  
+
+            <span class="md-nav__icon md-icon"></span>
+          </label>
+        
+        <nav class="md-nav" data-md-level="1" aria-labelledby="__nav_3_label" aria-expanded="true">
+          <label class="md-nav__title" for="__nav_3">
+            <span class="md-nav__icon md-icon"></span>
+            API
+          </label>
+          <ul class="md-nav__list" data-md-scrollfix>
+            
+              
+                
+  
+  
+    
+  
+  
+  
+    <li class="md-nav__item md-nav__item--active">
+      
+      <input class="md-nav__toggle md-toggle" type="checkbox" id="__toc">
+      
+      
+        
+      
+      
+        <label class="md-nav__link md-nav__link--active" for="__toc">
+          
+  
+  <span class="md-ellipsis">
+    Automation System
+  </span>
+  
+
+          <span class="md-nav__icon md-icon"></span>
+        </label>
+      
+      <a href="AUTOMATION_SYSTEM.html" class="md-nav__link md-nav__link--active">
+        
+  
+  <span class="md-ellipsis">
+    Automation System
+  </span>
+  
+
+      </a>
+      
+        
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-big-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Big Picture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lifecycle-of-a-trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Lifecycle of a Trigger
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-item-vs-general-activations" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Item vs General Activations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-filters-in-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Filters, in Order
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-four-callbacks-evaluate-activationcode-oninit-onmessage" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. The Four Callbacks: evaluate, activationCode, onInit, onMessage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-activation-type-and-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Activation Type and Mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-auto-mode-vs-popup-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Auto Mode vs Popup Mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-client-execution-and-sockets" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Client Execution and Sockets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cancel-and-modify-timing-sensitive-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Cancel and Modify (Timing-Sensitive Triggers)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-reaction-economy-and-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Reaction Economy and Frequency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-flow-data-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Flow Data Injection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-item-paths-extra-actions-activated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Item Paths, Extra Actions, Activated Items
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-registration-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Registration Paths
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-caches-and-invalidation" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Caches and Invalidation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+      
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_REFERENCE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    API Reference
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_COMBAT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Combat
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_SPATIAL.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Spatial
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_EFFECTS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Effects
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_INTERACTIVE.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Interactive
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_ITEMS.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Items
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HUD.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    HUD
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_MOVEMENT.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Movement
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_TOKEN_DISPLAY.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    Token Display
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+              
+                
+  
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="API_HOWTO.html" class="md-nav__link">
+        
+  
+  <span class="md-ellipsis">
+    How-To
+  </span>
+  
+
+      </a>
+    </li>
+  
+
+              
+            
+          </ul>
+        </nav>
+      
+    </li>
+  
+
+    
+  </ul>
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+            
+              
+              <div class="md-sidebar md-sidebar--secondary" data-md-component="sidebar" data-md-type="toc" >
+                <div class="md-sidebar__scrollwrap">
+                  <div class="md-sidebar__inner">
+                    
+
+<nav class="md-nav md-nav--secondary" aria-label="Table of contents">
+  
+  
+  
+    
+  
+  
+    <label class="md-nav__title" for="__toc">
+      <span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+    <ul class="md-nav__list" data-md-component="toc" data-md-scrollfix>
+      
+        <li class="md-nav__item">
+  <a href="#table-of-contents" class="md-nav__link">
+    <span class="md-ellipsis">
+      Table of Contents
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#1-big-picture" class="md-nav__link">
+    <span class="md-ellipsis">
+      1. Big Picture
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#2-lifecycle-of-a-trigger" class="md-nav__link">
+    <span class="md-ellipsis">
+      2. Lifecycle of a Trigger
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#3-item-vs-general-activations" class="md-nav__link">
+    <span class="md-ellipsis">
+      3. Item vs General Activations
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#4-filters-in-order" class="md-nav__link">
+    <span class="md-ellipsis">
+      4. Filters, in Order
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#5-the-four-callbacks-evaluate-activationcode-oninit-onmessage" class="md-nav__link">
+    <span class="md-ellipsis">
+      5. The Four Callbacks: evaluate, activationCode, onInit, onMessage
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#6-activation-type-and-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      6. Activation Type and Mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#7-auto-mode-vs-popup-mode" class="md-nav__link">
+    <span class="md-ellipsis">
+      7. Auto Mode vs Popup Mode
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#8-client-execution-and-sockets" class="md-nav__link">
+    <span class="md-ellipsis">
+      8. Client Execution and Sockets
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#9-cancel-and-modify-timing-sensitive-triggers" class="md-nav__link">
+    <span class="md-ellipsis">
+      9. Cancel and Modify (Timing-Sensitive Triggers)
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#10-reaction-economy-and-frequency" class="md-nav__link">
+    <span class="md-ellipsis">
+      10. Reaction Economy and Frequency
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#11-flow-data-injection" class="md-nav__link">
+    <span class="md-ellipsis">
+      11. Flow Data Injection
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#12-item-paths-extra-actions-activated-items" class="md-nav__link">
+    <span class="md-ellipsis">
+      12. Item Paths, Extra Actions, Activated Items
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#13-registration-paths" class="md-nav__link">
+    <span class="md-ellipsis">
+      13. Registration Paths
+    </span>
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#14-caches-and-invalidation" class="md-nav__link">
+    <span class="md-ellipsis">
+      14. Caches and Invalidation
+    </span>
+  </a>
+  
+</li>
+      
+    </ul>
+  
+</nav>
+                  </div>
+                </div>
+              </div>
+            
+          
+          
+            <div class="md-content" data-md-component="content">
+              <article class="md-content__inner md-typeset">
+                
+                  
+
+
+<h1 id="lancer-automations-how-the-automation-system-works">Lancer Automations: How the Automation System Works<a class="headerlink" href="#lancer-automations-how-the-automation-system-works" title="Permanent link">&para;</a></h1>
+<p><a href="API_REFERENCE.html">Back to API Reference</a> · Feature guide: <a href="feature/AUTOMATION_ENGINE.html">Automation Engine</a></p>
+<p>For anyone writing activations, in the Activation Manager UI or through the registration API. Covers what the engine does between a game event and your <code>activationCode</code> running.</p>
+<p>For trigger payload schemas, see <a href="API_REFERENCE.html">API_REFERENCE.md</a>. For API surfaces (effects, bonuses, interactive tools), see the sibling files: <a href="API_EFFECTS.html">API_EFFECTS.md</a>, <a href="API_INTERACTIVE.html">API_INTERACTIVE.md</a>, <a href="API_COMBAT.html">API_COMBAT.md</a>, <a href="API_ITEMS.html">API_ITEMS.md</a>.</p>
+<blockquote>
+<p>[!NOTE]
+This started as a reaction reminder, so the internals are named after reactions: you write <code>reactions: [...]</code>, the action path field is <code>reactionPath</code>, and you register with <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">registerDefaultItemReactions</span><span class="p">()</span></code> / <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">registerDefaultGeneralReactions</span><span class="p">()</span></code>. Those all mean <strong>activation</strong>. Legacy naming, not a separate concept.</p>
+</blockquote>
+<p><br></p>
+<hr />
+<h2 id="table-of-contents">Table of Contents<a class="headerlink" href="#table-of-contents" title="Permanent link">&para;</a></h2>
+<ul>
+<li><a href="#1-big-picture">1. Big Picture</a></li>
+<li><a href="#2-lifecycle-of-a-trigger">2. Lifecycle of a Trigger</a></li>
+<li><a href="#3-item-vs-general-activations">3. Item vs General Activations</a></li>
+<li><a href="#4-filters-in-order">4. Filters, in Order</a></li>
+<li><a href="#5-the-four-callbacks-evaluate-activationcode-oninit-onmessage">5. The Four Callbacks: evaluate, activationCode, onInit, onMessage</a></li>
+<li><a href="#6-activation-type-and-mode">6. Activation Type and Mode</a></li>
+<li><a href="#7-auto-mode-vs-popup-mode">7. Auto Mode vs Popup Mode</a></li>
+<li><a href="#8-client-execution-and-sockets">8. Client Execution and Sockets</a></li>
+<li><a href="#9-cancel-and-modify-timing-sensitive-triggers">9. Cancel and Modify (Timing-Sensitive Triggers)</a></li>
+<li><a href="#10-reaction-economy-and-frequency">10. Reaction Economy and Frequency</a></li>
+<li><a href="#11-flow-data-injection">11. Flow Data Injection</a></li>
+<li><a href="#12-item-paths-extra-actions-activated-items">12. Item Paths, Extra Actions, Activated Items</a></li>
+<li><a href="#13-registration-paths">13. Registration Paths</a></li>
+<li><a href="#14-caches-and-invalidation">14. Caches and Invalidation</a></li>
+</ul>
+<p><br></p>
+<hr />
+<h2 id="1-big-picture">1. Big Picture<a class="headerlink" href="#1-big-picture" title="Permanent link">&para;</a></h2>
+<p>The automation system is an event-driven dispatcher. Each game event (a move, an attack, a damage roll, a status applied, a turn change, etc.) becomes a <strong>trigger</strong> with a <strong>data payload</strong>. For each trigger, the engine asks: <em>which tokens on the scene want to react, and how?</em></p>
+<p>Two kinds of definitions can react:</p>
+<ul>
+<li>
+<p><strong>Item activations</strong>: tied to a Lancer item by its <strong>LID</strong>. Only tokens whose actor owns that item are candidate reactors.</p>
+</li>
+<li>
+<p><strong>General activations</strong>: not tied to any item. Any token in the scene is a candidate, filtered by your rules.</p>
+</li>
+</ul>
+<p>Each definition can declare:</p>
+<ul>
+<li>
+<p>One or more <code>triggers</code> it cares about.</p>
+</li>
+<li>
+<p>Filters (disposition, distance, self/other, in/out of combat).</p>
+</li>
+<li>
+<p>An <code>evaluate</code> function that returns <code>true</code>/<code>false</code> (one final synchronous check).</p>
+</li>
+<li>
+<p>An <code>activationCode</code> function (your effect) that runs when the activation fires.</p>
+</li>
+<li>
+<p>Optional <code>onInit</code> (runs once when a token enters the scene/combat) and <code>onMessage</code> (cross-client request).</p>
+</li>
+</ul>
+<p>The engine pumps every trigger through this pipeline for every reactor candidate.</p>
+<p><br></p>
+<hr />
+<h2 id="2-lifecycle-of-a-trigger">2. Lifecycle of a Trigger<a class="headerlink" href="#2-lifecycle-of-a-trigger" title="Permanent link">&para;</a></h2>
+<details open="open">
+<summary><b>Flow diagram</b> (click to expand)</summary>
+<pre class="mermaid"><code>flowchart TD
+    A["Game event&lt;br/&gt;(move, hit, damage, status, turn...)"] --&gt; B["handleTrigger(triggerType, data)"]
+    B --&gt; C["Iterate all tokens on the scene"]
+    C --&gt; D["Compute distanceToTrigger, canTriggerReaction&lt;br/&gt;and merge into data"]
+    D --&gt; E{"Item reactions&lt;br/&gt;matched by LID?"}
+    E -- No --&gt; G
+    E -- Yes --&gt; F["Run filters + evaluate()"]
+    F --&gt; G{"General reactions&lt;br/&gt;matched by name&lt;br/&gt;or unconditional?"}
+    G --&gt; H["Run filters + evaluate()"]
+    H --&gt; I{"autoActivate?"}
+    I -- Yes --&gt; J["activateReaction()&lt;br/&gt;runs immediately"]
+    I -- No --&gt; K["Push to reactionQueue"]
+    K --&gt; L["After all tokens processed,&lt;br/&gt;show summary popup&lt;br/&gt;via socket"]
+    L --&gt; M["User clicks Activate"]
+    M --&gt; J
+    J --&gt; N["activationType +&lt;br/&gt;activationMode dispatch"]
+    N --&gt; O["Your activationCode runs&lt;br/&gt;(or flow / macro / chat card)"]</code></pre>
+</details>
+<p>What the engine does for one trigger:</p>
+<ol>
+<li>
+<p><strong>Trigger fan-out.</strong> A flow step or hook calls <code class="highlight"><span class="nx">handleTrigger</span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">)</span></code>. The engine wires these helpers onto <code>data</code>:</p>
+</li>
+<li>
+<p><code>startRelatedFlow</code> / <code>startRelatedFlowToReactor</code> - launch the reacting item's own default flow, optionally on a specific user's client and with injected <code>extraData</code>. Full signatures in <a href="#8-client-execution-and-sockets">section 8</a>.</p>
+</li>
+<li><code>sendMessageToReactor</code> - remote RPC to an <code>onMessage</code> handler. Full signature in <a href="#8-client-execution-and-sockets">section 8</a>.</li>
+<li>
+<p><code class="highlight"><span class="nx">debugActivation</span><span class="p">(</span><span class="nx">label</span><span class="o">?</span><span class="p">)</span></code> - logs <code>triggerType</code>, <code>triggerData</code>, <code>reactorToken</code>, <code>item</code>, <code>activationName</code> to the console (expandable) and returns a summary. Available in <code>evaluate</code> and <code>activationCode</code>, plus <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">debugActivation</span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">label</span><span class="o">?</span><span class="p">)</span></code>.</p>
+</li>
+<li>
+<p><strong>Reactor sweep.</strong> Every token on the scene is a potential reactor. Hidden tokens are skipped when the trigger came from someone else.</p>
+</li>
+<li>
+<p><strong>Distance enrichment.</strong> For each reactor, two values are computed once and merged into a per-reactor copy of the trigger data:</p>
+</li>
+<li>
+<p><code>distanceToTrigger</code> - distance from the reactor to the triggering token.</p>
+</li>
+<li>
+<p><code>canTriggerReaction</code> - whether the trigger may provoke a reaction. It's <code>false</code> when the mover has <code>hidden</code>, <code>disengage</code>, or the <code>provoke</code> immunity, or is <code>intangible</code> while the reactor is not.</p>
+</li>
+<li>
+<p><strong>Item reactions first.</strong> For every item the reactor's actor owns whose LID matches a registered item activation, run the filter chain.</p>
+</li>
+<li>
+<p><strong>General reactions second.</strong> Walk the flat list of general activations that listen to this trigger, and run the filter chain.</p>
+</li>
+<li>
+<p><strong>Filter chain</strong> (any failure = skip): <code>outOfCombat</code>, <code>triggerSelf</code> / <code>triggerOther</code> / <code>triggerTarget</code>, <code>onlyOnSourceMatch</code>, reaction availability, <code>dispositionFilter</code>, <code>distanceFilter</code>. (Details in <a href="#4-filters-in-order">section 4</a>.)</p>
+</li>
+<li>
+<p><strong><code class="highlight"><span class="nx">evaluate</span><span class="p">()</span></code></strong> runs synchronously (see <a href="#5-the-four-callbacks-evaluate-activationcode-oninit-onmessage">section 5</a>). Exceptions are caught and logged, and the activation is skipped on error.</p>
+</li>
+<li>
+<p><strong>Branch</strong> on <code>autoActivate</code>:</p>
+</li>
+<li>
+<p><strong>true</strong>: <code class="highlight"><span class="nx">activateReaction</span><span class="p">()</span></code> runs right away, on the local client.</p>
+</li>
+<li>
+<p><strong>false</strong>: the entry is pushed to <code>reactionQueue</code>.</p>
+</li>
+<li>
+<p><strong>Summary popup.</strong> After every token is processed, if the queue is non-empty, the engine builds a summary popup, decides who sees it (per the <code>reactionNotificationMode</code> setting), and broadcasts it via socket.</p>
+</li>
+<li>
+<p><strong>Manual activation.</strong> When a recipient clicks <strong>Activate</strong> on a queued entry, <em>that</em> client runs <code class="highlight"><span class="nx">activateReaction</span><span class="p">()</span></code> for that single entry.</p>
+</li>
+</ol>
+<p>Filters and <code>evaluate</code> run for every reactor on the scene, every time a matching trigger fires. Keep them cheap.</p>
+<p><br></p>
+<hr />
+<h2 id="3-item-vs-general-activations">3. Item vs General Activations<a class="headerlink" href="#3-item-vs-general-activations" title="Permanent link">&para;</a></h2>
+<h3 id="item-activation">Item activation<a class="headerlink" href="#item-activation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Registered under a specific <strong>item LID</strong> (e.g. <code>"npcf_dispersal_shield_priest"</code>).</p>
+</li>
+<li>
+<p>Engine checks: <em>does this reactor's actor own an item whose <code>system.lid === &lt;registered LID&gt;</code>?</em> If yes, run filters.</p>
+</li>
+<li>
+<p>The matched item is passed to your callbacks as the <code>item</code> argument.</p>
+</li>
+<li>
+<p><code>onlyOnSourceMatch: true</code> means: <em>the activation only fires if the item that triggered the event has the same LID as the activation's LID</em>. This is what makes "react when <strong>this</strong> weapon is used" work. Without it, your activation would also try to fire when the user activates an unrelated item or moves.</p>
+</li>
+<li>
+<p>When a reactor owns several items sharing the triggering LID, only the exact triggering document fires (same-LID dedupe), so duplicate copies of the same item don't each react.</p>
+</li>
+</ul>
+<h3 id="general-activation">General activation<a class="headerlink" href="#general-activation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Registered under a <strong>name</strong> (e.g. <code>"Overwatch"</code>, <code>"Brace"</code>).</p>
+</li>
+<li>
+<p>Every token on the scene is a candidate. Use filters to narrow it down (disposition, distance, your own <code>evaluate</code>).</p>
+</li>
+<li>
+<p>The <code>item</code> argument to your callbacks is <code>null</code> (general activations are not tied to an item).</p>
+</li>
+<li>
+<p><code>onlyOnSourceMatch: true</code> means: <em>the activation only fires if the triggering action's name matches the activation's registered name</em>. Useful for general activations attached to a named action like Overwatch.</p>
+</li>
+</ul>
+<h3 id="deployable-activation">Deployable activation<a class="headerlink" href="#deployable-activation" title="Permanent link">&para;</a></h3>
+<ul>
+<li>
+<p>Registered under a <strong>deployable LID</strong>, the value of <code>actor.system.lid</code> on the deployable actor (e.g. <code>"dep_moonlight_drone"</code>). The engine matches any LID against the deployable's actor LID - there is no required prefix.</p>
+</li>
+<li>
+<p>The reactor is the deployable actor itself: any deployable on the scene whose <code>actor.system.lid === &lt;registered LID&gt;</code> is a candidate.</p>
+</li>
+<li>
+<p>The engine auto-resolves the <strong>source item</strong> (the item whose <code>system.deployables[]</code> contains the deployable's LID - for frames, also <code>core_system.deployables</code> and <code>traits[].deployables</code>) and surfaces it as <code>triggerData.item</code>, so authors can read effect/tag context.</p>
+</li>
+<li>
+<p><code class="highlight"><span class="nx">triggerData</span><span class="p">.</span><span class="nx">deployable</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">actor</span><span class="p">,</span><span class="w"> </span><span class="nx">lid</span><span class="w"> </span><span class="p">}</span></code> is also set, providing the explicit deployable identity.</p>
+</li>
+<li>
+<p><code>triggerData.actionData.action.name</code> is the action's name (e.g. <code>"Move"</code>, <code>"Combine"</code>). For the top-level deploy click it's the deployable actor's name. <code>triggerData.actionData.action.activation</code> is the activation type (<code>"Protocol"</code>, <code>"Quick"</code>).</p>
+</li>
+<li>
+<p><code>onlyOnSourceMatch: true</code> means: <em>only fire when the activation source is the matching deployable</em> - i.e. one of this exact deployable's actions was the trigger.</p>
+</li>
+<li>
+<p><code>reactionPath</code> selects which part of the deployable a reaction binds to:</p>
+</li>
+<li>
+<p>empty string - the top-level deploy itself (<code>actor.system.activation</code>).</p>
+</li>
+<li><code>"actions.&lt;name&gt;"</code> - a specific entry in <code>actor.system.actions[]</code> (mirrors the <code>extraActions.&lt;name&gt;</code> pattern).</li>
+</ul>
+<p>The deployable surrogate carries the deployable actor's <code>system.actions[]</code>, so these resolve by <strong>name</strong> (deployable actions often have empty LIDs).</p>
+<h4 id="self-deployable-reacting-to-your-own-deploy">Self-deployable: reacting to your own deploy<a class="headerlink" href="#self-deployable-reacting-to-your-own-deploy" title="Permanent link">&para;</a></h4>
+<p>The <code>onDeploy</code> trigger fires when a deployable or a thrown weapon is placed. Its payload is <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">triggeringToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">deployedTokens</span><span class="p">,</span><span class="w"> </span><span class="nx">deployType</span><span class="w"> </span><span class="p">}</span></code>:</p>
+<ul>
+<li><code>triggeringToken</code> - the deploying token.</li>
+<li><code>item</code> - the source system item.</li>
+<li><code>deployedTokens</code> - the freshly placed tokens.</li>
+<li><code>deployType</code> - <code>"deployable"</code> or <code>"throw"</code>.</li>
+</ul>
+<p>To react when <em>you</em> deploy something, register an <strong>item</strong> activation on the feature or system LID that grants the deployable, and set:</p>
+<ul>
+<li>
+<p><code>triggers: ["onDeploy"]</code></p>
+</li>
+<li>
+<p><code>triggerSelf: true</code> (the deploying token is the reactor, so it counts as self)</p>
+</li>
+<li>
+<p><code>onlyOnSourceMatch: true</code> (only fire for this exact source item)</p>
+</li>
+</ul>
+<p>The Restock Drone NPC feature (<code>startups/itemActivations.js</code>) is the reference: on deploy it reads <code>triggerData.deployedTokens[0]</code> and drops an aura on it with <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">createAura</span><span class="p">(...)</span></code>. This is a normal <strong>item</strong> reaction firing on self, not the actor-UUID path below.</p>
+<h3 id="actor-uuid-activation">Actor UUID activation<a class="headerlink" href="#actor-uuid-activation" title="Permanent link">&para;</a></h3>
+<p>Alongside item LIDs and deployable LIDs, an activation can be registered against a single <strong>Actor UUID</strong> (e.g. <code>"Actor.qe5wEevLrMN6ki44"</code>, or a <code>"Compendium.&lt;pack&gt;.Actor.&lt;id&gt;"</code> path). The engine synthesizes an <code>actor_surrogate</code> for every actor, keyed by its <code>actor.uuid</code>, so a reaction keyed by a UUID matches <strong>only that one actor instance</strong>.</p>
+<p>Use this when an item or deployable LID is too broad: a LID-keyed reaction fires for <em>every</em> actor that owns the item or <em>every</em> deployable of that type, while a UUID-keyed reaction is bound to exactly one actor. Typical case: a specific named deployable or NPC that should react only as itself.</p>
+<ul>
+<li>
+<p><code>onlyOnSourceMatch: true</code> also compares the triggering token's <code>actor.uuid</code> against the registered key (alongside item and deployable LIDs), so a UUID reaction with source-match only fires when that actor was the source of the event.</p>
+</li>
+<li>
+<p>In the Activation Manager, paste the Actor UUID into the LID field. The deployable browser can pick an actor and fill it in for you.</p>
+</li>
+</ul>
+<h3 id="picking-one">Picking one<a class="headerlink" href="#picking-one" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>If you want to...</th>
+<th>Use</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>React when a specific weapon, system, or NPC feature is used</td>
+<td>Item, with <code>onlyOnSourceMatch: true</code></td>
+</tr>
+<tr>
+<td>React when any hostile starts moving in your threat</td>
+<td>General, no source match</td>
+</tr>
+<tr>
+<td>Apply a passive effect at scene-load to anyone with a feature</td>
+<td>Item, <code>onInit</code> only (no triggers)</td>
+</tr>
+<tr>
+<td>Build a one-off rule that applies to all tokens</td>
+<td>General</td>
+</tr>
+<tr>
+<td>React on a specific deployable's action (or its deploy)</td>
+<td>Deployable LID (<code>actor.system.lid</code>), with <code>onlyOnSourceMatch: true</code></td>
+</tr>
+<tr>
+<td>React only as one specific actor or deployable instance</td>
+<td>Actor UUID (<code>actor.uuid</code>) in the LID field, with <code>onlyOnSourceMatch: true</code></td>
+</tr>
+<tr>
+<td>React when you deploy something yourself</td>
+<td>Item LID that grants the deployable, <code>triggers: ["onDeploy"]</code>, <code>triggerSelf: true</code></td>
+</tr>
+</tbody>
+</table>
+<p><br></p>
+<hr />
+<h2 id="4-filters-in-order">4. Filters, in Order<a class="headerlink" href="#4-filters-in-order" title="Permanent link">&para;</a></h2>
+<p>Filters short-circuit. The order matters because earlier filters are cheaper:</p>
+<table>
+<thead>
+<tr>
+<th>#</th>
+<th>Filter</th>
+<th>Behavior</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td><code>outOfCombat</code></td>
+<td>If combat is not active and <code>outOfCombat</code> is <code>false</code>, skip. <em>Unless</em> the trigger is inherently combat-related (<code>onTurnStart</code>, <code>onTurnEnd</code>, <code>onRoundStart</code>, <code>onEnterCombat</code>, <code>onExitCombat</code>).</td>
+</tr>
+<tr>
+<td>2</td>
+<td><code>triggerSelf</code> / <code>triggerOther</code> / <code>triggerTarget</code></td>
+<td>If the reactor <em>is</em> the triggering token: require <code>triggerSelf: true</code>. If it isn't: pass with <code>triggerOther: true</code>, or with <code>triggerTarget: true</code> when the reactor is one of the event's targets.</td>
+</tr>
+<tr>
+<td>3</td>
+<td><code>onlyOnSourceMatch</code></td>
+<td>See <a href="#3-item-vs-general-activations">section 3</a> for the different meaning across item, general, deployable, and Actor-UUID reactions. The engine matches the triggering item LID, deployable LID, or triggering actor UUID against the registered key.</td>
+</tr>
+<tr>
+<td>4</td>
+<td><code>checkReaction</code></td>
+<td>If set (default <code>true</code>), skip the reaction when the reactor has no reaction left this round. Spending is separate: the world setting <code>consumeReaction</code>.</td>
+</tr>
+<tr>
+<td>5</td>
+<td><code>dispositionFilter</code></td>
+<td>Array like <code>["hostile", "friendly"]</code>. Uses Token Factions multi-team data when installed, otherwise <code>CONST.TOKEN_DISPOSITIONS</code>.</td>
+</tr>
+<tr>
+<td>6</td>
+<td><code>distanceFilter</code></td>
+<td>Compares the precomputed <code>distanceToTrigger</code> against the configured max range.</td>
+</tr>
+<tr>
+<td>7</td>
+<td><code>requireCanProvoke</code></td>
+<td>If <code>true</code>, skip if <code>triggerData.canTriggerReaction</code> is <code>false</code>.</td>
+</tr>
+<tr>
+<td>8</td>
+<td><code class="highlight"><span class="nx">evaluate</span><span class="p">()</span></code></td>
+<td>Your custom predicate. Last gate.</td>
+</tr>
+</tbody>
+</table>
+<p>Fail any: that activation is silently skipped for that reactor. No popup, no log entry.</p>
+<p><strong>The three identities.</strong> An actor does a thing, everyone may react. <code>triggerSelf</code> = the one doing it. <code>triggerTarget</code> = the one it is done TO. <code>triggerOther</code> = anyone else - and for compatibility it still includes targets, so <code>triggerTarget</code> matters when <code>triggerOther</code> is off ("target only": Self off, Other off, Target on). It only works on triggers whose payload carries targets (attacks, tech, damage, <code>onRoll</code>, <code>onCheck</code>, <code>onInvoluntaryMove</code>); the editor greys the rest. Target-reactors get <code>isTarget: true</code> and <code>targetEntry</code> (their own roll/crit on hit/miss triggers), and they still fire when the attacker is hidden - being attacked is knowable. A target-side reaction that cancels (<code>cancelAttack</code>, <code>cancelDamage</code>) must be <code>autoActivate</code>: manual popups routed to another client receive serialized data without the cancel functions.</p>
+<p><br></p>
+<hr />
+<h2 id="5-the-four-callbacks-evaluate-activationcode-oninit-onmessage">5. The Four Callbacks: evaluate, activationCode, onInit, onMessage<a class="headerlink" href="#5-the-four-callbacks-evaluate-activationcode-oninit-onmessage" title="Permanent link">&para;</a></h2>
+<p>All four receive <code>api</code> as the last argument. All four are wrapped in <code>try/catch</code>. Uncaught exceptions are logged to the console, never thrown to the user.</p>
+<h3 id="evaluatetriggertype-triggerdata-reactortoken-item-activationname-api-boolean"><code class="highlight"><span class="nx">evaluate</span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="kr">boolean</span></code><a class="headerlink" href="#evaluatetriggertype-triggerdata-reactortoken-item-activationname-api-boolean" title="Permanent link">&para;</a></h3>
+<p>The final filter. Return <code>true</code> to allow the activation, <code>false</code> to skip it.</p>
+<p><strong>Must be synchronous</strong> for triggers that expose a cancel function (see <a href="#9-cancel-and-modify-timing-sensitive-triggers">section 9</a>). The engine warns in the console if it detects a <code>Promise</code> returned from <code>evaluate</code> for one of those triggers.</p>
+<h3 id="activationcodetriggertype-triggerdata-reactortoken-item-activationname-api-promisevoid"><code class="highlight"><span class="nx">activationCode</span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span></code><a class="headerlink" href="#activationcodetriggertype-triggerdata-reactortoken-item-activationname-api-promisevoid" title="Permanent link">&para;</a></h3>
+<p>Your effect. May be async. Has full access to <code>api</code>. Runs on:</p>
+<ul>
+<li>
+<p>The local client (auto activations).</p>
+</li>
+<li>
+<p>Whichever client clicks <strong>Activate</strong> in the popup (manual activations).</p>
+</li>
+</ul>
+<p>See <a href="#8-client-execution-and-sockets">section 8</a> for what that means for GM-only operations.</p>
+<h3 id="oninittoken-item-api-promisevoid"><code class="highlight"><span class="nx">onInit</span><span class="p">(</span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span></code><a class="headerlink" href="#oninittoken-item-api-promisevoid" title="Permanent link">&para;</a></h3>
+<p>Runs once when a token (or its item) enters the scene. Used for:</p>
+<ul>
+<li>
+<p>Applying baseline constant bonuses (immunities, climber, regenerative shielding).</p>
+</li>
+<li>
+<p>Creating auras with <a href="API_HOWTO.html#grid-aware-auras-wrapper"><code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">createAura</span><span class="p">(...)</span></code></a>.</p>
+</li>
+<li>
+<p>Adding extra actions with <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">addExtraActions</span><span class="p">(...)</span></code>.</p>
+</li>
+</ul>
+<p><strong><code>onInit</code> is not a trigger.</strong> Do not put <code>"onInit"</code> in the <code>triggers</code> array. The engine looks for the <code>onInit</code> <em>field</em> on the reaction config and calls it directly when:</p>
+<ul>
+<li>
+<p>A token is created on the canvas (after a 100 ms delay so the canvas object exists), or</p>
+</li>
+<li>
+<p>An item is added to an actor that already has a token on the scene.</p>
+</li>
+</ul>
+<p>For reactions that only have an <code>onInit</code> and no triggers, set <code>triggers: []</code>, <code>triggerSelf: false</code>, <code>triggerOther: false</code>, <code>autoActivate: false</code>, <code>activationType: "none"</code>.</p>
+<h3 id="onmessagetriggertype-data-reactortoken-item-activationname-api-promiseany"><code class="highlight"><span class="nx">onMessage</span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="nx">any</span><span class="o">&gt;</span></code><a class="headerlink" href="#onmessagetriggertype-data-reactortoken-item-activationname-api-promiseany" title="Permanent link">&para;</a></h3>
+<p>Handler for cross-client requests. Invoked when another client calls <code class="highlight"><span class="nx">triggerData</span><span class="p">.</span><span class="nx">sendMessageToReactor</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">userId</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="p">)</span></code>. Runs on the <strong>target</strong> client (the user named by <code>userId</code>).</p>
+<p>If the caller passed <code>wait: true</code>, whatever you <code>return</code> (or <code class="highlight"><span class="nx">resolve</span><span class="p">(...)</span></code>) from <code>onMessage</code> is delivered back as the caller's return value. See <a href="API_INTERACTIVE.html">API_INTERACTIVE.md</a> for the wait card / response pattern.</p>
+<p><br></p>
+<hr />
+<h2 id="6-activation-type-and-mode">6. Activation Type and Mode<a class="headerlink" href="#6-activation-type-and-mode" title="Permanent link">&para;</a></h2>
+<p>Two independent dimensions on each reaction config:</p>
+<h3 id="activationtype-what-runs-when-the-activation-fires"><code>activationType</code>: <em>what</em> runs when the activation fires<a class="headerlink" href="#activationtype-what-runs-when-the-activation-fires" title="Permanent link">&para;</a></h3>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"code"</code></td>
+<td>Run your <code>activationCode</code> function. The most common choice.</td>
+</tr>
+<tr>
+<td><code>"flow"</code></td>
+<td>Launch the reaction's own flow: the <code>reactionPath</code> action, else the item's first Reaction action, else the system flow, else a generic chat card (weapons get this; it never rolls an attack). General reactions post a trigger/effect card.</td>
+</tr>
+<tr>
+<td><code>"macro"</code></td>
+<td>Execute a Foundry macro by name (<code>activationMacro</code> field).</td>
+</tr>
+<tr>
+<td><code>"none"</code></td>
+<td>Do nothing. Typically only used for <code>onInit</code>-only reactions.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="activationmode-does-the-reactions-own-flow-also-fire"><code>activationMode</code>: does the reaction's own flow <em>also</em> fire?<a class="headerlink" href="#activationmode-does-the-reactions-own-flow-also-fire" title="Permanent link">&para;</a></h3>
+<p>Macro/code only; ignored for <code>"flow"</code> and <code>"none"</code>.</p>
+<table>
+<thead>
+<tr>
+<th>Value</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"instead"</code></td>
+<td>Your code runs alone. Default for item reactions.</td>
+</tr>
+<tr>
+<td><code>"after"</code></td>
+<td>The reaction's own flow/card fires alongside your code. Default for general reactions.</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<p><code>activationMode</code> never touches the flow you are <em>reacting to</em>; that runs regardless. And <code>"after"</code> is not ordered: both run together via <code>Promise.all</code>. For strict ordering use <code>"instead"</code> and call the flow yourself, or inject into the flow state with <code>injectBonus</code> / <code>injectData</code> (see <a href="#11-flow-data-injection">section 11</a>).</p>
+</blockquote>
+<p><br></p>
+<hr />
+<h2 id="7-auto-mode-vs-popup-mode">7. Auto Mode vs Popup Mode<a class="headerlink" href="#7-auto-mode-vs-popup-mode" title="Permanent link">&para;</a></h2>
+<h3 id="auto-autoactivate-true">Auto (<code>autoActivate: true</code>)<a class="headerlink" href="#auto-autoactivate-true" title="Permanent link">&para;</a></h3>
+<p>The activation runs immediately, on the local client, with no UI. Use this for things that should always happen:</p>
+<ul>
+<li>
+<p>Applying a status on hit.</p>
+</li>
+<li>
+<p>Adding/removing a constant bonus.</p>
+</li>
+<li>
+<p>A passive that should fire silently.</p>
+</li>
+</ul>
+<h3 id="popup-autoactivate-false-the-default">Popup (<code>autoActivate: false</code>, the default)<a class="headerlink" href="#popup-autoactivate-false-the-default" title="Permanent link">&para;</a></h3>
+<p>The activation is queued. After every reactor has been checked, all queued entries for the trigger are bundled into a single <strong>summary popup</strong>. Each entry shows the reactor's name and the activation's label. Clicking an entry expands its details. Clicking <strong>Activate</strong> runs that single entry's <code>activationCode</code>.</p>
+<p>Multiple popups can be open at the same time: the system queues them and shows a "pending" badge so nothing is lost.</p>
+<h3 id="who-sees-the-popup">Who sees the popup<a class="headerlink" href="#who-sees-the-popup" title="Permanent link">&para;</a></h3>
+<p>Controlled by <strong>Module Settings &gt; Reaction Notification Mode</strong>:</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Recipients</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>"both"</code> (default)</td>
+<td>The token's owner(s) <strong>and</strong> the active GM</td>
+</tr>
+<tr>
+<td><code>"owner"</code></td>
+<td>Only the token's owner(s)</td>
+</tr>
+<tr>
+<td><code>"gm"</code></td>
+<td>Only the active GM</td>
+</tr>
+</tbody>
+</table>
+<p>The popup is broadcast over the socket only to the recipients. Other clients see nothing.</p>
+<p><br></p>
+<hr />
+<h2 id="8-client-execution-and-sockets">8. Client Execution and Sockets<a class="headerlink" href="#8-client-execution-and-sockets" title="Permanent link">&para;</a></h2>
+<p><strong><code>activationCode</code> does not always run on the GM's client.</strong></p>
+<ul>
+<li>
+<p><strong>Auto activations</strong> run on whichever client called <code>handleTrigger</code>: the client of the player whose action fired the trigger (e.g. who moved the token), or the GM if the triggering token has no online owner.</p>
+</li>
+<li>
+<p><strong>Manual activations</strong> run on whichever client clicked <strong>Activate</strong>. Per the <code>reactionNotificationMode</code> setting, that may be the token owner, the GM, or either: first to click wins.</p>
+</li>
+</ul>
+<p>If your <code>activationCode</code> needs GM-only permissions (creating tokens, modifying actors the local user doesn't own, deleting templates owned by someone else, etc.), you must either:</p>
+<ol>
+<li>
+<p>Use an API helper that already delegates internally (most <code>applyEffectsToTokens</code>, <code>placeDeployable</code>, <code>placeZone</code>, <code>addGlobalBonus</code> calls do this).</p>
+</li>
+<li>
+<p>Call <code class="highlight"><span class="nx">triggerData</span><span class="p">.</span><span class="nx">sendMessageToReactor</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">gmUserId</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">wait</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span><span class="w"> </span><span class="p">...</span><span class="w"> </span><span class="p">})</span></code> to delegate to the GM and wait for the response.</p>
+</li>
+</ol>
+<p>A common shortcut: <code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">getActiveGMId</span><span class="p">()</span></code> returns the user ID of the active GM, suitable for <code>sendMessageToReactor</code>.</p>
+<h3 id="reaction-helpers">Reaction helpers<a class="headerlink" href="#reaction-helpers" title="Permanent link">&para;</a></h3>
+<p>Wired onto <code>triggerData</code> for every reaction. Call from <code>evaluate</code> / <code>activationCode</code>.</p>
+<p><strong><code class="highlight"><span class="nx">startRelatedFlow</span><span class="p">()</span></code></strong> <sup>async</sup> - runs the reacting item's own default flow on the current client (weapon → <code>WeaponAttackFlow</code>, action/reactionPath → <code>ActivationFlow</code>, system → <code>SystemFlow</code>, else a simple activation card).</p>
+<p><strong><code class="highlight"><span class="nx">startRelatedFlowToReactor</span><span class="p">(</span><span class="nx">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nx">extraData</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{},</span><span class="w"> </span><span class="nx">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span></code></strong> <sup>async</sup> - same, but on <code>userId</code>'s client (<code>null</code> → reactor's owner). <code>extraData</code> is merged into the flow and reads back as <code>triggerData.extraData</code> on its <code>onActivation</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-0-1" name="__codelineno-0-1" href="#__codelineno-0-1"></a><span class="nx">triggerData</span><span class="p">.</span><span class="nx">startRelatedFlowToReactor</span><span class="p">(</span><span class="nx">userId</span><span class="p">,</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">chargeSpent</span><span class="o">:</span><span class="w"> </span><span class="mf">2</span><span class="w"> </span><span class="p">});</span>
+<a id="__codelineno-0-2" name="__codelineno-0-2" href="#__codelineno-0-2"></a><span class="c1">// reactor&#39;s onActivation: triggerData.extraData.chargeSpent === 2</span>
+</code></pre></div>
+<p><code>opts</code>: <code class="highlight"><span class="p">{</span><span class="w"> </span><span class="nx">wait</span><span class="p">,</span><span class="w"> </span><span class="nx">waitTitle</span><span class="p">,</span><span class="w"> </span><span class="nx">waitDescription</span><span class="p">,</span><span class="w"> </span><span class="nx">waitItem</span><span class="p">,</span><span class="w"> </span><span class="nx">waitOriginToken</span><span class="p">,</span><span class="w"> </span><span class="nx">waitRelatedToken</span><span class="w"> </span><span class="p">}</span></code>. <code>wait:true</code> awaits remote completion. The <code>wait*</code> fields fill the local "waiting" card. <code>extraData</code> must be JSON-serializable. See the <a href="#example-true-grit-hp1-instead-of-0">True Grit example</a>.</p>
+<p><strong><code class="highlight"><span class="nx">sendMessageToReactor</span><span class="p">(</span><span class="nx">data</span><span class="p">,</span><span class="w"> </span><span class="nx">userId</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">{})</span></code></strong> <sup>async</sup> → <code>any</code> - RPC to the reactor's <code>onMessage</code> (same <code>opts</code>). With <code>wait:true</code>, returns its result. Delegation primitive for GM-only work.</p>
+<p><br></p>
+<hr />
+<h2 id="9-cancel-and-modify-timing-sensitive-triggers">9. Cancel and Modify (Timing-Sensitive Triggers)<a class="headerlink" href="#9-cancel-and-modify-timing-sensitive-triggers" title="Permanent link">&para;</a></h2>
+<p>A subset of triggers fire <strong>before</strong> the underlying action commits. From inside <code>evaluate</code> or <code>activationCode</code>, you can stop or modify the action.</p>
+<h3 id="the-synchronous-rule">The synchronous rule<a class="headerlink" href="#the-synchronous-rule" title="Permanent link">&para;</a></h3>
+<p>The cancel/modify functions only work <strong>synchronously</strong>. The engine continues past your callback as soon as it returns a non-<code>Promise</code>. If you write an async function and <code>await</code> something before calling <code class="highlight"><span class="nx">cancelAttack</span><span class="p">(...)</span></code>, the underlying flow has already moved on.</p>
+<p>Two ways to handle this:</p>
+<ol>
+<li>
+<p><strong>Keep <code>evaluate</code> and <code>activationCode</code> synchronous.</strong> Do all the work in pure synchronous code.</p>
+</li>
+<li>
+<p><strong>Set <code>awaitActivationCompletion: true</code></strong> on the reaction config. The engine then <code>await</code>s your activation before continuing the flow, so you can do async work and still cancel. Without this flag, async work + a cancel call logs a warning and the cancel is silently ignored.</p>
+</li>
+</ol>
+<h3 id="cancel-functions">Cancel functions<a class="headerlink" href="#cancel-functions" title="Permanent link">&para;</a></h3>
+<p>Signature: <code class="highlight"><span class="p">(</span><span class="nx">reasonText</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">title</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">preConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">postChoice</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span></code>. A Cancel/Ignore card is shown by default. <code>cancelTriggeredMove</code> omits the <code>title</code> slot.</p>
+<table>
+<thead>
+<tr>
+<th>Trigger</th>
+<th>Cancel function</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onPreMove</code></td>
+<td><code>cancelTriggeredMove</code></td>
+<td>Stops the move outright</td>
+</tr>
+<tr>
+<td><code>onPreMove</code></td>
+<td><code class="highlight"><span class="nx">changeTriggeredMove</span><span class="p">(</span><span class="nx">newPos</span><span class="p">,</span><span class="w"> </span><span class="nx">extraData</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">reason</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></td>
+<td>Redirects the move to a new destination</td>
+</tr>
+<tr>
+<td><code>onInitAttack</code></td>
+<td><code>cancelAttack</code></td>
+<td>Aborts the attack flow</td>
+</tr>
+<tr>
+<td><code>onInitTechAttack</code></td>
+<td><code>cancelTechAttack</code></td>
+<td>Aborts the tech attack flow</td>
+</tr>
+<tr>
+<td><code>onInitCheck</code></td>
+<td><code>cancelCheck</code></td>
+<td>Aborts the stat check flow</td>
+</tr>
+<tr>
+<td><code>onInitActivation</code></td>
+<td><code>cancelAction</code></td>
+<td>Aborts the activation flow</td>
+</tr>
+<tr>
+<td><code>onPreStatusApplied</code> / <code>onPreStatusRemoved</code></td>
+<td><code>cancelChange</code></td>
+<td>Blocks the status change</td>
+</tr>
+<tr>
+<td><code>onPreStructure</code></td>
+<td><code>cancelStructure</code></td>
+<td>Skips the structure roll</td>
+</tr>
+<tr>
+<td><code>onStructure</code></td>
+<td><code>cancelStructureOutcome</code></td>
+<td>Stops the outcome step (after the roll)</td>
+</tr>
+<tr>
+<td><code>onPreStress</code></td>
+<td><code>cancelStress</code></td>
+<td>Skips the overheat roll</td>
+</tr>
+<tr>
+<td><code>onStress</code></td>
+<td><code>cancelStressOutcome</code></td>
+<td>Stops the outcome step (after the roll)</td>
+</tr>
+<tr>
+<td><code>onPreHpChange</code></td>
+<td><code>cancelHpChange</code></td>
+<td>Blocks the HP change</td>
+</tr>
+<tr>
+<td><code>onPreHeatChange</code></td>
+<td><code>cancelHeatChange</code></td>
+<td>Blocks the heat change</td>
+</tr>
+</tbody>
+</table>
+<h3 id="modify-functions">Modify functions<a class="headerlink" href="#modify-functions" title="Permanent link">&para;</a></h3>
+<p>Same signature as cancels, with <code>newValue</code> prepended: <code class="highlight"><span class="p">(</span><span class="nx">newValue</span><span class="p">,</span><span class="w"> </span><span class="nx">reason</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">allowConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">userIdControl</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">preConfirm</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">postChoice</span><span class="o">?</span><span class="p">,</span><span class="w"> </span><span class="nx">opts</span><span class="o">?</span><span class="p">)</span></code>. They block the original update and commit the replacement value instead.</p>
+<table>
+<thead>
+<tr>
+<th>Trigger</th>
+<th>Function</th>
+<th>Effect</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>onPreHpChange</code></td>
+<td><code class="highlight"><span class="nx">modifyHpChange</span><span class="p">(</span><span class="nx">newValue</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></td>
+<td>Override the HP value being applied</td>
+</tr>
+<tr>
+<td><code>onPreHeatChange</code></td>
+<td><code class="highlight"><span class="nx">modifyHeatChange</span><span class="p">(</span><span class="nx">newValue</span><span class="p">,</span><span class="w"> </span><span class="p">...)</span></code></td>
+<td>Override the heat value being applied</td>
+</tr>
+<tr>
+<td><code>onStructure</code> / <code>onStress</code></td>
+<td><code class="highlight"><span class="nx">modifyRoll</span><span class="p">(</span><span class="nx">newTotal</span><span class="p">)</span></code></td>
+<td>Override the roll total before outcome steps</td>
+</tr>
+</tbody>
+</table>
+<p><code>onStructure</code> / <code>onStress</code> also expose <code>triggerData.rollResult</code> (total) and <code>triggerData.rollDice</code> (raw die results, useful for detecting double-1s or doubles).</p>
+<h3 id="why-preconfirm-postchoice-exist">Why <code>preConfirm</code> / <code>postChoice</code> exist<a class="headerlink" href="#why-preconfirm-postchoice-exist" title="Permanent link">&para;</a></h3>
+<p>Foundry's <code>preUpdate*</code> hooks (move, actor update, etc.) are non-blocking: if your handler returns a Promise, Foundry does not wait for it. Anything after an <code>await</code> happens too late to stop the update.</p>
+<p>So the pattern is:
+1. Call the cancel/modify function <strong>synchronously</strong> (before any <code>await</code>). This preemptively blocks the update.</p>
+<ol>
+<li>Afterwards, do your async work (choice cards, remote player decisions, etc.) to decide what happens next.</li>
+</ol>
+<p><code>preConfirm</code> and <code>postChoice</code> are the two async hooks that let you drive that "what happens next" phase without needing to pre-build the UI yourself.</p>
+<h3 id="allowconfirm-preconfirm-postchoice"><code>allowConfirm</code>, <code>preConfirm</code>, <code>postChoice</code><a class="headerlink" href="#allowconfirm-preconfirm-postchoice" title="Permanent link">&para;</a></h3>
+<p>Shared across every cancel, change, modify, and reroll function.</p>
+<p><strong><code>allowConfirm: boolean</code></strong> (default <code>true</code>). Whether to show the secondary Confirm/Ignore card to <code>userIdControl</code>.</p>
+<ul>
+<li><code>true</code>: show the card, user can override.</li>
+<li><code>false</code>: skip the card, auto-pick the first choice (the "no override" outcome).</li>
+</ul>
+<p>Does NOT gate <code>preConfirm</code>. <code>preConfirm</code> always runs if provided.</p>
+<p><strong><code class="highlight"><span class="nx">preConfirm</span><span class="o">:</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="kr">boolean</span><span class="o">&gt;</span></code></strong>. Async gate that runs after the sync cancel has stuck, before the secondary card.</p>
+<ul>
+<li>Returns <code>true</code>: proceed to the secondary card (or auto-pick if <code>allowConfirm: false</code>).</li>
+<li>Returns <code>false</code>: re-apply the original outcome. <code>postChoice</code> does NOT fire.</li>
+</ul>
+<p>Typical use: the reactor's player confirms Yes/No in a choice card here. Good place to call <code class="highlight"><span class="nx">triggerData</span><span class="p">.</span><span class="nx">startRelatedFlowToReactor</span><span class="p">(...)</span></code> so the reactor's own flow fires once on commit.</p>
+<p><strong><code class="highlight"><span class="nx">postChoice</span><span class="o">:</span><span class="w"> </span><span class="p">(</span><span class="nx">chose</span><span class="o">:</span><span class="w"> </span><span class="kr">boolean</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nb">Promise</span><span class="o">&lt;</span><span class="ow">void</span><span class="o">&gt;</span></code></strong>. Callback after the secondary card resolves (or after auto-pick).</p>
+<ul>
+<li><code>chose === true</code>: the replacement was committed.</li>
+<li><code>chose === false</code>: the original was re-applied (user picked Ignore).</li>
+</ul>
+<p>Typical use: fire a downstream effect that depends on whether the action went through.</p>
+<h3 id="timing">Timing<a class="headerlink" href="#timing" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-1-1" name="__codelineno-1-1" href="#__codelineno-1-1"></a>sync:  setFlag()       -&gt; engine blocks the original update
+<a id="__codelineno-1-2" name="__codelineno-1-2" href="#__codelineno-1-2"></a>async: preConfirm()    -&gt; false: executeOriginal + return (no postChoice)
+<a id="__codelineno-1-3" name="__codelineno-1-3" href="#__codelineno-1-3"></a>       allowConfirm?
+<a id="__codelineno-1-4" name="__codelineno-1-4" href="#__codelineno-1-4"></a>         true  -&gt; show card
+<a id="__codelineno-1-5" name="__codelineno-1-5" href="#__codelineno-1-5"></a>                  Confirm: executeNew + postChoice(true)
+<a id="__codelineno-1-6" name="__codelineno-1-6" href="#__codelineno-1-6"></a>                  Ignore:  executeOriginal + postChoice(false)
+<a id="__codelineno-1-7" name="__codelineno-1-7" href="#__codelineno-1-7"></a>         false -&gt; executeNew + postChoice(true)
+</code></pre></div>
+<h3 id="example-true-grit-hp1-instead-of-0">Example: True Grit (HP=1 instead of 0)<a class="headerlink" href="#example-true-grit-hp1-instead-of-0" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-2-1" name="__codelineno-2-1" href="#__codelineno-2-1"></a><span class="kd">const</span><span class="w"> </span><span class="nx">preConfirm</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-2-2" name="__codelineno-2-2" href="#__codelineno-2-2"></a><span class="w">    </span><span class="kd">const</span><span class="w"> </span><span class="nx">ask</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">askCard</span><span class="p">({</span>
+<a id="__codelineno-2-3" name="__codelineno-2-3" href="#__codelineno-2-3"></a><span class="w">        </span><span class="nx">title</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;TRUE GRIT&quot;</span><span class="p">,</span>
+<a id="__codelineno-2-4" name="__codelineno-2-4" href="#__codelineno-2-4"></a><span class="w">        </span><span class="nx">description</span><span class="o">:</span><span class="w"> </span><span class="sb">`&lt;b&gt;</span><span class="si">${</span><span class="nx">ally</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb">&lt;/b&gt; would fall to 0 HP. Keep at 1 HP?`</span><span class="p">,</span>
+<a id="__codelineno-2-5" name="__codelineno-2-5" href="#__codelineno-2-5"></a><span class="w">        </span><span class="nx">owner</span><span class="o">:</span><span class="w"> </span><span class="nx">reactorToken</span>
+<a id="__codelineno-2-6" name="__codelineno-2-6" href="#__codelineno-2-6"></a><span class="w">    </span><span class="p">});</span>
+<a id="__codelineno-2-7" name="__codelineno-2-7" href="#__codelineno-2-7"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">ask</span><span class="p">.</span><span class="nx">confirmed</span><span class="p">)</span>
+<a id="__codelineno-2-8" name="__codelineno-2-8" href="#__codelineno-2-8"></a><span class="w">        </span><span class="nx">triggerData</span><span class="p">.</span><span class="nx">startRelatedFlowToReactor</span><span class="p">(</span><span class="nx">ask</span><span class="p">.</span><span class="nx">responderIds</span><span class="p">[</span><span class="mf">0</span><span class="p">]);</span>
+<a id="__codelineno-2-9" name="__codelineno-2-9" href="#__codelineno-2-9"></a><span class="w">    </span><span class="k">return</span><span class="w"> </span><span class="nx">ask</span><span class="p">.</span><span class="nx">confirmed</span><span class="p">;</span>
+<a id="__codelineno-2-10" name="__codelineno-2-10" href="#__codelineno-2-10"></a><span class="p">};</span>
+<a id="__codelineno-2-11" name="__codelineno-2-11" href="#__codelineno-2-11"></a><span class="nx">triggerData</span><span class="p">.</span><span class="nx">modifyHpChange</span><span class="p">(</span>
+<a id="__codelineno-2-12" name="__codelineno-2-12" href="#__codelineno-2-12"></a><span class="w">    </span><span class="mf">1</span><span class="p">,</span>
+<a id="__codelineno-2-13" name="__codelineno-2-13" href="#__codelineno-2-13"></a><span class="w">    </span><span class="sb">`</span><span class="si">${</span><span class="nx">reactorToken</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb"> keeps </span><span class="si">${</span><span class="nx">ally</span><span class="p">.</span><span class="nx">name</span><span class="si">}</span><span class="sb"> at 1 HP.`</span><span class="p">,</span>
+<a id="__codelineno-2-14" name="__codelineno-2-14" href="#__codelineno-2-14"></a><span class="w">    </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-2-15" name="__codelineno-2-15" href="#__codelineno-2-15"></a><span class="w">    </span><span class="nx">api</span><span class="p">.</span><span class="nx">getTokenOwnerUserId</span><span class="p">(</span><span class="nx">ally</span><span class="p">),</span>
+<a id="__codelineno-2-16" name="__codelineno-2-16" href="#__codelineno-2-16"></a><span class="w">    </span><span class="nx">preConfirm</span><span class="p">,</span>
+<a id="__codelineno-2-17" name="__codelineno-2-17" href="#__codelineno-2-17"></a><span class="w">    </span><span class="kc">null</span>
+<a id="__codelineno-2-18" name="__codelineno-2-18" href="#__codelineno-2-18"></a><span class="p">);</span>
+</code></pre></div>
+<p><br></p>
+<hr />
+<h2 id="10-reaction-economy-and-frequency">10. Reaction Economy and Frequency<a class="headerlink" href="#10-reaction-economy-and-frequency" title="Permanent link">&para;</a></h2>
+<p>The Lancer reaction economy (1 reaction per round) has two separate parts: the reaction config's <code>checkReaction</code> (default <code>true</code>) filters out a reactor with no reaction left before <code>evaluate</code> runs, and the world setting <code>consumeReaction</code>, when enabled, spends one reaction each time a <code>Reaction</code>-type action fires.</p>
+<p>Other frequency-related fields:</p>
+<ul>
+<li>
+<p><code>actionType</code>: labels the popup entry (<code>"Reaction"</code>, <code>"Quick Action"</code>, <code>"Full Action"</code>, <code>"Protocol"</code>, <code>"Free Action"</code>, <code>"Other"</code>). Display only.</p>
+</li>
+<li>
+<p><code>frequency</code>: display string (<code>"1/Round"</code>, <code>"1/Combat"</code>). Currently display-only for non-reactions. The engine does not enforce per-combat counters automatically.</p>
+</li>
+<li>
+<p><code>usesPerRound</code>: for reactions, enforced via the reaction tracker.</p>
+</li>
+<li>
+<p><code>outOfCombat</code>: opt-in for triggers that wouldn't normally fire outside combat.</p>
+</li>
+</ul>
+<p>For activations that need their own per-round / per-target tracking (e.g. "1x per target per round"), maintain it yourself in actor flags. The Triangulation Ping NPC feature is the canonical example.</p>
+<p><br></p>
+<hr />
+<h2 id="11-flow-data-injection">11. Flow Data Injection<a class="headerlink" href="#11-flow-data-injection" title="Permanent link">&para;</a></h2>
+<p>Inside an <code>activationCode</code> whose trigger carries a <code>flowState</code> (most attack/damage/check/activation triggers), you can mutate the in-progress flow:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-3-1" name="__codelineno-3-1" href="#__codelineno-3-1"></a><span class="c1">// Inject a bonus visible to subsequent flow steps (and to the damage step,</span>
+<a id="__codelineno-3-2" name="__codelineno-3-2" href="#__codelineno-3-2"></a><span class="c1">// even if you injected it during AttackRoll).</span>
+<a id="__codelineno-3-3" name="__codelineno-3-3" href="#__codelineno-3-3"></a><span class="nx">triggerData</span><span class="p">.</span><span class="nx">flowState</span><span class="p">.</span><span class="nx">injectBonus</span><span class="p">({</span>
+<a id="__codelineno-3-4" name="__codelineno-3-4" href="#__codelineno-3-4"></a><span class="w">    </span><span class="nx">id</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;my-bonus&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-5" name="__codelineno-3-5" href="#__codelineno-3-5"></a><span class="w">    </span><span class="nx">name</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Marker Rifle Mark&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-6" name="__codelineno-3-6" href="#__codelineno-3-6"></a><span class="w">    </span><span class="nx">type</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;accuracy&quot;</span><span class="p">,</span>
+<a id="__codelineno-3-7" name="__codelineno-3-7" href="#__codelineno-3-7"></a><span class="w">    </span><span class="nx">val</span><span class="o">:</span><span class="w"> </span><span class="mf">1</span>
+<a id="__codelineno-3-8" name="__codelineno-3-8" href="#__codelineno-3-8"></a><span class="p">});</span>
+<a id="__codelineno-3-9" name="__codelineno-3-9" href="#__codelineno-3-9"></a>
+<a id="__codelineno-3-10" name="__codelineno-3-10" href="#__codelineno-3-10"></a><span class="c1">// Inject any other data into the flow state for later steps to read.</span>
+<a id="__codelineno-3-11" name="__codelineno-3-11" href="#__codelineno-3-11"></a><span class="nx">triggerData</span><span class="p">.</span><span class="nx">flowState</span><span class="p">.</span><span class="nx">injectData</span><span class="p">({</span><span class="w"> </span><span class="nx">myFlag</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">});</span>
+</code></pre></div>
+<p><strong>Lifetime.</strong> Injected values live on <code>flowState.la_extraData</code> for the rest of the flow. They're also serialized onto the resulting chat message, so a damage card produced later in the same flow can still read what was injected during the attack step.</p>
+<p>Use this when you need a bonus to apply <em>exactly to this one roll/attack/damage card</em> without leaving a global bonus or a status effect on the actor.</p>
+<p><br></p>
+<hr />
+<h2 id="12-item-paths-extra-actions-activated-items">12. Item Paths, Extra Actions, Activated Items<a class="headerlink" href="#12-item-paths-extra-actions-activated-items" title="Permanent link">&para;</a></h2>
+<p>Three related mechanisms for binding reactions to sub-parts of an item and for tracking whether an item is currently "on".</p>
+<h3 id="action-path">Action path<a class="headerlink" href="#action-path" title="Permanent link">&para;</a></h3>
+<p>An activation config can target a specific sub-action of an item instead of the item as a whole. The field is stored as <code>reactionPath</code> on disk (legacy name from when the system only handled reactions). In the UI and in this doc it is called <strong>action path</strong>.</p>
+<p>Common forms:</p>
+<ul>
+<li>
+<p><code>"system.actions.0"</code> - the first action on a regular item</p>
+</li>
+<li>
+<p><code>"extraActions.Fall Prone"</code> - an extra action stored on the item via <code>addExtraActions</code></p>
+</li>
+<li>
+<p><code>"ranks[2]"</code> - rank-3 of a talent</p>
+</li>
+</ul>
+<p>At evaluation time the engine walks the path into <code>item.system</code> (or the <code>extraActions</code> flag), pulls the <code>name</code> off the action found there, and uses it as <code>activationName</code>. If <code>onlyOnSourceMatch</code> is set, the activation only fires when the triggering action's name matches the one at the path.</p>
+<p>This is how one item can have multiple independent activations (different sub-actions, different talent ranks) without colliding.</p>
+<p><strong>Finding the right path.</strong> The item finder inside the Activation Manager lists every action on the selected item next to its action path - no need to guess the index or dig through the item's schema.</p>
+<h3 id="extra-actions">Extra actions<a class="headerlink" href="#extra-actions" title="Permanent link">&para;</a></h3>
+<p>API: <code>addExtraActions</code>, <code>getItemActions</code>, <code>getActorActions</code>, <code>removeExtraActions</code> (all on <code>InteractiveAPI</code>, documented in <a href="API_HUD.html#extra-actions">API_HUD.md</a>).</p>
+<p>Adds action objects (name, activation type, description, tags, etc.) onto an item, token, or actor via flags. Two storage locations:
+- Passed an item: stored in the item's <code>extraActions</code> flag. Merged into the item's action list by <code>getItemActions</code>.</p>
+<ul>
+<li>Passed a token or actor: stored on the actor. Returned by <code>getActorActions</code>.</li>
+</ul>
+<p>Typical uses: Sniper's Mark adds a "Fall Prone" action, Limitless adds "Overcharge (NPC)", and Defense Net adds "Collapse the Defense Net" while it's active.</p>
+<p><code>activation</code> field must use TAH's short form (<code>"Quick"</code>, <code>"Full"</code>, <code>"Protocol"</code>, <code>"Free"</code>, <code>"Reaction"</code>, <code>"Quick Tech"</code>, <code>"Full Tech"</code>). Not <code>"Quick Action"</code> etc. TAH filters by strict equality.</p>
+<p><strong>Binding an activation to an extra action.</strong> There are two ways, picked based on where the extra action was stored:</p>
+<ul>
+<li>
+<p><strong>By general name</strong> - when the extra action is injected onto a token or actor (not tied to a specific item), register a <em>general</em> activation whose name matches the action name. Source matching is done on the activation name directly.</p>
+</li>
+<li>
+<p><strong>By action path</strong> - when the extra action is injected onto an item, register an <em>item</em> activation with <code>reactionPath: "extraActions.&lt;Name&gt;"</code>. The engine resolves the sub-action through the flag lookup the same way it walks <code>system.actions.N</code>.</p>
+</li>
+</ul>
+<p><strong>Access.</strong> Extra actions are currently only surfaced through the Lancer Automations TAH. Other UIs (the native Lancer sheet, the native action bar, etc.) do not show them. If the TAH is disabled, extra actions are invisible to the user even though they still fire when triggered from code.</p>
+<h3 id="activated-items-lifecycle">Activated items lifecycle<a class="headerlink" href="#activated-items-lifecycle" title="Permanent link">&para;</a></h3>
+<p>For items that stay "on" after being activated (auras, persistent effects, stances), the engine tracks an activated state per token.</p>
+<ul>
+<li>
+<p><code class="highlight"><span class="nx">setItemAsActivated</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="p">,</span><span class="w"> </span><span class="nx">endActivation</span><span class="p">,</span><span class="w"> </span><span class="nx">endActionDescription</span><span class="p">)</span></code> marks the item as active. Adds an extra action (the "end action") with the given activation type and description, e.g. <code>"Protocol"</code> and <code>"Collapse the Defense Net"</code>. That action shows up in the TAH so the user can click to end.</p>
+</li>
+<li>
+<p><code class="highlight"><span class="nx">getActivatedItems</span><span class="p">(</span><span class="nx">token</span><span class="p">)</span></code> returns the currently-active items on a token. Use in <code>evaluate</code> to gate other reactions behind "only while this item is on".</p>
+</li>
+<li>
+<p><code class="highlight"><span class="nx">endItemActivation</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">token</span><span class="p">)</span></code> clears the state directly from code. Also removes the end-action.</p>
+</li>
+</ul>
+<h3 id="how-the-three-combine">How the three combine<a class="headerlink" href="#how-the-three-combine" title="Permanent link">&para;</a></h3>
+<p>When the end action fires, it goes through the same activation flow as any action on the item. That means <code>onActivation</code> fires <strong>again</strong>, but this time with <code>triggerData.endActivation === true</code>. A single reaction can handle both setup and teardown by checking that flag:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-4-1" name="__codelineno-4-1" href="#__codelineno-4-1"></a><span class="nx">activationCode</span><span class="o">:</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-2" name="__codelineno-4-2" href="#__codelineno-4-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">triggerData</span><span class="p">.</span><span class="nx">endActivation</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-4-3" name="__codelineno-4-3" href="#__codelineno-4-3"></a><span class="w">        </span><span class="k">await</span><span class="w"> </span><span class="nx">teardownEffect</span><span class="p">(</span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">);</span>
+<a id="__codelineno-4-4" name="__codelineno-4-4" href="#__codelineno-4-4"></a><span class="w">        </span><span class="k">return</span><span class="p">;</span>
+<a id="__codelineno-4-5" name="__codelineno-4-5" href="#__codelineno-4-5"></a><span class="w">    </span><span class="p">}</span>
+<a id="__codelineno-4-6" name="__codelineno-4-6" href="#__codelineno-4-6"></a><span class="w">    </span><span class="c1">// First activation: set everything up</span>
+<a id="__codelineno-4-7" name="__codelineno-4-7" href="#__codelineno-4-7"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">setupEffect</span><span class="p">(</span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">);</span>
+<a id="__codelineno-4-8" name="__codelineno-4-8" href="#__codelineno-4-8"></a><span class="w">    </span><span class="k">await</span><span class="w"> </span><span class="nx">api</span><span class="p">.</span><span class="nx">setItemAsActivated</span><span class="p">(</span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Protocol&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Collapse the Defense Net&quot;</span><span class="p">);</span>
+<a id="__codelineno-4-9" name="__codelineno-4-9" href="#__codelineno-4-9"></a><span class="p">}</span>
+</code></pre></div>
+<p>Other triggers on the same item can gate themselves by checking <code>getActivatedItems</code>:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-5-1" name="__codelineno-5-1" href="#__codelineno-5-1"></a><span class="nx">evaluate</span><span class="o">:</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-5-2" name="__codelineno-5-2" href="#__codelineno-5-2"></a><span class="w">    </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="o">!</span><span class="nx">api</span><span class="p">.</span><span class="nx">getActivatedItems</span><span class="p">(</span><span class="nx">reactorToken</span><span class="p">)</span><span class="o">?</span><span class="p">.</span><span class="nx">some</span><span class="p">(</span><span class="nx">i</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="nx">i</span><span class="p">.</span><span class="nx">id</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="nx">item</span><span class="p">.</span><span class="nx">id</span><span class="p">))</span>
+<a id="__codelineno-5-3" name="__codelineno-5-3" href="#__codelineno-5-3"></a><span class="w">        </span><span class="k">return</span><span class="w"> </span><span class="kc">false</span><span class="p">;</span>
+<a id="__codelineno-5-4" name="__codelineno-5-4" href="#__codelineno-5-4"></a><span class="w">    </span><span class="c1">// item is on, proceed</span>
+<a id="__codelineno-5-5" name="__codelineno-5-5" href="#__codelineno-5-5"></a><span class="w">    </span><span class="p">...</span>
+<a id="__codelineno-5-6" name="__codelineno-5-6" href="#__codelineno-5-6"></a><span class="p">}</span>
+</code></pre></div>
+<p>Forced teardown from a separate trigger (e.g. the wearer gets stunned and the field collapses) calls <code>endItemActivation</code> directly, or calls the teardown helper and then <code>endItemActivation</code> to clean up the end-action row.</p>
+<p>Defense Net in <code>startups/itemActivations.js</code> is the reference implementation (<code>onActivation</code> for setup + <code>endActivation</code> teardown, <code>onStatusApplied</code> with <code>getActivatedItems</code> to force-collapse when stunned/jammed, <code>onHeatGain</code> / <code>onTechMiss</code> reactions gated by <code>getActivatedItems</code>).</p>
+<p><br></p>
+<hr />
+<h2 id="13-registration-paths">13. Registration Paths<a class="headerlink" href="#13-registration-paths" title="Permanent link">&para;</a></h2>
+<p>There are four ways to register an activation. They all end up in the same dispatcher.</p>
+<h3 id="a-the-activation-manager-ui-most-users">A. The Activation Manager UI (most users)<a class="headerlink" href="#a-the-activation-manager-ui-most-users" title="Permanent link">&para;</a></h3>
+<p><strong>Module Settings &gt; Activation Manager.</strong> Create item or general activations through forms. Stored in <code>customReactions</code> / <code>generalReactions</code> world settings. Best for one-offs and homebrew.</p>
+<h3 id="b-module-time-registration-other-modules-world-scripts">B. Module-time registration (other modules / world scripts)<a class="headerlink" href="#b-module-time-registration-other-modules-world-scripts" title="Permanent link">&para;</a></h3>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-6-1" name="__codelineno-6-1" href="#__codelineno-6-1"></a><span class="nx">Hooks</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span><span class="s2">&quot;lancer-automations.ready&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">(</span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-2" name="__codelineno-6-2" href="#__codelineno-6-2"></a><span class="w">    </span><span class="nx">api</span><span class="p">.</span><span class="nx">registerDefaultItemReactions</span><span class="p">({</span>
+<a id="__codelineno-6-3" name="__codelineno-6-3" href="#__codelineno-6-3"></a><span class="w">        </span><span class="s2">&quot;lid_of_the_item&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-4" name="__codelineno-6-4" href="#__codelineno-6-4"></a><span class="w">            </span><span class="nx">category</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Homebrew&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-5" name="__codelineno-6-5" href="#__codelineno-6-5"></a><span class="w">            </span><span class="nx">itemType</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;npc_feature&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-6" name="__codelineno-6-6" href="#__codelineno-6-6"></a><span class="w">            </span><span class="nx">reactions</span><span class="o">:</span><span class="w"> </span><span class="p">[{</span>
+<a id="__codelineno-6-7" name="__codelineno-6-7" href="#__codelineno-6-7"></a><span class="w">                </span><span class="nx">triggers</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;onActivation&quot;</span><span class="p">],</span>
+<a id="__codelineno-6-8" name="__codelineno-6-8" href="#__codelineno-6-8"></a><span class="w">                </span><span class="nx">onlyOnSourceMatch</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-6-9" name="__codelineno-6-9" href="#__codelineno-6-9"></a><span class="w">                </span><span class="nx">triggerSelf</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-6-10" name="__codelineno-6-10" href="#__codelineno-6-10"></a><span class="w">                </span><span class="nx">triggerOther</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span><span class="p">,</span>
+<a id="__codelineno-6-11" name="__codelineno-6-11" href="#__codelineno-6-11"></a><span class="w">                </span><span class="nx">autoActivate</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<a id="__codelineno-6-12" name="__codelineno-6-12" href="#__codelineno-6-12"></a><span class="w">                </span><span class="nx">activationType</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;code&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-13" name="__codelineno-6-13" href="#__codelineno-6-13"></a><span class="w">                </span><span class="nx">activationMode</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;instead&quot;</span><span class="p">,</span>
+<a id="__codelineno-6-14" name="__codelineno-6-14" href="#__codelineno-6-14"></a><span class="w">                </span><span class="nx">activationCode</span><span class="o">:</span><span class="w"> </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="p">(</span><span class="nx">triggerType</span><span class="p">,</span><span class="w"> </span><span class="nx">triggerData</span><span class="p">,</span><span class="w"> </span><span class="nx">reactorToken</span><span class="p">,</span><span class="w"> </span><span class="nx">item</span><span class="p">,</span><span class="w"> </span><span class="nx">activationName</span><span class="p">,</span><span class="w"> </span><span class="nx">api</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<a id="__codelineno-6-15" name="__codelineno-6-15" href="#__codelineno-6-15"></a><span class="w">                    </span><span class="c1">// ...</span>
+<a id="__codelineno-6-16" name="__codelineno-6-16" href="#__codelineno-6-16"></a><span class="w">                </span><span class="p">}</span>
+<a id="__codelineno-6-17" name="__codelineno-6-17" href="#__codelineno-6-17"></a><span class="w">            </span><span class="p">}]</span>
+<a id="__codelineno-6-18" name="__codelineno-6-18" href="#__codelineno-6-18"></a><span class="w">        </span><span class="p">}</span>
+<a id="__codelineno-6-19" name="__codelineno-6-19" href="#__codelineno-6-19"></a><span class="w">    </span><span class="p">});</span>
+<a id="__codelineno-6-20" name="__codelineno-6-20" href="#__codelineno-6-20"></a>
+<a id="__codelineno-6-21" name="__codelineno-6-21" href="#__codelineno-6-21"></a><span class="w">    </span><span class="nx">api</span><span class="p">.</span><span class="nx">registerDefaultGeneralReactions</span><span class="p">({</span>
+<a id="__codelineno-6-22" name="__codelineno-6-22" href="#__codelineno-6-22"></a><span class="w">        </span><span class="s2">&quot;My General Reaction&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">reactions</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="cm">/* ... */</span><span class="p">]</span><span class="w"> </span><span class="p">}</span>
+<a id="__codelineno-6-23" name="__codelineno-6-23" href="#__codelineno-6-23"></a><span class="w">    </span><span class="p">});</span>
+<a id="__codelineno-6-24" name="__codelineno-6-24" href="#__codelineno-6-24"></a><span class="p">});</span>
+</code></pre></div>
+<p>External registrations are merged with <strong>last-write-wins</strong> semantics: re-registering the same key replaces the previous entry.</p>
+<h3 id="c-built-in-defaults-this-modules-own-set">C. Built-in defaults (this module's own set)<a class="headerlink" href="#c-built-in-defaults-this-modules-own-set" title="Permanent link">&para;</a></h3>
+<p>The same two functions are used by <code>startups/itemActivations.js</code> for the bundled NPC/feature automations. The result is identical to B. The only difference is where it comes from.</p>
+<h3 id="d-startup-scripts-ui-managed-code">D. Startup scripts (UI-managed code)<a class="headerlink" href="#d-startup-scripts-ui-managed-code" title="Permanent link">&para;</a></h3>
+<p><strong>Module Settings &gt; Activation Manager &gt; Startups tab.</strong> Arbitrary code blocks run once on <code>ready</code>. Useful for registering helper functions on the API (<code class="highlight"><span class="nx">api</span><span class="p">.</span><span class="nx">registerUserHelper</span><span class="p">(</span><span class="s2">&quot;myHelper&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">fn</span><span class="p">)</span></code>) so your activation code can call them by name.</p>
+<h3 id="override-order">Override order<a class="headerlink" href="#override-order" title="Permanent link">&para;</a></h3>
+<p>For a given key (LID or general name), the resolution order is roughly: <strong>user UI definitions</strong> override <strong>external registrations</strong> override <strong>built-in defaults</strong>. Re-registrations within the same path replace.</p>
+<p><br></p>
+<hr />
+<h2 id="14-caches-and-invalidation">14. Caches and Invalidation<a class="headerlink" href="#14-caches-and-invalidation" title="Permanent link">&para;</a></h2>
+<p>The engine caches:</p>
+<ul>
+<li>
+<p><strong>Flat general reaction list.</strong> Built once, used for every general-reaction sweep. Cleared when an item or actor changes (so a new general reaction registered through code becomes visible).</p>
+</li>
+<li>
+<p><strong>Per-actor item list.</strong> Each actor's item set is cached for the LID lookup. Cleared on <code>updateActor</code>, <code>createItem</code>, <code>deleteItem</code>, <code>updateItem</code>.</p>
+</li>
+<li>
+<p><strong>Compiled function cache.</strong> UI activations are stored as code strings. The engine compiles them on first use and caches the function. Cleared whenever the UI saves.</p>
+</li>
+</ul>
+<p>If you ever change a reaction in the UI and <em>don't</em> see it take effect, fire the manual cache clear:</p>
+<div class="highlight"><pre><span></span><code><a id="__codelineno-7-1" name="__codelineno-7-1" href="#__codelineno-7-1"></a><span class="nx">Hooks</span><span class="p">.</span><span class="nx">callAll</span><span class="p">(</span><span class="s2">&quot;lancer-automations.clearCaches&quot;</span><span class="p">);</span>
+</code></pre></div>
+<p>This is what the UI does internally on save.</p>
+
+
+
+
+
+
+
+
+
+
+
+
+                
+              </article>
+            </div>
+          
+          
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+        </div>
+        
+          <button type="button" class="md-top md-icon" data-md-component="top" hidden>
+  
+  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M13 20h-2V8l-5.5 5.5-1.42-1.42L12 4.16l7.92 7.92-1.42 1.42L13 8z"/></svg>
+  Back to top
+</button>
+        
+      </main>
+      
+        <footer class="md-footer">
+  
+  <div class="md-footer-meta md-typeset">
+    <div class="md-footer-meta__inner md-grid">
+      <div class="md-copyright">
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" target="_blank" rel="noopener">
+      Material for MkDocs
+    </a>
+  
+</div>
+      
+    </div>
+  </div>
+</footer>
+      
+    </div>
+    <div class="md-dialog" data-md-component="dialog">
+      <div class="md-dialog__inner md-typeset"></div>
+    </div>
+    
+    
+    <script id="__config" type="application/json">{"base": ".", "features": ["navigation.instant", "navigation.tracking", "navigation.sections", "navigation.top", "navigation.indexes", "search.suggest", "search.highlight", "search.share", "content.code.copy", "toc.follow"], "search": "assets/javascripts/workers/search.6ce7567c.min.js", "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}}</script>
+    
+    
+      <script src="assets/javascripts/bundle.83f73b43.min.js"></script>
+      
+        <script src="assets/la-code.js"></script>
+      
+        <script src="assets/la-header.js"></script>
+      
+    
+  </body>
+</html>

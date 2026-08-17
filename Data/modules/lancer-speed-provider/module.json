@@ -1,0 +1,39 @@
+{
+  "id": "lancer-speed-provider",
+  "title": "Lancer Ruler Integration",
+  "description": "Integrates the token drag ruler with Lancer's rules",
+  "authors": [
+    {
+      "name": "Bolts"
+    }
+  ],
+  "version": "7.3",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "relationships": {
+    "systems": [
+      {
+        "id": "lancer",
+        "compatibility": {
+          "minimum": "3.0.0",
+          "verified": "3.0.0"
+        }
+      }
+    ]
+  },
+  "esmodules": [
+    "./lancer-provider.js"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }
+  ],
+  "url": "https://codeberg.org/Bolts/lancer-speed-provider",
+  "manifest": "https://codeberg.org/Bolts/lancer-speed-provider/releases/download/latest/module.json",
+  "download": "https://codeberg.org/Bolts/lancer-speed-provider/releases/download/v7.3/lancer-speed-provider.zip"
+}

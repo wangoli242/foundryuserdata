@@ -1,0 +1,37 @@
+<form class="editable flexcol" autocomplete="off">
+  <header class="sheet-header">
+    <h1><input type="text" value="{{name}}" disabled></h1>
+  </header>
+
+  <!-- navigation -->
+  <nav class="sheet-tabs tabs" aria-role="Form Tab Navigation">
+    {{#each triggers}}
+    <a class="trigger {{#if has}}has{{/if}}" data-tab="{{type}}">{{localize label}}</a>
+    {{/each}}
+  </nav>
+
+  <!-- tabs -->
+  <div class="content-tabs">
+    {{#each triggers}}
+    <div class="tab" data-tab="{{type}}">
+      <div class="form-group stacked command" data-type="{{type}}">
+        <div class="description">{{localize desc}}</div>
+        <div class="command-line">
+          <label>{{localize "Command"}}</label>
+          <div class="as-gm">
+            <label data-tooltip="TEMPLATEMACRO.AsGMTooltip">{{localize "TEMPLATEMACRO.AS_GM"}}</label>
+            <input type="checkbox" name="flags.templatemacro.{{type}}.asGM" {{checked asGM}}>
+          </div>
+        </div>
+        <textarea name="flags.templatemacro.{{type}}.command">{{command}}</textarea>
+      </div>
+    </div>
+    {{/each}}
+  </div>
+
+  <footer class="sheet-footer flexrow">
+    <button type="submit">
+      <i class="fa-solid fa-save"></i> {{localize "Save"}}
+    </button>
+  </footer>
+</form>
