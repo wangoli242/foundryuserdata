@@ -1,5 +1,5 @@
 {
-  "timestamp": 1784266793365,
+  "timestamp": 1788741934343,
   "os": {
     "platform": "linux",
     "version": "Ubuntu 24.04.4 LTS",
@@ -12,11 +12,26 @@
     "hosting": null
   },
   "modules": {
+    "JB2A_DnD5e": {
+      "version": "0.9.0"
+    },
     "XCard": {
       "version": "0.0.13"
     },
+    "_CodeMirror": {
+      "version": "5.58.3-fvtt5"
+    },
+    "about-face": {
+      "version": "3.28.2"
+    },
     "chat-portrait": {
       "version": "13.0.1"
+    },
+    "color-picker": {
+      "version": "1.3"
+    },
+    "combat-tracker-dock": {
+      "version": "4.1.8"
     },
     "delta-green-agent-wizard": {
       "version": "0.1.1"
@@ -33,17 +48,77 @@
     "dice-so-nice": {
       "version": "5.3.4"
     },
+    "elevationruler": {
+      "version": "13.0.1"
+    },
+    "ffs": {
+      "version": "1.18.0"
+    },
+    "find-the-culprit": {
+      "version": "3.3.0"
+    },
     "fist-ultra-edition-compendium": {
       "version": "1.2.0"
+    },
+    "force-client-settings": {
+      "version": "2.6.0"
+    },
+    "forien-copy-environment": {
+      "version": "v3.0.0"
     },
     "foundryvtt-show-notes": {
       "version": "11.4"
     },
-    "michaelghelfi": {
-      "version": "1.4"
+    "grid-aware-auras": {
+      "version": "0.5.8.7"
+    },
+    "hex-size-support": {
+      "version": "5.7"
+    },
+    "ilysen-lancer-npc-rebake-structure": {
+      "version": "0.1.2.3"
+    },
+    "lancer-alt-structure": {
+      "version": "0.2.1"
+    },
+    "lancer-alternative-sheets": {
+      "version": "1.5.7"
+    },
+    "lancer-automations": {
+      "version": "4.1.2"
+    },
+    "lancer-combat-banner": {
+      "version": "2.0.4"
+    },
+    "lancer-speed-provider": {
+      "version": "7.3"
+    },
+    "lancer-style-library": {
+      "version": "1.2.2"
+    },
+    "lancer-weapon-fx": {
+      "version": "2.3.1"
+    },
+    "lib-wrapper": {
+      "version": "1.13.5.1"
+    },
+    "module-profiles": {
+      "version": "1.1.2"
+    },
+    "monks-active-tiles": {
+      "version": "13.06"
+    },
+    "pdf-pager": {
+      "version": "13.0.6"
+    },
+    "permission_viewer": {
+      "version": "14.0"
     },
     "polyglot": {
       "version": "2.8.3"
+    },
+    "sequencer": {
+      "version": "4.2.3"
     },
     "simplefog": {
       "version": "1.4.4"
@@ -51,17 +126,45 @@
     "socketlib": {
       "version": "v1.1.4"
     },
+    "templatemacro": {
+      "version": "14.1.2"
+    },
+    "temporary-custom-statuses": {
+      "version": "2.0.0"
+    },
+    "terrain-height-tools": {
+      "version": "0.7.19"
+    },
+    "theripper-premium-hub": {
+      "version": "5.0.7"
+    },
     "token-action-hud-core": {
       "version": "2.1.1"
     },
     "token-action-hud-dg": {
       "version": "1.1.0"
+    },
+    "token-factions": {
+      "version": "13.2.0"
+    },
+    "token-tooltip-alt": {
+      "version": "3.3.6"
+    },
+    "tokenmagic": {
+      "version": "0.7.6.3"
+    },
+    "wall-height": {
+      "version": "7.0.8"
     }
   },
   "systems": {
+    "custom-system-builder": {
+      "version": "5.2.1",
+      "playtime": 424862
+    },
     "deltagreen": {
       "version": "1.6.6",
-      "playtime": 4906745
+      "playtime": 6090428
     },
     "dnd5e": {
       "version": "5.3.3",
@@ -69,12 +172,20 @@
     },
     "fist-ultra-edition": {
       "version": "1.13.0",
-      "playtime": 402949
+      "playtime": 2227438
+    },
+    "lancer": {
+      "version": "3.1.3",
+      "playtime": 132278
+    },
+    "worldbuilding": {
+      "version": "0.8.2",
+      "playtime": 338430
     }
   },
   "worlds": {},
   "playtime": {
-    "total": 5399808,
-    "max": 2759371
+    "total": 9303550,
+    "max": 3943054
   }
 }

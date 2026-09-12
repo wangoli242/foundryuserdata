@@ -265,6 +265,9 @@ export function applyEntryToTemplateData(doc, entry) {
     fillTextureOffset: g.fillTextureOffset ?? { x: 0, y: 0 },
     fillTextureOffsetAnimation: g.fillTextureOffsetAnimation ?? null,
     fillTextureScale: g.fillTextureScale ?? { x: 100, y: 100 },
+    fillTextureCentered: !!g.fillTextureCentered,
+    fillTextureScaleWithSize: !!g.fillTextureScaleWithSize,
+    fillTextureSourceColor: !!g.fillTextureSourceColor,
     centerLabel: g.centerLabel ?? "",
     actions: g.actions ?? entry.actions ?? [],
     libraryEntryId: entry.id,
@@ -716,7 +719,6 @@ export class TemplateLibraryConfig extends HandlebarsApplicationMixin(Applicatio
       const id = ev.currentTarget.dataset.tmacSpawnSelect;
       const entry = getSpawnLibrary().find(e => e.id === id);
       if (!entry) return;
-      this.close();
       await spawnLibraryEntry(entry);
     });
 

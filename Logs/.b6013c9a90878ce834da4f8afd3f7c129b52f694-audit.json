@@ -19,6 +19,11 @@
             "date": 1779419364741,
             "name": "/home/ubuntu/foundryuserdata/Logs/error.2026-05-22.log",
             "hash": "db55ab7fcd987199c8f66b55f844325d4931d5a649588981d1adb553ea4a9df9"
+        },
+        {
+            "date": 1786859888517,
+            "name": "/home/ubuntu/foundryuserdata/Logs/error.2026-08-16.log",
+            "hash": "da2133646e9cd3d53c2ffd3bb6fec361945736d0183e544c30f830e9900d7d87"
         }
     ],
     "hashType": "sha256"

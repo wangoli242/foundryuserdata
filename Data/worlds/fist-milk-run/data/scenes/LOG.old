@@ -1,8 +1,8 @@
-2026/07/09-06:30:56.735837 fa34815adfc0 Recovering log #25
-2026/07/09-06:30:56.743742 fa34815adfc0 Delete type=3 #23
-2026/07/09-06:30:56.743796 fa34815adfc0 Delete type=0 #25
-2026/07/09-06:39:16.650449 fa346b7eefc0 Level-0 table #31: started
-2026/07/09-06:39:16.650463 fa346b7eefc0 Level-0 table #31: 0 bytes OK
-2026/07/09-06:39:16.652636 fa346b7eefc0 Delete type=0 #29
-2026/07/09-06:39:16.661196 fa346b7eefc0 Manual compaction at level-0 from '!scenes!IOWKYwlXPrhEMiU6' @ 72057594037927935 : 1 .. '!scenes.notes!Qd6o0lUHPQsYtKTl.up1kRwmGtpm4gvXE' @ 0 : 0; will stop at (end)
-2026/07/09-06:39:16.661224 fa346b7eefc0 Manual compaction at level-1 from '!scenes!IOWKYwlXPrhEMiU6' @ 72057594037927935 : 1 .. '!scenes.notes!Qd6o0lUHPQsYtKTl.up1kRwmGtpm4gvXE' @ 0 : 0; will stop at (end)
+2026/08/26-01:16:51.147615 fa3480d9dfc0 Recovering log #34
+2026/08/26-01:16:51.155528 fa3480d9dfc0 Delete type=3 #32
+2026/08/26-01:16:51.155550 fa3480d9dfc0 Delete type=0 #34
+2026/08/28-16:31:44.760942 fa346b7eefc0 Level-0 table #40: started
+2026/08/28-16:31:44.760957 fa346b7eefc0 Level-0 table #40: 0 bytes OK
+2026/08/28-16:31:44.763375 fa346b7eefc0 Delete type=0 #38
+2026/08/28-16:31:44.768229 fa346b7eefc0 Manual compaction at level-0 from '!scenes!IOWKYwlXPrhEMiU6' @ 72057594037927935 : 1 .. '!scenes.tokens.delta!uQQ0RZdtR8tsEVr4.uGKiMHHpXWRB7brq.FWEIQoj2NmU53OfS' @ 0 : 0; will stop at (end)
+2026/08/28-16:31:44.776818 fa346b7eefc0 Manual compaction at level-1 from '!scenes!IOWKYwlXPrhEMiU6' @ 72057594037927935 : 1 .. '!scenes.tokens.delta!uQQ0RZdtR8tsEVr4.uGKiMHHpXWRB7brq.FWEIQoj2NmU53OfS' @ 0 : 0; will stop at (end)

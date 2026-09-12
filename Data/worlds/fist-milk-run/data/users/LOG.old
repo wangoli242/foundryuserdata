@@ -1,15 +1,8 @@
-2026/07/09-06:30:56.757418 fa3480d9dfc0 Recovering log #21
-2026/07/09-06:30:56.763670 fa3480d9dfc0 Delete type=0 #21
-2026/07/09-06:30:56.763687 fa3480d9dfc0 Delete type=3 #19
-2026/07/09-06:39:16.653009 fa346b7eefc0 Level-0 table #27: started
-2026/07/09-06:39:16.655468 fa346b7eefc0 Level-0 table #27: 1660 bytes OK
-2026/07/09-06:39:16.657300 fa346b7eefc0 Delete type=0 #25
-2026/07/09-06:39:16.661205 fa346b7eefc0 Manual compaction at level-0 from '!users!3vZiDyybi0TUv5gv' @ 72057594037927935 : 1 .. '!users!xmljeyMGZBPkULO7' @ 0 : 0; will stop at (end)
-2026/07/09-06:39:16.661370 fa346b7eefc0 Manual compaction at level-1 from '!users!3vZiDyybi0TUv5gv' @ 72057594037927935 : 1 .. '!users!xmljeyMGZBPkULO7' @ 0 : 0; will stop at '!users!St1KLKMSN1uQAmVT' @ 41 : 1
-2026/07/09-06:39:16.661379 fa346b7eefc0 Compacting 1@1 + 1@2 files
-2026/07/09-06:39:16.664026 fa346b7eefc0 Generated table #28@1: 11 keys, 4814 bytes
-2026/07/09-06:39:16.664036 fa346b7eefc0 Compacted 1@1 + 1@2 files => 4814 bytes
-2026/07/09-06:39:16.665677 fa346b7eefc0 compacted to: files[ 0 0 1 0 0 0 0 ]
-2026/07/09-06:39:16.665724 fa346b7eefc0 Delete type=2 #27
-2026/07/09-06:39:16.665761 fa346b7eefc0 Delete type=2 #23
-2026/07/09-06:39:16.670014 fa346b7eefc0 Manual compaction at level-1 from '!users!St1KLKMSN1uQAmVT' @ 41 : 1 .. '!users!xmljeyMGZBPkULO7' @ 0 : 0; will stop at (end)
+2026/08/26-01:16:51.179406 fa3480d9dfc0 Recovering log #31
+2026/08/26-01:16:51.186952 fa3480d9dfc0 Delete type=0 #31
+2026/08/26-01:16:51.186971 fa3480d9dfc0 Delete type=3 #29
+2026/08/28-16:31:44.773657 fa346b7eefc0 Level-0 table #37: started
+2026/08/28-16:31:44.773669 fa346b7eefc0 Level-0 table #37: 0 bytes OK
+2026/08/28-16:31:44.776561 fa346b7eefc0 Delete type=0 #35
+2026/08/28-16:31:44.783048 fa346b7eefc0 Manual compaction at level-0 from '!users!3vZiDyybi0TUv5gv' @ 72057594037927935 : 1 .. '!users!xmljeyMGZBPkULO7' @ 0 : 0; will stop at (end)
+2026/08/28-16:31:44.783229 fa346b7eefc0 Manual compaction at level-1 from '!users!3vZiDyybi0TUv5gv' @ 72057594037927935 : 1 .. '!users!xmljeyMGZBPkULO7' @ 0 : 0; will stop at (end)

@@ -45,8 +45,7 @@
     animation: none !important;
     background-image: none !important;
     position: relative;
-    overflow: hidden;
-    z-index: 0;
+    isolation: isolate;
 }
 .la-bg-scroll::before, .la-bg-scroll-alt::before,
 .la-bg-scroll-alt-vertical::before, .la-ruler-scroll::before {
