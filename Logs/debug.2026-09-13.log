@@ -6676,3 +6676,12 @@
 {"level":"info","message":"Created client session af2387f7fb786acba9abd17d","timestamp":"2026-09-13 03:32:12"}
 {"level":"info","message":"Created client session aa14782267a8865aabe951d3","timestamp":"2026-09-13 03:35:48"}
 {"level":"info","message":"Created client session 63fca82d11cb1363e0c4c350","timestamp":"2026-09-13 03:40:44"}
+{"level":"info","message":"Created client session f39f4f5df11cc7f7af3340b3","timestamp":"2026-09-13 03:51:21"}
+{"level":"info","message":"Shutting down Foundry Virtual Tabletop server","timestamp":"2026-09-13 04:06:52"}
+{"level":"info","message":"Running on Node.js - Version 24.15.0","timestamp":"2026-09-13 04:06:54"}
+{"level":"info","message":"Foundry Virtual Tabletop - Version 13 Build 351","timestamp":"2026-09-13 04:06:54"}
+{"level":"info","message":"User Data Directory - \"/home/ubuntu/foundryuserdata\"","timestamp":"2026-09-13 04:06:54"}
+{"level":"info","message":"Application Options:\n{\n  \"compressStatic\": true,\n  \"fullscreen\": false,\n  \"hostname\": \"halfwayforte.duckdns.org\",\n  \"language\": \"en.core\",\n  \"localHostname\": null,\n  \"port\": 30000,\n  \"proxyPort\": 443,\n  \"proxySSL\": true,\n  \"routePrefix\": null,\n  \"updateChannel\": \"stable\",\n  \"upnp\": true,\n  \"awsConfig\": null,\n  \"compressSocket\": true,\n  \"cssTheme\": \"dark\",\n  \"deleteNEDB\": false,\n  \"hotReload\": false,\n  \"passwordSalt\": null,\n  \"sslCert\": null,\n  \"sslKey\": null,\n  \"world\": null,\n  \"serviceConfig\": null,\n  \"telemetry\": false,\n  \"adminPassword\": \"••••••••••••••••\",\n  \"noBackups\": false\n}","timestamp":"2026-09-13 04:06:54"}
+{"level":"info","message":"Software license verification succeeded","timestamp":"2026-09-13 04:06:54"}
+{"level":"info","message":"Requesting UPnP port forwarding to destination port 30000","timestamp":"2026-09-13 04:06:54"}
+{"level":"info","message":"Server started and listening on port 30000","timestamp":"2026-09-13 04:06:54"}
