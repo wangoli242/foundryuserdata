@@ -1,0 +1,10 @@
+{
+  "ct-effect-tooltips": {
+    "settings": {
+      "duplicateIcons": {
+        "name": "Doppelte Icons",
+        "hint": "Standardmäßig wird ein Symbol im Kampftracker nur einmal angezeigt, wenn mehrere temporäre Effekte auf einem Akteur dasselbe Symbol verwenden. Wenn diese Einstellung aktiviert ist, wird das Symbol für jeden aktiven Effekt, der es verwendet, stattdessen einmal angezeigt."
+      }
+    }
+  }
+}

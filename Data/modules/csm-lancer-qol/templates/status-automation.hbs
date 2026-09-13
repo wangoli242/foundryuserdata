@@ -1,0 +1,63 @@
+<form autocomplete="off">
+
+    <div class="form-group" data-setting-id="enableAutomation">
+        <label>Enable Status &amp; Condition Automation</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableAutomation" {{#if enableAutomation}}checked{{/if}}
+                data-dtype="Boolean" />
+        </div>
+        <p class="notes">Automatically apply Danger Zone, Overshield, or Burn based on mech attributes.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableConditionEffects">
+        <label>Enable Status &amp; Condition Token Effects</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableConditionEffects" {{#if enableConditionEffects}}checked{{/if}}
+                data-dtype="Boolean" />
+        </div>
+        <p class="notes">Apply token visual effects when status and conditions are applied.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableMacroEffects">
+        <label>Enable Status &amp; Condition Macro Effects</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableMacroEffects" {{#if enableMacroEffects}}checked{{/if}}
+                data-dtype="Boolean" />
+        </div>
+        <p class="notes">When an status or condition is applied, run a corresponding macro.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableEnkiduDZEffect">
+        <label>Enkidu Frame Purple Danger Zone</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableEnkiduDZEffect" {{#if enableEnkiduDZEffect}}checked{{/if}}
+                data-dtype="Boolean" />
+        </div>
+        <p class="notes">When Enkidu frames run hot, use a purple-ish color.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableWipOnDeath">
+        <label>Remove Statuses on Death</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableWipOnDeath" {{#if enableWipOnDeath}}checked{{/if}}
+                data-dtype="Boolean" />
+        </div>
+        <p class="notes">When structure reaches zero, remove all status effects.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableEngageAutomation">
+        <label>Enable Engaged Automation</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableEngageAutomation" {{#if enableEngageAutomation}}checked{{/if}}
+                data-dtype="Boolean" />
+        </div>
+        <p class="notes">When two mechs of different dispositions are adjacent, add the engaged status. This is a beta feture!</p>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" name="submit">
+            <i class="fas fa-save"></i>
+            <span>Save</span>
+        </button>
+    </div>
+</form>

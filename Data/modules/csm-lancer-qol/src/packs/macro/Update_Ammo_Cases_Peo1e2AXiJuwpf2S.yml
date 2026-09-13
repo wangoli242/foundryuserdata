@@ -1,0 +1,49 @@
+name: Update Ammo Cases
+type: script
+scope: global
+img: systems/lancer/assets/icons/ammo.svg
+command: |-
+  const cases = ['none', 'Ammo Case I', 'Ammo Case II', 'Ammo Case III'];
+
+  async function purgeAmmoCases(mech) {
+      console.log(`Removing all Ammo Cases from ${mech.name}.`);
+      for (i = 1; i < cases.length; i++) {
+          console.log(`Removing ${cases[i]} from ${mech.name} ...`);
+          mech.system.loadout.systems.filter(x => x.value.name === cases[i]).forEach(z => z.value.delete());
+      }
+  }
+
+  async function updateAmmoCases(mech) {
+      const pilot = game.actors.find(x => x.id === mech.system.pilot.id.replace('Actor.',''));
+      const armoryRank = pilot.items.find(x => x.name === 'Walking Armory')?.system.curr_rank;
+      console.log(`${pilot.name} is the pilot of ${mech.name} and has a Walking Armory rank of ${armoryRank}`);
+
+      if (typeof armoryRank === 'undefined') {
+          await purgeAmmoCases(mech);
+      } else {
+          await purgeAmmoCases(mech);
+          console.log(`Make sure ${mech.name} has an Ammo Case.`);
+          if (mech.system.loadout.systems.filter(x => x.value.name ===  cases[armoryRank]).length == 0) {
+              console.log(`No ${cases[armoryRank]} found ...`);
+              const mechSystemPack = await game.packs.get("world.mech-items");
+              let installSystemId = mechSystemPack.index.find(x => x.name === cases[armoryRank]);
+              let installSystemObject = await mechSystemPack.getDocument(installSystemId._id);
+              await mech.sheet.onRootDrop({type: "Item", document: installSystemObject});
+              console.log(`Added ${cases[armoryRank]} ...`);
+          } else {
+            console.log(`Found ${cases[armoryRank]} already exists ...`);
+          }
+      }
+  }
+
+  for (const actor of game.actors) {
+      if (actor.type === 'mech') {
+          await updateAmmoCases(actor);
+      }
+  }
+flags:
+  core: {}
+folder: null
+_id: Peo1e2AXiJuwpf2S
+_key: '!macros!Peo1e2AXiJuwpf2S'
+

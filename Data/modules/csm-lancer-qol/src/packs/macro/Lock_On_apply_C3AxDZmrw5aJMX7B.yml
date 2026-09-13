@@ -1,0 +1,30 @@
+name: Lock On.apply
+type: script
+scope: global
+img: systems/lancer/assets/icons/white/condition_lockon.svg
+command: |-
+  new Sequence()
+      .effect()
+          .file('systems/lancer/assets/icons/white/condition_lockon.svg')
+          .atLocation(token)
+          .scaleToObject(1)
+          .fadeIn(1500, {ease: "easeOutCubic", delay: 500})
+          .fadeOut(2000)
+          .scaleIn(2, 2500, {ease: "easeInOutCubic"})
+      .play()
+folder: pNM7ArcayGmktMDr
+flags:
+  core: {}
+_id: C3AxDZmrw5aJMX7B
+sort: 1300000
+ownership:
+  default: 0
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: null
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_key: '!macros!C3AxDZmrw5aJMX7B'
+

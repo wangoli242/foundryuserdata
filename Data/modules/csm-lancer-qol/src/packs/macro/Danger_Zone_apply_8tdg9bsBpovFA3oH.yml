@@ -1,0 +1,125 @@
+name: Danger Zone.apply
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/status_dangerzone.svg
+command: |-
+  const dangerZoneEffect = [
+      {
+          filterType: "glow",
+          filterId: "DangerZoneGlow",
+          outerStrength: 4,
+          innerStrength: 2,
+          color: 0xff9633,
+          quality: 0.5,
+          padding: 10,
+          animated: {
+              color: {
+                  active: true,
+                  loopDuration: 6000,
+                  animType: "colorOscillation",
+                  val1: 0xEE5500,
+                  val2: 0xff9633
+              },
+              outerStrength: {
+                  active: true,
+                  loopDuration: 6000,
+                  animType: "cosOscillation",
+                  val1: 2,
+                  val2: 5
+              }
+          }
+      },
+      {
+          filterType: "xbloom",
+          filterId: "DangerZoneBloom",
+          threshold: 0.35,
+          bloomScale: 0,
+          brightness: 1,
+          blur: 0.1,
+          padding: 10,
+          quality: 15,
+          blendMode: 0,
+          animated: {
+              bloomScale: {
+                  active: true,
+                  loopDuration: 6000,
+                  animType: "sinOscillation",
+                  val1: 0.4,
+                  val2: 1.0
+              }
+          }
+      }
+  ];
+
+  const enkiduDangerZoneEffect = [
+      {
+          filterType: "glow",
+          filterId: "DangerZoneGlow",
+          outerStrength: 4,
+          innerStrength: 2,
+          color: 0x9c24f2,
+          quality: 0.5,
+          padding: 10,
+          animated: {
+              color: {
+                  active: true,
+                  loopDuration: 6000,
+                  animType: "colorOscillation",
+                  val1: 0xf224cc,
+                  val2: 0x9c24f2
+              },
+              outerStrength: {
+                  active: true,
+                  loopDuration: 6000,
+                  animType: "cosOscillation",
+                  val1: 2,
+                  val2: 5
+              }
+          }
+      },
+      {
+          filterType: "xbloom",
+          filterId: "DangerZoneBloom",
+          threshold: 0.35,
+          bloomScale: 0,
+          brightness: 1,
+          blur: 0.1,
+          padding: 10,
+          quality: 15,
+          blendMode: 0,
+          animated: {
+              bloomScale: {
+                  active: true,
+                  loopDuration: 6000,
+                  animType: "sinOscillation",
+                  val1: 0.4,
+                  val2: 1.0
+              }
+          }
+      }
+  ];
+
+  const effect = ((token.actor.items.filter(y => y.system.lid ==='mf_tokugawa_alt_enkidu').length > 0) && (game.settings.get('csm-lancer-qol', 'enableEnkiduDZEffect'))) ? enkiduDangerZoneEffect : dangerZoneEffect
+
+  // If the effect does not exist, apply it.
+
+  if (!TokenMagic.hasFilterId(token, `DangerZoneGlow`)) {
+    await token.TMFXaddUpdateFilters(effect);
+  }
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725637059936
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: 8tdg9bsBpovFA3oH
+sort: 500000
+_key: '!macros!8tdg9bsBpovFA3oH'

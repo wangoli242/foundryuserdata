@@ -1,0 +1,38 @@
+<section
+  class="form-content tab {{#if tab.active}} active{{/if}}" data-group="{{tab.group}}" data-tab="{{tab.id}}"
+>
+  <h4>
+    <i class="fas fa-user"></i> {{localize "CRLNGN_UI.ui.clientSettingsLabel"}} <span class="toggle-hint">{{localize 'CRLNGN_UI.ui.toggleHints'}}</span>
+  </h4>
+  <hr/>
+
+  <div class="form-group">
+    <label for="autoHidePlayerList">{{fields.autoHidePlayerList.label}}</label>
+    <input type="checkbox" name="autoHidePlayerList" {{#if autoHidePlayerList}}checked{{/if}} {{#if fields.autoHidePlayerList.isLocked}}disabled{{/if}} />
+    <p class="hint">{{fields.autoHidePlayerList.hint}}</p>
+  </div>
+
+  <div class="form-group">
+    <label for="playerListAvatars">{{fields.playerListAvatars.label}}</label>
+    <input type="checkbox" name="playerListAvatars" {{#if playerListAvatars}}checked{{/if}} {{#if fields.playerListAvatars.isLocked}}disabled{{/if}} />
+    <p class="hint">{{fields.playerListAvatars.hint}}</p>
+  </div>
+
+  {{#if isGM}}
+  <p>&nbsp;</p>
+  <h4>
+    <i class="fas fa-globe"></i> {{localize "CRLNGN_UI.ui.worldSettingsLabel"}} <span class="toggle-hint">{{localize 'CRLNGN_UI.ui.toggleHints'}}</span>
+  </h4>
+  <hr/>
+
+  <div class="form-group">
+    <label for="playerListAvatarSize">{{fields.playerListAvatarSize.label}}</label>
+    <select name="playerListAvatarSize" {{#if fields.playerListAvatarSize.isLocked}}disabled{{/if}}>
+      <option value="small" {{#if (eq playerListAvatarSize "small")}}selected{{/if}}>{{localize "CRLNGN_UI.settings.playersListMenu.fields.playerListAvatarSize.options.small"}}</option>
+      <option value="medium" {{#if (eq playerListAvatarSize "medium")}}selected{{/if}}>{{localize "CRLNGN_UI.settings.playersListMenu.fields.playerListAvatarSize.options.medium"}}</option>
+      <option value="large" {{#if (eq playerListAvatarSize "large")}}selected{{/if}}>{{localize "CRLNGN_UI.settings.playersListMenu.fields.playerListAvatarSize.options.large"}}</option>
+    </select>
+    <p class="hint">{{fields.playerListAvatarSize.hint}}</p>
+  </div>
+  {{/if}}
+</section>

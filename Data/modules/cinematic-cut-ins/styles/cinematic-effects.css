@@ -1,0 +1,3379 @@
+/* ===========================================================================
+   CINEMATIC EFFECTS
+   Short, preset-bound accents for personal cut-ins. All motion is gated by
+   .cinematic-wrapper.animate so preview pause/restart and playback share the
+   same lifecycle without timers, RAF loops, or WebGL resources.
+   ========================================================================== */
+
+/* Group (All-Out Attack) reuse: a transparent full-bleed wrapper laid over the
+   whole montage. It carries `.cinematic-wrapper` so every effect/mood rule
+   below matches unchanged. Sits above the opaque participant panels (z 10-100)
+   and below the climax flash (z 9999); its own effect layers (z 40/80/120)
+   stay self-contained inside this stacking context. */
+.cinematic-group-container .cinematic-group-fx {
+  position: absolute;
+  inset: 0;
+  z-index: 500;
+  overflow: hidden;
+  pointer-events: none;
+  background: transparent;
+}
+
+.cinematic-wrapper .cinematic-effect-layer {
+  position: absolute;
+  inset: 0;
+  display: none;
+  overflow: hidden;
+  pointer-events: none;
+  opacity: var(--cinematic-effect-opacity, 0.8);
+  transform-origin: center center;
+  translate: var(--cinematic-effect-offset-x, 0%)
+    var(--cinematic-effect-offset-y, 0%);
+  scale: var(--cinematic-effect-user-scale, 1);
+}
+
+.cinematic-wrapper.cinematic-has-effect .cinematic-effect-layer.is-active {
+  display: block;
+}
+
+/* Actual personal-theme stack: background/deco < 40 < character(50) < 80 < text(100). */
+.cinematic-wrapper .cinematic-effect-layer--back {
+  z-index: 40;
+}
+.cinematic-wrapper .cinematic-effect-layer--front {
+  z-index: 80;
+}
+.cinematic-wrapper .cinematic-effect-layer--overlay {
+  z-index: 120;
+}
+
+.cinematic-wrapper .cinematic-effect-item {
+  position: absolute;
+  box-sizing: border-box;
+  pointer-events: none;
+  opacity: 0;
+  will-change: transform, opacity;
+}
+
+/* === FX:debris_burst === */
+/* Impact debris explosion synced to the cut-in slam.
+   flash: 1-2 frame white pop at origin. shard-a/b/c: chunky clip-path
+   polygons launched radially with motion stretch, spin, gravity droop.
+   spark: tiny hot dots. Fixed 1.45s one-shot. */
+
+.cinematic-effect--debris-burst .cinematic-effect-item {
+  left: 50%;
+  top: 46%;
+}
+
+.cinematic-effect--debris-burst .cinematic-effect-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---- impact flash ---- */
+
+.cinematic-effect--debris-burst .cinematic-effect-item[data-role="flash"] {
+  width: calc(var(--fx-size, 270px) * var(--cinematic-effect-scale, 1));
+  height: calc(var(--fx-size, 270px) * var(--cinematic-effect-scale, 1));
+  mix-blend-mode: screen;
+}
+
+.cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role="flash"]
+  .cinematic-effect-inner {
+  position: relative;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #fff 20%,
+    rgba(255, 255, 255, 0.92) 32%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 72%, #fff) 46%,
+    transparent 68%
+  );
+}
+
+.cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role="flash"]
+  .cinematic-effect-inner::after {
+  content: "";
+  position: absolute;
+  inset: -42%;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    rgba(255, 255, 255, 0.85) 34%,
+    transparent 62%
+  );
+  clip-path: polygon(
+    50% 0%,
+    57% 43%,
+    100% 50%,
+    57% 57%,
+    50% 100%,
+    43% 57%,
+    0% 50%,
+    43% 43%
+  );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role="flash"] {
+  animation: cinematic-fx-debris-burst-flash 1.45s linear both;
+}
+
+@keyframes cinematic-fx-debris-burst-flash {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.3);
+  }
+  3.5% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  7% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+  12%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.42);
+  }
+}
+
+/* ---- shards ---- */
+
+.cinematic-effect--debris-burst .cinematic-effect-item[data-role^="shard"] {
+  width: calc(var(--fx-size, 40px) * var(--cinematic-effect-scale, 1));
+  height: calc(
+    var(--fx-size, 40px) * var(--fx-aspect, 0.75) *
+      var(--cinematic-effect-scale, 1)
+  );
+}
+
+.cinematic-effect--debris-burst .cinematic-effect-item[data-role="shard-a"] {
+  --fx-clip: polygon(0% 35%, 55% 0%, 100% 28%, 62% 100%);
+}
+.cinematic-effect--debris-burst .cinematic-effect-item[data-role="shard-b"] {
+  --fx-clip: polygon(0% 12%, 78% 0%, 100% 55%, 55% 100%, 8% 78%);
+}
+.cinematic-effect--debris-burst .cinematic-effect-item[data-role="shard-c"] {
+  --fx-clip: polygon(0% 50%, 68% 0%, 100% 40%, 66% 100%);
+}
+
+.cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role^="shard"]
+  .cinematic-effect-inner {
+  position: relative;
+  clip-path: var(--fx-clip);
+  /* faceted body: lit facet / theme facet / shadow facet, plus a white-hot
+       leading edge on the +X (launch direction) side. */
+  background:
+    linear-gradient(
+      90deg,
+      transparent 0%,
+      transparent 58%,
+      rgba(255, 255, 255, 0.9) 84%,
+      #fff 100%
+    ),
+    linear-gradient(
+      205deg,
+      color-mix(in srgb, var(--theme-color, #e61c34) 62%, #fff) 0%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 62%, #fff) 44%,
+      var(--theme-color, #e61c34) 44%,
+      var(--theme-color, #e61c34) 68%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 36%, #05060a) 68%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 26%, #05060a) 100%
+    );
+  filter: drop-shadow(0 0 2px rgba(8, 8, 14, 0.85))
+    drop-shadow(0 4px 6px rgba(0, 0, 0, 0.5));
+}
+
+/* white-hot overlay: shard is molten at launch, cools in ~0.3s */
+.cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role^="shard"]
+  .cinematic-effect-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  clip-path: var(--fx-clip);
+  background: #fff;
+  opacity: 0;
+}
+
+/* depth: back shards are smaller (JS), travel shorter (JS), and darker */
+.cinematic-effect-layer--back.cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role^="shard"]
+  .cinematic-effect-inner {
+  filter: brightness(0.72) saturate(0.85)
+    drop-shadow(0 0 1px rgba(8, 8, 14, 0.9));
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role^="shard"] {
+  animation: cinematic-fx-debris-burst-shard 1.45s linear
+    var(--fx-pop-delay, 0s) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role^="shard"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-debris-burst-tumble 1.45s
+    cubic-bezier(0.14, 0.9, 0.22, 1) var(--fx-pop-delay, 0s) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role^="shard"]
+  .cinematic-effect-inner::after {
+  animation: cinematic-fx-debris-burst-heat 1.45s linear var(--fx-pop-delay, 0s)
+    both;
+}
+
+/* distance fractions baked per keyframe (steep ease-out), droop accelerates
+   into the tail. Early motion stretch along the launch axis. */
+@keyframes cinematic-fx-debris-burst-shard {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%)
+      translate(calc(var(--fx-dx) * 0.02), calc(var(--fx-dy) * 0.02))
+      rotate(var(--fx-angle)) scale(1.4, 0.3);
+  }
+  2.5% {
+    opacity: 1;
+  }
+  6% {
+    transform: translate(-50%, -50%)
+      translate(calc(var(--fx-dx) * 0.3), calc(var(--fx-dy) * 0.3))
+      rotate(var(--fx-angle)) scale(2.4, 0.55);
+  }
+  14% {
+    transform: translate(-50%, -50%)
+      translate(calc(var(--fx-dx) * 0.55), calc(var(--fx-dy) * 0.55))
+      rotate(var(--fx-angle)) scale(1.5, 0.85);
+  }
+  30% {
+    opacity: 1;
+    transform: translate(-50%, -50%)
+      translate(
+        calc(var(--fx-dx) * 0.72),
+        calc((var(--fx-dy) * 0.72) + (var(--fx-droop) * 0.08))
+      )
+      rotate(var(--fx-angle)) scale(1, 1);
+  }
+  55% {
+    opacity: 1;
+    transform: translate(-50%, -50%)
+      translate(
+        calc(var(--fx-dx) * 0.88),
+        calc((var(--fx-dy) * 0.88) + (var(--fx-droop) * 0.38))
+      )
+      rotate(var(--fx-angle)) scale(1, 1);
+  }
+  80% {
+    opacity: 0.85;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%)
+      translate(var(--fx-dx), calc(var(--fx-dy) + var(--fx-droop)))
+      rotate(var(--fx-angle)) scale(0.92, 0.92);
+  }
+}
+
+@keyframes cinematic-fx-debris-burst-tumble {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(var(--fx-spin));
+  }
+}
+
+@keyframes cinematic-fx-debris-burst-heat {
+  0%,
+  9% {
+    opacity: 1;
+  }
+  22%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- sparks ---- */
+
+.cinematic-effect--debris-burst .cinematic-effect-item[data-role="spark"] {
+  width: calc(var(--fx-size, 7px) * var(--cinematic-effect-scale, 1));
+  height: calc(var(--fx-size, 7px) * var(--cinematic-effect-scale, 1));
+  mix-blend-mode: screen;
+}
+
+.cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role="spark"]
+  .cinematic-effect-inner {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #fff 38%,
+    var(--theme-color, #e61c34) 64%,
+    transparent 74%
+  );
+  box-shadow:
+    0 0 4px rgba(255, 255, 255, 0.9),
+    0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34);
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--debris-burst
+  .cinematic-effect-item[data-role="spark"] {
+  animation: cinematic-fx-debris-burst-spark 1.45s linear
+    var(--fx-pop-delay, 0s) both;
+}
+
+@keyframes cinematic-fx-debris-burst-spark {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%)
+      translate(calc(var(--fx-dx) * 0.03), calc(var(--fx-dy) * 0.03)) scale(1.6);
+  }
+  2% {
+    opacity: 1;
+  }
+  8% {
+    transform: translate(-50%, -50%)
+      translate(calc(var(--fx-dx) * 0.42), calc(var(--fx-dy) * 0.42)) scale(1.3);
+  }
+  22% {
+    opacity: 1;
+    transform: translate(-50%, -50%)
+      translate(
+        calc(var(--fx-dx) * 0.72),
+        calc((var(--fx-dy) * 0.72) + (var(--fx-droop) * 0.08))
+      )
+      scale(1);
+  }
+  46% {
+    opacity: 0.9;
+  }
+  70%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%)
+      translate(var(--fx-dx), calc(var(--fx-dy) + var(--fx-droop))) scale(0.3);
+  }
+}
+/* === /FX:debris_burst === */
+
+/* === FX:spark_burst === */
+/* --------------------------------------------------------------------------
+   Energy Sparks — electric discharge.
+   core: white-hot impact flash (back) | arc-a/arc-b: jagged lightning bolts
+   that flicker 3x | needle-a (front) / needle-b (back, big+soft): tapered
+   white-core streaks with extreme ease-out | glint: lingering star twinkles.
+   Main burst ~1.1s, glints trail out to ~2s. Fixed one-shot durations.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--spark-burst .cinematic-effect-item {
+  left: 50%;
+  top: 46%;
+  mix-blend-mode: screen;
+}
+
+.cinematic-effect--spark-burst .cinematic-effect-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* -- core flash ---------------------------------------------------------- */
+.cinematic-effect--spark-burst .cinematic-effect-item[data-role="core"] {
+  width: var(--fx-core-size, 260px);
+  height: var(--fx-core-size, 260px);
+}
+
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="core"]
+  .cinematic-effect-inner {
+  background-image:
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 2 L57 34 L76 12 L64 40 L98 44 L68 52 L88 78 L60 62 L58 98 L48 64 L26 90 L38 58 L4 60 L34 48 L14 22 L42 38 Z' fill='%23ffffff'/%3E%3C/svg%3E"),
+    radial-gradient(
+      circle,
+      #fff 0%,
+      #fff 16%,
+      var(--theme-color, #e61c34) 34%,
+      transparent 62%
+    );
+  background-repeat: no-repeat;
+  background-size:
+    68% 68%,
+    100% 100%;
+  background-position: center, center;
+  filter: drop-shadow(
+    0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34)
+  );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="core"] {
+  animation: cinematic-fx-spark-burst-core 0.5s cubic-bezier(0.14, 0.9, 0.22, 1)
+    both;
+}
+
+@keyframes cinematic-fx-spark-burst-core {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(-14deg) scale(0.25);
+  }
+  12% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(0deg)
+      scale(calc(0.92 * var(--cinematic-effect-scale, 1)));
+  }
+  55% {
+    opacity: 0.65;
+    transform: translate(-50%, -50%) rotate(7deg)
+      scale(calc(1.3 * var(--cinematic-effect-scale, 1)));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(11deg)
+      scale(calc(1.55 * var(--cinematic-effect-scale, 1)));
+  }
+}
+
+/* -- lightning arcs ------------------------------------------------------ */
+.cinematic-effect--spark-burst .cinematic-effect-item[data-role="arc-a"],
+.cinematic-effect--spark-burst .cinematic-effect-item[data-role="arc-b"] {
+  width: var(--fx-arc-w, 80px);
+  height: var(--fx-arc-len, 250px);
+  transform-origin: 50% 0%;
+}
+
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-a"]
+  .cinematic-effect-inner,
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-b"]
+  .cinematic-effect-inner {
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  filter: drop-shadow(0 0 2px #fff)
+    drop-shadow(0 0 6px var(--theme-color, #e61c34))
+    drop-shadow(
+      0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34)
+    );
+}
+
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-a"]
+  .cinematic-effect-inner {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='0.62' stop-color='%23ffffff'/%3E%3Cstop offset='1' stop-color='%23ffffff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M52 0 L61 74 L33 94 L64 168 L41 186 L50 300' fill='none' stroke='url(%23g)' stroke-width='13' stroke-linecap='round' stroke-linejoin='miter'/%3E%3Cpath d='M61 74 L88 104' fill='none' stroke='url(%23g)' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M41 186 L16 226' fill='none' stroke='url(%23g)' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-b"]
+  .cinematic-effect-inner {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 300' preserveAspectRatio='none'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='0' y2='1'%3E%3Cstop offset='0' stop-color='%23ffffff'/%3E%3Cstop offset='0.62' stop-color='%23ffffff'/%3E%3Cstop offset='1' stop-color='%23ffffff' stop-opacity='0'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M46 0 L38 66 L68 92 L36 158 L60 178 L48 300' fill='none' stroke='url(%23g)' stroke-width='13' stroke-linecap='round' stroke-linejoin='miter'/%3E%3Cpath d='M68 92 L92 78' fill='none' stroke='url(%23g)' stroke-width='7' stroke-linecap='round'/%3E%3Cpath d='M36 158 L12 190' fill='none' stroke='url(%23g)' stroke-width='7' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-a"],
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-b"] {
+  animation: cinematic-fx-spark-burst-arc 0.52s cubic-bezier(0.2, 0.9, 0.3, 1)
+    var(--fx-delay, 0s) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-a"]
+  .cinematic-effect-inner,
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="arc-b"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-spark-burst-arc-flicker 0.52s linear
+    var(--fx-delay, 0s) both;
+}
+
+@keyframes cinematic-fx-spark-burst-arc {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, 0) rotate(var(--fx-angle)) scaleY(0.3);
+  }
+  8% {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(var(--fx-angle))
+      scaleY(var(--cinematic-effect-scale, 1));
+  }
+  82% {
+    opacity: 1;
+    transform: translate(-50%, 0) rotate(var(--fx-angle))
+      scaleY(var(--cinematic-effect-scale, 1));
+  }
+  94%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, 0) rotate(var(--fx-angle))
+      scaleY(calc(1.05 * var(--cinematic-effect-scale, 1)));
+  }
+}
+
+@keyframes cinematic-fx-spark-burst-arc-flicker {
+  0% {
+    opacity: 0;
+  }
+  6%,
+  16% {
+    opacity: 1;
+  }
+  22% {
+    opacity: 0.1;
+  }
+  30%,
+  44% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 0.05;
+  }
+  60%,
+  80% {
+    opacity: 1;
+  }
+  88%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* -- needle streaks ------------------------------------------------------ */
+.cinematic-effect--spark-burst .cinematic-effect-item[data-role="needle-a"],
+.cinematic-effect--spark-burst .cinematic-effect-item[data-role="needle-b"] {
+  width: var(--fx-w, 12px);
+  height: var(--fx-len, 160px);
+  transform-origin: 50% 100%;
+}
+
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="needle-a"]
+  .cinematic-effect-inner,
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="needle-b"]
+  .cinematic-effect-inner {
+  clip-path: polygon(50% 0%, 82% 16%, 58% 100%, 42% 100%, 18% 16%);
+  background: linear-gradient(
+    180deg,
+    #fff 0%,
+    #fff 38%,
+    var(--theme-color, #e61c34) 68%,
+    transparent 100%
+  );
+  filter: drop-shadow(0 0 3px var(--theme-color, #e61c34))
+    drop-shadow(
+      0 0 calc(var(--cinematic-effect-glow, 14px) * 0.8)
+        var(--theme-color, #e61c34)
+    );
+}
+
+.cinematic-effect-layer--back.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="needle-b"]
+  .cinematic-effect-inner {
+  filter: blur(2px)
+    drop-shadow(
+      0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34)
+    );
+  opacity: 0.8;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="needle-a"],
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="needle-b"] {
+  animation: cinematic-fx-spark-burst-needle 1.1s
+    cubic-bezier(0.14, 0.9, 0.22, 1) var(--fx-delay, 0s) both;
+}
+
+@keyframes cinematic-fx-spark-burst-needle {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -100%) rotate(var(--fx-angle)) translateY(-24px)
+      scaleY(0.2);
+  }
+  6% {
+    opacity: 1;
+    transform: translate(-50%, -100%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -0.2 * var(--cinematic-effect-scale, 1)))
+      scaleY(1.4);
+  }
+  40% {
+    opacity: 1;
+    transform: translate(-50%, -100%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -0.84 * var(--cinematic-effect-scale, 1)))
+      scaleY(1);
+  }
+  66% {
+    opacity: 0.85;
+    transform: translate(-50%, -100%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -0.96 * var(--cinematic-effect-scale, 1)))
+      scaleY(0.6);
+  }
+  88%,
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -100%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -1 * var(--cinematic-effect-scale, 1)))
+      scaleY(0.25);
+  }
+}
+
+/* -- lingering glints ----------------------------------------------------- */
+.cinematic-effect--spark-burst .cinematic-effect-item[data-role="glint"] {
+  width: var(--fx-size, 14px);
+  height: var(--fx-size, 14px);
+}
+
+.cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner {
+  clip-path: polygon(
+    50% 0%,
+    61% 39%,
+    100% 50%,
+    61% 61%,
+    50% 100%,
+    39% 61%,
+    0% 50%,
+    39% 39%
+  );
+  background: #fff;
+  filter: drop-shadow(0 0 4px #fff)
+    drop-shadow(
+      0 0 calc(var(--cinematic-effect-glow, 14px) * 0.7)
+        var(--theme-color, #e61c34)
+    );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="glint"] {
+  animation: cinematic-fx-spark-burst-glint 1.9s
+    cubic-bezier(0.14, 0.9, 0.22, 1) var(--fx-delay, 0s) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--spark-burst
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-spark-burst-twinkle var(--fx-tw-dur, 1.3s) ease-in-out
+    var(--fx-delay, 0s) both;
+}
+
+@keyframes cinematic-fx-spark-burst-glint {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -0.3 * var(--cinematic-effect-scale, 1)));
+  }
+  8% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -0.86 * var(--cinematic-effect-scale, 1)));
+  }
+  72% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -1 * var(--cinematic-effect-scale, 1)));
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--fx-angle))
+      translateY(calc(var(--fx-out) * -1.02 * var(--cinematic-effect-scale, 1)));
+  }
+}
+
+@keyframes cinematic-fx-spark-burst-twinkle {
+  0% {
+    transform: scale(0.3) rotate(0deg);
+    opacity: 0;
+  }
+  12% {
+    transform: scale(1.3) rotate(20deg);
+    opacity: 1;
+  }
+  34% {
+    transform: scale(0.7) rotate(45deg);
+    opacity: 0.75;
+  }
+  52% {
+    transform: scale(1.15) rotate(70deg);
+    opacity: 1;
+  }
+  72% {
+    transform: scale(0.55) rotate(90deg);
+    opacity: 0.6;
+  }
+  86% {
+    transform: scale(1) rotate(110deg);
+    opacity: 0.9;
+  }
+  100% {
+    transform: scale(0.15) rotate(130deg);
+    opacity: 0;
+  }
+}
+/* === /FX:spark_burst === */
+
+/* === FX:ember_storm === */
+/* --------------------------------------------------------------------------
+   Ember Storm — rising fire motes. Fixed heat palette regardless of theme:
+   #fff6c0 core / #ffb347 mid / #ff6a00 falloff. Item = trajectory (rise +
+   drift), inner = sway + flicker. Depth: back "glow" embers are larger,
+   softer, slower; front motes small and sharp; "pop" embers are brighter
+   and faster.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--ember-storm .cinematic-effect-item {
+  left: var(--fx-x);
+  top: 104%;
+  width: calc(var(--fx-size, 6px) * var(--cinematic-effect-scale, 1));
+  height: calc(var(--fx-size, 6px) * var(--cinematic-effect-scale, 1));
+}
+
+/* Screen blend only on the soft back layer: front motes keep normal blending
+   so their bodies stay readable over the saturated theme panel. */
+.cinematic-effect-layer--back.cinematic-effect--ember-storm
+  .cinematic-effect-item {
+  mix-blend-mode: screen;
+}
+
+.cinematic-effect--ember-storm .cinematic-effect-inner {
+  position: relative;
+  display: block;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fffbe0 0%,
+    #ffdf8a 10%,
+    #ffb347 22%,
+    rgba(255, 106, 0, 0.6) 38%,
+    rgba(255, 106, 0, 0) 66%
+  );
+  box-shadow: 0 0 calc(var(--cinematic-effect-glow, 14px) * 1.2)
+    rgba(255, 140, 30, 0.45);
+}
+
+/* Crisp incandescent point at the heart of every front-layer ember —
+   pure white so it survives screen-blending over the saturated panel. */
+.cinematic-effect-layer--front.cinematic-effect--ember-storm
+  .cinematic-effect-inner::before {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 34%;
+  height: 34%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    rgba(255, 248, 210, 0.95) 42%,
+    rgba(255, 200, 100, 0) 100%
+  );
+}
+
+/* Front-layer depth: small, sharp, quick. Two mote variants differ subtly. */
+.cinematic-effect--ember-storm
+  .cinematic-effect-item[data-role="mote-b"]
+  .cinematic-effect-inner {
+  background: radial-gradient(
+    circle,
+    #fff6c0 0%,
+    #ffc25e 16%,
+    rgba(255, 106, 0, 0.85) 32%,
+    rgba(240, 80, 0, 0.45) 50%,
+    rgba(240, 80, 0, 0) 74%
+  );
+}
+
+/* Pop embers: white-hot with a bigger glow. */
+.cinematic-effect--ember-storm
+  .cinematic-effect-item[data-role="pop"]
+  .cinematic-effect-inner {
+  background: radial-gradient(
+    circle,
+    #ffffff 0%,
+    #fff6c0 14%,
+    #ffcf70 30%,
+    rgba(255, 120, 10, 0.7) 50%,
+    rgba(255, 106, 0, 0) 74%
+  );
+  box-shadow:
+    0 0 calc(var(--cinematic-effect-glow, 14px) * 1.4) rgba(255, 190, 90, 0.7),
+    0 0 calc(var(--cinematic-effect-glow, 14px) * 2.6) rgba(255, 106, 0, 0.45);
+}
+
+/* Back-layer depth: larger, softer, dimmer, slower. */
+.cinematic-effect-layer--back.cinematic-effect--ember-storm
+  .cinematic-effect-inner {
+  background: radial-gradient(
+    circle,
+    rgba(255, 234, 170, 0.9) 0%,
+    rgba(255, 179, 71, 0.65) 30%,
+    rgba(255, 106, 0, 0.35) 55%,
+    rgba(255, 106, 0, 0) 78%
+  );
+  box-shadow: 0 0 calc(var(--cinematic-effect-glow, 14px) * 1.8)
+    rgba(255, 140, 40, 0.4);
+}
+
+/* Soften only a handful of back embers — blur budget stays tiny. */
+.cinematic-effect-layer--back.cinematic-effect--ember-storm
+  .cinematic-effect-item:nth-child(-n + 5) {
+  filter: blur(2px);
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--ember-storm
+  .cinematic-effect-item {
+  animation: cinematic-fx-ember-storm-rise var(--fx-duration, 3.6s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--ember-storm
+  .cinematic-effect-inner {
+  animation:
+    cinematic-fx-ember-storm-sway var(--fx-sway-duration, 1.4s) ease-in-out
+      var(--fx-sway-delay, 0s) infinite alternate,
+    cinematic-fx-ember-storm-flicker var(--fx-flicker-duration, 0.45s) linear
+      var(--fx-sway-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-ember-storm-rise {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+  }
+  7% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--fx-drift-x, 0px), var(--fx-rise, -900px), 0);
+  }
+}
+
+@keyframes cinematic-fx-ember-storm-sway {
+  from {
+    transform: translateX(calc(var(--fx-sway, 18px) * -1));
+  }
+  to {
+    transform: translateX(var(--fx-sway, 18px));
+  }
+}
+
+@keyframes cinematic-fx-ember-storm-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  17% {
+    opacity: 0.8;
+  }
+  32% {
+    opacity: 0.96;
+  }
+  54% {
+    opacity: 0.74;
+  }
+  73% {
+    opacity: 0.92;
+  }
+}
+
+/* Heat shimmer: a warm turbulence strip along the fire line whose noise
+   BREATHES — the SVG animates feTurbulence baseFrequency via SMIL, so the
+   air texture drifts with zero JS and zero CSS filter animation. */
+.cinematic-effect--ember-storm .cinematic-effect-item[data-role="haze"] {
+  left: -4%;
+  top: auto;
+  bottom: -3%;
+  width: 108%;
+  height: 34%;
+  background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22800%22 height=%22300%22 preserveAspectRatio=%22none%22><filter id=%22h%22 x=%220%25%22 y=%220%25%22 width=%22100%25%22 height=%22100%25%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.011 0.045%22 numOctaves=%222%22 seed=%2211%22><animate attributeName=%22baseFrequency%22 dur=%227s%22 values=%220.011 0.045;0.015 0.053;0.011 0.045%22 repeatCount=%22indefinite%22/></feTurbulence><feColorMatrix type=%22matrix%22 values=%220 0 0 0 1  0 0 0 0 0.62  0 0 0 0 0.18  0 0 0 0.55 0%22/></filter><rect width=%22800%22 height=%22300%22 filter=%22url(%23h)%22/></svg>");
+  background-size: 100% 100%;
+  mix-blend-mode: screen;
+  -webkit-mask: linear-gradient(180deg, transparent 0%, #fff 55%, #fff 100%);
+  mask: linear-gradient(180deg, transparent 0%, #fff 55%, #fff 100%);
+  transform-origin: bottom;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--ember-storm
+  .cinematic-effect-item[data-role="haze"] {
+  animation: cinematic-fx-ember-storm-haze 5.5s ease-in-out 0s infinite
+    alternate;
+}
+
+@keyframes cinematic-fx-ember-storm-haze {
+  0% {
+    opacity: 0.15;
+    transform: scaleY(1);
+  }
+  100% {
+    opacity: 0.24;
+    transform: scaleY(1.07);
+  }
+}
+/* === /FX:ember_storm === */
+
+/* === FX:victory_confetti === */
+/* Festive premium confetti: satin two-tone paper pieces with a real 3D tumble
+   (perspective on the item, rotate3d flips on the inner carrier), serpentine
+   sway while falling, waving ribbons, and a few twinkling gold glints.
+   Infinite pre-scattered loop via negative animation-delay. */
+
+.cinematic-effect--victory-confetti .cinematic-effect-item {
+  left: var(--fx-x);
+  top: -170px;
+  width: var(--fx-w, 22px);
+  height: var(--fx-h, 26px);
+  perspective: 200px;
+}
+
+.cinematic-effect--victory-confetti .cinematic-effect-inner {
+  display: block;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  border-radius: 3px;
+  transform: rotateZ(var(--fx-rz, 0deg));
+  transform-style: preserve-3d;
+}
+
+/* Two real paper faces: satin front, duller back — the flip reads as paper. */
+.cinematic-effect--victory-confetti .cinematic-effect-inner::before,
+.cinematic-effect--victory-confetti .cinematic-effect-inner::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  backface-visibility: hidden;
+}
+
+.cinematic-effect--victory-confetti .cinematic-effect-inner::before {
+  background: linear-gradient(
+    135deg,
+    var(--fx-hi, #fff3c4) 0%,
+    var(--fx-c1, #ffd24a) 46%,
+    var(--fx-c2, #d3941a) 100%
+  );
+  box-shadow: 0 2px 6px rgba(6, 8, 16, 0.4);
+}
+
+.cinematic-effect--victory-confetti .cinematic-effect-inner::after {
+  transform: rotateX(180deg);
+  background: linear-gradient(
+    135deg,
+    var(--fx-c1, #ffd24a) 0%,
+    var(--fx-c2, #d3941a) 55%,
+    color-mix(in srgb, var(--fx-c2, #d3941a) 80%, #10121f) 100%
+  );
+}
+
+.cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="circle"]
+  .cinematic-effect-inner {
+  border-radius: 50%;
+}
+
+.cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="circle"]
+  .cinematic-effect-inner::before {
+  background: radial-gradient(
+    circle at 32% 28%,
+    var(--fx-hi, #fff3c4) 0%,
+    var(--fx-c1, #ffd24a) 54%,
+    var(--fx-c2, #d3941a) 100%
+  );
+}
+
+/* Ribbons: serpentine paper streamers. An S-curve stroke mask carves a truly
+   curved silhouette out of the strip — the faces keep the satin two-tone.
+   box-shadow must stay off: the mask would clip it into artifacts. */
+.cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="ribbon"]
+  .cinematic-effect-inner {
+  border-radius: 0;
+  -webkit-mask: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 160%22 preserveAspectRatio=%22none%22><path d=%22M13 8 C 26 50, -2 100, 12 152%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2213%22 stroke-linecap=%22round%22/></svg>")
+    center / 100% 100% no-repeat;
+  mask: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 160%22 preserveAspectRatio=%22none%22><path d=%22M13 8 C 26 50, -2 100, 12 152%22 fill=%22none%22 stroke=%22%23fff%22 stroke-width=%2213%22 stroke-linecap=%22round%22/></svg>")
+    center / 100% 100% no-repeat;
+}
+
+.cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="ribbon"]
+  .cinematic-effect-inner::before {
+  background: linear-gradient(
+    180deg,
+    var(--fx-hi, #fff3c4) 0%,
+    var(--fx-c1, #ffd24a) 30%,
+    var(--fx-c2, #d3941a) 62%,
+    var(--fx-c1, #ffd24a) 100%
+  );
+  box-shadow: none;
+}
+
+/* Glints: white-hot 4-point sparkles with gold glow, blend into both halves. */
+.cinematic-effect--victory-confetti .cinematic-effect-item[data-role="glint"] {
+  filter: drop-shadow(
+    0 0 var(--cinematic-effect-glow, 14px) rgba(255, 210, 74, 0.85)
+  );
+  mix-blend-mode: screen;
+}
+
+.cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner {
+  border-radius: 0;
+}
+
+.cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner::before {
+  clip-path: polygon(
+    50% 0%,
+    60% 40%,
+    100% 50%,
+    60% 60%,
+    50% 100%,
+    40% 60%,
+    0% 50%,
+    40% 40%
+  );
+  background: radial-gradient(
+    circle at 50% 50%,
+    #ffffff 0%,
+    #ffffff 40%,
+    #ffe28a 58%,
+    rgba(255, 210, 74, 0) 82%
+  );
+  box-shadow: none;
+}
+
+.cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner::after {
+  content: none;
+}
+
+/* Depth: back layer pieces are dimmer (they are also smaller + slower via JS). */
+.cinematic-effect-layer--back.cinematic-effect--victory-confetti
+  .cinematic-effect-inner {
+  opacity: 0.55;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--victory-confetti
+  .cinematic-effect-item {
+  animation: cinematic-fx-victory-confetti-fall var(--fx-duration, 4.2s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--victory-confetti
+  .cinematic-effect-inner {
+  animation: cinematic-fx-victory-confetti-tumble var(--fx-tumble, 1.4s) linear
+    var(--fx-tdelay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="ribbon"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-victory-confetti-ribbon-wave var(--fx-tumble, 1.8s)
+    ease-in-out var(--fx-tdelay, 0s) infinite alternate;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--victory-confetti
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-victory-confetti-glint var(--fx-tumble, 1.6s)
+    ease-in-out var(--fx-tdelay, 0s) infinite;
+}
+
+/* Trajectory: constant fall with serpentine sway; start/end sit offscreen so
+   the infinite loop never pops. Eased segments give the flutter drag. */
+@keyframes cinematic-fx-victory-confetti-fall {
+  0% {
+    opacity: 1;
+    animation-timing-function: ease-in-out;
+    transform: translate3d(0, 0, 0) scale(var(--cinematic-effect-scale, 1));
+  }
+  25% {
+    animation-timing-function: ease-in-out;
+    transform: translate3d(
+        var(--fx-sway, 80px),
+        calc(var(--fx-fall, 1400px) * 0.25),
+        0
+      )
+      scale(var(--cinematic-effect-scale, 1));
+  }
+  50% {
+    animation-timing-function: ease-in-out;
+    transform: translate3d(
+        calc(var(--fx-sway, 80px) * -0.6),
+        calc(var(--fx-fall, 1400px) * 0.5),
+        0
+      )
+      scale(var(--cinematic-effect-scale, 1));
+  }
+  75% {
+    animation-timing-function: ease-in-out;
+    transform: translate3d(
+        calc(var(--fx-sway, 80px) * 0.75),
+        calc(var(--fx-fall, 1400px) * 0.75),
+        0
+      )
+      scale(var(--cinematic-effect-scale, 1));
+  }
+  100% {
+    opacity: 1;
+    transform: translate3d(var(--fx-drift, 0px), var(--fx-fall, 1400px), 0)
+      scale(var(--cinematic-effect-scale, 1));
+  }
+}
+
+/* Secondary motion: full flip around a random near-horizontal axis, so each
+   piece foreshortens to a sliver and back while keeping its z-tilt. */
+@keyframes cinematic-fx-victory-confetti-tumble {
+  0% {
+    transform: rotateZ(var(--fx-rz, 0deg))
+      rotate3d(var(--fx-ax, 1), var(--fx-ay, 0), 0, 0deg);
+  }
+  100% {
+    transform: rotateZ(var(--fx-rz, 0deg))
+      rotate3d(var(--fx-ax, 1), var(--fx-ay, 0), 0, 360deg);
+  }
+}
+
+@keyframes cinematic-fx-victory-confetti-ribbon-wave {
+  0% {
+    transform: rotateZ(var(--fx-rz, 0deg)) rotateX(38deg) rotateY(-26deg);
+  }
+  50% {
+    transform: rotateZ(var(--fx-rz, 0deg)) rotateX(-8deg) rotateY(12deg);
+  }
+  100% {
+    transform: rotateZ(var(--fx-rz, 0deg)) rotateX(-42deg) rotateY(30deg);
+  }
+}
+
+@keyframes cinematic-fx-victory-confetti-glint {
+  0%,
+  100% {
+    opacity: 0.55;
+    transform: rotateZ(var(--fx-rz, 0deg)) scale(0.55);
+  }
+  50% {
+    opacity: 1;
+    transform: rotateZ(var(--fx-rz, 0deg)) scale(1.28);
+  }
+}
+/* === /FX:victory_confetti === */
+
+/* === FX:petal_drift === */
+/* --------------------------------------------------------------------------
+   Petal Drift — cherry-blossom petals on a diagonal, gusting wind.
+   Ambient infinite loop; pre-scattered via negative delays so frame 0 is
+   already mid-storm. Trajectory (item) and flutter (inner) are independent
+   axes. Palette stays sakura-pink regardless of --theme-color.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--petal-drift .cinematic-effect-item {
+  left: var(--fx-x, 20%);
+  top: var(--fx-y, -10%);
+  width: calc(var(--fx-size, 60px) * var(--cinematic-effect-scale, 1));
+  perspective: 340px;
+  --fx-peak: 1;
+}
+
+.cinematic-effect--petal-drift .cinematic-effect-inner {
+  display: block;
+  width: 100%;
+  background-repeat: no-repeat;
+  background-size: contain;
+  background-position: center;
+  backface-visibility: visible;
+}
+
+/* petal-a — full-face notched sakura petal (front). Deep-pink stem →
+   #ffa5c8 body → pale #ffd6e8 rim, white sheen, soft dark rim stroke. */
+.cinematic-effect--petal-drift
+  .cinematic-effect-item[data-role="petal-a"]
+  .cinematic-effect-inner {
+  aspect-ratio: 44 / 64;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 44 64'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0.5' y1='0' x2='0.5' y2='1'%3E%3Cstop offset='0' stop-color='%23ffd6e8'/%3E%3Cstop offset='0.5' stop-color='%23ffa5c8'/%3E%3Cstop offset='1' stop-color='%23ee5f9d'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M22 62C13 49 7 32 10 15 12 6 17 3 22 7 27 3 32 6 34 15 37 32 31 49 22 62Z' fill='url(%23g)' stroke='%23c2477f' stroke-width='1.6' stroke-opacity='0.55'/%3E%3Cellipse cx='17' cy='27' rx='4' ry='12' fill='%23ffffff' opacity='0.38' transform='rotate(-10 17 27)'/%3E%3C/svg%3E");
+}
+
+/* petal-b — folded/curled petal seen edge-on (front), bright fold line. */
+.cinematic-effect--petal-drift
+  .cinematic-effect-item[data-role="petal-b"]
+  .cinematic-effect-inner {
+  aspect-ratio: 64 / 40;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 40'%3E%3Cdefs%3E%3ClinearGradient id='g' x1='0' y1='0' x2='1' y2='1'%3E%3Cstop offset='0' stop-color='%23ffc3da'/%3E%3Cstop offset='1' stop-color='%23f07dad'/%3E%3C/linearGradient%3E%3C/defs%3E%3Cpath d='M4 30C14 12 34 2 60 8 52 26 34 38 6 34Z' fill='url(%23g)' stroke='%23d15a92' stroke-width='1.4' stroke-opacity='0.5'/%3E%3Cpath d='M6 32C20 20 38 12 58 9' fill='none' stroke='%23ffffff' stroke-width='2.6' stroke-linecap='round' opacity='0.8'/%3E%3C/svg%3E");
+}
+
+/* petal-c — small distant halo petal (back). Direct port of VNM's
+   bakeCherryPetal: halo #ffd0e5 / body #ffb6d0 / white highlight. */
+.cinematic-effect--petal-drift
+  .cinematic-effect-item[data-role="petal-c"]
+  .cinematic-effect-inner {
+  aspect-ratio: 32 / 24;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 24'%3E%3Cellipse cx='16' cy='12' rx='12' ry='8' fill='%23ffd0e5' opacity='0.42'/%3E%3Cellipse cx='16' cy='12' rx='8' ry='5' fill='%23ffb6d0' opacity='0.92'/%3E%3Cellipse cx='16' cy='10' rx='3' ry='1.6' fill='%23ffffff' opacity='0.65'/%3E%3C/svg%3E");
+}
+
+/* Depth + readability. Front petals: rosy bloom scaled by the strength glow
+   var, plus a tight dark under-shadow so they read on the bright panel. */
+.cinematic-effect-layer--front.cinematic-effect--petal-drift
+  .cinematic-effect-item {
+  filter: drop-shadow(
+      0 0 calc(var(--cinematic-effect-glow, 14px) * 0.5)
+        rgba(255, 150, 195, 0.6)
+    )
+    drop-shadow(0 2px 2px rgba(70, 10, 35, 0.5));
+}
+
+.cinematic-effect-layer--back.cinematic-effect--petal-drift
+  .cinematic-effect-item {
+  --fx-peak: 0.72;
+  filter: drop-shadow(
+    0 0 calc(var(--cinematic-effect-glow, 14px) * 0.35) rgba(255, 170, 205, 0.5)
+  );
+}
+
+/* Defocus only the first 8 back petals (blur budget: 8 items ≤ 3px). */
+.cinematic-effect-layer--back.cinematic-effect--petal-drift
+  .cinematic-effect-item:nth-child(-n + 8) {
+  filter: blur(1.3px)
+    drop-shadow(
+      0 0 calc(var(--cinematic-effect-glow, 14px) * 0.35)
+        rgba(255, 170, 205, 0.5)
+    );
+}
+
+/* Trajectory — diagonal sweep with gust rhythm: lull → surge (with lift) →
+   lull → surge off-screen. Per-segment easing sells the wind. */
+.cinematic-wrapper.animate
+  .cinematic-effect--petal-drift
+  .cinematic-effect-item {
+  animation: cinematic-fx-petal-drift-sweep var(--fx-duration, 6.5s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-petal-drift-sweep {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0);
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.6, 0.95);
+  }
+  6% {
+    opacity: var(--fx-peak, 1);
+  }
+  26% {
+    transform: translate3d(
+      calc(var(--fx-sweep-x, 1600px) * 0.18),
+      calc(var(--fx-fall, 500px) * 0.3),
+      0
+    );
+    animation-timing-function: cubic-bezier(0.2, 0.1, 0.24, 1);
+  }
+  46% {
+    transform: translate3d(
+      calc(var(--fx-sweep-x, 1600px) * 0.55),
+      calc(var(--fx-fall, 500px) * 0.38),
+      0
+    );
+    animation-timing-function: cubic-bezier(0.45, 0.05, 0.6, 0.95);
+  }
+  72% {
+    transform: translate3d(
+      calc(var(--fx-sweep-x, 1600px) * 0.68),
+      calc(var(--fx-fall, 500px) * 0.66),
+      0
+    );
+    animation-timing-function: cubic-bezier(0.3, 0.05, 0.3, 1);
+  }
+  92% {
+    opacity: var(--fx-peak, 1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--fx-sweep-x, 1600px), var(--fx-fall, 500px), 0);
+  }
+}
+
+/* Flutter — secondary motion on the inner carrier, per shape variant. */
+.cinematic-wrapper.animate
+  .cinematic-effect--petal-drift
+  .cinematic-effect-item[data-role="petal-a"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-petal-drift-flutter-a var(--fx-flutter-duration, 1.8s)
+    linear var(--fx-flutter-delay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--petal-drift
+  .cinematic-effect-item[data-role="petal-b"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-petal-drift-flutter-b var(--fx-flutter-duration, 1.8s)
+    ease-in-out var(--fx-flutter-delay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--petal-drift
+  .cinematic-effect-item[data-role="petal-c"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-petal-drift-flutter-c var(--fx-flutter-duration, 2.8s)
+    ease-in-out var(--fx-flutter-delay, 0s) infinite;
+}
+
+/* Full 360° rotateY tumble + rocking tilt: petals catch the light. rotateY
+   (not rotateX) so the tall teardrop thins to a sliver when edge-on instead
+   of squashing into a heart shape. */
+@keyframes cinematic-fx-petal-drift-flutter-a {
+  0% {
+    transform: rotate(calc(var(--fx-tilt, 20deg) - var(--fx-rock, 16deg)))
+      rotateY(0deg);
+  }
+  50% {
+    transform: rotate(calc(var(--fx-tilt, 20deg) + var(--fx-rock, 16deg)))
+      rotateY(180deg);
+  }
+  100% {
+    transform: rotate(calc(var(--fx-tilt, 20deg) - var(--fx-rock, 16deg)))
+      rotateY(360deg);
+  }
+}
+
+/* ±52° rotateX rock, like a leaf seesawing on the air. */
+@keyframes cinematic-fx-petal-drift-flutter-b {
+  0%,
+  100% {
+    transform: rotate(calc(var(--fx-tilt, 20deg) - var(--fx-rock, 16deg)))
+      rotateX(-52deg);
+  }
+  50% {
+    transform: rotate(calc(var(--fx-tilt, 20deg) + var(--fx-rock, 16deg)))
+      rotateX(52deg);
+  }
+}
+
+/* Gentle planar sway for distant petals. */
+@keyframes cinematic-fx-petal-drift-flutter-c {
+  0%,
+  100% {
+    transform: rotate(calc(var(--fx-tilt, 20deg) - var(--fx-rock, 16deg)));
+  }
+  50% {
+    transform: rotate(calc(var(--fx-tilt, 20deg) + var(--fx-rock, 16deg)));
+  }
+}
+/* === /FX:petal_drift === */
+
+/* === FX:sparkle_shimmer === */
+/* --------------------------------------------------------------------------
+   Sparkle Shimmer
+   Elegant twinkling glints: gold-halo 4-point stars (SVG data-URI),
+   tiny glow motes, and a few theme-colored micro-glints. Infinite
+   pre-scattered loop; trajectory/rotation on the item, twinkle scale
+   pop on the inner.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--sparkle-shimmer .cinematic-effect-item {
+  left: var(--fx-x, 50%);
+  top: var(--fx-y, 50%);
+  width: var(--fx-size, 40px);
+  height: var(--fx-size, 40px);
+  margin: calc(var(--fx-size, 40px) / -2) 0 0 calc(var(--fx-size, 40px) / -2);
+}
+
+.cinematic-effect--sparkle-shimmer .cinematic-effect-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  transform: scale(0);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+  mix-blend-mode: screen;
+}
+
+/* Hero glint: white-core 4-point star with tapered rays + warm gold halo. */
+.cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner {
+  background-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'><defs><radialGradient id='h' cx='.5' cy='.5' r='.5'><stop offset='0' stop-color='%23fff'/><stop offset='.18' stop-color='%23ffe9a8' stop-opacity='.7'/><stop offset='.5' stop-color='%23ffd873' stop-opacity='.22'/><stop offset='1' stop-color='%23ffd873' stop-opacity='0'/></radialGradient><radialGradient id='s' cx='.5' cy='.5' r='.5'><stop offset='0' stop-color='%23fff'/><stop offset='.55' stop-color='%23fff'/><stop offset='1' stop-color='%23ffe9a8' stop-opacity='.45'/></radialGradient></defs><circle cx='24' cy='24' r='23' fill='url(%23h)'/><path d='M24 8 Q24.9 23.1 40 24 Q24.9 24.9 24 40 Q23.1 24.9 8 24 Q23.1 23.1 24 8Z' fill='url(%23s)' opacity='.55' transform='rotate(45 24 24)'/><path d='M24 0 Q25.2 22.8 48 24 Q25.2 25.2 24 48 Q22.8 25.2 0 24 Q22.8 22.8 24 0Z' fill='url(%23s)'/></svg>");
+}
+
+/* Distant glints (back layer): softer, reads as depth. */
+.cinematic-effect-layer--back.cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner {
+  filter: blur(1px);
+  opacity: 0.85;
+}
+
+/* Theme micro-glint: clip-path star so var(--theme-color) can tint it. */
+.cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item[data-role="glint-theme"]
+  .cinematic-effect-inner {
+  background: radial-gradient(
+    circle,
+    #fff 0 26%,
+    var(--theme-color, #e61c34) 52%,
+    transparent 86%
+  );
+  clip-path: polygon(
+    50% 0%,
+    56.5% 43.5%,
+    100% 50%,
+    56.5% 56.5%,
+    50% 100%,
+    43.5% 56.5%,
+    0% 50%,
+    43.5% 43.5%
+  );
+}
+
+/* Glow mote: tiny warm dust point. */
+.cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item[data-role="mote"]
+  .cinematic-effect-inner {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0 30%,
+    rgba(255, 233, 168, 0.9) 52%,
+    rgba(255, 216, 115, 0) 78%
+  );
+}
+
+/* Trajectory + twinkle envelope on the item (loops from/to opacity 0). */
+.cinematic-wrapper.animate
+  .cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item {
+  animation: cinematic-fx-sparkle-shimmer-twinkle var(--fx-duration, 2.4s)
+    linear var(--fx-delay, 0s) infinite;
+}
+
+/* Scale pop with slight overshoot on the inner. */
+.cinematic-wrapper.animate
+  .cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner,
+.cinematic-wrapper.animate
+  .cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item[data-role="glint-theme"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-sparkle-shimmer-pop var(--fx-duration, 2.4s)
+    ease-in-out var(--fx-delay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--sparkle-shimmer
+  .cinematic-effect-item[data-role="mote"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-sparkle-shimmer-breathe var(--fx-duration, 3.2s)
+    ease-in-out var(--fx-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-sparkle-shimmer-twinkle {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(var(--fx-rot-a, 0deg));
+  }
+  14% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 0.9;
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(0, var(--fx-drift-y, -14px), 0)
+      rotate(var(--fx-rot-b, 20deg));
+  }
+}
+
+@keyframes cinematic-fx-sparkle-shimmer-pop {
+  0% {
+    transform: scale(0);
+  }
+  18% {
+    transform: scale(calc(var(--cinematic-effect-scale, 1) * 1.12));
+  }
+  34% {
+    transform: scale(var(--cinematic-effect-scale, 1));
+  }
+  68% {
+    transform: scale(calc(var(--cinematic-effect-scale, 1) * 0.9));
+  }
+  100% {
+    transform: scale(0);
+  }
+}
+
+@keyframes cinematic-fx-sparkle-shimmer-breathe {
+  0% {
+    transform: scale(0.35);
+  }
+  45% {
+    transform: scale(var(--cinematic-effect-scale, 1));
+  }
+  100% {
+    transform: scale(0.35);
+  }
+}
+/* === /FX:sparkle_shimmer === */
+
+/* === FX:shockwave === */
+/* --------------------------------------------------------------------------
+   Shockwave
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--shockwave .cinematic-effect-item {
+  left: 50%;
+  top: 50%;
+  width: 210px;
+  aspect-ratio: 1;
+  border: var(--fx-thickness, 5px) solid #fff;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.16) 0%,
+    transparent 66%
+  );
+  box-shadow:
+    0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34),
+    inset 0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34);
+}
+
+.cinematic-wrapper.animate .cinematic-effect--shockwave .cinematic-effect-item {
+  animation: cinematic-fx-shockwave 1.15s cubic-bezier(0.08, 0.7, 0.18, 1)
+    var(--fx-ring-delay, 0s) both;
+}
+
+@keyframes cinematic-fx-shockwave {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.12);
+  }
+  12% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(var(--fx-ring-scale, 3.8));
+  }
+}
+/* === /FX:shockwave === */
+
+/* === FX:hero_flare === */
+/* --------------------------------------------------------------------------
+   Hero Flare — cinematic anamorphic lens flare.
+   Screen-wide streak (white core / theme wings) + white-hot star core with
+   tapered SVG spikes + ghost artifacts stepping down the optical diagonal +
+   faint red/cyan chromatic fringing. One-shot ~1.6s: snap bloom, slow decay.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--hero-flare .cinematic-effect-item {
+  mix-blend-mode: screen;
+}
+
+.cinematic-effect--hero-flare .cinematic-effect-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* --- anamorphic streak --------------------------------------------------- */
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="streak"] {
+  left: -6%;
+  top: var(--fx-cy, 38%);
+  width: 112%;
+  height: calc(96px * var(--cinematic-effect-scale, 1));
+  background:
+    radial-gradient(
+      44% 50% at 50% 50%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 70%, #fff 30%) 0%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 88%, #fff 12%) 22%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 55%, transparent) 42%,
+      transparent 66%
+    ),
+    radial-gradient(
+      54% 24% at 50% 50%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 80%, #fff 20%) 0%,
+      color-mix(in srgb, var(--theme-color, #e61c34) 45%, transparent) 52%,
+      transparent 84%
+    );
+  transform-origin: center;
+}
+
+.cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="streak"]
+  .cinematic-effect-inner {
+  background:
+    radial-gradient(
+      47% 4.5% at 50% 50%,
+      #fff 0%,
+      rgba(255, 255, 255, 0.95) 34%,
+      transparent 100%
+    ),
+    radial-gradient(
+      30% 24% at 50% 50%,
+      rgba(255, 255, 255, 0.95) 0%,
+      rgba(255, 255, 255, 0.35) 46%,
+      transparent 100%
+    ),
+    radial-gradient(
+      18% 62% at 50% 50%,
+      rgba(255, 255, 255, 0.8) 0%,
+      rgba(255, 255, 255, 0.22) 48%,
+      transparent 100%
+    );
+}
+
+/* --- chromatic fringes (fixed red/cyan, aberration is colour-true) ------- */
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="fringe-red"],
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="fringe-cyan"] {
+  left: -8%;
+  top: var(--fx-cy, 38%);
+  width: 116%;
+  height: calc(30px * var(--cinematic-effect-scale, 1));
+  transform-origin: center;
+}
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="fringe-red"] {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(255, 36, 60, 1) 0%,
+    rgba(255, 36, 60, 0.8) 56%,
+    transparent 94%
+  );
+}
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="fringe-cyan"] {
+  background: radial-gradient(
+    50% 50% at 50% 50%,
+    rgba(40, 224, 255, 1) 0%,
+    rgba(40, 224, 255, 0.76) 56%,
+    transparent 94%
+  );
+}
+
+/* --- hot core + star spikes ---------------------------------------------- */
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="core"] {
+  left: var(--fx-cx, 63%);
+  top: var(--fx-cy, 38%);
+  width: calc(430px * var(--cinematic-effect-scale, 1));
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    #fff 0 6%,
+    rgba(255, 255, 255, 0.95) 10%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 62%, #fff 38%) 16%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 58%, transparent) 28%,
+    transparent 62%
+  );
+}
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="spikes"] {
+  left: var(--fx-cx, 63%);
+  top: var(--fx-cy, 38%);
+  width: calc(620px * var(--cinematic-effect-scale, 1));
+  aspect-ratio: 1;
+}
+
+.cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="spikes"]
+  .cinematic-effect-inner {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 400'%3E%3Cg fill='%23fff'%3E%3Cpolygon points='2,200 200,190 398,200 200,210' opacity='.28'/%3E%3Cpolygon points='10,200 200,195.5 390,200 200,204.5' opacity='.95'/%3E%3Cpolygon points='200,92 206,200 200,308 194,200' opacity='.24'/%3E%3Cpolygon points='200,102 203,200 200,298 197,200' opacity='.8'/%3E%3Cg transform='rotate(45 200 200)'%3E%3Cpolygon points='84,200 200,195 316,200 200,205' opacity='.2'/%3E%3Cpolygon points='94,200 200,197.5 306,200 200,202.5' opacity='.62'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-size: 100% 100%;
+}
+
+/* --- back-layer veil (soft bloom behind the character) ------------------- */
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="veil"] {
+  left: var(--fx-cx, 63%);
+  top: var(--fx-cy, 38%);
+  width: calc(940px * var(--cinematic-effect-scale, 1));
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.75) 0%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 72%, #fff 12%) 15%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 30%, transparent) 34%,
+    transparent 66%
+  );
+}
+
+/* --- ghost artifacts ------------------------------------------------------ */
+
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="ghost-disc"],
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="ghost-hex"] {
+  left: var(--fx-x, 40%);
+  top: var(--fx-y, 60%);
+  width: var(--fx-size, 60px);
+  aspect-ratio: 1;
+}
+
+.cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="ghost-disc"]
+  .cinematic-effect-inner {
+  border-radius: 50%;
+  opacity: var(--fx-ghost-alpha, 0.85);
+  background: radial-gradient(
+    circle,
+    color-mix(in srgb, var(--theme-color, #e61c34) 42%, #fff 16%) 0 48%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 72%, #fff 28%) 62%,
+    #fff 73%,
+    transparent 80%
+  );
+}
+
+.cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="ghost-hex"]
+  .cinematic-effect-inner {
+  clip-path: polygon(
+    50% 0%,
+    93.3% 25%,
+    93.3% 75%,
+    50% 100%,
+    6.7% 75%,
+    6.7% 25%
+  );
+  opacity: var(--fx-ghost-alpha, 0.85);
+  transform: rotate(var(--fx-rotation-start, 0deg));
+  background: linear-gradient(
+    135deg,
+    #fff 0%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 62%, #fff 34%) 36%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 55%, transparent) 100%
+  );
+}
+
+/* --- motion --------------------------------------------------------------- */
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="streak"] {
+  animation: cinematic-fx-hero-flare-streak 1.6s
+    cubic-bezier(0.14, 0.9, 0.22, 1) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="streak"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-hero-flare-flicker 1.6s linear both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="fringe-red"] {
+  animation: cinematic-fx-hero-flare-fringe-r 1.6s
+    cubic-bezier(0.14, 0.9, 0.22, 1) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="fringe-cyan"] {
+  animation: cinematic-fx-hero-flare-fringe-c 1.6s
+    cubic-bezier(0.14, 0.9, 0.22, 1) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="core"] {
+  animation: cinematic-fx-hero-flare-core 1.6s cubic-bezier(0.14, 0.9, 0.22, 1)
+    both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="spikes"] {
+  animation: cinematic-fx-hero-flare-spikes 1.6s
+    cubic-bezier(0.14, 0.9, 0.22, 1) 0.04s both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="spikes"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-hero-flare-spin 1.6s ease-out 0.04s both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="veil"] {
+  animation: cinematic-fx-hero-flare-veil 1.6s ease-out both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="ghost-disc"],
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="ghost-hex"] {
+  animation: cinematic-fx-hero-flare-ghost 1.35s
+    cubic-bezier(0.14, 0.9, 0.22, 1) var(--fx-intro-delay, 0.1s) both;
+}
+
+@keyframes cinematic-fx-hero-flare-streak {
+  0% {
+    opacity: 0;
+    transform: translateY(-50%) scaleX(0.05) scaleY(0.4);
+  }
+  10% {
+    opacity: 1;
+    transform: translateY(-50%) scaleX(1.04) scaleY(1.12);
+  }
+  22% {
+    opacity: 0.95;
+    transform: translateY(-50%) scaleX(1) scaleY(1);
+  }
+  64% {
+    opacity: 0.72;
+    transform: translate(-14px, -50%) scaleX(0.97) scaleY(0.82);
+  }
+  88% {
+    opacity: 0.4;
+    transform: translate(-27px, -50%) scaleX(0.94) scaleY(0.6);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-34px, -50%) scaleX(0.92) scaleY(0.45);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-flicker {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  30% {
+    opacity: 0.85;
+  }
+  38% {
+    opacity: 1;
+  }
+  52% {
+    opacity: 0.8;
+  }
+  64% {
+    opacity: 0.95;
+  }
+  80% {
+    opacity: 0.75;
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-fringe-r {
+  0% {
+    opacity: 0;
+    transform: translate(-14px, calc(-50% + 13px)) scaleX(0.05);
+  }
+  12% {
+    opacity: 0.85;
+    transform: translate(-58px, calc(-50% + 13px)) scaleX(1.1);
+  }
+  64% {
+    opacity: 0.6;
+    transform: translate(-74px, calc(-50% + 13px)) scaleX(1.04);
+  }
+  88% {
+    opacity: 0.3;
+    transform: translate(-88px, calc(-50% + 13px)) scaleX(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-96px, calc(-50% + 13px)) scaleX(0.94);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-fringe-c {
+  0% {
+    opacity: 0;
+    transform: translate(14px, calc(-50% - 13px)) scaleX(0.05);
+  }
+  12% {
+    opacity: 0.8;
+    transform: translate(58px, calc(-50% - 13px)) scaleX(1.1);
+  }
+  64% {
+    opacity: 0.58;
+    transform: translate(74px, calc(-50% - 13px)) scaleX(1.04);
+  }
+  88% {
+    opacity: 0.28;
+    transform: translate(88px, calc(-50% - 13px)) scaleX(0.98);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(96px, calc(-50% - 13px)) scaleX(0.94);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-core {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.12);
+  }
+  9% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.18);
+  }
+  16% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(0.96);
+  }
+  26% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.02);
+  }
+  64% {
+    opacity: 0.85;
+    transform: translate(calc(-50% - 10px), calc(-50% + 4px)) scale(0.92);
+  }
+  88% {
+    opacity: 0.45;
+    transform: translate(calc(-50% - 20px), calc(-50% + 8px)) scale(0.78);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% - 24px), calc(-50% + 10px)) scale(0.72);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-spikes {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.2);
+  }
+  11% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+  24% {
+    opacity: 0.95;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  64% {
+    opacity: 0.75;
+    transform: translate(calc(-50% - 10px), calc(-50% + 4px)) scale(0.94);
+  }
+  88% {
+    opacity: 0.35;
+    transform: translate(calc(-50% - 20px), calc(-50% + 8px)) scale(0.84);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(calc(-50% - 24px), calc(-50% + 10px)) scale(0.8);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-spin {
+  0% {
+    transform: rotate(-9deg);
+  }
+  100% {
+    transform: rotate(5deg);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-veil {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.5);
+  }
+  14% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  58% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.16);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-ghost {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.35);
+  }
+  16% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.08);
+  }
+  30% {
+    opacity: 0.92;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  72% {
+    opacity: 0.6;
+    transform: translate(
+        calc(-50% + (var(--fx-drift-x, -12px) * 0.7)),
+        calc(-50% + (var(--fx-drift-y, 10px) * 0.7))
+      )
+      scale(1.07);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(
+        calc(-50% + var(--fx-drift-x, -12px)),
+        calc(-50% + var(--fx-drift-y, 10px))
+      )
+      scale(1.12);
+  }
+}
+
+/* Spectral ring: an iridescent conic-gradient annulus around the hot core.
+   The annulus mask stays fixed on the item while the inner carrying the
+   conic-gradient spins via transform — the hue sweep visibly rotates without
+   registering custom properties (@property broke rendering under Foundry-era
+   Chromium in testing). */
+.cinematic-effect--hero-flare .cinematic-effect-item[data-role="spectral"] {
+  left: var(--fx-x, 63%);
+  top: var(--fx-y, 38%);
+  width: var(--fx-size, 330px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  -webkit-mask: radial-gradient(
+    circle,
+    transparent 56%,
+    #fff 64%,
+    #fff 72%,
+    transparent 80%
+  );
+  mask: radial-gradient(
+    circle,
+    transparent 56%,
+    #fff 64%,
+    #fff 72%,
+    transparent 80%
+  );
+  mix-blend-mode: screen;
+  overflow: hidden;
+}
+
+.cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="spectral"]
+  .cinematic-effect-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(255, 96, 96, 0.55),
+    rgba(255, 214, 110, 0.55),
+    rgba(140, 255, 190, 0.5),
+    rgba(120, 190, 255, 0.55),
+    rgba(225, 130, 255, 0.5),
+    rgba(255, 96, 96, 0.55)
+  );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="spectral"] {
+  animation: cinematic-fx-hero-flare-spectral-bloom 1.6s ease-out 0.06s both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--hero-flare
+  .cinematic-effect-item[data-role="spectral"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-hero-flare-spectral-spin 1.6s
+    cubic-bezier(0.2, 0.6, 0.3, 1) 0.06s both;
+}
+
+@keyframes cinematic-fx-hero-flare-spectral-spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(250deg);
+  }
+}
+
+@keyframes cinematic-fx-hero-flare-spectral-bloom {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0.22);
+  }
+  16% {
+    opacity: 0.85;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  60% {
+    opacity: 0.55;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.22);
+  }
+}
+/* === /FX:hero_flare === */
+
+/* === FX:film_burn === */
+/* --------------------------------------------------------------------------
+   Film Burn — analog film catching fire. Crinkled burn holes (feTurbulence +
+   feDisplacementMap SVG data-URIs) grow from the frame edges with char-dark
+   rims and white-hot cores; a warm exposure flash strobes twice; a sepia
+   vignette creeps in from the corners. Fixed 1.7s one-shot, natural fire
+   palette (deliberately ignores the theme hue).
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--film-burn .cinematic-effect-item[data-role^="hole"] {
+  left: var(--fx-x, 50%);
+  top: var(--fx-y, 50%);
+  width: var(--fx-size, 220px);
+  height: var(--fx-size, 220px);
+}
+
+.cinematic-effect--film-burn
+  .cinematic-effect-item[data-role^="hole"]
+  .cinematic-effect-inner {
+  position: absolute;
+  inset: -18%;
+  display: block;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: contain;
+}
+
+/* Crinkled concentric burn rings: char edge -> burnt orange -> amber -> white-hot core.
+   Same displacement filter over the ring group keeps the crinkle coherent per hole. */
+.cinematic-effect--film-burn
+  .cinematic-effect-item[data-role="hole-a"]
+  .cinematic-effect-inner {
+  background-image:
+    url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22420%22><filter id=%22r%22 x=%22-35%25%22 y=%22-35%25%22 width=%22170%25%22 height=%22170%25%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.03%22 numOctaves=%223%22 seed=%227%22 result=%22n%22/><feGaussianBlur in=%22SourceGraphic%22 stdDeviation=%227%22 result=%22b%22/><feDisplacementMap in=%22b%22 in2=%22n%22 scale=%2260%22/></filter><g filter=%22url(%23r)%22><circle cx=%22210%22 cy=%22210%22 r=%22134%22 fill=%22%231c0903%22 opacity=%220.9%22/><circle cx=%22210%22 cy=%22210%22 r=%22116%22 fill=%22%234a1605%22/><circle cx=%22210%22 cy=%22210%22 r=%22100%22 fill=%22%238f2a06%22/><circle cx=%22210%22 cy=%22210%22 r=%2286%22 fill=%22%23d84f0a%22/><circle cx=%22210%22 cy=%22210%22 r=%2274%22 fill=%22%23ff8b1f%22/><circle cx=%22210%22 cy=%22210%22 r=%2263%22 fill=%22%23ffc65c%22/><circle cx=%22210%22 cy=%22210%22 r=%2254%22 fill=%22%23ffe9b0%22/><circle cx=%22210%22 cy=%22210%22 r=%2246%22 fill=%22%23ffffff%22/></g></svg>"),
+    radial-gradient(
+      circle,
+      rgba(255, 150, 40, 0.45) 16%,
+      rgba(200, 70, 10, 0.2) 42%,
+      transparent 64%
+    );
+}
+
+.cinematic-effect--film-burn
+  .cinematic-effect-item[data-role="hole-b"]
+  .cinematic-effect-inner {
+  background-image:
+    url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22420%22><filter id=%22r%22 x=%22-35%25%22 y=%22-35%25%22 width=%22170%25%22 height=%22170%25%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.024%22 numOctaves=%223%22 seed=%2223%22 result=%22n%22/><feGaussianBlur in=%22SourceGraphic%22 stdDeviation=%227%22 result=%22b%22/><feDisplacementMap in=%22b%22 in2=%22n%22 scale=%2260%22/></filter><g filter=%22url(%23r)%22><ellipse cx=%22210%22 cy=%22210%22 rx=%22145%22 ry=%22113%22 fill=%22%231c0903%22 opacity=%220.9%22/><ellipse cx=%22210%22 cy=%22210%22 rx=%22125%22 ry=%2297%22 fill=%22%234a1605%22/><ellipse cx=%22210%22 cy=%22210%22 rx=%22108%22 ry=%2284%22 fill=%22%238f2a06%22/><ellipse cx=%22210%22 cy=%22210%22 rx=%2293%22 ry=%2272%22 fill=%22%23d84f0a%22/><ellipse cx=%22210%22 cy=%22210%22 rx=%2280%22 ry=%2262%22 fill=%22%23ff8b1f%22/><ellipse cx=%22210%22 cy=%22210%22 rx=%2268%22 ry=%2253%22 fill=%22%23ffc65c%22/><ellipse cx=%22210%22 cy=%22210%22 rx=%2258%22 ry=%2245%22 fill=%22%23ffe9b0%22/><ellipse cx=%22210%22 cy=%22210%22 rx=%2250%22 ry=%2239%22 fill=%22%23ffffff%22/></g></svg>"),
+    radial-gradient(
+      circle,
+      rgba(255, 150, 40, 0.45) 16%,
+      rgba(200, 70, 10, 0.2) 42%,
+      transparent 64%
+    );
+}
+
+.cinematic-effect--film-burn
+  .cinematic-effect-item[data-role="hole-c"]
+  .cinematic-effect-inner {
+  background-image:
+    url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22420%22 height=%22420%22><filter id=%22r%22 x=%22-35%25%22 y=%22-35%25%22 width=%22170%25%22 height=%22170%25%22><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.056%22 numOctaves=%223%22 seed=%2241%22 result=%22n%22/><feGaussianBlur in=%22SourceGraphic%22 stdDeviation=%226%22 result=%22b%22/><feDisplacementMap in=%22b%22 in2=%22n%22 scale=%2250%22/></filter><g filter=%22url(%23r)%22><circle cx=%22210%22 cy=%22210%22 r=%22134%22 fill=%22%231c0903%22 opacity=%220.9%22/><circle cx=%22210%22 cy=%22210%22 r=%22116%22 fill=%22%234a1605%22/><circle cx=%22210%22 cy=%22210%22 r=%22100%22 fill=%22%238f2a06%22/><circle cx=%22210%22 cy=%22210%22 r=%2286%22 fill=%22%23d84f0a%22/><circle cx=%22210%22 cy=%22210%22 r=%2274%22 fill=%22%23ff8b1f%22/><circle cx=%22210%22 cy=%22210%22 r=%2263%22 fill=%22%23ffc65c%22/><circle cx=%22210%22 cy=%22210%22 r=%2254%22 fill=%22%23ffe9b0%22/><circle cx=%22210%22 cy=%22210%22 r=%2246%22 fill=%22%23ffffff%22/></g></svg>"),
+    radial-gradient(
+      circle,
+      rgba(255, 150, 40, 0.45) 16%,
+      rgba(200, 70, 10, 0.2) 42%,
+      transparent 64%
+    );
+}
+
+.cinematic-effect--film-burn .cinematic-effect-item[data-role="flash"] {
+  inset: 0;
+  background: radial-gradient(
+    80% 62% at 50% 42%,
+    rgba(255, 255, 252, 1) 0%,
+    rgba(255, 250, 232, 1) 26%,
+    rgba(255, 214, 130, 0.85) 44%,
+    rgba(255, 150, 52, 0.34) 62%,
+    rgba(190, 84, 18, 0.08) 78%,
+    transparent 92%
+  );
+  mix-blend-mode: screen;
+}
+
+.cinematic-effect--film-burn .cinematic-effect-item[data-role="vignette"] {
+  inset: -6%;
+  background:
+    radial-gradient(
+      55% 50% at 0% 0%,
+      rgba(24, 9, 3, 0.94) 0%,
+      rgba(80, 28, 7, 0.55) 52%,
+      transparent 76%
+    ),
+    radial-gradient(
+      55% 50% at 100% 0%,
+      rgba(24, 9, 3, 0.94) 0%,
+      rgba(80, 28, 7, 0.55) 52%,
+      transparent 76%
+    ),
+    radial-gradient(
+      55% 50% at 0% 100%,
+      rgba(24, 9, 3, 0.94) 0%,
+      rgba(80, 28, 7, 0.55) 52%,
+      transparent 76%
+    ),
+    radial-gradient(
+      55% 50% at 100% 100%,
+      rgba(24, 9, 3, 0.94) 0%,
+      rgba(80, 28, 7, 0.55) 52%,
+      transparent 76%
+    ),
+    radial-gradient(
+      140% 120% at 50% 50%,
+      transparent 58%,
+      rgba(140, 52, 10, 0.16) 82%,
+      rgba(34, 13, 4, 0.4) 100%
+    );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--film-burn
+  .cinematic-effect-item[data-role^="hole"] {
+  animation: cinematic-fx-film-burn-hole 1.7s cubic-bezier(0.16, 0.84, 0.3, 1)
+    var(--fx-delay, 0s) both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--film-burn
+  .cinematic-effect-item[data-role^="hole"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-film-burn-flicker 0.24s linear
+    var(--fx-flicker-delay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--film-burn
+  .cinematic-effect-item[data-role="flash"] {
+  animation: cinematic-fx-film-burn-flash 1.7s ease-out both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--film-burn
+  .cinematic-effect-item[data-role="vignette"] {
+  animation: cinematic-fx-film-burn-vignette 1.7s ease-in-out both;
+}
+
+@keyframes cinematic-fx-film-burn-hole {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--fx-rot, 0deg)) scale(0.05);
+  }
+  4% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--fx-rot, 0deg)) scale(0.5);
+  }
+  16% {
+    transform: translate(-50%, -50%) rotate(var(--fx-rot, 0deg))
+      scale(calc(0.94 * var(--cinematic-effect-scale, 1)));
+  }
+  62% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--fx-rot, 0deg))
+      scale(calc(var(--fx-grow, 1.45) * var(--cinematic-effect-scale, 1)));
+  }
+  84% {
+    opacity: 0.42;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--fx-rot, 0deg))
+      scale(
+        calc((var(--fx-grow, 1.45) + 0.14) * var(--cinematic-effect-scale, 1))
+      );
+  }
+}
+
+@keyframes cinematic-fx-film-burn-flicker {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  28% {
+    transform: scale(1.045);
+    opacity: 0.94;
+  }
+  55% {
+    transform: scale(0.985);
+    opacity: 1;
+  }
+  76% {
+    transform: scale(1.03);
+    opacity: 0.9;
+  }
+}
+
+@keyframes cinematic-fx-film-burn-flash {
+  0% {
+    opacity: 0.2;
+    transform: scale(1);
+  }
+  3% {
+    opacity: 1;
+    transform: scale(1.02);
+  }
+  7% {
+    opacity: 0.98;
+    transform: scale(1.03);
+  }
+  12% {
+    opacity: 0.14;
+    transform: scale(1);
+  }
+  17% {
+    opacity: 0.85;
+    transform: scale(1.04);
+  }
+  27% {
+    opacity: 0.14;
+    transform: scale(1);
+  }
+  42% {
+    opacity: 0.26;
+    transform: scale(1.01);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+
+@keyframes cinematic-fx-film-burn-vignette {
+  0% {
+    opacity: 0;
+    transform: scale(1.22);
+  }
+  22% {
+    opacity: 0.82;
+    transform: scale(1.06);
+  }
+  62% {
+    opacity: 0.92;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(1);
+  }
+}
+/* === /FX:film_burn === */
+
+/* === FX:blackout_cut === */
+/* --------------------------------------------------------------------------
+   Blackout Cut — katana-slash reveal.
+   Timeline (all keyframes share one 1.25s clock):
+     0-240ms   white-hot diagonal slash sweeps upper-right -> lower-left,
+               spark glints popping in its wake
+     300ms     one-frame white flash as the cut completes
+     300-1050ms the black screen splits along the cut: two panels slide
+               apart perpendicular to the diagonal with parallax speed,
+               glowing cut edges fading as they exit
+   -------------------------------------------------------------------------- */
+
+/* A blackout must actually black out — ignore the layer strength opacity. */
+.cinematic-effect-layer--overlay.cinematic-effect--blackout-cut {
+  opacity: 1;
+}
+
+/* ---- Black panels (the split screen) ---- */
+
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="panel-a"],
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="panel-b"] {
+  /* Centered on screen center without translate so `transform: none`
+       (reduced-motion fallback) still fully covers the frame. */
+  left: -80%;
+  top: -80%;
+  width: 260%;
+  height: 260%;
+  opacity: 1;
+}
+
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="panel-a"] {
+  /* Bottom edge rides the cut line. Pure black: the screen must read as
+       an unbroken blackout until the slash draws the line itself. */
+  background: #000;
+  transform: rotate(var(--fx-cut-angle, -32deg)) translateY(-49.94%);
+}
+
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="panel-b"] {
+  background: #000;
+  transform: rotate(var(--fx-cut-angle, -32deg)) translateY(49.94%);
+}
+
+/* Glowing cut edge on each panel (fades as the panels exit). */
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-a"]
+  .cinematic-effect-inner,
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-b"]
+  .cinematic-effect-inner {
+  position: absolute;
+  left: 22%;
+  right: 22%;
+  height: 3px;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--theme-color, #e61c34) 10%,
+    #fff 28%,
+    #fff 72%,
+    var(--theme-color, #e61c34) 90%,
+    transparent 100%
+  );
+  box-shadow:
+    0 0 6px rgba(255, 255, 255, 0.9),
+    0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34),
+    0 0 calc(var(--cinematic-effect-glow, 14px) * 2.4)
+      var(--theme-color, #e61c34);
+  opacity: 0;
+}
+
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-a"]
+  .cinematic-effect-inner {
+  bottom: -1px;
+}
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-b"]
+  .cinematic-effect-inner {
+  top: -1px;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-a"] {
+  animation: cinematic-fx-blackout-cut-panel-a 1.25s linear both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-b"] {
+  animation: cinematic-fx-blackout-cut-panel-b 1.25s linear both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-a"]
+  .cinematic-effect-inner,
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="panel-b"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-blackout-cut-edge 1.25s linear both;
+}
+
+@keyframes cinematic-fx-blackout-cut-panel-a {
+  0%,
+  25% {
+    opacity: 1;
+    transform: rotate(var(--fx-cut-angle, -32deg)) translateY(-49.94%);
+    animation-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+  }
+  86%,
+  99% {
+    opacity: 1;
+    transform: rotate(var(--fx-cut-angle, -32deg)) translateY(-96%);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--fx-cut-angle, -32deg)) translateY(-96%);
+  }
+}
+
+@keyframes cinematic-fx-blackout-cut-panel-b {
+  0%,
+  25% {
+    opacity: 1;
+    transform: rotate(var(--fx-cut-angle, -32deg)) translateY(49.94%);
+    animation-timing-function: cubic-bezier(0.85, 0, 0.15, 1);
+  }
+  96%,
+  99.5% {
+    opacity: 1;
+    transform: rotate(var(--fx-cut-angle, -32deg)) translateY(96%);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(var(--fx-cut-angle, -32deg)) translateY(96%);
+  }
+}
+
+@keyframes cinematic-fx-blackout-cut-edge {
+  0%,
+  22% {
+    opacity: 0;
+  }
+  26% {
+    opacity: 1;
+  }
+  62% {
+    opacity: 0.85;
+  }
+  92%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- Slash line (white-hot core) and trail (theme smear) ---- */
+
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="slash"],
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash-trail"] {
+  left: 50%;
+  top: 50%;
+  width: 160%;
+  transform: translate(-50%, -50%) rotate(var(--fx-cut-angle, -32deg));
+}
+
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="slash"] {
+  height: calc(13px * var(--cinematic-effect-scale, 1));
+}
+
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash-trail"] {
+  height: calc(52px * var(--cinematic-effect-scale, 1));
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash"],
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash-trail"] {
+  opacity: 1;
+}
+
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash"]
+  .cinematic-effect-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    var(--theme-color, #e61c34) 10%,
+    #fff 26%,
+    #fff 74%,
+    var(--theme-color, #e61c34) 90%,
+    transparent 100%
+  );
+  clip-path: polygon(
+    0% 50%,
+    7% 16%,
+    50% 0%,
+    93% 16%,
+    100% 50%,
+    93% 84%,
+    50% 100%,
+    7% 84%
+  );
+  filter: drop-shadow(0 0 5px rgba(255, 255, 255, 0.95))
+    drop-shadow(
+      0 0 calc(var(--cinematic-effect-glow, 14px) + 8px)
+        var(--theme-color, #e61c34)
+    );
+  mix-blend-mode: screen;
+  transform-origin: right center;
+  opacity: 0;
+}
+
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash-trail"]
+  .cinematic-effect-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 55%, transparent) 38%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 80%, #fff 20%) 50%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 55%, transparent) 62%,
+    transparent 100%
+  );
+  filter: blur(2px);
+  mix-blend-mode: screen;
+  transform-origin: right center;
+  opacity: 0;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-blackout-cut-slash 1.25s linear both;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="slash-trail"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-blackout-cut-trail 1.25s linear both;
+}
+
+@keyframes cinematic-fx-blackout-cut-slash {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.001) scaleY(0.5);
+  }
+  2.5% {
+    opacity: 1;
+    transform: scaleX(0.02) scaleY(0.6);
+    animation-timing-function: cubic-bezier(0.7, 0, 0.16, 1);
+  }
+  19% {
+    opacity: 1;
+    transform: scaleX(1) scaleY(1);
+  }
+  24% {
+    opacity: 1;
+    transform: scaleX(1) scaleY(1.9);
+  }
+  31%,
+  100% {
+    opacity: 0;
+    transform: scaleX(1) scaleY(0.4);
+  }
+}
+
+@keyframes cinematic-fx-blackout-cut-trail {
+  0% {
+    opacity: 0;
+    transform: scaleX(0.001) scaleY(0.3);
+  }
+  4.5% {
+    opacity: 0.75;
+    transform: scaleX(0.02) scaleY(0.6);
+    animation-timing-function: cubic-bezier(0.7, 0, 0.16, 1);
+  }
+  22% {
+    opacity: 0.75;
+    transform: scaleX(1) scaleY(1);
+  }
+  33%,
+  100% {
+    opacity: 0;
+    transform: scaleX(1) scaleY(1.5);
+  }
+}
+
+/* ---- One-frame white flash at cut completion ---- */
+
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="flash"] {
+  inset: 0;
+  background: radial-gradient(
+    circle at 50% 50%,
+    #fff 0%,
+    #fff 58%,
+    color-mix(in srgb, #fff 78%, var(--theme-color, #e61c34)) 100%
+  );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="flash"] {
+  animation: cinematic-fx-blackout-cut-flash 1.25s linear both;
+}
+
+@keyframes cinematic-fx-blackout-cut-flash {
+  0%,
+  21% {
+    opacity: 0;
+  }
+  24%,
+  26.5% {
+    opacity: 1;
+  }
+  33%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* ---- Spark glints trailing the sweep tip ---- */
+
+.cinematic-effect--blackout-cut .cinematic-effect-item[data-role="glint"] {
+  left: 50%;
+  top: 50%;
+  width: var(--fx-size, 24px);
+  aspect-ratio: 1;
+}
+
+.cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="glint"]
+  .cinematic-effect-inner {
+  position: absolute;
+  inset: 0;
+  display: block;
+  background: radial-gradient(
+    circle,
+    #fff 0%,
+    #fff 34%,
+    var(--theme-color, #e61c34) 62%,
+    transparent 78%
+  );
+  clip-path: polygon(
+    50% 0%,
+    61% 39%,
+    100% 50%,
+    61% 61%,
+    50% 100%,
+    39% 61%,
+    0% 50%,
+    39% 39%
+  );
+  filter: drop-shadow(
+    0 0 var(--cinematic-effect-glow, 14px) var(--theme-color, #e61c34)
+  );
+  mix-blend-mode: screen;
+  transform: rotate(var(--fx-spin, 0deg));
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--blackout-cut
+  .cinematic-effect-item[data-role="glint"] {
+  animation: cinematic-fx-blackout-cut-glint var(--fx-glint-duration, 0.5s)
+    cubic-bezier(0.14, 0.9, 0.22, 1) var(--fx-glint-delay, 0.1s) both;
+}
+
+@keyframes cinematic-fx-blackout-cut-glint {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--fx-cut-angle, -32deg))
+      translate(var(--fx-along, 0px), var(--fx-off, 0px)) scale(0.1);
+  }
+  20% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--fx-cut-angle, -32deg))
+      translate(var(--fx-along, 0px), var(--fx-off, 0px)) scale(1.1);
+  }
+  52% {
+    opacity: 0.9;
+    transform: translate(-50%, -50%) rotate(var(--fx-cut-angle, -32deg))
+      translate(var(--fx-along, 0px), var(--fx-off, 0px)) scale(0.86);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--fx-cut-angle, -32deg))
+      translate(var(--fx-along, 0px), var(--fx-off, 0px)) scale(0.3);
+  }
+}
+/* === /FX:blackout_cut === */
+
+/* === FX:speed_lines === */
+/* --------------------------------------------------------------------------
+   Speed Lines (manga focus lines / 집중선)
+   Wedges anchored past the frame edges, tips on a jittered ellipse so the
+   center stays clear. Item = ray placement + snap-in; inner = wedge shape
+   with a rapid stepped length/opacity flicker.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--speed-lines .cinematic-effect-item {
+  left: 50%;
+  top: 50%;
+  width: var(--fx-len, 520px);
+  height: calc(var(--fx-thick, 36px) * var(--cinematic-effect-scale, 1));
+  transform-origin: 0 0;
+  transform: rotate(var(--fx-angle, 0deg)) translateX(var(--fx-tip, 620px))
+    translateY(-50%);
+  filter: drop-shadow(0 3px 0 rgba(10, 10, 16, 0.68))
+    drop-shadow(0 -3px 0 rgba(10, 10, 16, 0.68))
+    drop-shadow(
+      0 0 var(--cinematic-effect-glow, 14px)
+        color-mix(in srgb, var(--theme-color, #e61c34) 34%, transparent)
+    );
+}
+
+.cinematic-effect--speed-lines .cinematic-effect-inner {
+  display: block;
+  width: 100%;
+  height: 100%;
+  clip-path: polygon(0 50%, 100% 0, 100% 100%);
+  transform-origin: 100% 50%;
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--theme-color, #e61c34) 68%, #fff) 0%,
+    color-mix(in srgb, var(--theme-color, #e61c34) 24%, #fff) 6%,
+    #fff 14%,
+    #fff 100%
+  );
+}
+
+.cinematic-effect--speed-lines
+  .cinematic-effect-item[data-role="line-b"]
+  .cinematic-effect-inner {
+  background: linear-gradient(
+    90deg,
+    color-mix(in srgb, var(--theme-color, #e61c34) 55%, #fff) 0%,
+    #fff 15%,
+    #fff 100%
+  );
+}
+
+.cinematic-effect--speed-lines .cinematic-effect-item[data-role="corner"] {
+  --fx-peak: 0.55;
+}
+
+/* Snap-in: wedges rush inward from past the edge, then hold. */
+.cinematic-wrapper.animate
+  .cinematic-effect--speed-lines
+  .cinematic-effect-item {
+  animation: cinematic-fx-speed-lines-in 0.32s cubic-bezier(0.14, 0.9, 0.22, 1)
+    var(--fx-intro-delay, 0s) both;
+}
+
+@keyframes cinematic-fx-speed-lines-in {
+  0% {
+    opacity: 0;
+    transform: rotate(var(--fx-angle, 0deg))
+      translateX(calc(var(--fx-tip, 620px) + 240px)) translateY(-50%);
+  }
+  100% {
+    opacity: var(--fx-peak, 1);
+    transform: rotate(var(--fx-angle, 0deg)) translateX(var(--fx-tip, 620px))
+      translateY(-50%);
+  }
+}
+
+/* Rapid stepped flicker: tips retract/extend with per-item phase offsets. */
+.cinematic-wrapper.animate
+  .cinematic-effect--speed-lines
+  .cinematic-effect-inner {
+  animation: cinematic-fx-speed-lines-flicker var(--fx-flicker-dur, 0.28s)
+    linear var(--fx-flicker-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-speed-lines-flicker {
+  0%,
+  32% {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+  33%,
+  65% {
+    opacity: 0.78;
+    transform: scaleX(var(--fx-flick, 0.82));
+  }
+  66%,
+  100% {
+    opacity: 0.92;
+    transform: scaleX(0.95);
+  }
+}
+/* === /FX:speed_lines === */
+
+/* === FX:lens_rain === */
+/* --------------------------------------------------------------------------
+   Lens Rain — rain seen through a camera lens. Faint streaks fall behind the
+   character; water beads cling to the glass in front (bead-a genuinely
+   refracts the scene via backdrop-filter); runner drops break loose and
+   slide down leaving a wet track that stays fixed on the glass.
+   Cool neutral palette, independent of the theme hue.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--lens-rain .cinematic-effect-item[data-role="rain"] {
+  left: var(--fx-x, 50%);
+  top: -280px;
+  width: var(--fx-w, 1.5px);
+  height: var(--fx-len, 180px);
+  border-radius: 999px;
+  background: linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(205, 226, 250, var(--fx-opacity, 0.3)) 40%,
+    rgba(228, 240, 255, var(--fx-opacity, 0.3)) 70%,
+    transparent 100%
+  );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role="rain"] {
+  animation: cinematic-fx-lens-rain-fall var(--fx-duration, 1s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-lens-rain-fall {
+  0% {
+    opacity: 1;
+    transform: rotate(9deg) translate3d(0, 0, 0);
+  }
+  100% {
+    opacity: 1;
+    transform: rotate(9deg) translate3d(0, 1750px, 0);
+  }
+}
+
+/* Glass beads: bright top-left spec, darkened lower rim, faint cool body. */
+.cinematic-effect--lens-rain .cinematic-effect-item[data-role^="bead"],
+.cinematic-effect--lens-rain .cinematic-effect-item[data-role="runner"] {
+  left: var(--fx-x, 50%);
+  top: var(--fx-y, 50%);
+  width: calc(var(--fx-size, 12px) * var(--cinematic-effect-scale, 1));
+  height: calc(var(--fx-size, 12px) * var(--cinematic-effect-scale, 1));
+  opacity: var(--fx-opacity, 0.9);
+}
+
+.cinematic-effect--lens-rain .cinematic-effect-item[data-role^="bead"] {
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 32% 28%,
+    rgba(255, 255, 255, 1) 0%,
+    rgba(255, 255, 255, 0.65) 9%,
+    rgba(215, 233, 252, 0.26) 24%,
+    rgba(130, 160, 200, 0.14) 46%,
+    rgba(18, 26, 48, 0.42) 72%,
+    rgba(10, 15, 34, 0.6) 100%
+  );
+  box-shadow:
+    0 2px 4px rgba(4, 8, 20, 0.55),
+    inset 0 -2px 3px rgba(210, 230, 255, 0.35),
+    inset 1px 1px 2px rgba(255, 255, 255, 0.3);
+}
+
+/* Only every third bead refracts — backdrop-filter is pricey, and a few true
+   lens beads among plain ones sell the whole field. */
+.cinematic-effect--lens-rain .cinematic-effect-item[data-role="bead-a"] {
+  backdrop-filter: blur(2.5px) brightness(1.22) saturate(1.2);
+}
+
+/* Bead life cycle: splat in with an overshoot, sit, flinch once when hit by
+   rain (settling a hair lower), then evaporate. Negative delays scatter the
+   phases so the field constantly gains and loses drops. */
+.cinematic-wrapper.animate
+  .cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role^="bead"] {
+  animation: cinematic-fx-lens-rain-bead-life var(--fx-duration, 8s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-lens-rain-bead-life {
+  0% {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+  1.6% {
+    opacity: var(--fx-opacity, 0.9);
+    transform: scale(1.34);
+  }
+  3.2% {
+    transform: scale(0.9);
+  }
+  5% {
+    transform: scale(1) translateY(0);
+  }
+  58% {
+    opacity: var(--fx-opacity, 0.9);
+    transform: scale(1) translateY(0);
+  }
+  59.5% {
+    transform: scale(1.09, 0.93) translateY(1px);
+  }
+  61% {
+    transform: scale(0.97, 1.05) translateY(2px);
+  }
+  62.5% {
+    transform: scale(1) translateY(3px);
+  }
+  94% {
+    opacity: var(--fx-opacity, 0.9);
+    transform: scale(1) translateY(3px);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(0.82) translateY(3px);
+  }
+}
+
+/* Light shimmering through the drop: the inner glow slowly wanders. */
+.cinematic-wrapper.animate
+  .cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role^="bead"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-lens-rain-shimmer calc(var(--fx-duration, 8s) / 3)
+    ease-in-out var(--fx-delay, 0s) infinite alternate;
+}
+
+.cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role^="bead"]
+  .cinematic-effect-inner {
+  position: absolute;
+  inset: 8%;
+  display: block;
+  border-radius: 50%;
+  background: radial-gradient(
+    circle at 62% 70%,
+    rgba(190, 215, 245, 0.28) 0%,
+    rgba(190, 215, 245, 0.08) 40%,
+    transparent 70%
+  );
+}
+
+@keyframes cinematic-fx-lens-rain-shimmer {
+  0% {
+    opacity: 0.8;
+    transform: translate(-4%, -3%) scale(0.95);
+  }
+  100% {
+    opacity: 1;
+    transform: translate(4%, 3%) scale(1.08);
+  }
+}
+
+/* Runner drops: a teardrop (bulbous head down, tail up) that sits as a
+   roundish blob, breaks loose, and slides down with stick-slip hesitations,
+   stretching while it moves. The inner is the wet track, growing upward at
+   exactly the slide rate so its top edge stays fixed on the glass — both
+   animations are linear with identical waypoints to keep that pairing. */
+.cinematic-effect--lens-rain .cinematic-effect-item[data-role="runner"] {
+  height: calc(var(--fx-size, 12px) * 1.7 * var(--cinematic-effect-scale, 1));
+}
+
+.cinematic-effect--lens-rain .cinematic-effect-item[data-role="runner"]::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 24 40%22><path d=%22M12 1 C13.5 10 19 20 19 29 A7 7 0 1 1 5 29 C5 20 10.5 10 12 1 Z%22 fill=%22rgba(195,220,248,0.34)%22 stroke=%22rgba(235,246,255,0.6)%22 stroke-width=%221%22/><ellipse cx=%2212%22 cy=%2231.5%22 rx=%225%22 ry=%223.6%22 fill=%22rgba(12,20,40,0.3)%22/><ellipse cx=%229.4%22 cy=%2226.4%22 rx=%222.1%22 ry=%222.9%22 fill=%22rgba(255,255,255,0.88)%22/></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  transform: scaleY(0.8);
+  transform-origin: bottom;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role="runner"] {
+  animation: cinematic-fx-lens-rain-runner var(--fx-duration, 7s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role="runner"]::after {
+  animation: cinematic-fx-lens-rain-stretch var(--fx-duration, 7s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+.cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role="runner"]
+  .cinematic-effect-inner {
+  position: absolute;
+  bottom: 22%;
+  left: calc(50% - 1px);
+  width: 2px;
+  height: var(--fx-fall, 500px);
+  display: block;
+  transform: scaleY(0);
+  transform-origin: bottom;
+  background: linear-gradient(
+    0deg,
+    rgba(210, 230, 250, 0.65) 0%,
+    rgba(200, 222, 245, 0.24) 55%,
+    transparent 100%
+  );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--lens-rain
+  .cinematic-effect-item[data-role="runner"]
+  .cinematic-effect-inner {
+  animation: cinematic-fx-lens-rain-track var(--fx-duration, 7s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-lens-rain-runner {
+  0% {
+    opacity: 0;
+    transform: translateY(0);
+  }
+  4% {
+    opacity: 0.95;
+  }
+  50% {
+    opacity: 0.95;
+    transform: translateY(0);
+  }
+  57% {
+    transform: translateY(calc(var(--fx-fall, 500px) * 0.22));
+  }
+  60% {
+    transform: translateY(calc(var(--fx-fall, 500px) * 0.26));
+  }
+  68% {
+    transform: translateY(calc(var(--fx-fall, 500px) * 0.62));
+  }
+  71% {
+    transform: translateY(calc(var(--fx-fall, 500px) * 0.66));
+  }
+  80% {
+    opacity: 0.9;
+    transform: translateY(var(--fx-fall, 500px));
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: translateY(var(--fx-fall, 500px));
+  }
+}
+
+@keyframes cinematic-fx-lens-rain-track {
+  0%,
+  50% {
+    opacity: 0.8;
+    transform: scaleY(0);
+  }
+  57% {
+    transform: scaleY(0.22);
+  }
+  60% {
+    transform: scaleY(0.26);
+  }
+  68% {
+    transform: scaleY(0.62);
+  }
+  71% {
+    transform: scaleY(0.66);
+  }
+  80% {
+    opacity: 0.7;
+    transform: scaleY(1);
+  }
+  92%,
+  100% {
+    opacity: 0;
+    transform: scaleY(1);
+  }
+}
+
+/* Sitting drops read roundish (squashed); sliding stretches the teardrop. */
+@keyframes cinematic-fx-lens-rain-stretch {
+  0%,
+  50% {
+    transform: scaleY(0.8);
+  }
+  54% {
+    transform: scaleY(1.24);
+  }
+  60% {
+    transform: scaleY(1.1);
+  }
+  66% {
+    transform: scaleY(1.24);
+  }
+  72% {
+    transform: scaleY(1.12);
+  }
+  80% {
+    transform: scaleY(1.2);
+  }
+  86% {
+    transform: scaleY(0.92);
+  }
+  100% {
+    transform: scaleY(0.88);
+  }
+}
+/* === /FX:lens_rain === */
+
+/* === FX:shadow_mist === */
+/* --------------------------------------------------------------------------
+   Shadow Mist — ominous villain aura. Turbulence-displaced smoke banks creep
+   along the bottom in front of the character, wisps rise behind, and a
+   breathing vignette squeezes the frame. Near-black palette with a cold
+   violet rim; deliberately ignores the theme hue.
+   -------------------------------------------------------------------------- */
+
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role^="bank"] {
+  bottom: -10%;
+  top: auto;
+  width: 86%;
+  height: calc(60% * var(--cinematic-effect-scale, 1));
+  background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22600%22 height=%22300%22 preserveAspectRatio=%22none%22><filter id=%22s%22 x=%22-40%25%22 y=%22-40%25%22 width=%22180%25%22 height=%22180%25%22><feGaussianBlur in=%22SourceGraphic%22 stdDeviation=%225%22 result=%22b%22/><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.013%22 numOctaves=%223%22 seed=%2219%22 result=%22n%22/><feDisplacementMap in=%22b%22 in2=%22n%22 scale=%22125%22/></filter><g filter=%22url(%23s)%22><ellipse cx=%22300%22 cy=%22202%22 rx=%22280%22 ry=%22140%22 fill=%22%236b57a8%22 opacity=%220.3%22/><ellipse cx=%22300%22 cy=%22210%22 rx=%22262%22 ry=%22122%22 fill=%22%23241947%22 opacity=%220.62%22/><ellipse cx=%22300%22 cy=%22222%22 rx=%22242%22 ry=%22104%22 fill=%22%2304020a%22/></g></svg>");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+/* Asymmetric bank heights keep the fog line from reading as a flat wall. */
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role="bank-b"] {
+  height: calc(46% * var(--cinematic-effect-scale, 1));
+}
+
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role="bank-a"] {
+  left: -14%;
+}
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role="bank-b"] {
+  right: -14%;
+  left: auto;
+  transform: scaleX(-1);
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--shadow-mist
+  .cinematic-effect-item[data-role="bank-a"] {
+  animation: cinematic-fx-shadow-mist-bank-a var(--fx-duration, 11s) ease-in-out
+    var(--fx-delay, 0s) infinite alternate;
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--shadow-mist
+  .cinematic-effect-item[data-role="bank-b"] {
+  animation: cinematic-fx-shadow-mist-bank-b var(--fx-duration, 11s) ease-in-out
+    var(--fx-delay, 0s) infinite alternate;
+}
+
+@keyframes cinematic-fx-shadow-mist-bank-a {
+  0% {
+    opacity: 0.88;
+    transform: translateX(0) scale(1);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(var(--fx-drift, 90px)) scale(1.06);
+  }
+}
+
+@keyframes cinematic-fx-shadow-mist-bank-b {
+  0% {
+    opacity: 1;
+    transform: scaleX(-1) translateX(0) scale(1.05);
+  }
+  100% {
+    opacity: 0.86;
+    transform: scaleX(-1) translateX(var(--fx-drift, 90px)) scale(1);
+  }
+}
+
+/* Breathing vignette: cold darkness pressing in from the frame edges. */
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role="veil"] {
+  inset: 0;
+  background:
+    radial-gradient(
+      115% 100% at 50% 42%,
+      transparent 44%,
+      rgba(30, 20, 56, 0.42) 72%,
+      rgba(8, 4, 20, 0.85) 100%
+    ),
+    radial-gradient(
+      140% 110% at 50% 110%,
+      rgba(12, 6, 28, 0.72) 0%,
+      transparent 55%
+    );
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--shadow-mist
+  .cinematic-effect-item[data-role="veil"] {
+  animation: cinematic-fx-shadow-mist-veil 7s ease-in-out infinite alternate;
+}
+
+@keyframes cinematic-fx-shadow-mist-veil {
+  0% {
+    opacity: 0.78;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+/* Wisps: slow smoke puffs rising behind the character. */
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role^="wisp"] {
+  left: var(--fx-x, 50%);
+  top: 104%;
+  width: var(--fx-size, 220px);
+  height: var(--fx-size, 220px);
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+}
+
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role="wisp-a"] {
+  background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22240%22><filter id=%22w%22 x=%22-40%25%22 y=%22-40%25%22 width=%22180%25%22 height=%22180%25%22><feGaussianBlur in=%22SourceGraphic%22 stdDeviation=%225%22 result=%22b%22/><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.028%22 numOctaves=%223%22 seed=%2231%22 result=%22n%22/><feDisplacementMap in=%22b%22 in2=%22n%22 scale=%2266%22/></filter><g filter=%22url(%23w)%22><circle cx=%22120%22 cy=%22120%22 r=%2284%22 fill=%22%237863b5%22 opacity=%220.24%22/><circle cx=%22120%22 cy=%22124%22 r=%2272%22 fill=%22%232a1e55%22 opacity=%220.52%22/><circle cx=%22120%22 cy=%22128%22 r=%2262%22 fill=%22%2305030e%22 opacity=%220.96%22/></g></svg>");
+}
+
+.cinematic-effect--shadow-mist .cinematic-effect-item[data-role="wisp-b"] {
+  background-image: url("data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 width=%22240%22 height=%22240%22><filter id=%22w%22 x=%22-40%25%22 y=%22-40%25%22 width=%22180%25%22 height=%22180%25%22><feGaussianBlur in=%22SourceGraphic%22 stdDeviation=%225%22 result=%22b%22/><feTurbulence type=%22fractalNoise%22 baseFrequency=%220.022%22 numOctaves=%223%22 seed=%2247%22 result=%22n%22/><feDisplacementMap in=%22b%22 in2=%22n%22 scale=%2278%22/></filter><g filter=%22url(%23w)%22><ellipse cx=%22120%22 cy=%22118%22 rx=%2292%22 ry=%2276%22 fill=%22%23705cae%22 opacity=%220.22%22/><ellipse cx=%22120%22 cy=%22122%22 rx=%2280%22 ry=%2264%22 fill=%22%23251a4c%22 opacity=%220.5%22/><ellipse cx=%22120%22 cy=%22128%22 rx=%2268%22 ry=%2252%22 fill=%22%2306030f%22 opacity=%220.94%22/></g></svg>");
+}
+
+.cinematic-wrapper.animate
+  .cinematic-effect--shadow-mist
+  .cinematic-effect-item[data-role^="wisp"] {
+  animation: cinematic-fx-shadow-mist-wisp var(--fx-duration, 9s) linear
+    var(--fx-delay, 0s) infinite;
+}
+
+@keyframes cinematic-fx-shadow-mist-wisp {
+  0% {
+    opacity: 0;
+    transform: translate3d(0, 0, 0) rotate(0deg) scale(0.7);
+  }
+  18% {
+    opacity: var(--fx-max-opacity, 0.4);
+  }
+  72% {
+    opacity: calc(var(--fx-max-opacity, 0.4) * 0.7);
+  }
+  100% {
+    opacity: 0;
+    transform: translate3d(var(--fx-drift-x, 0px), var(--fx-rise, -300px), 0)
+      rotate(var(--fx-spin, 20deg)) scale(1.25);
+  }
+}
+/* === /FX:shadow_mist === */
+
+/* --------------------------------------------------------------------------
+   Reduced motion — effects are optional accents; hide them entirely rather
+   than shipping degraded static variants of every effect.
+   -------------------------------------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .cinematic-wrapper .cinematic-effect-layer {
+    display: none !important;
+  }
+}

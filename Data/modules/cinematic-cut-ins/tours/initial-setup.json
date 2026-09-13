@@ -1,0 +1,102 @@
+{
+  "namespace": "cinematic-cut-ins",
+  "id": "initial-setup",
+  "title": "CINEMATIC.Tour.InitialSetup.Title",
+  "description": "CINEMATIC.Tour.InitialSetup.Description",
+  "display": true,
+  "restricted": true,
+  "canBeResumed": true,
+  "steps": [
+    {
+      "id": "intro",
+      "title": "CINEMATIC.Tour.InitialSetup.Step.Purpose.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.Purpose.Content"
+    },
+    {
+      "id": "open-actors",
+      "prepare": "control-actors",
+      "selector": ".cinematic-control-wrapper [data-action='tabSwitch'][data-tab='actors']",
+      "tooltipDirection": "DOWN",
+      "title": "CINEMATIC.Tour.InitialSetup.Step.OpenActors.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.OpenActors.Content"
+    },
+    {
+      "id": "choose-actor",
+      "prepare": "control-actors",
+      "selector": ".cinematic-control-wrapper .accordion-item:first-child .header-click-area",
+      "tooltipDirection": "RIGHT",
+      "advanceOnClick": true,
+      "title": "CINEMATIC.Tour.InitialSetup.Step.ChooseActor.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.ChooseActor.Content"
+    },
+    {
+      "id": "open-config",
+      "prepare": "expand-first-actor",
+      "selector": ".cinematic-control-wrapper .accordion-item:first-child [data-action='configure']",
+      "tooltipDirection": "RIGHT",
+      "advanceOnClick": true,
+      "advanceDelay": 400,
+      "title": "CINEMATIC.Tour.InitialSetup.Step.OpenConfig.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.OpenConfig.Content"
+    },
+    {
+      "id": "name-preset",
+      "prepare": "config-preset",
+      "selector": ".cinematic-config #preset-name",
+      "tooltipDirection": "RIGHT",
+      "title": "CINEMATIC.Tour.InitialSetup.Step.NamePreset.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.NamePreset.Content"
+    },
+    {
+      "id": "visual-tab",
+      "prepare": "config-preset",
+      "selector": ".cinematic-config .cinematic-tabs-nav [data-tab='visual']",
+      "tooltipDirection": "RIGHT",
+      "advanceOnClick": true,
+      "title": "CINEMATIC.Tour.InitialSetup.Step.VisualTab.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.VisualTab.Content"
+    },
+    {
+      "id": "text-tab",
+      "prepare": "config-visual",
+      "selector": ".cinematic-config .cinematic-tabs-nav [data-tab='text']",
+      "tooltipDirection": "RIGHT",
+      "advanceOnClick": true,
+      "title": "CINEMATIC.Tour.InitialSetup.Step.TextTab.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.TextTab.Content"
+    },
+    {
+      "id": "test-play",
+      "prepare": "config-text",
+      "selector": ".cinematic-config [data-action='test-play']",
+      "tooltipDirection": "UP",
+      "advanceOnClick": true,
+      "advanceDelay": 600,
+      "title": "CINEMATIC.Tour.InitialSetup.Step.TestPlay.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.TestPlay.Content"
+    },
+    {
+      "id": "save",
+      "prepare": "config-text",
+      "selector": ".cinematic-config [data-action='save-preset']",
+      "tooltipDirection": "UP",
+      "advanceOnClick": true,
+      "advanceDelay": 700,
+      "title": "CINEMATIC.Tour.InitialSetup.Step.Save.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.Save.Content"
+    },
+    {
+      "id": "triggers",
+      "prepare": "config-triggers",
+      "selector": ".cinematic-config .cinematic-tabs-nav [data-tab='triggers']",
+      "tooltipDirection": "RIGHT",
+      "title": "CINEMATIC.Tour.InitialSetup.Step.Triggers.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.Triggers.Content"
+    },
+    {
+      "id": "finish",
+      "title": "CINEMATIC.Tour.InitialSetup.Step.Finish.Title",
+      "content": "CINEMATIC.Tour.InitialSetup.Step.Finish.Content"
+    }
+  ]
+}

@@ -1,0 +1,56 @@
+name: Invisible.apply
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/status_invisible.svg
+command: |-
+  const invisibleEffect = [
+      {
+          filterType: "liquid",
+          filterId: "invisible",
+          color: 0x20AAEE,
+          time: 0,
+          blend: 8,
+          intensity: 4,
+          spectral: true,
+          scale: 0.9,
+          animated:
+          {
+              time:
+              {
+                  active: true,
+                  speed: 0.0010,
+                  animType: "move"
+              },
+              color:
+              {
+                  active: true,
+                  loopDuration: 6000,
+                  animType: "colorOscillation",
+                  val1: 0xFFFFFF,
+                  val2: 0x00AAFF
+              }
+          }
+      }
+  ];
+  // If the effect does not exist, apply it.
+  if (!TokenMagic.hasFilterId(token, `invisible`)) {
+    await token.TMFXaddUpdateFilters(invisibleEffect);
+  }
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725636189741
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: 0ICMplYdZoVQUuXO
+sort: 1000000
+_key: '!macros!0ICMplYdZoVQUuXO'
+

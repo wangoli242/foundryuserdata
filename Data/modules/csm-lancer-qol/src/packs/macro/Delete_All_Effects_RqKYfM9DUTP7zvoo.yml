@@ -1,0 +1,28 @@
+name: Delete All Effects
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: icons/tools/smithing/hammer-sledge-steel-grey.webp
+command: |-
+  if (token) {
+    await token.actor.deleteEmbeddedDocuments("ActiveEffect", token.actor.effects.map(e => e.id));
+  } else {
+    ui.notifications.error('Select a token to remove all effects.');
+  }
+folder: null
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1727116539073
+  modifiedTime: 1727116788197
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: RqKYfM9DUTP7zvoo
+sort: 0
+_key: '!macros!RqKYfM9DUTP7zvoo'
+

@@ -1,0 +1,151 @@
+<div class="color-picker-content form-content">
+    
+    <p class="hint on">{{localize "CRLNGN_UI.settings.colorPicker.hint"}}</p>
+    <p>&nbsp;</p>
+    <!-- Preset Theme Buttons -->
+    <div class="preset-themes">
+      <h4>{{localize "CRLNGN_UI.settings.colorPicker.presets"}}</h4>
+      <div class="preset-buttons">
+        {{#each themes}}
+        <button type="button" class="preset-button" data-tooltip="{{this.label}}" data-tooltip-direction="UP" data-theme="{{this.className}}">
+          <span class="color-swatch" style="background-color: {{this.colorPreview.[2]}}" data-tooltip="Accent" data-tooltip-direction="UP" title="Accent: {{this.colorPreview.[2]}}"></span>
+          <span class="color-swatch" style="background-color: {{this.colorPreview.[1]}}" data-tooltip="Secondary Dark" data-tooltip-direction="UP" title="Secondary Dark: {{this.colorPreview.[1]}}"></span>
+          <span class="color-swatch" style="background-color: {{this.colorPreview.[0]}}" data-tooltip="Secondary Light" data-tooltip-direction="UP" title="Secondary Light: {{this.colorPreview.[0]}}"></span>
+          {{!-- <span class="preset-name">{{this.label}}</span> --}}
+        </button>
+        {{/each}}
+      </div>
+    </div>
+
+    <p>&nbsp;</p>
+
+    <!-- Background Color Option (client setting, shown in both world and player color pickers) -->
+    <div class="form-group">
+      <label>
+        <input type="checkbox" name="applySecondaryColorToBg" {{#if applySecondaryColorToBg}}checked{{/if}} />
+        {{localize "CRLNGN_UI.settings.colorPicker.applySecondaryColorToBg.label"}}
+      </label>
+      <p class="hint">{{localize "CRLNGN_UI.settings.colorPicker.applySecondaryColorToBg.hint"}}</p>
+    </div>
+
+    <!-- Accent Color Picker -->
+    <div class="color-section accent-section collapsed">
+      <div class="section-header">
+        <h4><i class="fa-solid fa-caret-right toggle-icon"></i>{{localize "CRLNGN_UI.settings.colorPicker.accentColor"}}</h4>
+        <input type="text" class="color-hex-input accent-hex-input" value="{{accentHex}}" maxlength="7" placeholder="#000000" />
+        <span class="color-thumbnail" style="background-color: {{currentColors.accent}}"></span>
+      </div>
+
+      <div class="collapsible-content">
+        <div class="color-controls">
+          <div class="slider-group">
+            <label>{{localize "CRLNGN_UI.settings.colorPicker.hue"}}</label>
+            <input type="range" name="accentHue" min="0" max="360" value="{{accentHSL.h}}" />
+            <span class="value">{{accentHSL.h}}</span>
+          </div>
+
+          <div class="slider-group">
+            <label>{{localize "CRLNGN_UI.settings.colorPicker.saturation"}}</label>
+            <input type="range" name="accentSaturation" min="0" max="100" value="{{accentHSL.s}}" />
+            <span class="value">{{accentHSL.s}}%</span>
+          </div>
+
+          <div class="slider-group">
+            <label>{{localize "CRLNGN_UI.settings.colorPicker.lightness"}}</label>
+            <input type="range" name="accentLightness" min="0" max="100" value="{{accentHSL.l}}" />
+            <span class="value">{{accentHSL.l}}%</span>
+          </div>
+        </div>
+
+        <div class="accent-preview preview-box">
+          <div class="preview-item" style="background-color: {{currentColors.accent}}">
+            {{!-- <span class="preview-label">{{localize "CRLNGN_UI.settings.colorPicker.accentOnBackground"}}</span> --}}
+            <span class="contrast-rating {{accentOnBg.class}}">{{accentOnBg.label}}</span>
+          </div>
+          <div class="preview-item inverted">
+            {{!-- <span class="preview-label">{{localize "CRLNGN_UI.settings.colorPicker.textOnAccent"}}</span> --}}
+            <span class="contrast-rating {{textOnAccent.class}}">{{textOnAccent.label}}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Secondary Color Picker -->
+    <div class="color-section secondary-section collapsed">
+      <div class="section-header">
+        <h4><i class="fa-solid fa-caret-right toggle-icon"></i>{{localize "CRLNGN_UI.settings.colorPicker.secondaryColor"}}</h4>
+        <div class="secondary-tabs">
+          <button type="button" class="secondary-tab active" data-theme="dark">Dark</button>
+          <button type="button" class="secondary-tab" data-theme="light">Light</button>
+        </div>
+        <input type="text" class="color-hex-input secondary-hex-input" value="{{secondaryDarkHex}}" maxlength="7" placeholder="#000000" />
+        <span class="color-thumbnail secondary-thumbnail" style="background-color: {{secondaryColorDark}}"></span>
+      </div>
+
+      <div class="collapsible-content">
+        <div class="color-controls">
+          <div class="slider-group">
+            <label>{{localize "CRLNGN_UI.settings.colorPicker.hue"}}</label>
+            <input type="range" name="secondaryHue" min="0" max="360" value="{{secondaryDarkHSL.h}}" />
+            <span class="value">{{secondaryDarkHSL.h}}</span>
+          </div>
+
+          <div class="slider-group">
+            <label>{{localize "CRLNGN_UI.settings.colorPicker.saturation"}}</label>
+            <input type="range" name="secondarySaturation" min="0" max="100" value="{{secondaryDarkHSL.s}}" />
+            <span class="value">{{secondaryDarkHSL.s}}%</span>
+          </div>
+
+          <div class="slider-group">
+            <label>{{localize "CRLNGN_UI.settings.colorPicker.lightness"}}</label>
+            <input type="range" name="secondaryLightness" min="0" max="100" value="{{secondaryDarkHSL.l}}" />
+            <span class="value">{{secondaryDarkHSL.l}}%</span>
+          </div>
+        </div>
+
+        <div class="secondary-preview preview-box">
+          <div class="preview-item" style="background-color: {{secondaryColorDark}}">
+            <span class="preview-label">Dark Theme</span>
+          </div>
+          <div class="preview-item" style="background-color: {{secondaryColorLight}}; color: rgb(30, 30, 30);">
+            <span class="preview-label">Light Theme</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {{#if isDnd5e}}
+    <div class="color-section actor-overrides-section collapsed">
+      <div class="section-header">
+        <h4><i class="fa-solid fa-caret-right toggle-icon"></i>{{localize "CRLNGN_UI.settings.colorPicker.actorOverrides.title"}}</h4>
+      </div>
+      <div class="collapsible-content">
+        <p class="hint">{{localize "CRLNGN_UI.settings.colorPicker.actorOverrides.hint"}}</p>
+        <div class="crlngn-mode-switch" data-mode="{{overrideMode}}">
+          <span class="crlngn-mode-label {{#if (eq overrideMode "class")}}active{{/if}}" data-mode="class">{{localize "CRLNGN_UI.settings.colorPicker.actorOverrides.modeClass"}}</span>
+          <button type="button" class="crlngn-mode-toggle" role="switch" aria-checked="{{#if (eq overrideMode "race")}}true{{else}}false{{/if}}">
+            <span class="crlngn-mode-thumb"></span>
+          </button>
+          <span class="crlngn-mode-label {{#if (eq overrideMode "race")}}active{{/if}}" data-mode="race">{{localize "CRLNGN_UI.settings.colorPicker.actorOverrides.modeRace"}}</span>
+        </div>
+        <datalist id="crlngn-override-suggestions">
+          {{#each overrideSuggestions}}<option value="{{this}}"></option>{{/each}}
+        </datalist>
+        <div class="crlngn-override-rows">
+          {{#each overrideRows}}
+            <div class="crlngn-override-row" data-index="{{@index}}">
+              <input type="text" class="crlngn-override-name" list="crlngn-override-suggestions" value="{{this.name}}" placeholder="{{../overrideNamePlaceholder}}"/>
+              <label class="crlngn-override-swatch {{#unless this.hex}}crlngn-no-color{{/unless}}" data-tooltip="{{localize 'CRLNGN_UI.settings.colorPicker.actorOverrides.pickColor'}}" style="{{#if this.hex}}background-color: {{this.hex}}{{/if}}">
+                <input type="color" class="crlngn-override-color" value="{{#if this.hex}}{{this.hex}}{{else}}#000000{{/if}}"/>
+              </label>
+              <button type="button" class="crlngn-override-clear" data-tooltip="{{localize 'CRLNGN_UI.settings.colorPicker.actorOverrides.clearColor'}}"><i class="fa-solid fa-rotate-left"></i></button>
+              <button type="button" class="crlngn-override-remove" data-tooltip="{{localize 'CRLNGN_UI.settings.colorPicker.actorOverrides.removeRow'}}"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+          {{/each}}
+        </div>
+        <button type="button" class="crlngn-override-add"><i class="fa-solid fa-plus"></i> <span class="crlngn-override-add-label">{{overrideAddLabel}}</span></button>
+      </div>
+    </div>
+    {{/if}}
+
+</div>

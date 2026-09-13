@@ -1,0 +1,12 @@
+name: Lock On
+type: script
+scope: global
+img: systems/lancer/assets/icons/white/condition_lockon.svg
+command: |-
+  const pushEffect = game.modules.get('csm-lancer-qol').exposed.pushEffectByPlayer;
+  pushEffect('lockon', game.user.targets);
+folder: null
+flags:
+  core: {}
+_id: KxDb8YHhoWGG04uE
+_key: '!macros!KxDb8YHhoWGG04uE'

@@ -1,0 +1,18 @@
+name: HP0
+type: script
+scope: global
+img: systems/lancer/assets/icons/structure.svg
+command: |-
+  // This is a simple script to set HP to 0 without having to
+  // open the sheet.
+  if (canvas.tokens.controlled.length !== 1) {
+      ui.notifications.error("Select one and only one token.");
+      return;
+  }
+  await actor.update({"system.hp.value": 0});
+folder: null
+flags:
+  core: {}
+_id: TlDhxVuiYY5Ng56z
+_key: '!macros!TlDhxVuiYY5Ng56z'
+

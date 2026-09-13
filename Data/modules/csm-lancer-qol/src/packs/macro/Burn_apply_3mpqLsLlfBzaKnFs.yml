@@ -1,0 +1,56 @@
+name: Burn.apply
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: icons/svg/fire.svg
+command: |-
+  const burnEffect = [
+      {
+          filterType: "xglow",
+          filterId: "BurnGlow",
+          auraType: 2,
+          color: 0x903010,
+          thickness: 9.8,
+          scale: 4.,
+          time: 0,
+          auraIntensity: 2,
+          subAuraIntensity: 1.5,
+          threshold: 0.40,
+          discard: true,
+          animated: {
+              time: {
+                  active: true,
+                  speed: 0.0027,
+                  animType: "move"
+              },
+              thickness: {
+                  active: true,
+                  loopDuration: 3000,
+                  animType: "cosOscillation",
+                  val1: 2,
+                  val2: 5
+              }
+          }
+      }
+  ];
+  // If the effect does not exist, apply it.
+  if (!TokenMagic.hasFilterId(token, `BurnGlow`)) {
+    await token.TMFXaddUpdateFilters(burnEffect);
+  }
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725635638609
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: 3mpqLsLlfBzaKnFs
+sort: 1100000
+_key: '!macros!3mpqLsLlfBzaKnFs'
+

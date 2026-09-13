@@ -1,0 +1,18 @@
+name: Mimic Gun Roll
+type: script
+scope: global
+img: icons/svg/d20.svg
+command: |-
+  if (canvas.tokens.controlled.length !== 1) {
+      ui.notifications.error("Select one and only one token.");
+      return;
+  }
+  const setMimicGun = game.modules.get('csm-lancer-qol').exposed.mimicGun;
+  let response = await setMimicGun(token);
+  ui.notifications.info(response);
+folder: null
+flags:
+  core: {}
+_id: 6WDEe39mdeD2L7Uc
+_key: '!macros!6WDEe39mdeD2L7Uc'
+

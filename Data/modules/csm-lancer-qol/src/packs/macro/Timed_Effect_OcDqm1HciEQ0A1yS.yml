@@ -1,0 +1,12 @@
+name: Timed Effect
+type: script
+img: icons/svg/aura.svg
+scope: global
+command: |-
+  const setTimedEffect = game.modules.get('csm-lancer-qol').exposed.setTimedEffect;
+  setTimedEffect(token);
+folder: null
+flags:
+  core: {}
+_id: OcDqm1HciEQ0A1yS
+_key: '!macros!OcDqm1HciEQ0A1yS'

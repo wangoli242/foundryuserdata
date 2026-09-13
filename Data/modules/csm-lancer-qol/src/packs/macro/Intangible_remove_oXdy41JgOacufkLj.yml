@@ -1,0 +1,26 @@
+name: Intangible.remove
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/status_intangible.svg
+command: |-
+  await token.TMFXdeleteFilters(`intangible1`);
+  await token.TMFXdeleteFilters(`intangible2`);
+  await token.TMFXdeleteFilters(`intangible3`);
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725641628213
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: oXdy41JgOacufkLj
+sort: 100000
+_key: '!macros!oXdy41JgOacufkLj'
+

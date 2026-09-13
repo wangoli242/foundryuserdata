@@ -1,0 +1,143 @@
+{
+  "GLITCHSMITH-LIB": {
+    "module": {
+      "title": "GlitchSmith 라이브러리",
+      "description": "GlitchSmith 모듈들이 공통으로 쓰는 백엔드 라이브러리입니다. 다른 GlitchSmith 패키지가 의존성으로 자동 설치하며, 단독으로 사용하는 모듈은 아닙니다."
+    },
+    "currency": {
+      "menu": {
+        "name": "화폐 정의",
+        "label": "화폐 설정 열기",
+        "hint": "GlitchSmith 모듈들(스타일리시 상점, 스마트폰 위젯, 언박싱 미스터리)이 공통으로 사용하는 시트/가상 화폐를 정의합니다."
+      },
+      "dialog": {
+        "title": "화폐 정의",
+        "activeSystem": "현재 시스템",
+        "intro": "GlitchSmith 모듈에서 사용할 화폐를 정의합니다. 시트 화폐는 액터 데이터 경로나 액터 보유 아이템 수량과 매핑할 수 있고, 가상 화폐는 라이브러리에 저장되어 모든 모듈이 공유합니다.",
+        "sheetTitle": "시트 화폐",
+        "sheetHint": "액터 시트 또는 액터 보유 아이템에 저장되는 화폐입니다. 액터 경로는 직접 actor 값을 읽을 때 사용하고, Embedded Item은 행 아래 설정을 사용합니다.",
+        "sheetEmpty": "정의된 시트 화폐가 없습니다.",
+        "virtualTitle": "가상 화폐",
+        "virtualHint": "라이브러리가 관리하는 가상 화폐입니다. 잔고는 라이브러리에 저장되며 모든 모듈이 공유합니다.",
+        "virtualEmpty": "정의된 가상 화폐가 없습니다.",
+        "noPreset": "현재 게임 시스템에 대한 빌트인 프리셋이 없습니다.",
+        "addRow": "행 추가",
+        "removeRow": "삭제",
+        "pickIcon": "아이콘 선택",
+        "resetSheet": "시스템 기본값 복원",
+        "resetSheetConfirm": "시트 화폐 목록을 현재 시스템의 빌트인 기본값으로 교체할까요? 현재 시트 항목은 사라집니다.",
+        "save": "저장",
+        "cancel": "취소",
+        "saved": "화폐 정의를 저장했습니다.",
+        "col": {
+          "icon": "",
+          "id": "ID",
+          "name": "이름",
+          "symbol": "기호",
+          "rate": "환율",
+          "storage": "저장 방식",
+          "actorPath": "액터 경로",
+          "integer": "정수",
+          "primary": "기본"
+        },
+        "storage": {
+          "actorPath": "액터 경로",
+          "embeddedItem": "Embedded Item",
+          "itemType": "아이템 타입",
+          "quantityPath": "수량 경로",
+          "filters": "필터",
+          "createFromUuid": "생성 UUID"
+        },
+        "scan": {
+          "button": "액터 스캔",
+          "test": "테스트",
+          "hint": "토큰을 선택하거나 유저에 캐릭터를 지정한 뒤 스캔하면 아이템 기반 화폐 후보가 표시됩니다.",
+          "results": "후보",
+          "searchPlaceholder": "이름, 타입, 필터로 후보 검색...",
+          "count": "{total}개 중 {shown}개 표시",
+          "noMatch": "검색과 일치하는 후보가 없습니다.",
+          "apply": "적용",
+          "clear": "결과 지우기",
+          "summaryQty": "수량",
+          "noActor": "액터를 찾을 수 없습니다. 토큰을 선택하거나 유저에 캐릭터를 지정하세요.",
+          "empty": "{actor}에서 아이템 기반 화폐 후보를 찾지 못했습니다.",
+          "testInvalid": "테스트 전에 수량 경로와 아이템 타입 또는 필터를 입력하세요.",
+          "testSuccess": "{actor}: \"{item}\" 일치 — 수량 {quantity}.",
+          "testFail": "{actor}: 현재 설정과 일치하는 아이템이 없습니다.",
+          "dropHint": "또는 사이드바나 컴펜디엄의 화폐 아이템을 여기로 끌어다 놓으면 자동으로 채워집니다.",
+          "dropInvalid": "유효한 아이템을 끌어다 놓아야 자동으로 채워집니다."
+        },
+        "errors": {
+          "duplicateId": "중복 화폐 ID: {id}",
+          "saveFailed": "화폐 정의 저장에 실패했습니다."
+        }
+      }
+    },
+    "wallet": {
+      "headerButton": "지갑",
+      "hideHeaderButton": {
+        "name": "시트 헤더 지갑 버튼 숨기기",
+        "hint": "이 클라이언트의 액터 시트 헤더에서 GlitchSmith Library 가상 지갑 버튼을 숨깁니다. 지갑 잔액과 API는 그대로 사용할 수 있습니다."
+      },
+      "dialog": {
+        "title": "가상 화폐 지갑",
+        "hint": "이 액터의 가상 화폐 잔액을 조정합니다. 시트 화폐(시스템 동전)는 액터 시트에서 관리하세요.",
+        "noCurrencies": "정의된 가상 화폐가 없습니다. Game Settings → 화폐 정의에서 추가하세요.",
+        "noActor": "액터가 선택되지 않았습니다.",
+        "save": "저장",
+        "cancel": "취소",
+        "saved": "{count}개 화폐 잔액을 업데이트했습니다.",
+        "saveErrors": "일부 잔액 저장에 실패했습니다: {errors}"
+      }
+    },
+    "actorSheetMenu": {
+      "label": "GlitchSmith",
+      "setting": {
+        "name": "GlitchSmith 액터 시트 메뉴 통합",
+        "hint": "GlitchSmith 모듈이 액터 시트 헤더에 추가한 메뉴를 이 클라이언트에서 하나의 GlitchSmith 드롭다운으로 모읍니다. 기본값은 켜짐입니다."
+      }
+    },
+    "notifier": {
+      "disableName": "업데이트 알림 끄기",
+      "disableHint": "이 모듈의 업데이트 및 공지 다이얼로그를 표시하지 않습니다.",
+      "updateAvailable": "{title} — 업데이트 알림",
+      "newVersion": "{title} v{version} 사용 가능!",
+      "currentVersion": "(현재: v{current})",
+      "patchHighlights": "패치 노트",
+      "skipVersion": "이 버전 건너뛰기",
+      "criticalWarning": "⚠️ 중요 업데이트 권장",
+      "confirm": "확인",
+      "allConfirmButton": "모두 확인",
+      "allConfirm": "모든 알림을 확인했습니다",
+      "disableNotification": "알림 끄기",
+      "allDisableButton": "모두 알림 끄기",
+      "disableConfirm": "업데이트 알림이 비활성화되었습니다",
+      "allDisableConfirm": "표시 중인 모든 모듈의 업데이트 알림이 비활성화되었습니다",
+      "settingsReset": "{title}: 업데이트 설정 초기화됨",
+      "announcementTitle": "{title} — 공지",
+      "confirmNotice": "확인",
+      "close": "닫기",
+      "managerName": "업데이트 알림",
+      "managerLabel": "관리",
+      "managerHint": "이전에 끈 GlitchSmith 모듈들의 업데이트 알림을 다시 활성화합니다.",
+      "managerTitle": "GlitchSmith — 업데이트 알림 관리",
+      "managerSummary": "현재 {count}개 모듈의 업데이트 알림이 꺼져 있습니다:",
+      "managerConfirm": "전부 다시 켤까요?",
+      "managerNoneDisabled": "현재 알림이 꺼진 GlitchSmith 모듈이 없습니다.",
+      "managerSuccess": "{count}개 모듈의 업데이트 알림을 다시 활성화했습니다.",
+      "managerYes": "모두 켜기",
+      "managerNo": "취소",
+      "board": {
+        "title": "GlitchSmith — 알림 게시판",
+        "menuName": "GlitchSmith 알림 게시판",
+        "menuLabel": "게시판 열기",
+        "menuHint": "GlitchSmith 모듈들의 업데이트와 공지를 한곳에서 확인합니다.",
+        "tabUpdates": "업데이트",
+        "tabAnnouncements": "공지",
+        "manageDisabled": "끈 알림 관리",
+        "manageDisabledHint": "이전에 끈 모듈들의 알림을 다시 켭니다.",
+        "empty": "지금 표시할 GlitchSmith 알림이 없습니다."
+      }
+    }
+  }
+}

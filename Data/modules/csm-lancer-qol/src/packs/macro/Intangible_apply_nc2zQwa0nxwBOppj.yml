@@ -1,0 +1,83 @@
+name: Intangible.apply
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/status_intangible.svg
+command: |-
+  const intangibleEffect = [
+      {
+          filterType: "distortion",
+          filterId: "intangible1",
+          maskPath: "modules/tokenmagic/fx/assets/distortion-1.png",
+          maskSpriteScaleX: 5,
+          maskSpriteScaleY: 5,
+          padding: 20,
+          animated:
+          {
+              maskSpriteX: { active: true, speed: 0.05, animType: "move" },
+              maskSpriteY: { active: true, speed: 0.07, animType: "move" }
+          }
+      },
+      {
+          filterType: "adjustment",
+          filterId: "intangible2",
+          saturation: 1,
+          brightness: 1,
+          contrast: 1,
+          gamma: 1,
+          red: 0.2,
+          green: 0.2,
+          blue: 0.2,
+          alpha: 1,
+          animated:
+          {
+              alpha:
+              {
+                  active: true,
+                  loopDuration: 4000,
+                  animType: "syncCosOscillation",
+                  val1: 0.35,
+                  val2: 2.75
+              }
+          }
+      },
+      {
+          filterType: "glow",
+          filterId: "intangible3",
+          padding: 10,
+          color: 0x666666,
+          thickness: 0.1,
+          quality: 5,
+          zOrder: 9,
+          animated: {
+              thickness: {
+                  active: true,
+                  loopDuration: 4000,
+                  animType: "syncCosOscillation",
+                  val1: 6,
+                  val2: 0
+              }
+          }
+      }
+  ];
+  // If the effect does not exist, apply it.
+  if (!TokenMagic.hasFilterId(token, `intangible1`)) {
+    await token.TMFXaddUpdateFilters(intangibleEffect);
+  }
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725641598841
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: nc2zQwa0nxwBOppj
+sort: 300000
+_key: '!macros!nc2zQwa0nxwBOppj'
+

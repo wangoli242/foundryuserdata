@@ -1,0 +1,338 @@
+<div class="cinematic-control-wrapper">
+
+    <!-- 탭 네비게이션 -->
+    <nav class="cinematic-tabs">
+        <button type="button" data-action="tabSwitch" data-tab="actors" class="tab-btn {{#if isActorsTab}}active{{/if}}">
+            <i class="fas fa-user"></i> {{localize "CINEMATIC.Control.Tab.Actors"}}
+        </button>
+        <button type="button" data-action="tabSwitch" data-tab="groups" class="tab-btn {{#if isGroupsTab}}active{{/if}}">
+            <i class="fas fa-users"></i> {{localize "CINEMATIC.Control.Tab.AllOut"}}
+        </button>
+        <button type="button" data-action="tabSwitch" data-tab="scenes" class="tab-btn {{#if isScenesTab}}active{{/if}}">
+            <i class="fas fa-film"></i> {{localize "CINEMATIC.Control.Tab.Scenes"}}
+        </button>
+
+        <button type="button" data-action="tabSwitch" data-tab="styles" class="tab-btn {{#if isStylesTab}}active{{/if}}">
+            <i class="fas fa-paint-brush"></i> {{localize "CINEMATIC.Control.Tab.Style"}}
+        </button>
+    </nav>
+
+    <!-- ============================================ -->
+    <!-- TAB 1: ACTORS (개인 컷인) -->
+    <!-- ============================================ -->
+    {{#if isActorsTab}}
+    <div class="tab-content active" style="display:flex; flex-direction:column; height:100%; min-height: 0;">
+
+        <!-- 필터 & 검색 영역 -->
+        <div class="filter-search-area" style="margin-bottom: 10px; background: #222; padding: 5px; border-radius: 4px;">
+            <!-- 1. 필터 버튼 -->
+            <div class="filter-buttons" style="display:flex; gap: 5px; margin-bottom: 5px;">
+                <button type="button" data-action="setFilter" data-mode="all" 
+                    class="filter-btn {{#if isFilterAll}}active{{/if}}" title="Show All">
+                    {{localize "CINEMATIC.Control.Filter.All"}}
+                </button>
+                <button type="button" data-action="setFilter" data-mode="character" 
+                    class="filter-btn {{#if isFilterPC}}active{{/if}}" title="Player Characters">
+                    <i class="fas fa-user-alt"></i> PC
+                </button>
+                <button type="button" data-action="setFilter" data-mode="npc" 
+                    class="filter-btn {{#if isFilterNPC}}active{{/if}}" title="NPCs">
+                    <i class="fas fa-dragon"></i> NPC
+                </button>
+            </div>
+
+            <!-- 2. 검색창 -->
+            <div class="search-box-wrapper" style="position: relative;">
+                <input type="text" name="search" value="{{searchQuery}}" 
+                    placeholder="{{localize 'CINEMATIC.Control.Placeholder.Search'}}"
+                    autocomplete="off" style="color:#fff; width: 100%; padding-right: 30px;">
+                {{#if searchQuery}}
+                <button type="button" data-action="clearSearch" 
+                    style="position: absolute; right: 2px; top: 2px; bottom: 2px; background: transparent; border: none; color: #888; cursor: pointer;">
+                    <i class="fas fa-times"></i>
+                </button>
+                {{/if}}
+            </div>
+        </div>
+
+        {{#if hasActors}}
+        <div class="accordion" style="flex:1; overflow-y:auto; min-height:0; max-height:none;">
+            {{#each actors}}
+            <div class="accordion-item {{#if this.isExpanded}}expanded{{/if}}">
+                <div class="accordion-header">
+                    <!-- 체크박스 -->
+                    <input type="checkbox" class="actor-select-checkbox" data-actor-id="{{this.actor.id}}" data-action="toggleActorSelect" {{checked this.isSelected}}
+                        title="{{localize 'CINEMATIC.Control.Title.SelectGroup'}}">
+
+                    <div class="header-click-area" data-action="toggleAccordion" data-actor-id="{{this.actor.id}}">
+                        <img src="{{this.actor.img}}" width="32" height="32" class="actor-icon">
+                        <span class="actor-name">{{this.actor.name}}</span>
+                        <i class="fas fa-chevron-down arrow"></i>
+                    </div>
+                </div>
+
+                <div class="accordion-content">
+                    <button type="button" class="config-btn" data-action="configure" data-actor-id="{{this.actor.id}}">
+                        <i class="fas fa-bolt"></i> {{localize "CINEMATIC.Control.Btn.ActiveConfig"}}
+                    </button>
+
+                    {{#each this.presets}}
+                    <div class="preset-row">
+                        <button type="button" class="play-btn preset" data-action="play"
+                            data-actor-id="{{../this.actor.id}}" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.Play'}}">
+                            <i class="fas fa-play"></i> {{this.presetName}}
+                        </button>
+
+                        <button type="button" class="copy-btn prompt" data-action="promptInteraction"
+                            data-actor-id="{{../this.actor.id}}" data-preset-id="{{this.id}}"
+                            title="Send Interaction Prompt to Player" style="color: #ffce00 !important;">
+                            <i class="fas fa-fingerprint"></i>
+                        </button>
+
+                        {{#unless this.isGroupDefault}}
+
+                        <button type="button" class="copy-btn" data-action="exportPersonalPreset"
+                            data-actor-id="{{../this.actor.id}}" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Export.Btn.Export'}}">
+                            <i class="fas fa-file-export"></i>
+                        </button>
+
+                        <button type="button" class="copy-btn" data-action="copyMacro"
+                            data-actor-id="{{../this.actor.id}}" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.CopyMacro'}}">
+                            <i class="fas fa-code"></i>
+                        </button>
+
+                        <button type="button" class="delete-btn" data-action="deletePreset"
+                            data-actor-id="{{../this.actor.id}}" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.Delete'}}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+
+                        {{/unless}}
+                    </div>
+                    {{/each}}
+
+                    <button type="button" data-action="importPersonalPreset" data-actor-id="{{this.actor.id}}"
+                        title="{{localize 'CINEMATIC.Export.Btn.Import'}}"
+                        style="width:100%; margin-top:4px; background:#333; color:#888; border:1px dashed #555; padding:5px; cursor:pointer; font-size:0.85em; border-radius:3px;">
+                        <i class="fas fa-file-import"></i> {{localize "CINEMATIC.Export.Btn.Import"}}
+                    </button>
+                </div>
+            </div>
+            {{/each}}
+
+            <!-- 더 보기 버튼 -->
+            {{#if hasMore}}
+            <div style="padding: 10px; text-align: center;">
+                <button type="button" data-action="loadMore" style="width: 100%; background: #333; color: #ccc; border: 1px dashed #555; padding: 8px;">
+                    <i class="fas fa-chevron-down"></i> {{localize "CINEMATIC.Control.Btn.LoadMore"}} ({{remainingCount}})
+                </button>
+            </div>
+            {{/if}}
+        </div>
+
+        <!-- Actors 탭 하단 고정 버튼 -->
+        <div class="create-action-area" style="padding-top: 10px; border-top: 1px solid #444; background:#111; position:sticky; bottom:0; z-index:5;">
+            <div style="font-size:0.8em; color:#9aa; margin-bottom:6px;">{{localize "CINEMATIC.Control.Label.Selected"}}: <span id="selected-actor-count">{{selectedActorCount}}</span></div>
+            <div style="display:flex; gap:6px; margin-bottom:8px;">
+                <select name="bulkGroupId" style="flex:1;">
+                    <option value="">{{localize "CINEMATIC.Control.Option.ClearGroup"}}</option>
+                    {{#each actorGroupOptions}}
+                    <option value="{{this.id}}">{{this.label}}</option>
+                    {{/each}}
+                </select>
+                <button type="button" data-action="assignGroupSelected" style="width:auto; white-space:nowrap;">
+                    <i class="fas fa-object-group"></i> {{localize "CINEMATIC.Control.Btn.AssignGroupSelected"}}
+                </button>
+            </div>
+            <button type="button" data-action="playAllOut" class="all-out-btn create-new">
+                <i class="fas fa-meteor"></i> {{localize "CINEMATIC.Control.Btn.CreateSelected"}}
+            </button>
+        </div>
+
+        {{else}}
+        <div class="no-data">
+            <p>{{localize "CINEMATIC.Control.NoActors"}}</p>
+        </div>
+        {{/if}}
+    </div>
+    {{/if}}
+
+    <!-- ============================================ -->
+    <!-- TAB 2: GROUPS (총공격 프리셋) -->
+    <!-- ============================================ -->
+    {{#if isGroupsTab}}
+    <div class="tab-content active">
+
+        <div style="display:flex; gap:5px; margin-bottom:8px;">
+            <button type="button" data-action="importGroupPreset" style="flex:1; background:#444; color:#fff; border:none; padding:8px; cursor:pointer;">
+                <i class="fas fa-file-import"></i> {{localize "CINEMATIC.Export.Btn.Import"}}
+            </button>
+        </div>
+
+        {{#if hasGroupPresets}}
+        <div class="group-presets-section">
+            {{#each groupPresets}}
+            <div class="group-preset-card">
+                <!-- 헤더 -->
+                <div class="preset-header">
+                    <span class="preset-name">{{this.name}}</span>
+                    <div class="preset-actions">
+                        <button type="button" data-action="initiateVote" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.InitiateVote'}}" class="btn-vote">
+                            <i class="fas fa-fist-raised"></i>
+                        </button>
+                        <button type="button" data-action="playGroupPreset" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.PlayGroup'}}" class="btn-play">
+                            <i class="fas fa-play"></i>
+                        </button>
+
+                        <button type="button" data-action="copyGroupMacro" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.CopyGroup'}}" class="btn-copy">
+                            <i class="fas fa-code"></i>
+                        </button>
+
+                        <button type="button" data-action="exportGroupPreset" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Export.Btn.Export'}}" class="btn-copy">
+                            <i class="fas fa-file-export"></i>
+                        </button>
+                        <button type="button" data-action="editGroupPreset" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.EditGroup'}}" class="btn-edit">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button type="button" data-action="deleteGroupPreset" data-preset-id="{{this.id}}"
+                            title="{{localize 'CINEMATIC.Control.Title.DeleteGroup'}}" class="btn-del">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+                <!-- 미리보기 아이콘 -->
+                <div class="participant-previews">
+                    {{#each this.previews}}
+                    <img src="{{this.img}}" class="mini-avatar">
+                    {{/each}}
+                </div>
+            </div>
+            {{/each}}
+        </div>
+        {{else}}
+        <div class="no-data" style="margin-top: 20px;">
+            <p>{{localize "CINEMATIC.Control.NoGroups"}}</p>
+        </div>
+        {{/if}}
+    </div>
+    {{/if}}
+
+    <!-- ============================================ -->
+    <!-- TAB 3: SCENES (독립 연출) -->
+    <!-- ============================================ -->
+    {{#if isScenesTab}}
+    <div class="tab-content active" style="display:flex; flex-direction:column; gap:10px;">
+        
+        <div style="display:flex; gap:5px;">
+            <button type="button" data-action="createScene" style="flex:1; background:#e67e22; color:#fff; border:none; padding:10px; cursor:pointer; font-family:'Teko'; font-size:1.2em;">
+                <i class="fas fa-plus"></i> {{localize "CINEMATIC.Control.Btn.CreateScene"}}
+            </button>
+            <button type="button" data-action="importScenePreset" title="{{localize 'CINEMATIC.Export.Btn.Import'}}" style="width:40px; background:#444; color:#fff; border:none; cursor:pointer;">
+                <i class="fas fa-file-import"></i>
+            </button>
+        </div>
+
+        <!-- 목록 영역 -->
+        <div class="style-list" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:5px; min-height:0;">
+            {{#each scenes}}
+            <div class="style-card" style="display:flex; align-items:center; gap:10px; background:#222; padding:5px 10px; border-radius:4px; border:1px solid #444;">
+                
+                <!-- 이미지 (없으면 아이콘) -->
+                {{#if this.img}}
+                <img src="{{this.img}}" style="width:40px; height:40px; object-fit:cover; border-radius:4px; border:1px solid #666;">
+                {{else}}
+                <div style="width:40px; height:40px; display:flex; align-items:center; justify-content:center; background:#333; border-radius:4px; color:#666;">
+                    <i class="fas fa-image"></i>
+                </div>
+                {{/if}}
+
+                <div style="flex:1; overflow:hidden;">
+                    <div style="font-size:1.1em; color:#fff; font-weight:bold;">{{this.name}}</div>
+                    <div style="font-size:0.8em; color:#888; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;">{{this.text}}</div>
+                </div>
+                
+                <!-- 액션 버튼들 -->
+                <button type="button" data-action="playScene" data-id="{{this.id}}" class="btn-play" style="width:30px; background:#333;">
+                    <i class="fas fa-play"></i>
+                </button>
+                <button type="button" data-action="exportScenePreset" data-id="{{this.id}}" class="btn-copy" style="width:30px; background:#333;">
+                    <i class="fas fa-file-export"></i>
+                </button>
+                <button type="button" data-action="copySceneMacro" data-id="{{this.id}}" class="btn-copy" style="width:30px; background:#333;">
+                    <i class="fas fa-code"></i>
+                </button>
+                <button type="button" data-action="editScene" data-id="{{this.id}}" class="btn-edit" style="width:30px; background:#333;">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" data-action="deleteScene" data-id="{{this.id}}" class="btn-del" style="width:30px; background:#333;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            {{/each}}
+            
+            {{#unless hasScenes}}
+            <div class="no-data"><p>No scene presets created.</p></div>
+            {{/unless}}
+        </div>
+    </div>
+    {{/if}}    
+
+    <!-- ============================================ -->
+    <!-- TAB 4: GLOBAL STYLES -->
+    <!-- ============================================ -->
+    {{#if isStylesTab}}
+    <div class="tab-content active" style="display:flex; flex-direction:column; gap:10px;">
+        
+        <!-- 상단 액션 버튼 영역 -->
+        <div style="display:flex; gap:5px;">
+            <!-- 생성 버튼 -->
+            <button type="button" data-action="createGlobal" style="flex:1; background:#e61c34; color:#fff; border:none; padding:8px; cursor:pointer;">
+                <i class="fas fa-plus"></i> {{localize "CINEMATIC.Control.Btn.NewStyle"}}
+            </button>
+            
+            <button type="button" data-action="importGlobalPreset" title="{{localize 'CINEMATIC.Export.Btn.Import'}}" style="width:40px; background:#444; color:#fff; border:none; cursor:pointer;">
+                <i class="fas fa-file-import"></i>
+            </button>
+        </div>
+
+        <!-- 목록 영역 (기존 코드 유지) -->
+        <div class="style-list" style="flex:1; overflow-y:auto; display:flex; flex-direction:column; gap:5px; min-height:0;">
+            {{#each styles}}
+            <div class="style-card" style="display:flex; align-items:center; gap:10px; background:#222; padding:5px 10px; border-radius:4px; border:1px solid #444;">
+                {{#if this.usesActorImage}}
+                <div title="{{localize 'CINEMATIC.Config.Option.CurrentActorImage'}}"
+                    style="width:32px; height:32px; display:flex; align-items:center; justify-content:center; border-radius:50%; border:1px solid #4ecdc4; color:#4ecdc4; background:rgba(78,205,196,0.12); flex:0 0 32px;">
+                    <i class="fas fa-user"></i>
+                </div>
+                {{else}}
+                <img src="{{this.img}}" style="width:32px; height:32px; object-fit:cover; border-radius:50%; border:1px solid #666;">
+                {{/if}}
+                <span style="flex:1; font-size:1.2em; color:#fff;">{{this.name}}</span>
+                
+                <button type="button" data-action="exportGlobalPreset" data-id="{{this.id}}" class="btn-copy" style="width:30px;">
+                    <i class="fas fa-file-export"></i>
+                </button>
+                <button type="button" data-action="editGlobal" data-id="{{this.id}}" class="btn-edit" style="width:30px;">
+                    <i class="fas fa-edit"></i>
+                </button>
+                <button type="button" data-action="deleteGlobal" data-id="{{this.id}}" class="btn-del" style="width:30px;">
+                    <i class="fas fa-trash"></i>
+                </button>
+            </div>
+            {{/each}}
+            
+            {{#unless hasStyles}}
+            <div class="no-data"><p>No global styles found.</p></div>
+            {{/unless}}
+        </div>
+    </div>
+    {{/if}}
+</div>

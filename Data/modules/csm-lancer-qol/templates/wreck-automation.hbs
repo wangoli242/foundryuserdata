@@ -1,0 +1,94 @@
+<form autocomplete="off">
+
+    <div class="form-group">
+        <label>Enable Wrecks Automation</label>
+        <input type="checkbox" name="enableAutomationWrecks" {{#if enableAutomationWrecks}}checked{{/if}}
+            data-dtype="Boolean" />
+        <p class="notes">When set to true, automate wrecking things!</p>
+    </div>
+
+    <div class="form-group">
+        <label>Wreck Type</label>
+        <select name="wreckType">
+            <option value="token" {{#if (eq wreckType 'token' )}}selected{{/if}}>All wrecks will be tokens (selectable,
+                targetable)</option>
+            <option value="tile" {{#if (eq wreckType 'tile' )}}selected{{/if}}>All wrecks will be tiles (not targetable)
+            </option>
+            <option value="PCtoken" {{#if (eq wreckType 'PCtoken' )}}selected{{/if}}>Wrecks of Player Mechs will be
+                tokens,
+                NPCs will be tiles</option>
+            <option value="linkToken" {{#if (eq wreckType 'linkToken')}}selected{{/if}}>Wrecks of linked tokens will be
+                tokens, others will be tiles</option>
+        </select>
+        <p class="notes">Select how to present wrecks.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="userWrecksPath">
+        <label>Custom Wrecks Folder</label>
+        <div class="form-fields">
+            <button type="button" class="file-picker" data-type="folder" data-target="userWrecksPath"
+                title="Browse Files" tabindex="-1">
+                <i class="fas fa-file-import fa-fw"></i>
+            </button>
+            <input type="text" name="userWrecksPath" value="{{userWrecksPath}}" data-dtype="String">
+        </div>
+        <p class="notes">Location of your wrecks token images, explosion effects, and explosion sounds. Set to empty to disable.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="userWrecksOnly">
+        <label>Only Use Custom Wrecks Folder</label>
+        <div class="form-fields">
+            <input type="checkbox" name="userWrecksOnly" {{#if userWrecksOnly}}checked{{/if}} data-dtype="Boolean">
+        </div>
+        <p class="notes">This disables using the built-in wreck assets if there is a custom path set as well.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableRemoveFromCombat">
+        <label>Remove Wrecks from Combat Tracker</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableRemoveFromCombat" {{#if enableRemoveFromCombat}}checked{{/if}}
+                data-dtype="Boolean">
+        </div>
+        <p class="notes">When a token is reduced to zero structure, remove it from the combat tracker.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableWreckAnimation">
+        <label>Wreck Explosions</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableWreckAnimation" {{#if enableWreckAnimation}}checked{{/if}}
+                data-dtype="Boolean">
+        </div>
+        <p class="notes">Enable explosion effects when mechs are wrecked.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="enableWreckAudio">
+        <label>Wreck Audio</label>
+        <div class="form-fields">
+            <input type="checkbox" name="enableWreckAudio" {{#if enableWreckAudio}}checked{{/if}} data-dtype="Boolean">
+        </div>
+        <p class="notes">Enable explosion sound when mechs are wrecked.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="monstrosityWreck">
+        <label>Monstrosity wreck automation</label>
+        <div class="form-fields">
+            <input type="checkbox" name="monstrosityWreck" {{#if monstrosityWreck}}checked{{/if}} data-dtype="Boolean">
+        </div>
+        <p class="notes">Monstrosities have wrecks like mechs.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="squadLostOnDeath">
+        <label>Squad Lost on Death</label>
+        <div class="form-fields">
+            <input type="checkbox" name="squadLostOnDeath" {{#if squadLostOnDeath}}checked{{/if}} data-dtype="Boolean">
+        </div>
+        <p class="notes">Enable applying Squad Lost status on dead squads.</p>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" name="submit">
+            <i class="fas fa-save"></i>
+            <span>Save</span>
+        </button>
+    </div>
+</form>

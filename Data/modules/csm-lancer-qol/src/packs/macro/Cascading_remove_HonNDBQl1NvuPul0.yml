@@ -1,0 +1,25 @@
+name: Cascading.remove
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: icons/svg/paralysis.svg
+command: |-
+  await token.TMFXdeleteFilters(`cascading1`);
+  await token.TMFXdeleteFilters(`cascading2`);
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725643334977
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: HonNDBQl1NvuPul0
+sort: 200000
+_key: '!macros!HonNDBQl1NvuPul0'
+

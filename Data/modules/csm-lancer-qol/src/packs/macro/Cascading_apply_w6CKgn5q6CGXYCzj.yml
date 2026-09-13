@@ -1,0 +1,74 @@
+name: Cascading.apply
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: icons/svg/paralysis.svg
+command: |-
+  const cascadingEffect = [
+      {
+          filterType: "pixel",
+          filterId: "cascading1",
+          sizeX: 1,
+          sizeY: 1,
+          animated:
+          {
+              sizeX:
+              {
+                  active: true,
+                  animType: "halfCosOscillation",
+                  loopDuration: 1500,
+                  val1: 1,
+                  val2: 3
+              },
+              sizeY:
+              {
+                  active: true,
+                  animType: "halfCosOscillation",
+                  loopDuration: 1500,
+                  val1: 1,
+                  val2: 3
+              }
+          }
+      },
+      {
+          filterType: "bevel",
+          filterId: "cascading2",
+          rotation: 0,
+          thickness: 5,
+          lightColor: 0xFF0000,
+          lightAlpha: 0.8,
+          shadowColor: 0x00FF00,
+          shadowAlpha: 0.5,
+          animated:
+          {
+              rotation:
+              {
+                  active: true,
+                  clockWise: true,
+                  loopDuration: 1600,
+                  animType: "syncRotation"
+              }
+          }
+      }
+  ];
+  // If the effect does not exist, apply it.
+  if (!TokenMagic.hasFilterId(token, `cascading1`)) {
+    await token.TMFXaddUpdateFilters(cascadingEffect);
+  }
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725643305121
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: w6CKgn5q6CGXYCzj
+sort: 400000
+_key: '!macros!w6CKgn5q6CGXYCzj'
+

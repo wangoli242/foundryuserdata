@@ -1,0 +1,46 @@
+name: Jammed.apply
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/condition_jammed.svg
+command: |-
+  const jammedEffect = [
+      {
+          filterType: "electric",
+          filterId: "jammed",
+          color: 0xFFFFFF,
+          time: 0,
+          blend: 1,
+          intensity: 5,
+          animated:
+          {
+              time:
+              {
+                  active: true,
+                  speed: 0.0020,
+                  animType: "move"
+              }
+          }
+      }
+  ];
+  // If the effect does not exist, apply it.
+  if (!TokenMagic.hasFilterId(token, `jammed`)) {
+    await token.TMFXaddUpdateFilters(jammedEffect);
+  }
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725641855663
+  modifiedTime: 1725643702466
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: Sjm5ld6gTo35t78F
+sort: 0
+_key: '!macros!Sjm5ld6gTo35t78F'
+

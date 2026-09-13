@@ -1,0 +1,25 @@
+name: Danger Zone.remove
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/status_dangerzone.svg
+command: |-
+  await token.TMFXdeleteFilters(`DangerZoneGlow`);
+  await token.TMFXdeleteFilters(`DangerZoneBloom`);
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725637085615
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: oWndeeR82XXUbXBm
+sort: 900000
+_key: '!macros!oWndeeR82XXUbXBm'
+

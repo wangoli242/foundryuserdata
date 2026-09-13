@@ -1,0 +1,58 @@
+<section>
+    <div class="form-group">
+        <label>{{ localize "GlobalProgressClocks.Settings.defaultBackgroundColor.name" }}</label>
+        <div class="form-fields">
+            <color-picker name="defaultBackgroundColor" value="{{defaultBackgroundColor}}"></color-picker>
+            <a data-action="resetProperty" data-property="defaultBackgroundColor">
+                <i class="fa-solid fa-redo"></i>
+            </a>
+        </div>
+        <p class="hint">{{localize "GlobalProgressClocks.Settings.defaultBackgroundColor.hint"}}</p>
+    </div>
+    <div class="form-group">
+        <label>{{ localize "GlobalProgressClocks.Settings.defaultColor.name" }}</label>
+        <div class="form-fields">
+            <color-picker name="defaultColor" value="{{defaultColor}}"></color-picker>
+            <a data-action="resetProperty" data-property="defaultColor">
+                <i class="fa-solid fa-redo"></i>
+            </a>
+        </div>
+        <p class="hint">{{localize "GlobalProgressClocks.Settings.defaultColor.hint"}}</p>
+    </div>
+    <table class="clock-types">
+        <thead>
+            <tr>
+                <th>{{localize "GlobalProgressClocks.Settings.clockColors.name"}}</th>
+                <th>{{localize "GlobalProgressClocks.Settings.clockColors.color"}}</th>
+                <th class="controls"><a data-action="addClockColor"><i class="fa-solid fa-plus fa-fw"></i></a></th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#each clockColors as |type idx|}}
+                <tr data-clock-id="{{type.id}}">
+                    <td>
+                        <input type="hidden" name="clockColors.{{idx}}.id" value="{{type.id}}"/>
+                        <input type="text" name="clockColors.{{idx}}.name" value="{{type.name}}"/>
+                    </td>
+                    <td class="color">
+                        <color-picker name="{{concat "clockColors." idx ".color"}}" value="{{type.color}}"></color-picker>
+                    </td>
+                    <td class="controls"><a data-action="removeClockColor"><i class="fa-solid fa-trash fa-fw"></i></a></td>
+                </tr>
+            {{/each}}
+            {{#unless clockColors}}
+                <tr>
+                    <td colspan="3">{{localize "GlobalProgressClocks.Empty"}}</td>
+                </tr>
+            {{/unless}}
+        </tbody>
+    </table>
+    <div class="form-group buttons">
+        <button type="submit">
+            <i class="fa-regular fa-save"></i> {{localize "Save"}}
+        </button>
+        <button type="button" data-action="reset">
+            <i class="fa-solid fa-undo"></i> {{localize "Reset Changes"}}
+        </button>
+    </div>
+</section>

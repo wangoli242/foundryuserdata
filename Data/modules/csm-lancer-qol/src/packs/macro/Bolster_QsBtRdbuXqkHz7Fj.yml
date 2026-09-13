@@ -1,0 +1,23 @@
+name: Bolster
+type: script
+_id: QsBtRdbuXqkHz7Fj
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/accuracy.svg
+scope: global
+command: >-
+  const pushEffect = game.modules.get('csm-lancer-qol').exposed.pushEffectByPlayer;
+  pushEffect('bolster', game.user.targets);
+folder: null
+sort: 0
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.4.2
+  coreVersion: '11.315'
+  createdTime: 1738361809784
+  modifiedTime: 1738361849102
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_key: '!macros!QsBtRdbuXqkHz7Fj'

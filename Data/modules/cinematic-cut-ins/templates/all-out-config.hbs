@@ -1,0 +1,808 @@
+<!-- ★ 중요: 모든 내용을 감싸는 최상위 div가 하나만 있어야 함 -->
+<div class="all-out-config-root" style="height: 100%; display: flex; flex-direction: column;">
+
+    <div class="all-out-config-layout" style="flex: 1; min-height: 0;">
+        <!-- 좌측 설정 패널 -->
+        <div class="config-sidebar">
+            <!-- Tab Navigation (sidebar only) -->
+            <nav class="allout-tab-nav" role="tablist" aria-label="{{localize 'CINEMATIC.AllOut.GlobalSettings'}}">
+                <button type="button" class="allout-tab-button is-active" data-allout-tab="setup" role="tab" aria-selected="true">{{localize "CINEMATIC.AllOut.Tabs.Setup"}}</button>
+                <button type="button" class="allout-tab-button" data-allout-tab="panels" role="tab" aria-selected="false">{{localize "CINEMATIC.AllOut.Tabs.Panels"}}</button>
+                <button type="button" class="allout-tab-button" data-allout-tab="text" role="tab" aria-selected="false">{{localize "CINEMATIC.AllOut.Tabs.Text"}}</button>
+                <button type="button" class="allout-tab-button" data-allout-tab="actors" role="tab" aria-selected="false">{{localize "CINEMATIC.AllOut.Tabs.Actors"}}</button>
+                <button type="button" class="allout-tab-button" data-allout-tab="layers" role="tab" aria-selected="false">{{localize "CINEMATIC.AllOut.Tabs.Layers"}}</button>
+            </nav>
+
+            <div class="allout-tab-panels">
+
+            <!-- ===== SETUP TAB ===== -->
+            <div class="allout-tab-panel is-active" data-allout-tab-panel="setup" role="tabpanel">
+            <!-- 상단: 프리셋 & 글로벌 설정 -->
+            <div class="panel-section"
+                style="background: rgba(0,0,0,0.2); padding: 10px; border-radius: 5px; margin-bottom: 10px;">
+                <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+                    <select id="preset-select" style="flex: 1;">
+                        <option value="">{{localize "CINEMATIC.AllOut.SelectPreset"}}</option>
+                        {{#each presets}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                    <button type="button" data-action="loadPreset" title="{{localize 'CINEMATIC.Config.BtnLoad'}}" style="width:auto;">
+                        <i class="fas fa-upload"></i>
+                    </button>
+                    <button type="button" data-action="exportPreset" title="{{localize 'CINEMATIC.Export.Btn.Export'}}" style="width:auto;">
+                        <i class="fas fa-file-export"></i>
+                    </button>
+                    <button type="button" data-action="deletePreset" title="{{localize 'CINEMATIC.Config.BtnDelete'}}"
+                        style="color:#ff6b6b; width:auto;">
+                        <i class="fas fa-trash"></i>
+                    </button>
+                </div>
+                <div style="display: flex; gap: 5px;">
+                    <input type="text" id="preset-name"
+                        placeholder="{{localize 'CINEMATIC.AllOut.Placeholder.PresetName'}}">
+                    <button type="button" data-action="savePreset" style="width:auto;">
+                        <i class="fas fa-save"></i>
+                    </button>
+                    <button type="button" data-action="importPreset" title="{{localize 'CINEMATIC.Export.Btn.Import'}}" style="width:auto;">
+                        <i class="fas fa-file-import"></i>
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-section" style="margin-bottom: 15px;">
+                <h3 style="font-family:'Teko'; border-bottom:1px solid #444; margin-bottom:5px;">{{localize
+                    "CINEMATIC.AllOut.GlobalSettings"}}</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr; gap: 5px;">
+                    <div class="form-group allout-theme-field">
+                        <label>{{localize "CINEMATIC.AllOut.Label.Theme"}}</label>
+                        <select name="theme">
+                            {{#each themeList}}
+                            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group allout-theme-field">
+                        <label>{{localize "CINEMATIC.Config.Label.ScreenMood"}}</label>
+                        <select name="screenMood">
+                            {{#each screenMoodOptions}}
+                            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "CINEMATIC.Config.Label.ScreenMoodOpacity"}}</label>
+                        <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                            <input type="range" name="screenMoodOpacity" min="0" max="100" step="1" value="{{screenMoodOpacity}}" style="flex:1;">
+                            <span class="range-value" style="font-family:monospace; width:35px; text-align:right;">{{screenMoodOpacity}}%</span>
+                        </div>
+                    </div>
+                    <div class="form-group allout-theme-field">
+                        <label>{{localize "CINEMATIC.Config.Label.CinematicEffect"}}</label>
+                        <select name="cinematicEffect">
+                            <option value="{{cinematicEffectNoneOption.id}}" {{#if cinematicEffectNoneOption.selected}}selected{{/if}}>{{localize cinematicEffectNoneOption.label}}</option>
+                            {{#each cinematicEffectGroups}}
+                            <optgroup label="{{localize this.label}}">
+                                {{#each this.options}}
+                                <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
+                                {{/each}}
+                            </optgroup>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group allout-theme-field">
+                        <label>{{localize "CINEMATIC.Config.Label.CinematicEffectStrength"}}</label>
+                        <select name="cinematicEffectStrength">
+                            {{#each cinematicEffectStrengthOptions}}
+                            <option value="{{this.id}}" {{#if this.selected}}selected{{/if}}>{{localize this.label}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "CINEMATIC.Config.Label.CinematicEffectPositionX"}}</label>
+                        <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                            <input type="range" name="cinematicEffectOffsetX" min="-100" max="100" step="1" value="{{cinematicEffectOffsetX}}" style="flex:1;">
+                            <span class="range-value" style="font-family:monospace; width:42px; text-align:right;">{{cinematicEffectOffsetX}}%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "CINEMATIC.Config.Label.CinematicEffectPositionY"}}</label>
+                        <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                            <input type="range" name="cinematicEffectOffsetY" min="-100" max="100" step="1" value="{{cinematicEffectOffsetY}}" style="flex:1;">
+                            <span class="range-value" style="font-family:monospace; width:42px; text-align:right;">{{cinematicEffectOffsetY}}%</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "CINEMATIC.Config.Label.CinematicEffectScale"}}</label>
+                        <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                            <input type="range" name="cinematicEffectScale" min="25" max="300" step="1" value="{{cinematicEffectScale}}" style="flex:1;">
+                            <span class="range-value" style="font-family:monospace; width:42px; text-align:right;">{{cinematicEffectScale}}%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div
+                    style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 5px; margin-top:5px; align-items:center;">
+                    <div class="form-group" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <label style="font-size:0.8em; flex:0;">{{localize "CINEMATIC.AllOut.Label.Voice"}}
+                            (Start)</label>
+                        <file-picker name="sound" type="audio" value="{{sound}}" style="width:100%; color:white;"></file-picker>
+                    </div>
+                    <div class="form-group" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <label style="font-size:0.8em; flex:0;">{{localize "CINEMATIC.AllOut.Label.SFX"}}
+                            (Start)</label>
+                        <file-picker name="sfx" type="audio" value="{{sfx}}" style="width:100%;"></file-picker>
+                    </div>
+
+                    <!-- Finish SFX -->
+                    <div class="form-group" style="flex-direction:column; align-items:flex-start; gap:2px;">
+                        <label style="font-size:0.8em; flex:0; color:#e67e22;">{{localize
+                            "CINEMATIC.AllOut.Label.Finish"}} (End)</label>
+                        <file-picker name="finishSound" type="audio" value="{{finishSound}}"
+                            style="width:100%;"></file-picker>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 5px;">
+                    <label>{{localize "CINEMATIC.Config.Label.Shake"}}</label>
+                    <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                        <input type="range" name="shakeIntensity" min="0" max="10" step="1" value="{{shakeIntensity}}"
+                            style="flex:1;">
+                        <span style="font-family:monospace;">{{shakeIntensity}}</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 5px;">
+                    <label>{{localize "CINEMATIC.AllOut.Label.Speed"}}</label>
+                    <div style="flex:1; display:flex; align-items:center; gap:5px;">
+                        <input type="range" name="speedMultiplier" min="0.5" max="2.0" step="0.1" value="{{speedMultiplier}}"
+                            style="flex:1;">
+                        <span class="speed-value" style="font-family:monospace; width:35px; text-align:right;">{{speedMultiplier}}x</span>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-top: 5px; border-top: 1px dashed #444; padding-top: 5px;">
+                    <label style="color:#e67e22; font-weight:bold;">
+                        <i class="fas fa-swords"></i> {{localize "CINEMATIC.AllOut.Label.LinkCombat"}}
+                    </label>
+                    <div style="flex:1; display:flex; justify-content:flex-end;">
+                        <input type="checkbox" name="linkToCombat" {{checked linkToCombat}}>
+                    </div>
+                </div>
+                <p style="font-size:0.75em; color:#888; text-align:right; margin-top:-5px; margin-bottom:5px;">
+                    {{localize "CINEMATIC.AllOut.Hint.LinkCombat"}}
+                </p>
+
+                <div class="form-group" style="margin-top: 5px;">
+                    <label>{{localize "CINEMATIC.AllOut.Label.VoteButtonText"}}</label>
+                    <input type="text" name="voteButtonText" value="{{voteButtonText}}" placeholder="JOIN ASSAULT" style="flex:1;">
+                </div>
+
+                <div class="form-group" style="margin-top: 5px;">
+                    <label>{{localize "CINEMATIC.AllOut.Label.VoteButtonSound"}}</label>
+                    <file-picker name="voteButtonSound" type="audio" value="{{voteButtonSound}}" placeholder="modules/cinematic-cut-ins/sounds/click.mp3" style="flex:1;"></file-picker>
+                </div>
+            </div>
+            </div> <!-- /allout-tab-panel setup -->
+
+            <!-- ===== PANELS TAB ===== -->
+            <div class="allout-tab-panel" data-allout-tab-panel="panels" role="tabpanel">
+            <div class="panel-section" style="margin-bottom: 15px;">
+                <div class="manual-panel-mode-section {{#if (eq panelMode "manual")}}active{{/if}}">
+                    <div class="form-group" style="align-items:center;">
+                        <label style="color:#9b8cf2; font-weight:bold;" title="{{localize 'CINEMATIC.AllOut.PanelMode.Tooltip'}}">
+                            <i class="fas fa-th-large"></i> {{localize "CINEMATIC.AllOut.PanelMode.Label"}}
+                        </label>
+                        <div class="form-fields" style="display:flex; gap:5px;">
+                            <select name="panelMode" style="flex:1;">
+                                <option value="theme" {{#if (eq panelMode "theme")}}selected{{/if}}>{{localize "CINEMATIC.AllOut.PanelMode.Theme"}}</option>
+                                <option value="manual" {{#if (eq panelMode "manual")}}selected{{/if}}>{{localize "CINEMATIC.AllOut.PanelMode.Manual"}}</option>
+                            </select>
+                            <button type="button" data-action="resetManualPanels" title="{{localize 'CINEMATIC.AllOut.PanelMode.BtnReset'}}" style="width:auto;">
+                                <i class="fas fa-eraser"></i>
+                            </button>
+                            <button type="button" data-action="undoManualPanelSplit" title="{{localize 'CINEMATIC.AllOut.PanelMode.BtnUndo'}}" style="width:auto;">
+                                <i class="fas fa-undo"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="manual-line-style-picker">
+                        <label title="{{localize 'CINEMATIC.AllOut.PanelMode.LineStyle.Tooltip'}}">
+                            <i class="fas fa-pen-nib"></i> {{localize "CINEMATIC.AllOut.PanelMode.LineStyle.Label"}}
+                        </label>
+                        <select name="manualLineStyle">
+                            {{#each manualLineStyleOptions}}
+                            <option value="{{this.id}}" data-default-width="{{this.width}}" {{#if this.selected}}selected{{/if}}>{{localize this.labelKey}}</option>
+                            {{/each}}
+                        </select>
+                    </div>
+                    <div class="manual-line-width-picker">
+                        <label title="{{localize 'CINEMATIC.AllOut.PanelMode.LineStyle.WidthTooltip'}}">
+                            <i class="fas fa-up-right-and-down-left-from-center"></i> {{localize "CINEMATIC.AllOut.PanelMode.LineStyle.WidthLabel"}}
+                        </label>
+                        <div class="manual-line-width-fields">
+                            <input type="range" name="manualLineWidth" min="{{manualLineWidthMin}}" max="{{manualLineWidthMax}}" step="0.1" value="{{manualLineWidth}}">
+                            <span class="manual-line-width-value">{{manualLineWidth}}</span>
+                        </div>
+                    </div>
+                    <div class="manual-line-color-picker">
+                        <label title="{{localize 'CINEMATIC.AllOut.PanelMode.LineStyle.ColorTooltip'}}">
+                            <i class="fas fa-palette"></i> {{localize "CINEMATIC.AllOut.PanelMode.LineStyle.ColorLabel"}}
+                        </label>
+                        <div class="manual-line-color-fields">
+                            <label class="manual-line-toggle"><input type="checkbox" name="manualLineTint" {{checked manualLineTint}}> {{localize "CINEMATIC.AllOut.PanelMode.LineStyle.TintLabel"}}</label>
+                            <input type="color" name="manualLineColor" value="{{manualLineColor}}">
+                            <label class="manual-line-toggle"><input type="checkbox" name="manualLineGlow" {{checked manualLineGlow}}> {{localize "CINEMATIC.AllOut.PanelMode.LineStyle.GlowLabel"}}</label>
+                        </div>
+                    </div>
+                    <div class="manual-line-style-note">{{localize "CINEMATIC.AllOut.PanelMode.LineStyle.Note"}}</div>
+                    <div class="manual-guides-toggle-picker">
+                        <label class="manual-line-toggle" title="{{localize 'CINEMATIC.AllOut.PanelMode.HideGuides.Tooltip'}}">
+                            <input type="checkbox" class="manual-panel-guides-input">
+                            <i class="fas fa-eye-slash"></i> {{localize "CINEMATIC.AllOut.PanelMode.HideGuides.Label"}}
+                        </label>
+                    </div>
+                    <div class="manual-panel-mode-hint">
+                        <span class="manual-panel-mode-tip">{{localize "CINEMATIC.AllOut.PanelMode.Hint"}}</span>
+                        <div class="manual-panel-theme-guide">
+                            <div class="manual-panel-theme-guide-title">{{localize "CINEMATIC.AllOut.PanelMode.ThemeGuide.Title"}}</div>
+                            <div class="manual-panel-theme-guide-row recommended">
+                                <span class="manual-panel-theme-guide-tag">{{localize "CINEMATIC.AllOut.PanelMode.ThemeGuide.RecommendedLabel"}}</span>
+                                <span class="manual-panel-theme-guide-list">{{localize "CINEMATIC.AllOut.PanelMode.ThemeGuide.RecommendedThemes"}}</span>
+                            </div>
+                            <div class="manual-panel-theme-guide-row limited">
+                                <span class="manual-panel-theme-guide-tag">{{localize "CINEMATIC.AllOut.PanelMode.ThemeGuide.LimitedLabel"}}</span>
+                                <span class="manual-panel-theme-guide-list">{{localize "CINEMATIC.AllOut.PanelMode.ThemeGuide.LimitedThemes"}}</span>
+                            </div>
+                            <div class="manual-panel-theme-guide-note">{{localize "CINEMATIC.AllOut.PanelMode.ThemeGuide.Note"}}</div>
+                        </div>
+                        <span class="manual-panel-status" data-state="off"></span>
+                    </div>
+                    <input type="hidden" name="manualPanels" value="{{manualPanelsJson}}">
+                </div>
+            </div>
+            </div> <!-- /allout-tab-panel panels -->
+
+            <!-- ===== TEXT TAB ===== -->
+            <div class="allout-tab-panel" data-allout-tab-panel="text" role="tabpanel">
+            <div class="panel-section" style="margin-bottom: 15px;">
+                <h3 style="font-family:'Teko'; border-bottom:1px solid #444; margin-bottom:5px;">{{localize "CINEMATIC.AllOut.Label.TextGroup"}}</h3>
+
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 5px; margin-bottom: 8px;">
+                    <div class="form-group">
+                        <label>{{localize "CINEMATIC.AllOut.Label.Font"}}</label>
+                        <div class="form-fields">
+                            <select name="fontFamily" style="font-family:'{{fontFamily}}';">
+                                {{#each fontList}}
+                                <option value="{{this.id}}" style="font-family:'{{this.id}}';" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+                                {{/each}}
+                            </select>
+                            <label class="font-toggle {{#if fontBold}}active{{/if}}" title="{{localize 'CINEMATIC.Config.Label.FontBold'}}">
+                                <input type="checkbox" name="fontBold" {{checked fontBold}}>
+                                <span>B</span>
+                            </label>
+                            <label class="font-toggle font-toggle-italic {{#if fontItalic}}active{{/if}}" title="{{localize 'CINEMATIC.Config.Label.FontItalic'}}">
+                                <input type="checkbox" name="fontItalic" {{checked fontItalic}}>
+                                <span>I</span>
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>{{localize "CINEMATIC.AllOut.Label.SubFont"}}</label>
+                        <div class="form-fields">
+                            <select name="subFontFamily" style="font-family:'{{subFontFamily}}';">
+                                {{#each subFontList}}
+                                <option value="{{this.id}}" style="font-family:'{{this.id}}';" {{#if this.selected}}selected{{/if}}>{{this.label}}</option>
+                                {{/each}}
+                            </select>
+                            <label class="font-toggle {{#if subFontBold}}active{{/if}}" title="{{localize 'CINEMATIC.Config.Label.FontBold'}}">
+                                <input type="checkbox" name="subFontBold" {{checked subFontBold}}>
+                                <span>B</span>
+                            </label>
+                            <label class="font-toggle font-toggle-italic {{#if subFontItalic}}active{{/if}}" title="{{localize 'CINEMATIC.Config.Label.FontItalic'}}">
+                                <input type="checkbox" name="subFontItalic" {{checked subFontItalic}}>
+                                <span>I</span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-group" style="margin-bottom: 8px; justify-content: flex-end;">
+                    <label style="margin-right:10px;">{{localize "CINEMATIC.AllOut.Label.ShowNames"}}</label>
+                    <input type="checkbox" name="showNames" {{checked showNames}}>
+                </div>
+
+                <h3 style="font-family:'Teko'; border-bottom:1px solid #444; margin-bottom:5px;">{{localize "CINEMATIC.AllOut.CenterMessage"}}</h3>
+                
+                <!-- Main Title Settings -->
+                <div style="background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px; margin-bottom: 5px;">
+                    <label style="font-size: 0.8em; color: #aaa; margin-bottom:2px; display:block;">Main Title</label>
+                    <input type="text" name="centerMainText" value="{{centerMainText}}" placeholder="ALL-OUT ATTACK" style="margin-bottom: 5px;">
+                    
+                    <!-- Row 1: Size & Position -->
+                    <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+                        <div class="mini-field" title="Size (rem)">
+                            <label>S</label>
+                            <input type="number" name="centerMainSize" value="{{centerMainSize}}" step="0.5">
+                        </div>
+                        <div class="mini-field" title="Pos X">
+                            <label>X</label>
+                            <input type="number" name="centerMainX" value="{{centerMainX}}" step="10">
+                        </div>
+                        <div class="mini-field" title="Pos Y">
+                            <label>Y</label>
+                            <input type="number" name="centerMainY" value="{{centerMainY}}" step="10">
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Colors -->
+                    <div style="display: flex; gap: 10px;">
+                        <div class="mini-field" style="flex:1; flex-direction:row; gap:5px; padding:2px 5px;">
+                            <label style="width:auto;">Text</label>
+                            <color-picker name="centerMainColor" value="{{centerMainColor}}" style="flex:1; height:20px;"></color-picker>
+                        </div>
+                        <div class="mini-field" style="flex:1; flex-direction:row; gap:5px; padding:2px 5px;">
+                            <label style="width:auto;">Shadow</label>
+                            <color-picker name="centerMainShadow" value="{{centerMainShadow}}" style="flex:1; height:20px;"></color-picker>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub Title Settings -->
+                <div style="background: rgba(255,255,255,0.05); padding: 5px; border-radius: 4px;">
+                    <label style="font-size: 0.8em; color: #aaa; margin-bottom:2px; display:block;">Sub Title</label>
+                    <input type="text" name="centerSubText" value="{{centerSubText}}" placeholder="TIME TO FINISH IT!" style="margin-bottom: 5px;">
+                    
+                    <!-- Row 1: Size & Position -->
+                    <div style="display: flex; gap: 5px; margin-bottom: 5px;">
+                        <div class="mini-field" title="Size (rem)">
+                            <label>S</label>
+                            <input type="number" name="centerSubSize" value="{{centerSubSize}}" step="0.5">
+                        </div>
+                        <div class="mini-field" title="Pos X">
+                            <label>X</label>
+                            <input type="number" name="centerSubX" value="{{centerSubX}}" step="10">
+                        </div>
+                        <div class="mini-field" title="Pos Y">
+                            <label>Y</label>
+                            <input type="number" name="centerSubY" value="{{centerSubY}}" step="10">
+                        </div>
+                    </div>
+
+                    <!-- Row 2: Colors -->
+                    <div style="display: flex; gap: 10px;">
+                        <div class="mini-field" style="flex:1; flex-direction:row; gap:5px; padding:2px 5px;">
+                            <label style="width:auto;">Text</label>
+                            <color-picker name="centerSubColor" value="{{centerSubColor}}" style="flex:1; height:20px;"></color-picker>
+                        </div>
+                        <div class="mini-field" style="flex:1; flex-direction:row; gap:5px; padding:2px 5px;">
+                            <label style="width:auto;">Shadow</label>
+                            <color-picker name="centerSubShadow" value="{{centerSubShadow}}" style="flex:1; height:20px;"></color-picker>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            </div> <!-- /allout-tab-panel text -->
+
+            <!-- ===== ACTORS TAB ===== -->
+            <div class="allout-tab-panel" data-allout-tab-panel="actors" role="tabpanel">
+            <div class="participants-section">
+                <h3 style="font-family:'Teko'; border-bottom:1px solid #444; display:flex; justify-content:space-between; align-items:center;">
+                    <span>{{localize "CINEMATIC.AllOut.Participants"}}</span>
+                    <button type="button" data-action="addParticipant"
+                        style="font-size:0.7em; padding:2px 10px; background:rgba(0,0,0,0.3); border:1px solid #555; color:#aaa; border-radius:3px; cursor:pointer; display:flex; align-items:center; gap:4px;">
+                        <i class="fas fa-user-plus"></i> {{localize "CINEMATIC.AllOut.AddParticipant"}}
+                    </button>
+                </h3>
+                {{#each participants}}
+                <div class="participant-card"
+                    data-index="{{this.index}}"
+                    style="background: #2a2a2a; padding: 10px; margin-bottom: 10px; border-radius: 4px; border-left: 4px solid {{this.color}};">
+
+                    <!-- [1] 상단 헤더: 이미지 + 이름 + 삭제 버튼 -->
+                    <div
+                        style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px;">
+
+                        <!-- 캐릭터 이미지 (여기에 있었습니다!) -->
+                        <div
+                            style="position: relative; width: 64px; height: 64px; flex: 0 0 64px; border: 1px solid #555; background: #000;">
+                            <img src="{{this.img}}" style="width:100%; height:100%; object-fit:cover;">
+                            <!-- 이미지 변경 버튼 -->
+                            <file-picker name="participant.{{this.index}}.img" type="image" value="{{this.img}}"
+                                style="position:absolute; inset:0; opacity:0; cursor:pointer;"
+                                title="Change Image"></file-picker>
+                        </div>
+
+                        <!-- 이름 (표시 텍스트) -->
+                        <div style="flex: 1;">
+                            <label style="font-size: 0.8em; color: #aaa; display: block; margin-bottom: 2px;">{{localize
+                                "CINEMATIC.AllOut.Placeholder.DisplayText"}}</label>
+                            <input type="text" name="participant.{{this.index}}.text" value="{{this.text}}"
+                                placeholder="Name"
+                                style="width:100%; font-family:'Teko'; font-size:1.5em; height: 40px;">
+                        </div>
+
+                        <!-- 삭제 버튼 -->
+                        <button type="button" data-action="removeRow" data-index="{{this.index}}"
+                            style="color:#ff6b6b; background:rgba(0,0,0,0.3); border:1px solid #ff6b6b; width: 30px; height: 30px; display:flex; align-items:center; justify-content:center; border-radius: 4px;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div class="detail-group"
+                        style="background:rgba(0,0,0,0.2); padding:6px; border-radius:3px; margin-bottom:8px; border-left:3px solid #9b59b6;">
+                        <div class="label-row"
+                            style="color:#c7a4ff; font-size:0.75em; margin-bottom:5px; font-weight:bold; text-transform:uppercase;">
+                            {{localize "CINEMATIC.AllOut.Label.ReadyGroup"}}</div>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
+                            <div>
+                                <label style="font-size:0.7em; display:block; color:#ccc;">{{localize
+                                    "CINEMATIC.AllOut.Label.ReadyImage"}}</label>
+                                <file-picker name="participant.{{this.index}}.readyImg" type="image"
+                                    value="{{this.readyImg}}" style="width:100%;"></file-picker>
+                            </div>
+                            <div>
+                                <label style="font-size:0.7em; display:block; color:#ccc;">{{localize
+                                    "CINEMATIC.AllOut.Label.ReadySFX"}}</label>
+                                <file-picker name="participant.{{this.index}}.readySfx" type="audio"
+                                    value="{{this.readySfx}}" style="width:100%;"></file-picker>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- [2] 하단 그리드: 설정값들 -->
+                    <div class="details-grid"
+                        style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; font-size: 0.9em;">
+
+                        <!-- [Row 1-Left] CHARACTER 설정 -->
+                        <div class="detail-group" style="background:rgba(0,0,0,0.2); padding:5px; border-radius:3px;">
+                            <input type="hidden" name="participant.{{this.index}}.readyTransformEnabled"
+                                value="{{this.readyTransformEnabledValue}}" data-ready-transform-enabled>
+                            <div class="label-row"
+                                style="color:#aaa; font-size:0.8em; margin-bottom:4px; font-weight:bold; display:flex; justify-content:space-between; align-items:center; gap:5px;">
+                                <span>{{localize "CINEMATIC.AllOut.Label.Character"}}</span>
+                                <div style="display:flex; gap:2px; background:rgba(0,0,0,0.25); border:1px solid #444; border-radius:3px; padding:1px;">
+                                    <button type="button" class="active" data-transform-mode="base"
+                                        title="{{localize 'CINEMATIC.AllOut.Label.BaseAdjustTitle'}}"
+                                        style="height:22px; min-width:54px; padding:0 5px; border:1px solid #e61c34; border-radius:2px; background:#e61c34; color:#fff; font-size:0.85em; display:flex; align-items:center; justify-content:center; gap:3px; cursor:pointer;">
+                                        <i class="fas fa-image"></i> {{localize "CINEMATIC.AllOut.Label.BaseAdjust"}}
+                                    </button>
+                                    <button type="button" data-transform-mode="ready"
+                                        title="{{localize 'CINEMATIC.AllOut.Label.ReadyAdjustTitle'}}"
+                                        style="height:22px; min-width:54px; padding:0 5px; border:1px solid #444; border-radius:2px; background:rgba(0,0,0,0.2); color:#aaa; font-size:0.85em; display:flex; align-items:center; justify-content:center; gap:3px; cursor:pointer;">
+                                        <i class="fas fa-sync"></i> {{localize "CINEMATIC.AllOut.Label.ReadyAdjust"}}
+                                    </button>
+                                </div>
+                            </div>
+
+                            <div data-transform-panel="base">
+                            <!-- 1. ZOOM (등장/플래시 단계) -->
+                            <div style="display:flex; gap:4px; margin-bottom:4px; align-items:center;">
+                                <span
+                                    style="font-size:0.7em; font-weight:bold; color:#e67e22; width:35px; text-align:right; margin-right:2px;">ZOOM</span>
+
+                                <div class="mini-field" title="Zoom Scale" style="flex:1;">
+                                    <label>S</label>
+                                    <input type="number" name="participant.{{this.index}}.zoom" value="{{this.zoom}}"
+                                        step="0.1" placeholder="2.0">
+                                </div>
+                                <div class="mini-field" title="Zoom X" style="flex:1;">
+                                    <label>X</label>
+                                    <input type="number" name="participant.{{this.index}}.zoomX" value="{{this.zoomX}}"
+                                        step="10" placeholder="0">
+                                </div>
+                                <div class="mini-field" title="Zoom Y" style="flex:1;">
+                                    <label>Y</label>
+                                    <input type="number" name="participant.{{this.index}}.zoomY" value="{{this.zoomY}}"
+                                        step="10" placeholder="0">
+                                </div>
+                            </div>
+
+                            <!-- 2. GRID (최종 배치 단계) -->
+                            <div style="display:flex; gap:4px; margin-bottom:6px; align-items:center;">
+                                <span
+                                    style="font-size:0.7em; font-weight:bold; color:#3498db; width:35px; text-align:right; margin-right:2px;">GRID</span>
+
+                                <div class="mini-field" title="Final Scale" style="flex:1;">
+                                    <label>S</label>
+                                    <input type="number" name="participant.{{this.index}}.scale" value="{{this.scale}}"
+                                        step="0.1" placeholder="1.0">
+                                </div>
+                                <div class="mini-field" title="Final X" style="flex:1;">
+                                    <label>X</label>
+                                    <input type="number" name="participant.{{this.index}}.x" value="{{this.x}}"
+                                        step="10" placeholder="0">
+                                </div>
+                                <div class="mini-field" title="Final Y" style="flex:1;">
+                                    <label>Y</label>
+                                    <input type="number" name="participant.{{this.index}}.y" value="{{this.y}}"
+                                        step="10" placeholder="0">
+                                </div>
+                            </div>
+
+                            <!-- 3. POSE (회전/반전) -->
+                            <div style="display:flex; gap:4px; margin-bottom:6px; align-items:center;">
+                                <span style="font-size:0.7em; font-weight:bold; color:#9b59b6; width:35px; text-align:right; margin-right:2px;">POSE</span>
+
+                                <div class="mini-field" title="{{localize 'CINEMATIC.Config.Label.Rotation'}}" style="flex:1;">
+                                    <label>Rot</label>
+                                    <input type="number" name="participant.{{this.index}}.rotation" value="{{this.rotation}}" step="5" placeholder="0">
+                                </div>
+
+                                <div class="mini-field" title="{{localize 'CINEMATIC.Config.Label.Mirror'}}" style="width:30px;">
+                                    <label><i class="fas fa-exchange-alt"></i></label>
+                                    <input type="checkbox" name="participant.{{this.index}}.mirror" {{checked this.mirror}}>
+                                </div>
+                                
+                                <!-- 여백 채우기 (Grid와 줄맞춤) -->
+                                <div style="flex:1;"></div>
+                            </div>                            
+                            </div>
+
+                            <div data-transform-panel="ready" style="display:none;">
+                            <div style="display:flex; gap:4px; margin-bottom:4px; align-items:center;">
+                                <span
+                                    style="font-size:0.7em; font-weight:bold; color:#e67e22; width:35px; text-align:right; margin-right:2px;">ZOOM</span>
+
+                                <div class="mini-field" title="{{localize 'CINEMATIC.AllOut.Label.ReadyZoomScaleTitle'}}" style="flex:1;">
+                                    <label>S</label>
+                                    <input type="number" name="participant.{{this.index}}.readyZoom" value="{{this.readyZoom}}"
+                                        step="0.1" placeholder="2.0">
+                                </div>
+                                <div class="mini-field" title="{{localize 'CINEMATIC.AllOut.Label.ReadyZoomXTitle'}}" style="flex:1;">
+                                    <label>X</label>
+                                    <input type="number" name="participant.{{this.index}}.readyZoomX" value="{{this.readyZoomX}}"
+                                        step="10" placeholder="0">
+                                </div>
+                                <div class="mini-field" title="{{localize 'CINEMATIC.AllOut.Label.ReadyZoomYTitle'}}" style="flex:1;">
+                                    <label>Y</label>
+                                    <input type="number" name="participant.{{this.index}}.readyZoomY" value="{{this.readyZoomY}}"
+                                        step="10" placeholder="0">
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:4px; margin-bottom:6px; align-items:center;">
+                                <span
+                                    style="font-size:0.7em; font-weight:bold; color:#3498db; width:35px; text-align:right; margin-right:2px;">GRID</span>
+
+                                <div class="mini-field" title="{{localize 'CINEMATIC.AllOut.Label.ReadyFinalScaleTitle'}}" style="flex:1;">
+                                    <label>S</label>
+                                    <input type="number" name="participant.{{this.index}}.readyScale" value="{{this.readyScale}}"
+                                        step="0.1" placeholder="1.0">
+                                </div>
+                                <div class="mini-field" title="{{localize 'CINEMATIC.AllOut.Label.ReadyFinalXTitle'}}" style="flex:1;">
+                                    <label>X</label>
+                                    <input type="number" name="participant.{{this.index}}.readyX" value="{{this.readyX}}"
+                                        step="10" placeholder="0">
+                                </div>
+                                <div class="mini-field" title="{{localize 'CINEMATIC.AllOut.Label.ReadyFinalYTitle'}}" style="flex:1;">
+                                    <label>Y</label>
+                                    <input type="number" name="participant.{{this.index}}.readyY" value="{{this.readyY}}"
+                                        step="10" placeholder="0">
+                                </div>
+                            </div>
+
+                            <div style="display:flex; gap:4px; margin-bottom:6px; align-items:center;">
+                                <span style="font-size:0.7em; font-weight:bold; color:#9b59b6; width:35px; text-align:right; margin-right:2px;">POSE</span>
+
+                                <div class="mini-field" title="{{localize 'CINEMATIC.Config.Label.Rotation'}}" style="flex:1;">
+                                    <label>Rot</label>
+                                    <input type="number" name="participant.{{this.index}}.readyRotation" value="{{this.readyRotation}}" step="5" placeholder="0">
+                                </div>
+                                <div class="mini-field" title="{{localize 'CINEMATIC.Config.Label.Mirror'}}" style="width:30px;">
+                                    <label><i class="fas fa-exchange-alt"></i></label>
+                                    <input type="checkbox" name="participant.{{this.index}}.readyMirror" {{checked this.readyMirror}}>
+                                </div>
+
+                                <div style="flex:1;"></div>
+                            </div>
+                            </div>
+
+                            <!-- 4. COLOR & SHADOW -->
+                            <div
+                                style="display:flex; align-items:center; gap:5px; padding-top:4px; border-top:1px solid rgba(255,255,255,0.05);">
+                                <div class="mini-field" style="flex:1; flex-direction:row; gap:5px;">
+                                    <label style="width:auto;">{{localize "CINEMATIC.AllOut.Label.Shadow"}}</label>
+                                    <color-picker name="participant.{{this.index}}.shadow" value="{{this.shadow}}"
+                                        style="height:20px; flex:1;"></color-picker>
+                                </div>
+                                <div class="mini-field" style="flex:1; flex-direction:row; gap:5px;">
+                                    <label style="width:auto;">{{localize "CINEMATIC.AllOut.Label.Color"}}</label>
+                                    <color-picker name="participant.{{this.index}}.color" value="{{this.color}}"
+                                        style="height:20px; flex:1;"></color-picker>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- [Row 1-Right] TEXT 설정 -->
+                        <div class="detail-group" style="background:rgba(0,0,0,0.2); padding:5px; border-radius:3px;">
+                            <div class="label-row"
+                                style="color:#aaa; font-size:0.8em; margin-bottom:2px; font-weight:bold;">{{localize
+                                "CINEMATIC.AllOut.Label.TextGroup"}}</div>
+
+                            <div style="display:flex; gap:2px; margin-bottom:4px;">
+                                <div class="mini-field" title="Text Size">
+                                    <label>{{localize "CINEMATIC.AllOut.Label.ScaleShort"}}</label>
+                                    <input type="number" name="participant.{{this.index}}.textSize"
+                                        value="{{this.textSize}}" step="0.5" placeholder="6">
+                                </div>
+                                <div class="mini-field">
+                                    <label>{{localize "CINEMATIC.AllOut.Label.X"}}</label>
+                                    <input type="number" name="participant.{{this.index}}.textX" value="{{this.textX}}"
+                                        step="10">
+                                </div>
+                                <div class="mini-field">
+                                    <label>{{localize "CINEMATIC.AllOut.Label.Y"}}</label>
+                                    <input type="number" name="participant.{{this.index}}.textY" value="{{this.textY}}"
+                                        step="10">
+                                </div>
+                            </div>
+
+                            <div style="display:flex; align-items:center; gap:5px;">
+                                <div class="mini-field" style="flex:1; flex-direction:row; gap:5px;">
+                                    <label style="width:auto;">{{localize "CINEMATIC.AllOut.Label.TextColor"}}</label>
+                                    <color-picker name="participant.{{this.index}}.textColor" value="{{this.textColor}}"
+                                        style="height:20px; flex:1;"></color-picker>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- [Row 2-Full] AUDIO 설정 -->
+                        <div class="detail-group"
+                            style="background:rgba(0,0,0,0.2); padding:5px; border-radius:3px; grid-column: span 2;">
+                            <div class="label-row"
+                                style="color:#aaa; font-size:0.8em; margin-bottom:2px; font-weight:bold;">{{localize
+                                "CINEMATIC.AllOut.Label.AudioGroup"}}</div>
+
+                            <div style="display: flex; gap: 10px;">
+                                <div style="flex: 1;">
+                                    <label style="font-size:0.7em; display:block; color:#ccc;">{{localize
+                                        "CINEMATIC.AllOut.Label.IndivVoice"}}</label>
+                                    <file-picker name="participant.{{this.index}}.sound" type="audio"
+                                        value="{{this.sound}}" style="width:100%;"></file-picker>
+                                </div>
+                                <div style="flex: 1;">
+                                    <label style="font-size:0.7em; display:block; color:#ccc;">{{localize
+                                        "CINEMATIC.AllOut.Label.IndivSFX"}}</label>
+                                    <file-picker name="participant.{{this.index}}.sfx" type="audio" value="{{this.sfx}}"
+                                        style="width:100%;"></file-picker>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                {{/each}}
+            </div>
+            </div> <!-- /allout-tab-panel actors -->
+
+            <!-- ===== LAYERS TAB ===== -->
+            <div class="allout-tab-panel" data-allout-tab-panel="layers" role="tabpanel">
+            <div class="panel-section" style="margin-top: 10px;">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:10px;">
+                    <h3 style="margin:0;"><i class="fas fa-layer-group"></i> Global Layers</h3>
+                    <button type="button" data-action="addGlobalLayer" style="width:auto; padding:5px 10px; font-size:0.8em; background:#333;">
+                        <i class="fas fa-plus"></i> Add Layer
+                    </button>
+                </div>
+
+                {{#each uiAllOutLayers}}
+                {{#if this.isSystem}}
+                <div style="background: rgba(255,255,255,0.1); padding: 6px 8px; border-radius: 4px; border: 1px dashed #666; display:flex; justify-content:space-between; margin-bottom:6px;">
+                    <span style="font-weight:bold; color:#ccc; font-size:0.85em;"><i class="fas fa-lock"></i> [Z:{{this.z}}] {{this.label}}</span>
+                    <span style="font-size:0.75em; color:#888;">Fixed</span>
+                </div>
+                {{else}}
+                <div class="layer-row" style="background:rgba(0,0,0,0.3); padding:8px; border-radius:5px; border:1px solid #444; display:flex; flex-direction:column; gap:5px; border-left:4px solid #f7c76f; margin-bottom:6px;">
+                    <div style="display:flex; gap:5px; align-items:center;">
+                        <div class="mini-field" style="width:50px; height:40px; background:#444; justify-content:space-between; padding:2px;" title="Layer z-index">
+                            <label style="color:#f7c76f; font-weight:bold; font-size:0.7em;">Z-Idx</label>
+                            <input type="number" name="globalLayers.{{this.originalIndex}}.zIndex" value="{{this.data.zIndex}}" step="1" style="color:#fff; font-weight:bold; height:20px; font-size:1em;">
+                        </div>
+
+                        <file-picker name="globalLayers.{{this.originalIndex}}.src" type="imagevideo" value="{{this.data.src}}" style="flex:1; height:40px;"></file-picker>
+
+                        <button type="button" data-action="removeGlobalLayer" data-index="{{this.originalIndex}}" style="width:30px; height:40px; color:#ff6b6b;">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+
+                    <div style="display:flex; gap:5px; align-items:center; flex-wrap:wrap;">
+                        <select name="globalLayers.{{this.originalIndex}}.blend" style="width:90px; font-size:0.8em; background:#222;">
+                            <option value="normal" {{#if (eq this.data.blend "normal")}}selected{{/if}}>normal</option>
+                            <option value="screen" {{#if (eq this.data.blend "screen")}}selected{{/if}}>screen</option>
+                            <option value="multiply" {{#if (eq this.data.blend "multiply")}}selected{{/if}}>multiply</option>
+                            <option value="overlay" {{#if (eq this.data.blend "overlay")}}selected{{/if}}>overlay</option>
+                            <option value="lighten" {{#if (eq this.data.blend "lighten")}}selected{{/if}}>lighten</option>
+                            <option value="darken" {{#if (eq this.data.blend "darken")}}selected{{/if}}>darken</option>
+                            <option value="plus-lighter" {{#if (eq this.data.blend "plus-lighter")}}selected{{/if}}>plus-lighter</option>
+                        </select>
+
+                        <div class="mini-field" style="width:35px;"><label>O</label><input type="number" name="globalLayers.{{this.originalIndex}}.opacity" value="{{this.data.opacity}}" step="0.1" min="0" max="1"></div>
+                        <div class="mini-field" style="width:35px;"><label>S</label><input type="number" name="globalLayers.{{this.originalIndex}}.scale" value="{{this.data.scale}}" step="0.1"></div>
+                        <div class="mini-field" style="width:35px;"><label>X</label><input type="number" name="globalLayers.{{this.originalIndex}}.x" value="{{this.data.x}}" step="10"></div>
+                        <div class="mini-field" style="width:35px;"><label>Y</label><input type="number" name="globalLayers.{{this.originalIndex}}.y" value="{{this.data.y}}" step="10"></div>
+                        <div class="mini-field" style="width:35px;"><label>Rot</label><input type="number" name="globalLayers.{{this.originalIndex}}.rotation" value="{{this.data.rotation}}" step="45"></div>
+                        <div class="mini-field" style="width:20px;"><label><i class="fas fa-exchange-alt"></i></label><input type="checkbox" name="globalLayers.{{this.originalIndex}}.mirror" {{checked this.data.mirror}}></div>
+                        <div class="mini-field" style="width:20px;"><label><i class="fas fa-sync"></i></label><input type="checkbox" name="globalLayers.{{this.originalIndex}}.loop" {{checked this.data.loop}}></div>
+                        <div class="mini-field" style="width:20px;"><label><i class="fas fa-volume-up"></i></label><input type="checkbox" name="globalLayers.{{this.originalIndex}}.videoAudio" {{checked this.data.videoAudio}}></div>
+                        <div class="mini-field" style="width:45px;"><label>Dly</label><input type="number" name="globalLayers.{{this.originalIndex}}.delay" value="{{this.data.delay}}" step="0.1" min="0"></div>
+                    </div>
+
+                    <div style="display:flex; gap:5px; align-items:center; border-top:1px dashed #555; padding-top:4px; margin-top:2px;">
+                        <label style="font-size:0.8em; color:#e67e22; font-weight:bold;"><i class="fas fa-mask"></i> Mask:</label>
+
+                        <select name="globalLayers.{{this.originalIndex}}.maskMode" style="width:70px; font-size:0.8em; background:#222; color:#fff;" class="mask-mode-select">
+                            <option value="none" {{#if (eq this.data.maskMode "none")}}selected{{/if}}>None</option>
+                            <option value="shape" {{#if (eq this.data.maskMode "shape")}}selected{{/if}}>Shape</option>
+                            <option value="image" {{#if (eq this.data.maskMode "image")}}selected{{/if}}>Image</option>
+                        </select>
+
+                        <select name="globalLayers.{{this.originalIndex}}.maskShape" style="flex:1; font-size:0.8em; background:#222; color:#ccc; display: {{#if (eq this.data.maskMode 'shape')}}block{{else}}none{{/if}};" class="mask-input-shape">
+                            <option value="circle" {{#if (eq this.data.maskShape "circle")}}selected{{/if}}>Circle</option>
+                            <option value="ellipse" {{#if (eq this.data.maskShape "ellipse")}}selected{{/if}}>Oval</option>
+                            <option value="inset" {{#if (eq this.data.maskShape "inset")}}selected{{/if}}>Square</option>
+                        </select>
+
+                        <div class="mask-input-image" style="flex:1; display: {{#if (eq this.data.maskMode 'image')}}block{{else}}none{{/if}};">
+                            <file-picker name="globalLayers.{{this.originalIndex}}.maskSrc" type="image" value="{{this.data.maskSrc}}" style="width:100%; height:24px; font-size:0.8em;"></file-picker>
+                        </div>
+
+                        <div class="mask-input-dims" style="display: {{#if (eq this.data.maskMode 'none')}}none{{else}}flex{{/if}}; gap:1px;">
+                            <input type="number" name="globalLayers.{{this.originalIndex}}.maskSize" value="{{this.data.maskSize}}" placeholder="S%" title="Size (%)" style="width:35px; height:24px; font-size:0.8em; text-align:center; padding:0; background:#333; border:1px solid #555; color:#fff;">
+                            <input type="number" name="globalLayers.{{this.originalIndex}}.maskX" value="{{this.data.maskX}}" placeholder="X%" title="Pos X (%)" style="width:35px; height:24px; font-size:0.8em; text-align:center; padding:0; background:#333; border:1px solid #555; color:#fff;">
+                            <input type="number" name="globalLayers.{{this.originalIndex}}.maskY" value="{{this.data.maskY}}" placeholder="Y%" title="Pos Y (%)" style="width:35px; height:24px; font-size:0.8em; text-align:center; padding:0; background:#333; border:1px solid #555; color:#fff;">
+                        </div>
+                    </div>
+                </div>
+                {{/if}}
+                {{/each}}
+
+                {{#unless uiGlobalLayers.length}}
+                <div style="text-align:center; color:#666; font-size:0.9em; padding:10px;">No global layers added yet.</div>
+                {{/unless}}
+            </div>
+            </div> <!-- /allout-tab-panel layers -->
+
+            </div> <!-- /allout-tab-panels -->
+        </div>
+
+        <!-- 우측 프리뷰 패널 -->
+        <div class="preview-sidebar">
+            <!-- [수정 1] 헤더에서 버튼 제거 (원복) -->
+            <div class="preview-header"
+                style="background:rgba(0,0,0,0.5); padding:5px; text-align:center; color:#888; font-size:0.8em;">
+                {{localize "CINEMATIC.AllOut.LivePreview"}}
+            </div>
+            
+            <div class="preview-stage-wrapper">
+                <div id="group-preview-stage" class="cinematic-group-container"></div>
+                <div class="manual-panel-editor-overlay" data-active="false" aria-hidden="true">
+                    <svg class="manual-panel-editor-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                        <g class="manual-panel-shapes"></g>
+                        <g class="manual-panel-labels"></g>
+                        <g class="manual-panel-drag-overlay"></g>
+                    </svg>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 실행 버튼 영역 -->
+    <div style="padding-top: 10px; border-top: 1px solid #444; display: flex; gap: 5px;">
+        <button type="button" data-action="toggle-pause" class="execute-btn" 
+            style="background: #333; flex: 0 0 60px; display: flex; align-items: center; justify-content: center;"
+            title="Pause/Resume Preview">
+            <i class="fas fa-pause"></i>
+        </button>
+
+        <button type="button" data-action="test" class="execute-btn" style="background: #e67e22; flex: 1;">
+            <i class="fas fa-play"></i> {{localize "CINEMATIC.AllOut.Btn.Test"}}
+        </button>
+
+        <button type="button" data-action="play" class="execute-btn" style="background: #e61c34; flex: 2;">
+            <i class="fas fa-bolt"></i> {{localize "CINEMATIC.AllOut.Btn.Execute"}}
+        </button>
+    </div>
+</div>

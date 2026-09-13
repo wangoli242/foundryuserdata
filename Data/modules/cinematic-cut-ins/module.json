@@ -1,0 +1,50 @@
+{
+  "id": "cinematic-cut-ins",
+  "title": "Cinematic Cut-ins",
+  "version": "2.0.4",
+  "protected": true,
+  "compatibility": {
+    "minimum": "13",
+    "verified": "14"
+  },
+  "authors": [
+    {
+      "name": "rlavkvmflzk",
+      "discord": "sarangi"
+    }
+  ],
+  "relationships": {
+    "systems": [],
+    "requires": [
+      {
+        "id": "glitchsmith-lib",
+        "type": "module",
+        "compatibility": {
+          "minimum": "0.13.0"
+        }
+      }
+    ]
+  },
+  "esmodules": ["scripts/main.js"],
+  "styles": [
+    "styles/base-ui.css",
+    "styles/theme-personal.css",
+    "styles/theme-all-out.css",
+    "styles/cinematic-effects.css"
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "ko",
+      "name": "Korean",
+      "path": "lang/ko.json"
+    }
+  ],
+  "url": "https://www.patreon.com/cw/glitchsmith",
+  "manifest": "https://r2.foundryvtt.com/packages-public/cinematic-cut-ins/module.json",
+  "socket": true
+}

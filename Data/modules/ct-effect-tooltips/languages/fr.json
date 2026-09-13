@@ -1,0 +1,10 @@
+{
+  "ct-effect-tooltips": {
+    "settings": {
+      "duplicateIcons": {
+        "name": "Icônes en double",
+        "hint": "Par défaut, lorsqu'il y a plusieurs effets temporaires partageant la même icône sur un acteur, celle-ci n'apparaît qu'une seule fois dans le suivi des combats. Si ce paramètre est activé, l'icône sera affichée une fois pour chaque effet actif qui l'utilise."
+      }
+    }
+  }
+}

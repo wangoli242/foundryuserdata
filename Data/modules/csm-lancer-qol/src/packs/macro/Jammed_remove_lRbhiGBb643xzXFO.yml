@@ -1,0 +1,23 @@
+name: Jammed.remove
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: systems/lancer/assets/icons/white/condition_jammed.svg
+command: await token.TMFXdeleteFilters(`jammed`);
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725641881435
+  modifiedTime: 1725643704531
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: lRbhiGBb643xzXFO
+sort: 0
+_key: '!macros!lRbhiGBb643xzXFO'
+

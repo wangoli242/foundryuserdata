@@ -1,0 +1,10 @@
+{
+  "ct-effect-tooltips": {
+    "settings": {
+      "duplicateIcons": {
+        "name": "Duplicate Icons",
+        "hint": "By default, when multiple temporary effects on an actor share the same icon it only appears once in the combat tracker. If this setting is enabled the icon will be shown once for each active effect that uses it instead."
+      }
+    }
+  }
+}

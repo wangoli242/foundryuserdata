@@ -1,0 +1,10 @@
+{
+  "ct-effect-tooltips": {
+    "settings": {
+      "duplicateIcons": {
+        "name": "Iconos duplicados",
+        "hint": "Por defecto, cuando varios efectos temporales en un actor comparten el mismo icono, solo aparece una vez en el rastreador de combate. Si esta opción está habilitada, el icono se mostrará una vez por cada efecto activo que lo utilice."
+      }
+    }
+  }
+}

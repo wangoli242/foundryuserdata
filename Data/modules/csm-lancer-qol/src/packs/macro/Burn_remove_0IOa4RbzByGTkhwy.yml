@@ -1,0 +1,23 @@
+name: Burn.remove
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: icons/svg/fire.svg
+command: await token.TMFXdeleteFilters(`BurnGlow`);
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725635648677
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: 0IOa4RbzByGTkhwy
+sort: 1200000
+_key: '!macros!0IOa4RbzByGTkhwy'
+

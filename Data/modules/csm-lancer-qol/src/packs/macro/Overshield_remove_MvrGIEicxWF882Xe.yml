@@ -1,0 +1,31 @@
+name: Overshield.remove
+type: script
+scope: global
+author: 4QXZHxEZSgaUgcDx
+img: icons/svg/shield.svg
+command: |-
+  Sequencer.EffectManager.endEffects({ name: `Shield-${token.id}`, object: token
+  });
+
+  new Sequence()
+      .effect()
+          .file("jb2a.shield.01.outro_explode.blue")
+          .scaleToObject(1.8, { uniform: true, considerTokenScale: true })
+          .attachTo(token)
+      .play()
+folder: pNM7ArcayGmktMDr
+ownership:
+  default: 0
+  4QXZHxEZSgaUgcDx: 3
+flags:
+  core: {}
+_stats:
+  systemId: lancer
+  systemVersion: 2.2.4
+  coreVersion: '11.315'
+  createdTime: 1725569445414
+  modifiedTime: 1725643700614
+  lastModifiedBy: 4QXZHxEZSgaUgcDx
+_id: MvrGIEicxWF882Xe
+sort: 600000
+_key: '!macros!MvrGIEicxWF882Xe'

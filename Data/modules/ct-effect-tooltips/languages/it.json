@@ -1,0 +1,10 @@
+{
+  "ct-effect-tooltips": {
+    "settings": {
+      "duplicateIcons": {
+        "name": "Icone duplicate",
+        "hint": "Per impostazione predefinita, quando più effetti temporanei su un attore condividono la stessa icona, essa viene visualizzata solo una volta nel tracciatore di combattimento. Se questa impostazione è abilitata, l'icona verrà mostrata una volta per ogni effetto attivo che la utilizza."
+      }
+    }
+  }
+}

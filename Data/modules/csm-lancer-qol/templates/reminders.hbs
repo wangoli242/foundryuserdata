@@ -1,0 +1,29 @@
+<form autocomplete="off">
+
+    <div class="form-group" data-setting-id="reactionReminder">
+        <label>Reaction Reminder</label>
+        <div class="form-fields">
+            <select name="reactionReminder" data-dtype="String">
+                <option value="d" {{#if (eq reactionReminder 'd' )}}selected{{/if}}>Disable</option>
+                <option value="c" {{#if (eq reactionReminder 'c' )}}selected{{/if}}>Chat Whisper</option>
+                <option value="p" {{#if (eq reactionReminder 'p' )}}selected{{/if}}>Pop-Up</option>
+            </select>
+        </div>
+        <p class="notes">Remind users they have reactions when a token is targeted.</p>
+    </div>
+
+    <div class="form-group" data-setting-id="roundReminder">
+        <label>Round Reminder</label>
+        <div class="form-fields">
+            <input type="checkbox" name="roundReminder" {{#if roundReminder}}checked{{/if}} data-dtype="Boolean">
+        </div>
+        <p class="notes">At the end of combat rounds or combat, display a chat card.</p>
+    </div>
+
+    <div class="form-group">
+        <button type="submit" name="submit">
+            <i class="fas fa-save"></i>
+            <span>Save</span>
+        </button>
+    </div>
+</form>
