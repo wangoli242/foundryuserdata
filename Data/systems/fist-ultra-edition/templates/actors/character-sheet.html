@@ -1,0 +1,213 @@
+<form autocomplete="off">
+  <div class="layout-grid g-4">
+    <!-- Header -->
+    <div class="flex span-2-col">
+      <img
+        class="border-none rounded-none"
+        src="{{actor.img}}"
+        title="{{actor.name}}"
+        data-edit="img"
+      />
+      <div class="header background-color-black w-full p-3 g-3">
+        <div>
+          <div
+            class="text-fist-title header-label flex align-items-end color-white"
+          >
+            {{localize "FISTULTRAEDITION.Codename"}}
+          </div>
+          <input
+            class="header-input"
+            type="text"
+            name="name"
+            value="{{actor.name}}"
+            spellcheck="false"
+          />
+        </div>
+        <div>
+          <div
+            class="text-fist-title header-label flex align-items-end color-white"
+          >
+            {{localize "FISTULTRAEDITION.Pronouns"}}
+          </div>
+          <input
+            class="header-input"
+            type="text"
+            name="system.pronouns"
+            value="{{system.pronouns}}"
+          />
+        </div>
+        <div class="span-2-col">
+          <div
+            class="text-fist-title header-label flex align-items-end color-white"
+          >
+            {{localize "FISTULTRAEDITION.Role"}}
+          </div>
+          <input
+            class="header-input"
+            type="text"
+            name="system.role"
+            value="{{system.role}}"
+          />
+        </div>
+      </div>
+    </div>
+    <!-- Attributes -->
+    <div>
+      <div class="attribute-list mb-4">
+        {{#each system.attributes as |attribute key|}}
+        <a
+          class="h8 lh-8 px-2 text-fist-title background-color-black color-white roll-attribute"
+          data-attribute="{{key}}"
+        >
+          {{localize attribute.label}}
+        </a>
+        <input
+          class="attribute-input text-fist-title background-color-white"
+          type="text"
+          name="system.attributes.{{key}}.value"
+          value="{{signedNumber attribute.value}}"
+        />
+        {{/each}}
+      </div>
+      <div class="attribute-list">
+        <div
+          class="h8 lh-8 px-2 text-fist-title background-color-black color-white"
+        >
+          {{localize "FISTULTRAEDITION.Armor"}}
+        </div>
+        <input
+          class="attribute-input text-fist-title background-color-white"
+          type="number"
+          name="system.armor"
+          value="{{system.armor}}"
+          min="0"
+        />
+        <div
+          class="h8 lh-8 px-2 text-fist-title background-color-black color-white"
+        >
+          {{localize "FISTULTRAEDITION.WarDice"}}
+        </div>
+        <input
+          class="attribute-input text-fist-title background-color-white"
+          type="number"
+          name="system.warDice"
+          value="{{system.warDice}}"
+          min="0"
+        />
+        <div
+          class="h8 lh-8 px-2 text-fist-title background-color-black color-white"
+        >
+          {{localize "FISTULTRAEDITION.MaxHp"}}
+        </div>
+        <input
+          class="attribute-input text-fist-title background-color-white"
+          type="number"
+          name="system.hp.max"
+          value="{{system.hp.max}}"
+          min="0"
+        />
+        <div
+          class="h8 lh-8 px-2 text-fist-title background-color-black color-white"
+        >
+          {{localize "FISTULTRAEDITION.Hp"}}
+        </div>
+        <input
+          class="attribute-input text-fist-title background-color-white"
+          type="number"
+          name="system.hp.value"
+          value="{{system.hp.value}}"
+          min="0"
+        />
+      </div>
+    </div>
+    <!-- Tables -->
+    <div>
+      <!-- Skills table -->
+      <div class="mb-4">
+        <div
+          class="flex justify-content-space-between h-8 lh-8 border-black-b text-fist-title"
+        >
+          <div>Skills</div>
+          <a class="fist-item-create-skills"><i class="fas fa-plus"></i></a>
+        </div>
+        {{#each actor.skills as |item id|}}
+        <div
+          class="fist-item table-item border-black-b"
+          data-item-id="{{item._id}}"
+        >
+          <div class="table-item-title">
+            <a class="table-item-name">{{item.name}}</a>
+            <div class="flex ml-2">
+              <a
+                class="fist-item-display w-5 flex justify-content-center align-items-center"
+                ><i class="fas fa-comment"></i
+              ></a>
+              <a
+                class="fist-item-edit w-5 flex justify-content-center align-items-center"
+                ><i class="fas fa-edit"></i
+              ></a>
+              <a
+                class="fist-item-delete w-5 flex justify-content-center align-items-center"
+                ><i class="fas fa-trash"></i
+              ></a>
+            </div>
+          </div>
+          {{#if (eq item.type "trait")}}
+          <div class="mb-2" style="color: #b00020">
+            This skill was created using an older version of the system and will
+            be deleted in a future version. You should delete it and recreate it
+            in order to get rid of this message.
+          </div>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+      <!-- Inventory table -->
+      <div>
+        <div
+          class="flex justify-content-space-between h-8 lh-8 border-black-b text-fist-title"
+        >
+          <div>Inventory</div>
+          <a class="fist-item-create-inventory"><i class="fas fa-plus"></i></a>
+        </div>
+        {{#each actor.gear as |item id|}}
+        <div
+          class="fist-item table-item border-black-b"
+          data-item-id="{{item._id}}"
+        >
+          <div class="table-item-title">
+            <div class="table-item-content">
+              <a
+                class="table-item-name overflow-hidden white-space-nowrap text-overflow-ellipsis"
+                >{{item.name}}</a
+              >
+              <div class="white-space-nowrap">{{{item.system.hint}}}</div>
+            </div>
+            <div class="flex ml-2">
+              <a
+                class="fist-item-display w-5 flex justify-content-center align-items-center"
+                ><i class="fas fa-comment"></i
+              ></a>
+              <a
+                class="fist-item-edit w-5 flex justify-content-center align-items-center"
+                ><i class="fas fa-edit"></i
+              ></a>
+              <a
+                class="fist-item-delete w-5 flex justify-content-center align-items-center"
+                ><i class="fas fa-trash"></i
+              ></a>
+            </div>
+          </div>
+          {{#if (eq item.type "equipment")}}
+          <div class="mb-2" style="color: #b00020">
+            This item was created using an older version of the system and will
+            be deleted in a future version. You should delete it and recreate it
+            in order to get rid of this message.
+          </div>
+          {{/if}}
+        </div>
+        {{/each}}
+      </div>
+    </div>
+  </div>
+</form>

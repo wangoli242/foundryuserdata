@@ -6672,3 +6672,6 @@
 {"level":"info","message":"Wrote backup for world 'pass_the_torch' to '/home/ubuntu/foundryuserdata/Backups/worlds/pass_the_torch/world.pass_the_torch.2026-09-13.1789269916740.bak'. Wrote 1937411 bytes.","timestamp":"2026-09-13 03:25:17"}
 {"level":"info","message":"createSnapshot snapshotWorlds progress - 100%","timestamp":"2026-09-13 03:25:17"}
 {"level":"info","message":"Wrote 2 GB snapshot 'snapshot.2026-09-12.1789269782395'.","timestamp":"2026-09-13 03:25:17"}
+{"level":"info","message":"Created client session 74e84ff1cf1d98320c617e0d","timestamp":"2026-09-13 03:29:36"}
+{"level":"info","message":"Created client session af2387f7fb786acba9abd17d","timestamp":"2026-09-13 03:32:12"}
+{"level":"info","message":"Created client session aa14782267a8865aabe951d3","timestamp":"2026-09-13 03:35:48"}

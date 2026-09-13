@@ -1,0 +1,1808 @@
+/* =========================================================================
+   Delta Green Character Creation Wizard — Module Styles
+   ========================================================================= */
+
+/* --------------------------------------------------------------------------
+   Design tokens — all colours live here so the palette is defined once.
+   -------------------------------------------------------------------------- */
+:root {
+    /* ── Green accent ────────────────────────── */
+    --dg-green: #c0e060;
+    --dg-green-mid: #8db84f;
+    --dg-green-light: #c8e88a;
+    --dg-green-border: #6bad63;
+    --dg-green-btn: #4a7c44;
+    --dg-green-btn-hover: #5a9c54;
+
+    /* ── Backgrounds ─────────────────────────── */
+    --dg-bg-darkest: #111;
+    --dg-bg-base: #1c1c1c;
+    --dg-bg-sunken: #181818;
+    --dg-bg-input: #1a1a1a;
+    --dg-bg-raised: #252525;
+    --dg-bg-muted: #2e2e2e;
+    --dg-bg-green-dark: #2a3a20;
+    --dg-bg-green-subtle: #1c2318;
+
+    /* ── Borders ─────────────────────────────── */
+    --dg-border: #333;
+    --dg-border-subtle: #2e2e2e;
+    --dg-border-panel: #3a3a3a;
+    --dg-border-input: #444;
+    --dg-border-light: #555;
+    --dg-border-green: #3a4a30;
+    --dg-border-green-bright: #5a803a;
+
+    /* ── Text ────────────────────────────────── */
+    --dg-text-white: #fff;
+    --dg-text: #ddd;
+    --dg-text-soft: #ccc;
+    --dg-text-muted: #bbb;
+    --dg-text-dim: #aaa;
+    --dg-text-faint: #999;
+    --dg-text-disabled: #888;
+    --dg-text-ghost: #666;
+
+    /* ── Warning / Danger ────────────────────── */
+    --dg-warn: #d97742;
+    --dg-warn-border: #fe640b;
+    --dg-danger: #c0392b;
+    --dg-danger-text: #d08080;
+    --dg-danger-border: #7a3333;
+    --dg-danger-bg: #3a1e1e;
+
+    /* ── Blue / Info ─────────────────────────── */
+    --dg-blue: #60aadf;
+    --dg-blue-light: #8acae8;
+    --dg-bg-blue: #1a2a3a;
+    --dg-bg-blue-hover: #22405a;
+    --dg-border-blue: #2a5a8a;
+
+    /* ── Welcome phosphor ────────────────────── */
+    --dg-phosphor: #00b41e;
+    --dg-phosphor-dark: #00821a;
+    --dg-phosphor-bg: #001f05;
+    --dg-phosphor-bg-hover: #003a0c;
+}
+
+/* --------------------------------------------------------------------------
+   Agent Wizard launch bar (injected at top of agent sheet)
+   -------------------------------------------------------------------------- */
+.dg-agent-wizard-bar {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 10px;
+    background: var(--dg-bg-darkest);
+    border-bottom: 1px solid var(--dg-border);
+    overflow: hidden;
+    transition: padding 0.2s ease;
+}
+
+/* Buttons container — wraps all action buttons; collapse hides the whole group */
+.dg-wizard-bar-buttons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 6px;
+}
+
+.dg-agent-wizard-launch {
+    background: #2a3a1a;
+    border: 1px solid var(--dg-border-green);
+    color: var(--dg-green);
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.dg-agent-wizard-launch i {
+    font-size: 2rem;
+}
+
+.dg-agent-wizard-launch:hover {
+    background: var(--dg-border-green-bright);
+    color: var(--dg-green-light);
+}
+
+/* PDF export button */
+.dg-agent-pdf-export {
+    background: var(--dg-bg-blue);
+    border: 1px solid var(--dg-border-blue);
+    color: var(--dg-blue);
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+}
+
+.dg-agent-pdf-export i {
+    font-size: 1.1rem;
+}
+
+.dg-agent-pdf-export:hover {
+    background: var(--dg-bg-blue-hover);
+    color: var(--dg-blue-light);
+}
+
+/* Toggle button — always visible, sits right of the buttons group */
+.dg-wizard-bar-toggle {
+    background: none !important;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    cursor: pointer;
+    padding: 6px 10px;
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    flex-shrink: 0;
+    margin-left: auto;
+    opacity: 0.55;
+    transition: opacity 0.15s ease;
+    color: var(--dg-green-mid);
+    font-size: 0.85rem;
+    white-space: nowrap;
+}
+
+.dg-wizard-bar-toggle:hover,
+.dg-wizard-bar-toggle:focus,
+.dg-wizard-bar-toggle:active {
+    opacity: 1;
+    border: none !important;
+    outline: none !important;
+    box-shadow: none !important;
+    background: none !important;
+}
+
+/* Label text — shown via JS; hidden (display:none) when collapsed */
+.dg-wizard-bar-toggle-label {
+    font-size: 0.82rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--dg-green-mid);
+}
+
+/* Delta Green triangle icon — pointing right = collapsed, pointing down = expanded */
+.dg-wizard-bar-triangle {
+    display: block;
+    width: 0;
+    height: 0;
+    border-top: 7px solid transparent;
+    border-bottom: 7px solid transparent;
+    border-left: 11px solid #5a8a30;
+    transition: transform 0.2s ease;
+    transform: rotate(90deg);
+    /* pointing down when expanded */
+}
+
+/* Collapsed state — shrink bar padding */
+.dg-wizard-bar-collapsed {
+    padding-top: 4px;
+    padding-bottom: 4px;
+}
+
+.dg-wizard-bar-collapsed .dg-wizard-bar-triangle {
+    transform: rotate(0deg);
+    /* pointing right when collapsed */
+}
+
+
+/* --------------------------------------------------------------------------
+   Wrapper & Progress bar
+   -------------------------------------------------------------------------- */
+.dg-wizard-wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    font-family: var(--font-primary, "Signika", serif);
+    background: var(--color-bg, var(--dg-bg-base));
+    color: var(--color-text-primary, var(--dg-text));
+    padding: 0.75rem 1rem;
+    gap: 0.5rem;
+}
+
+.dg-wizard-progress {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.25rem;
+}
+
+.dg-step-dot {
+    width: 0;
+    height: 0;
+    border-left: 6px solid transparent;
+    border-right: 6px solid transparent;
+    border-bottom: 10px solid var(--dg-border-panel);
+    flex-shrink: 0;
+    transition: border-bottom-color 0.2s;
+}
+
+.dg-step-dot.done {
+    border-bottom-color: #3e5e36;
+}
+
+.dg-step-dot.active {
+    border-bottom-color: var(--dg-green-mid);
+}
+
+.dg-step-label {
+    margin-left: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--dg-text-disabled);
+}
+
+/* --------------------------------------------------------------------------
+   Form & scroll area
+   -------------------------------------------------------------------------- */
+.dg-wizard-form {
+    flex: 1;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+}
+
+.dg-step h2 {
+    font-size: 1.25rem;
+    margin: 0.25rem 0 0.5rem;
+    color: var(--dg-green);
+    border-bottom: 1px solid var(--dg-border-panel);
+    padding-bottom: 0.25rem;
+}
+
+.dg-step h3 {
+    font-size: 1rem;
+    color: var(--dg-text-dim);
+    margin: 0.75rem 0 0.25rem;
+}
+
+.dg-hint {
+    font-size: 0.85rem;
+    color: var(--dg-text-faint);
+    margin-bottom: 0.75rem;
+}
+
+.dg-warn {
+    color: var(--dg-warn);
+    font-size: 0.85rem;
+}
+
+.dg-flavour {
+    font-style: italic;
+    color: var(--dg-text-dim);
+    line-height: 1.5;
+    margin-bottom: 0.75rem;
+}
+
+.dg-step-welcome {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.dg-step-welcome h2 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+.dg-step-welcome .dg-flavour {
+    font-size: 1.1rem;
+    max-width: 560px;
+    margin: 0 auto 1rem;
+    font-family: 'Courier New', Courier, monospace;
+    line-height: 1.7;
+}
+
+.dg-step-welcome>p:not(.dg-flavour) {
+    font-size: 1rem;
+    max-width: 560px;
+    margin: 0 auto 1rem;
+    font-family: 'Courier New', Courier, monospace;
+}
+
+/* Welcome step: everything is pyramid phosphor green */
+[data-step="welcome"] {
+    color: var(--dg-phosphor);
+}
+
+[data-step="welcome"] .dg-step-dot {
+    border-bottom-color: var(--dg-phosphor-dark);
+}
+
+[data-step="welcome"] .dg-step-dot.active {
+    border-bottom-color: var(--dg-phosphor);
+}
+
+[data-step="welcome"] .dg-step-label,
+[data-step="welcome"] .dg-step h2,
+[data-step="welcome"] .dg-step p,
+[data-step="welcome"] .dg-flavour,
+[data-step="welcome"] strong {
+    color: var(--dg-phosphor);
+    border-bottom-color: var(--dg-phosphor-dark);
+}
+
+[data-step="welcome"] .dg-btn-primary,
+[data-step="welcome"] .dg-btn-secondary {
+    background: var(--dg-phosphor-bg);
+    border-color: var(--dg-phosphor);
+    color: var(--dg-phosphor);
+}
+
+[data-step="welcome"] .dg-btn-primary:hover,
+[data-step="welcome"] .dg-btn-secondary:hover {
+    background: var(--dg-phosphor-bg-hover);
+}
+
+[data-step="welcome"] .dg-wizard-nav i {
+    color: var(--dg-phosphor);
+}
+
+
+.dg-welcome-pyramid {
+    display: block;
+    width: 100%;
+    height: 220px;
+    margin-top: 1.5rem;
+}
+
+/* --------------------------------------------------------------------------
+   Statistics step
+   -------------------------------------------------------------------------- */
+.dg-stats-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.6rem;
+    margin-bottom: 0.75rem;
+}
+
+.dg-stat-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    background: var(--dg-bg-raised);
+    border: 1px solid var(--dg-border-panel);
+    border-radius: 4px;
+    padding: 0.4rem 0.5rem;
+}
+
+.dg-stat-block label,
+.dg-stat-label {
+    font-size: 0.8rem;
+    font-weight: bold;
+    color: var(--dg-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dg-stat-block input[type="number"] {
+    width: 3.5rem;
+    text-align: center;
+    font-size: 1.1rem;
+    background: var(--dg-bg-input);
+    border: 1px solid var(--dg-border-light);
+    color: var(--dg-text);
+    border-radius: 3px;
+    padding: 0.1rem;
+}
+
+.dg-stat-value {
+    font-size: 1.4rem;
+    font-weight: bold;
+    color: var(--dg-green);
+}
+
+.dg-x5 {
+    font-size: 0.72rem;
+    color: var(--dg-text-ghost);
+}
+
+.dg-descriptor {
+    font-size: 0.7rem;
+    color: var(--dg-text-disabled);
+    font-style: italic;
+    text-align: center;
+}
+
+.dg-points-bar {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--dg-text-muted);
+    margin-bottom: 0.6rem;
+}
+
+.dg-points-remaining {
+    font-weight: bold;
+    font-size: 1.05rem;
+    color: var(--dg-green);
+}
+
+.dg-points-remaining.depleted {
+    color: var(--dg-text-disabled);
+}
+
+.dg-stat-controls {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+}
+
+.dg-adjust-btn {
+    width: 1.6rem;
+    height: 1.6rem;
+    font-size: 1rem;
+    line-height: 1;
+    background: var(--dg-border);
+    border: 1px solid var(--dg-border-light);
+    color: var(--dg-green);
+    border-radius: 3px;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.dg-adjust-btn:hover {
+    background: var(--dg-border-input);
+    border-color: var(--dg-green);
+}
+
+.dg-stat-input {
+    width: 3rem;
+    text-align: center;
+    font-size: 1.1rem;
+    background: var(--dg-bg-input);
+    border: 1px solid var(--dg-border-light);
+    color: var(--dg-text);
+    border-radius: 3px;
+    padding: 0.1rem;
+}
+
+.dg-derived-bar {
+    display: flex;
+    gap: 1.5rem;
+    justify-content: center;
+    padding: 0.6rem 1rem;
+    margin: 0.75rem 0 0.25rem;
+    background: var(--dg-bg-input);
+    border: 1px solid var(--dg-border);
+    border-radius: 4px;
+}
+
+.dg-derived-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.1rem;
+}
+
+.dg-derived-label {
+    color: var(--dg-text-faint);
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+}
+
+.dg-derived-item strong {
+    color: var(--dg-green);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1;
+}
+
+.dg-stats-actions {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    margin-top: 0.5rem;
+}
+
+.dg-stats-actions .dg-btn-secondary {
+    flex: 1;
+    min-width: 8rem;
+}
+
+/* --------------------------------------------------------------------------
+   Profession step
+   -------------------------------------------------------------------------- */
+.dg-select-profession {
+    width: 100%;
+    font-size: 0.95rem;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-light);
+    border-radius: 4px;
+    padding: 0.4rem 0.5rem;
+    margin-bottom: 0.75rem;
+}
+
+.dg-profession-desc {
+    background: var(--dg-bg-sunken);
+    border: 1px solid var(--dg-border);
+    border-radius: 4px;
+    padding: 0.6rem 0.75rem;
+}
+
+.dg-desc-text {
+    white-space: pre-wrap;
+    font-size: 0.8rem;
+    font-family: inherit;
+    color: var(--dg-text-muted);
+    margin: 0;
+    line-height: 1.55;
+}
+
+/* --------------------------------------------------------------------------
+   Skills step
+   -------------------------------------------------------------------------- */
+.dg-skills-table {
+    width: 100%;
+    font-size: 0.82rem;
+    border-collapse: collapse;
+}
+
+.dg-skills-table thead th {
+    background: var(--dg-bg-raised);
+    color: var(--dg-text-faint);
+    font-weight: bold;
+    padding: 0.3rem 0.5rem;
+    text-align: left;
+    border-bottom: 1px solid var(--dg-border-input);
+}
+
+.dg-skills-table tbody tr {
+    border-bottom: 1px solid var(--dg-bg-raised);
+}
+
+.dg-skills-table tbody tr:hover {
+    background: var(--dg-bg-raised);
+}
+
+.dg-skills-table td {
+    padding: 0.25rem 0.5rem;
+}
+
+.dg-skill-required td:first-child {
+    color: var(--dg-green);
+}
+
+.dg-skill-optional td:first-child {
+    color: var(--dg-text-muted);
+}
+
+.dg-num {
+    text-align: right;
+    width: 3rem;
+}
+
+.dg-center {
+    text-align: center;
+}
+
+.dg-required-badge {
+    color: var(--dg-green-border);
+    font-weight: bold;
+}
+
+/* --------------------------------------------------------------------------
+   Bonds step
+   -------------------------------------------------------------------------- */
+.dg-bond-block {
+    margin-bottom: 0.6rem;
+}
+
+.dg-bond-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dg-bond-num {
+    font-size: 0.93rem;
+    color: var(--dg-text-disabled);
+    min-width: 1.2rem;
+}
+
+.dg-bond-name {
+    flex: 1;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.88rem;
+}
+
+.dg-bond-score {
+    width: 3.5rem;
+    text-align: center;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.3rem;
+    font-size: 0.88rem;
+}
+
+.dg-bond-details {
+    margin: 0.2rem 0 0 1.6rem;
+    padding: 0.25rem 0.5rem;
+    border-left: 2px solid var(--dg-border-green);
+    background: var(--dg-bg-sunken);
+    border-radius: 0 3px 3px 0;
+}
+
+.dg-bond-relationship {
+    font-size: 0.93rem;
+    color: var(--dg-green-mid);
+    font-weight: bold;
+}
+
+.dg-bond-description {
+    font-size: 0.93rem;
+    color: var(--dg-text-faint);
+    margin: 0.15rem 0 0;
+    line-height: 1.5;
+    font-style: italic;
+}
+
+/* Bond dataset picker row */
+.dg-bond-dataset-row {
+    margin-bottom: 0.6rem;
+    display: flex;
+    align-items: center;
+}
+
+.dg-bond-dataset-row label {
+    font-size: 0.82rem;
+    color: var(--dg-text-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dg-bond-dataset-select {
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Biography step
+   -------------------------------------------------------------------------- */
+.dg-bio-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.6rem;
+}
+
+.dg-bio-grid label {
+    display: flex;
+    flex-direction: column;
+    font-size: 0.82rem;
+    color: var(--dg-text-dim);
+    gap: 0.2rem;
+}
+
+.dg-bio-grid input {
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.88rem;
+}
+
+/* --------------------------------------------------------------------------
+   Review step
+   -------------------------------------------------------------------------- */
+.dg-review-section {
+    margin-bottom: 0.75rem;
+}
+
+.dg-stats-readonly .dg-stat-block {
+    pointer-events: none;
+}
+
+.dg-review-skills {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.dg-review-skill {
+    background: var(--dg-bg-raised);
+    border: 1px solid var(--dg-border-panel);
+    border-radius: 3px;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.78rem;
+    color: var(--dg-text-muted);
+}
+
+.dg-review-bond {
+    font-size: 0.85rem;
+    color: var(--dg-text-soft);
+    padding: 0.1rem 0;
+}
+
+.dg-review-bio-grid {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.15rem 0.6rem;
+    align-items: baseline;
+}
+
+.dg-review-bio-key {
+    font-weight: bold;
+    color: var(--dg-text-faint);
+    font-size: 0.8rem;
+    text-transform: capitalize;
+    white-space: nowrap;
+}
+
+.dg-review-bio-val {
+    font-size: 0.82rem;
+    color: var(--dg-text-soft);
+}
+
+/* --------------------------------------------------------------------------
+   Navigation bar
+   -------------------------------------------------------------------------- */
+.dg-wizard-nav {
+    display: flex;
+    align-items: center;
+    padding-top: 0.5rem;
+    border-top: 1px solid var(--dg-border);
+    gap: 0.5rem;
+}
+
+.dg-nav-spacer {
+    flex: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons
+   -------------------------------------------------------------------------- */
+.dg-btn-primary,
+.dg-btn-secondary,
+.dg-btn-small {
+    cursor: pointer;
+    border-radius: 4px;
+    font-family: inherit;
+    font-size: 0.88rem;
+    padding: 0.35rem 0.9rem;
+    border: 1px solid;
+    transition: background 0.15s;
+}
+
+.dg-btn-primary {
+    background: var(--dg-green-btn);
+    color: var(--dg-text-white);
+    border-color: var(--dg-green-border);
+}
+
+.dg-btn-primary:hover {
+    background: var(--dg-green-btn-hover);
+}
+
+.dg-btn-secondary {
+    background: var(--dg-bg-muted);
+    color: var(--dg-text-soft);
+    border-color: var(--dg-border-light);
+}
+
+.dg-btn-secondary:hover {
+    background: var(--dg-border-panel);
+}
+
+.dg-btn-small {
+    padding: 0.2rem 0.45rem;
+    font-size: 0.78rem;
+    background: var(--dg-bg-raised);
+    color: var(--dg-text-soft);
+    border-color: var(--dg-border-input);
+}
+
+.dg-btn-small:hover {
+    background: var(--dg-border);
+}
+
+.dg-btn-danger {
+    border-color: var(--dg-danger-border);
+    color: var(--dg-danger-text);
+}
+
+.dg-btn-danger:hover {
+    background: var(--dg-danger-bg);
+}
+
+.dg-btn-finish {
+    font-size: 0.95rem;
+    padding: 0.4rem 1.2rem;
+    background: var(--dg-bg-blue);
+    border-color: var(--dg-border-blue);
+}
+
+.dg-btn-finish:hover {
+    background: var(--dg-bg-blue-hover);
+}
+
+.dg-btn-export-pdf {
+    font-size: 0.95rem;
+    padding: 0.4rem 1.2rem;
+    background: var(--dg-bg-blue);
+    border-color: var(--dg-border-blue);
+    color: var(--dg-blue);
+}
+
+.dg-btn-export-pdf:hover {
+    background: var(--dg-bg-blue-hover);
+    color: var(--dg-blue-light);
+}
+
+/* --------------------------------------------------------------------------
+   Tips collapsible panels
+   -------------------------------------------------------------------------- */
+.dg-tips {
+    background: var(--dg-bg-green-subtle);
+    border: 1px solid var(--dg-border-green);
+    border-radius: 4px;
+    padding: 0.4rem 0.6rem;
+    margin-bottom: 0.6rem;
+    font-size: 0.82rem;
+}
+
+.dg-tips summary {
+    cursor: pointer;
+    color: var(--dg-green-mid);
+    font-weight: bold;
+    font-size: 0.82rem;
+    list-style: none;
+    user-select: none;
+}
+
+.dg-tips summary::before {
+    content: '▶ ';
+    font-size: 0.65rem;
+}
+
+.dg-tips[open] summary::before {
+    content: '▼ ';
+}
+
+.dg-tips p {
+    margin: 0.4rem 0 0;
+    color: var(--dg-text-dim);
+    line-height: 1.5;
+}
+
+.dg-tips-list {
+    margin: 0.3rem 0 0 1rem;
+    padding: 0;
+    color: var(--dg-text-faint);
+    line-height: 1.6;
+}
+
+/* Nested tips accordion inside .dg-tips */
+.dg-tips-inner {
+    margin-top: 0.5rem;
+    border-top: 1px solid var(--dg-bg-muted);
+    padding-top: 0.4rem;
+}
+
+.dg-tips-inner>summary {
+    font-size: 0.8rem;
+    color: var(--dg-text-dim);
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+}
+
+.dg-tips-inner>summary::before {
+    content: '▶ ';
+    font-size: 0.65rem;
+}
+
+.dg-tips-inner[open]>summary::before {
+    content: '▼ ';
+}
+
+/* --------------------------------------------------------------------------
+   Bonus skills step — 8 dropdown slots
+   -------------------------------------------------------------------------- */
+.dg-bonus-skills-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 0.5rem;
+    padding: 0.3rem 0.5rem;
+    background: var(--dg-bg-raised);
+    border-radius: 4px;
+    border: 1px solid var(--dg-border-panel);
+}
+
+.dg-picks-counter {
+    font-size: 0.95rem;
+    color: var(--dg-text-soft);
+}
+
+.dg-bonus-slots {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.3rem;
+}
+
+.dg-bonus-slot-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.25rem 0.4rem;
+    background: var(--dg-bg-input);
+    border: 1px solid var(--dg-bg-muted);
+    border-radius: 3px;
+}
+
+.dg-bonus-slot-label {
+    font-size: 0.9rem;
+    color: var(--dg-text-disabled);
+    min-width: 3.5rem;
+    flex-shrink: 0;
+}
+
+.dg-bonus-slot-select {
+    flex: 1;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.93rem;
+    font-family: inherit;
+}
+
+/* Custom specialty input — hidden by default, shown by JS when '_custom_*' selected */
+.dg-bonus-custom-input {
+    display: none;
+    width: 150px;
+    flex-shrink: 0;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-text-ghost);
+    border-radius: 3px;
+    padding: 0.2rem 0.3rem;
+    font-size: 0.93rem;
+    font-family: inherit;
+}
+
+/* Background package picker row */
+.dg-bonus-pack-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.6rem;
+    padding: 0.25rem 0;
+}
+
+.dg-bonus-choice-note {
+    font-size: 0.93rem;
+    color: var(--dg-text-faint);
+    margin: 0.4rem 0 0.6rem;
+}
+
+.dg-bonus-choice-note strong {
+    color: var(--dg-green);
+}
+
+.dg-bonus-pack-row label {
+    font-size: 0.93rem;
+    color: var(--dg-text-dim);
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dg-bonus-pack-row select {
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+
+.dg-bonus-pack-desc {
+    width: 100%;
+    margin: 0.2rem 0 0;
+    font-size: 0.78rem;
+    color: var(--dg-text-faint);
+    font-style: italic;
+    line-height: 1.5;
+}
+
+/* ---- Skills reference (bonus_skills step) — 3 side-by-side tables ---- */
+.dg-skills-ref-details {
+    margin-top: 1rem;
+}
+
+.dg-skills-ref-details>summary {
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--dg-text-soft);
+    padding: 0.25rem 0.5rem;
+    background: var(--dg-bg-raised);
+    border: 1px solid var(--dg-border-panel);
+    border-radius: 4px;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dg-skills-ref-details>summary::before {
+    content: '▶';
+    font-size: 0.7rem;
+    color: var(--dg-text-faint);
+    transition: transform 0.15s;
+}
+
+.dg-skills-ref-details[open]>summary::before {
+    transform: rotate(90deg);
+}
+
+.dg-skills-ref-cols {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.4rem;
+    align-items: flex-start;
+}
+
+.dg-skills-ref-table {
+    flex: 1;
+    min-width: 0;
+    font-size: 0.82rem;
+    border-collapse: collapse;
+    border: 1px solid var(--dg-border-panel);
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.dg-skills-ref-table thead th {
+    background: var(--dg-bg-raised);
+    color: var(--dg-text-faint);
+    font-weight: bold;
+    padding: 0.25rem 0.4rem;
+    text-align: left;
+    border-bottom: 1px solid var(--dg-border-input);
+    white-space: nowrap;
+}
+
+.dg-skills-ref-table thead th.dg-num {
+    text-align: right;
+    width: 2.6rem;
+}
+
+.dg-skills-ref-table td.dg-num {
+    width: 2.6rem;
+}
+
+.dg-skills-ref-row td {
+    padding: 0.18rem 0.4rem;
+}
+
+.dg-skills-ref-row {
+    border-bottom: 1px solid var(--dg-bg-raised);
+}
+
+.dg-skills-ref-row:hover td {
+    background: var(--dg-bg-raised);
+}
+
+.dg-skill-boosted .dg-skill-ref-boost,
+.dg-skill-boosted .dg-skill-ref-value {
+    color: var(--dg-green);
+    font-weight: bold;
+}
+
+.dg-skill-custom td:first-child {
+    font-style: italic;
+    color: var(--dg-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Skills step — optional pick chooser section
+   -------------------------------------------------------------------------- */
+.dg-optional-picks-section {
+    background: var(--dg-bg-green-subtle);
+    border: 1px solid var(--dg-border-green);
+    border-radius: 4px;
+    padding: 0.75rem 1rem;
+    margin-bottom: 1rem;
+}
+
+.dg-opt-section-header {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 0.6rem;
+}
+
+.dg-opt-heading {
+    font-size: 0.95rem;
+    color: var(--dg-green);
+    margin: 0;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+}
+
+.dg-opt-skill-row {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.25rem 0.3rem;
+    border-radius: 3px;
+    margin-bottom: 0.15rem;
+}
+
+.dg-opt-skill-row:hover {
+    background: rgba(160, 210, 60, 0.06);
+}
+
+.dg-opt-label {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    flex: 1;
+    min-width: 200px;
+}
+
+.dg-opt-label input[type="checkbox"] {
+    accent-color: var(--dg-green-mid);
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+}
+
+.dg-opt-skill-name {
+    font-size: 0.9rem;
+    color: var(--dg-text);
+}
+
+.dg-opt-skill-value {
+    font-size: 0.85rem;
+    color: var(--dg-green-mid);
+    font-weight: 600;
+    min-width: 38px;
+    text-align: right;
+}
+
+.dg-opt-spec-input {
+    flex: 1;
+    min-width: 160px;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+}
+
+/* optional-picks counter in skills step */
+.dg-opt-picks-counter {
+    font-size: 0.82rem;
+    color: var(--dg-green-mid);
+    margin-bottom: 0;
+}
+
+.dg-opt-picks-counter.at-limit {
+    color: var(--dg-warn);
+}
+
+/* --------------------------------------------------------------------------
+   Biography step — additions
+   -------------------------------------------------------------------------- */
+.dg-bio-actions {
+    display: flex;
+    gap: 0.4rem;
+    justify-content: flex-end;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--dg-border-panel);
+}
+
+.dg-bio-actions .dg-btn-secondary {
+    font-size: 0.8rem;
+    padding: 0.25rem 0.6rem;
+    background: transparent;
+    border-color: var(--dg-border-light);
+    color: var(--dg-text-faint);
+    letter-spacing: 0.04em;
+}
+
+.dg-bio-actions .dg-btn-secondary:hover {
+    background: var(--dg-bg-raised);
+    color: var(--dg-text-soft);
+    border-color: var(--dg-green);
+}
+
+.dg-bio-full-row {
+    grid-column: 1 / -1 !important;
+}
+
+.dg-bio-grid textarea {
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.3rem 0.4rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    resize: vertical;
+    line-height: 1.5;
+}
+
+.dg-motivations-block {
+    border: 1px solid var(--dg-border-panel);
+    border-radius: 4px;
+    padding: 0.5rem 0.75rem 0.75rem;
+    margin-top: 0.25rem;
+}
+
+.dg-motivations-block legend {
+    color: var(--dg-text-dim);
+    font-size: 0.8rem;
+    padding: 0 0.3rem;
+}
+
+.dg-motivations-block input {
+    display: block;
+    width: 100%;
+    margin-top: 0.35rem;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.25rem 0.4rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+    box-sizing: border-box;
+}
+
+.dg-review-motivations {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--dg-text-soft);
+    font-size: 0.9rem;
+    line-height: 1.8;
+}
+
+/* --------------------------------------------------------------------------
+   Specialty skills section (skills step)
+   -------------------------------------------------------------------------- */
+.dg-specialty-section {
+    margin-top: 1.25rem;
+    border-top: 1px solid var(--dg-border);
+    padding-top: 0.75rem;
+}
+
+.dg-specialty-heading {
+    color: var(--dg-text-dim);
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin: 0.75rem 0 0.4rem;
+}
+
+.dg-specialty-heading:first-of-type {
+    margin-top: 0;
+}
+
+.dg-specialty-row,
+.dg-specialty-opt-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.35rem;
+    padding: 0.2rem 0.4rem;
+    border-radius: 3px;
+}
+
+.dg-specialty-row.dg-specialty-empty {
+    background: rgba(254, 100, 11, 0.08);
+}
+
+.dg-specialty-group {
+    flex: 0 0 130px;
+    font-size: 0.85rem;
+    color: var(--dg-text);
+    font-weight: 600;
+}
+
+.dg-specialty-input {
+    flex: 1;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.25rem 0.4rem;
+    font-size: 0.85rem;
+    font-family: inherit;
+}
+
+.dg-specialty-empty .dg-specialty-input {
+    border-color: var(--dg-warn-border);
+}
+
+.dg-specialty-input:disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+}
+
+.dg-specialty-input.dg-specialty-dupe {
+    border-color: var(--dg-danger);
+    background: rgba(192, 57, 43, 0.15);
+    outline: 1px solid var(--dg-danger);
+}
+
+.dg-specialty-value {
+    flex: 0 0 38px;
+    text-align: right;
+    font-size: 0.85rem;
+    color: var(--dg-text-dim);
+}
+
+.dg-specialty-opt-row .dg-opt-check {
+    flex-shrink: 0;
+}
+
+.dg-review-skill-specialty {
+    font-style: italic;
+    opacity: 0.9;
+}
+
+.dg-review-bonus-divider {
+    flex-basis: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: var(--dg-text-faint);
+    margin-top: 0.3rem;
+    padding-top: 0.3rem;
+    border-top: 1px solid var(--dg-border);
+}
+
+.dg-review-jump-inline {
+    font-size: 0.75rem;
+    padding: 0;
+    opacity: 0.7;
+}
+
+.dg-review-skill-bonus {
+    opacity: 0.85;
+}
+
+/* --------------------------------------------------------------------------
+   Equipment step
+   -------------------------------------------------------------------------- */
+.dg-eq-layout {
+    display: flex;
+    gap: 0.75rem;
+    height: 380px;
+}
+
+.dg-eq-left {
+    flex: 1.4;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.dg-eq-right {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.dg-eq-search-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.4rem;
+}
+
+.dg-eq-search-input {
+    flex: 1;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.85rem;
+}
+
+.dg-eq-count {
+    font-size: 0.75rem;
+    color: var(--dg-text-disabled);
+    white-space: nowrap;
+}
+
+.dg-eq-cat-tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+    margin-bottom: 0.4rem;
+}
+
+.dg-eq-cat-btn {
+    background: var(--dg-bg-raised);
+    border: 1px solid var(--dg-border-panel);
+    color: var(--dg-text-disabled);
+    border-radius: 3px;
+    padding: 0.15rem 0.5rem;
+    font-size: 0.72rem;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
+    white-space: nowrap;
+}
+
+.dg-eq-cat-btn:hover {
+    background: var(--dg-border);
+    color: var(--dg-text-soft);
+}
+
+.dg-eq-cat-btn.active {
+    background: var(--dg-bg-green-dark);
+    border-color: var(--dg-border-green-bright);
+    color: var(--dg-green);
+}
+
+.dg-eq-catalog {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--dg-bg-muted);
+    border-radius: 4px;
+    padding: 0.2rem;
+}
+
+.dg-eq-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.25rem 0.4rem;
+    border-bottom: 1px solid var(--dg-bg-raised);
+    font-size: 0.78rem;
+    gap: 0.3rem;
+}
+
+.dg-eq-item:hover {
+    background: #1e2218;
+}
+
+.dg-eq-item.in-loadout {
+    opacity: 0.5;
+}
+
+.dg-eq-item-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    flex: 1;
+    min-width: 0;
+}
+
+.dg-eq-item-name {
+    color: var(--dg-text-soft);
+    line-height: 1.3;
+}
+
+.dg-eq-add-btn {
+    width: 1.4rem;
+    height: 1.4rem;
+    font-size: 0.9rem;
+    background: var(--dg-bg-green-dark);
+    border: 1px solid var(--dg-border-green-bright);
+    color: var(--dg-green-mid);
+    border-radius: 3px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.dg-eq-add-btn:hover:not(:disabled) {
+    background: #3a5028;
+}
+
+.dg-eq-add-btn:disabled {
+    opacity: 0.4;
+    cursor: default;
+    color: var(--dg-green-border);
+}
+
+.dg-eq-empty {
+    color: var(--dg-text-ghost);
+    font-size: 0.8rem;
+    padding: 0.5rem;
+    text-align: center;
+}
+
+.dg-eq-loadout-header {
+    font-size: 0.88rem;
+    font-weight: bold;
+    color: var(--dg-text-dim);
+    margin-bottom: 0.4rem;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.dg-eq-loadout-badge {
+    background: var(--dg-green-btn);
+    color: var(--dg-text-white);
+    border-radius: 10px;
+    padding: 0.05rem 0.45rem;
+    font-size: 0.72rem;
+}
+
+.dg-eq-loadout {
+    flex: 1;
+    overflow-y: auto;
+    border: 1px solid var(--dg-bg-muted);
+    border-radius: 4px;
+    padding: 0.2rem;
+    margin-bottom: 0.4rem;
+}
+
+.dg-eq-loadout-item {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.25rem 0.4rem;
+    border-bottom: 1px solid var(--dg-bg-raised);
+    font-size: 0.78rem;
+}
+
+.dg-eq-loadout-name {
+    flex: 1;
+    color: var(--dg-text-soft);
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.dg-eq-remove-btn {
+    width: 1.3rem;
+    height: 1.3rem;
+    font-size: 0.75rem;
+    background: var(--dg-danger-bg);
+    border: 1px solid var(--dg-danger-border);
+    color: var(--dg-danger-text);
+    border-radius: 3px;
+    cursor: pointer;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+}
+
+.dg-eq-remove-btn:hover {
+    background: var(--dg-danger-bg);
+}
+
+.dg-eq-clear-btn {
+    font-size: 0.78rem;
+    padding: 0.2rem 0.6rem;
+    margin-top: 0.2rem;
+}
+
+/* Quick loadout buttons row */
+.dg-eq-loadout-btns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.4rem;
+    margin-bottom: 0.6rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--dg-bg-muted);
+}
+
+.dg-eq-loadout-btns-label {
+    font-size: 0.78rem;
+    color: var(--dg-text-disabled);
+    flex-shrink: 0;
+}
+
+/* Custom item add row */
+.dg-eq-custom-row {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    margin: 0.3rem 0;
+}
+
+.dg-eq-custom-input {
+    flex: 1;
+    background: var(--dg-bg-input);
+    color: var(--dg-text);
+    border: 1px solid var(--dg-border-input);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+}
+
+/* --------------------------------------------------------------------------
+   Expense level badges
+   -------------------------------------------------------------------------- */
+.dg-eq-expense,
+.dg-exp-badge {
+    font-size: 0.65rem;
+    border-radius: 3px;
+    padding: 0.05rem 0.3rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 0.03em;
+    white-space: nowrap;
+}
+
+.dg-exp-incidental {
+    background: var(--dg-bg-muted);
+    color: var(--dg-text-disabled);
+    border: 1px solid var(--dg-border-input);
+}
+
+.dg-exp-standard {
+    background: var(--dg-bg-blue);
+    color: var(--dg-blue);
+    border: 1px solid var(--dg-border-blue);
+}
+
+.dg-exp-unusual {
+    background: #2a2a10;
+    color: #b0a040;
+    border: 1px solid #5a5020;
+}
+
+.dg-exp-major {
+    background: #2a1a10;
+    color: #c07040;
+    border: 1px solid #6a3820;
+}
+
+.dg-exp-extreme {
+    background: #2a1010;
+    color: #c04040;
+    border: 1px solid #6a2020;
+}
+
+/* --------------------------------------------------------------------------
+   Review step — equipment
+   -------------------------------------------------------------------------- */
+.dg-review-equipment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.3rem;
+}
+
+.dg-review-eq-item {
+    background: var(--dg-bg-raised);
+    border: 1px solid var(--dg-border-panel);
+    border-radius: 3px;
+    padding: 0.15rem 0.4rem;
+    font-size: 0.78rem;
+    color: var(--dg-text-muted);
+}
+
+/* --------------------------------------------------------------------------
+   Bond relationship input
+   -------------------------------------------------------------------------- */
+.dg-bond-relationship-row {
+    padding: 0.15rem 0.3rem 0.3rem 1.8rem;
+}
+
+.dg-bond-relationship-input {
+    width: 100%;
+    box-sizing: border-box;
+    background: var(--dg-bg-input);
+    color: var(--dg-text-soft);
+    border: 1px solid var(--dg-border-panel);
+    border-radius: 3px;
+    padding: 0.2rem 0.4rem;
+    font-size: 0.8rem;
+    font-family: inherit;
+    font-style: italic;
+}
+
+.dg-bond-relationship-input::placeholder {
+    opacity: 0.5;
+}
+
+/* --------------------------------------------------------------------------
+   Review — derived attributes grid
+   -------------------------------------------------------------------------- */
+.dg-review-derived-grid {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto;
+    column-gap: 0.25rem;
+    align-items: baseline;
+    font-size: 0.9rem;
+    width: fit-content;
+}
+
+.dg-review-derived-grid span {
+    color: var(--dg-text-faint);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.dg-review-derived-grid span:not(:first-child) {
+    padding-left: 1.25rem;
+}
+
+.dg-review-derived-grid strong {
+    color: var(--dg-green);
+    font-size: 1rem;
+}
+
+/* --------------------------------------------------------------------------
+   Review — jump-to section heading buttons
+   -------------------------------------------------------------------------- */
+.dg-review-jump-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-size: 1rem;
+    color: var(--dg-text-dim);
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    opacity: 0.85;
+    transition: color 0.15s, opacity 0.15s;
+}
+
+.dg-review-jump-btn:hover {
+    color: var(--dg-green);
+    opacity: 1;
+    background: none;
+    border: none;
+}

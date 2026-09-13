@@ -1,0 +1,54 @@
+{
+  "id": "fist-ultra-edition",
+  "title": "FIST: Ultra Edition",
+  "description": "A system for playing the role-playing game FIST: Ultra Edition in the Foundry Virtual Tabletop environment.",
+  "version": "1.13.0",
+  "compatibility": {
+    "minimum": "12",
+    "verified": "12.331"
+  },
+  "authors": [
+    {
+      "name": "Olivier Grech",
+      "url": "https://www.buymeacoffee.com/oliviergrech",
+      "email": "olivier.grech@gmail.com"
+    }
+  ],
+  "esmodules": ["fist-ultra-edition.js"],
+  "styles": ["fist-ultra-edition.css"],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json",
+      "flags": {}
+    }
+  ],
+  "documentTypes": {
+    "Actor": {
+      "character": {}
+    },
+    "Item": {
+      "armor": {},
+      "equipment": {},
+      "gear": {},
+      "skill": {},
+      "trait": {},
+      "weapon": {}
+    }
+  },
+  "media": [
+    {
+      "type": "cover",
+      "loop": false,
+      "flags": {}
+    },
+    {
+      "type": "setup",
+      "url": "systems/fist-ultra-edition/assets/background.png"
+    }
+  ],
+  "url": "https://gitlab.com/olivier-grech/fist-ultra-edition",
+  "manifest": "https://gitlab.com/olivier-grech/fist-ultra-edition/-/releases/1.13.0/downloads/system.json",
+  "download": "https://gitlab.com/olivier-grech/fist-ultra-edition/-/releases/1.13.0/downloads/fist-ultra-edition-1.13.0.zip"
+}

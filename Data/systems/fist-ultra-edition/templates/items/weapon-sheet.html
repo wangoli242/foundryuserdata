@@ -1,0 +1,38 @@
+<form autocomplete="off">
+  <h3>Weapon</h3>
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Name"}}</div>
+    <input type="text" name="name" value="{{item.name}}" />
+  </div>
+  <br />
+  <div>
+    <div>Limited uses</div>
+    <input
+      style="margin: 0"
+      type="checkbox"
+      name="system.isLimitedUses"
+      {{checked
+      system.isLimitedUses}}
+    />
+  </div>
+  <br />
+  {{#if item.system.isLimitedUses}}
+  <div>
+    <div>Max uses</div>
+    <input type="number" name="system.uses.max" value="{{system.uses.max}}" />
+  </div>
+  <br />
+  {{/if}}
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Damage"}}</div>
+    <input type="text" name="system.damage" value="{{system.damage}}" />
+    <p class="notes">
+      Damage should be a flat number or a formula like 2d6 or 2d6+1.
+    </p>
+  </div>
+  <br />
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Description"}}</div>
+    <textarea name="system.description">{{{system.description}}}</textarea>
+  </div>
+</form>

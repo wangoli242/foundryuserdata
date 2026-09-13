@@ -1,0 +1,46 @@
+<form autocomplete="off">
+  <h3>Armor</h3>
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Name"}}</div>
+    <input type="text" name="name" value="{{item.name}}" />
+  </div>
+  <br />
+  <div>
+    <div>Limited uses</div>
+    <input
+      style="margin: 0"
+      type="checkbox"
+      name="system.isLimitedUses"
+      {{checked
+      system.isLimitedUses}}
+    />
+  </div>
+  <br />
+  {{#if item.system.isLimitedUses}}
+  <div>
+    <div>Max uses</div>
+    <input type="number" name="system.uses.max" value="{{system.uses.max}}" />
+  </div>
+  <br />
+  {{/if}}
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Armor"}}</div>
+    <input type="number" name="system.armor" value="{{system.armor}}" />
+  </div>
+  <br />
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Accessory"}}</div>
+    <input
+      style="margin: 0"
+      type="checkbox"
+      name="system.isAccessory"
+      {{checked
+      system.isAccessory}}
+    />
+  </div>
+  <br />
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Description"}}</div>
+    <textarea name="system.description">{{{system.description}}}</textarea>
+  </div>
+</form>

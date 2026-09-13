@@ -1,0 +1,29 @@
+<form autocomplete="off">
+  <h3>Equipment</h3>
+  <div class="mb-2" style="color: #b00020">
+    The <b>equipment</b> item type is outdated, use <b>gear</b>, <b>weapon</b>,
+    or <b>armor</b> instead.
+  </div>
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Name"}}</div>
+    <input type="text" name="name" value="{{item.name}}" />
+  </div>
+  <br />
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Damage"}}</div>
+    <input type="text" name="system.damage" value="{{system.damage}}" />
+    <p class="notes">
+      Damage should be a flat number or a formula like 2d6 or 2d6+1.
+    </p>
+  </div>
+  <br />
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Armor"}}</div>
+    <input type="number" name="system.armor" value="{{system.armor}}" />
+  </div>
+  <br />
+  <div>
+    <div>{{localize "FISTULTRAEDITION.Description"}}</div>
+    <textarea name="system.description">{{{system.description}}}</textarea>
+  </div>
+</form>

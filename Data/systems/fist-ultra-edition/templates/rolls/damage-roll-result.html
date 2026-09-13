@@ -1,0 +1,28 @@
+<div class="fist-ultra-edition-roll">
+  <div
+    class="pb-2 background-color-black text-align-center color-white roll-header"
+  >
+    <div class="text-fist-title">Damage roll</div>
+    <div>{{item_name}} [{{item_damage}}]</div>
+  </div>
+  {{#if this.roll_dice}}
+  <div class="flex justify-content-center g-2 mt-2 w-full">
+    {{#each this.roll_dice}}
+    <div
+      class="w-8 h-8 background-color-black lh-8 text-fist-title text-align-center color-white"
+    >
+      {{this.result}}
+    </div>
+    {{/each}} {{#if this.roll_modifier}}
+    <div
+      class="border-black w-8 h-8 background-color-white lh-8 text-fist-title text-align-center"
+    >
+      {{this.roll_modifier}}
+    </div>
+    {{/if}}
+  </div>
+  {{/if}}
+  <div class="mt-2 w-full text-fist-title text-align-center">
+    {{roll_total}} DAMAGE
+  </div>
+</div>
