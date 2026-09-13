@@ -16,14 +16,6 @@ export function buildSettings(){
     type: Boolean,
     default: true
   });
-  game.settings.register("lancer-combat-banner", "hideNpcClass", {
-    name: "Hide NPC Class & Templates",
-    hint: "Hide the class/templates subtitle on NPC banners.",
-    scope: "world",
-    config: true,
-    type: Boolean,
-    default: false
-  });
   game.settings.register("lancer-combat-banner", "colorMode", {
     name: "ADA_COMBATBANNER.Settings.colorRules.Name",
     hint: "ADA_COMBATBANNER.Settings.colorRules.Hint",
@@ -33,8 +25,7 @@ export function buildSettings(){
     choices: {
         "user": "ADA_COMBATBANNER.Settings.colorRules.user",
         "default": "ADA_COMBATBANNER.Settings.colorRules.default",
-        "side": "ADA_COMBATBANNER.Settings.colorRules.side",
-        "team": "Advanced Team (token-factions fork)"
+        "side": "ADA_COMBATBANNER.Settings.colorRules.side"
     },
     default: "user"
   });

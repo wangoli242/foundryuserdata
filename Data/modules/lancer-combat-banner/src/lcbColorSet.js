@@ -10,35 +10,8 @@ export function setColors(combatant){
     setColor(  fetchColor( "defaultColor" ) );
   } else if (mode  === "side"){
     setSideColors(combatant);
-  } else if (mode === "team"){
-    setTeamColor(combatant);
-  }
+  } 
 
-}
-
-function _resolveTeamId(combatant){
-  const tokenDoc = combatant?.token;
-  if (!tokenDoc) return null;
-  let flag = tokenDoc.getFlag?.("token-factions", "team");
-  if (flag) return flag;
-  const actor = combatant.actor;
-  flag = actor?.getFlag?.("token-factions", "team");
-  if (flag) return flag;
-  flag = actor?.prototypeToken?.flags?.["token-factions"]?.team;
-  return flag || null;
-}
-
-function setTeamColor(combatant){
-  if (!game.modules.get("token-factions")?.active) {
-    setColor( fetchColor( "defaultColor" ) );
-    return;
-  }
-  let teams = [];
-  try { teams = game.settings.get("token-factions", "team-setup") || []; } catch (e) { /* ignore */ }
-  const teamId = _resolveTeamId(combatant);
-  const team = teamId ? teams.find(t => t.id === teamId) : null;
-  if (team?.color) setColor( team.color );
-  else setColor( fetchColor( "defaultColor" ) );
 }
 
 function setUserColors(combatant){

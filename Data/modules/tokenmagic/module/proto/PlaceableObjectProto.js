@@ -1,10 +1,7 @@
-import { Magic, isZOrderConfig } from '../tokenmagic.js';
-import { autoMinRank, PlaceableType } from '../constants.js';
-const { logCompatibilityWarning } = foundry.utils;
+import { PlaceableType, Magic, broadcast, SocketAction, mustBroadCast, isZOrderConfig } from '../tokenmagic.js';
+import { emptyPreset, autoMinRank } from '../constants.js';
 
 export var gMaxRank = autoMinRank;
-
-const { PlaceableObject } = foundry.canvas.placeables;
 
 PlaceableObject.prototype.TMFXaddFilters = async function (paramsArray, replace = false) {
 	await Magic.addFilters(this, paramsArray, replace);
@@ -31,35 +28,23 @@ PlaceableObject.prototype.TMFXhasFilterId = function (filterId) {
 };
 
 PlaceableObject.prototype._TMFXsetFlag = async function (flag) {
-	logCompatibilityWarning(
-		'You are accessing PlaceableObject._TMFXsetFlag which must now be accessed through CanvasDocument._TMFXsetFlag',
-		{ since: '0.7.4', once: true },
-	);
-	return this.document._TMFXsetFlag(flag);
+	if (mustBroadCast()) broadcast(this, flag, SocketAction.SET_FLAG);
+	else await this.document.setFlag('tokenmagic', 'filters', flag);
 };
 
 PlaceableObject.prototype._TMFXsetAnimeFlag = async function (flag) {
-	logCompatibilityWarning(
-		'You are accessing PlaceableObject._TMFXsetAnimeFlag which must now be accessed through CanvasDocument._TMFXsetAnimeFlag',
-		{ since: '0.7.4', once: true },
-	);
-	return this.document._TMFXsetAnimeFlag(flag);
+	if (mustBroadCast()) broadcast(this, flag, SocketAction.SET_ANIME_FLAG);
+	else await this.document.setFlag('tokenmagic', 'animeInfo', flag);
 };
 
 PlaceableObject.prototype._TMFXunsetFlag = async function () {
-	logCompatibilityWarning(
-		'You are accessing PlaceableObject._TMFXunsetFlag which must now be accessed through CanvasDocument._TMFXunsetFlag',
-		{ since: '0.7.4', once: true },
-	);
-	return this.document._TMFXunsetFlag();
+	if (mustBroadCast()) broadcast(this, null, SocketAction.SET_FLAG);
+	else await this.document.unsetFlag('tokenmagic', 'filters');
 };
 
 PlaceableObject.prototype._TMFXunsetAnimeFlag = async function () {
-	logCompatibilityWarning(
-		'You are accessing PlaceableObject._TMFXunsetFlag which must now be accessed through CanvasDocument._TMFXunsetFlag',
-		{ since: '0.7.4', once: true },
-	);
-	return this.document._TMFXunsetAnimeFlag();
+	if (mustBroadCast()) broadcast(this, null, SocketAction.SET_ANIME_FLAG);
+	else await this.document.unsetFlag('tokenmagic', 'animeInfo');
 };
 
 PlaceableObject.prototype._TMFXgetSprite = function () {
@@ -73,8 +58,6 @@ PlaceableObject.prototype._TMFXgetSprite = function () {
 			return this.template;
 		case PlaceableType.DRAWING:
 			return this.hasText ? this.text : this.shape;
-		case PlaceableType.REGION:
-			return this.children.find((ch) => ch instanceof foundry.canvas.placeables.regions.RegionMesh);
 		default:
 			return null;
 	}
@@ -107,8 +90,6 @@ PlaceableObject.prototype._TMFXcheckSprite = function () {
 			return !(this.template == null);
 		case PlaceableType.DRAWING:
 			return !(this.shape == null);
-		case PlaceableType.REGION:
-			return !(this.children.find((ch) => ch instanceof foundry.canvas.placeables.regions.RegionMesh) == null);
 		default:
 			return null;
 	}
@@ -116,7 +97,10 @@ PlaceableObject.prototype._TMFXcheckSprite = function () {
 
 PlaceableObject.prototype._TMFXgetMaxFilterRank = function () {
 	const sprite = this._TMFXgetSprite();
-	if (sprite?.filters == null) {
+	if (sprite == null) {
+		return gMaxRank++;
+	}
+	if (sprite.filters == null) {
 		return gMaxRank++;
 	} else {
 		let maxRank = Math.max(...sprite.filters.map((f) => f.rank), autoMinRank);
@@ -178,13 +162,9 @@ PlaceableObject.prototype._TMFXunsetRawFilters = function () {
 
 PlaceableObject.prototype._TMFXgetPlaceableType = function () {
 	if (
-		[
-			PlaceableType.TOKEN,
-			PlaceableType.TEMPLATE,
-			PlaceableType.TILE,
-			PlaceableType.DRAWING,
-			PlaceableType.REGION,
-		].includes(this.constructor.embeddedName)
+		[PlaceableType.TOKEN, PlaceableType.TEMPLATE, PlaceableType.TILE, PlaceableType.DRAWING].includes(
+			this.constructor.embeddedName
+		)
 	)
 		return this.constructor.embeddedName;
 	return PlaceableType.NOT_SUPPORTED;

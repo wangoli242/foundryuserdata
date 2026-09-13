@@ -3,7 +3,7 @@
 import { _queueCard, _createInfoCard, _removeInfoCard } from "../cards.js";
 import { isSingleTargetPickerActive, cancelSingleTargetPicker, createChanceLabel } from "../canvas.js";
 import { getOccupiedOffsets } from "../../combat/grid-helpers.js";
-import { TG, paintDashedFootprint, createTokenTether } from "../canvas-helpers.js";
+import { TG, paintDashedFootprint } from "../canvas-helpers.js";
 import { broadcastToolPresence, clearToolPresence, startToolHeartbeat } from "../presence.js";
 import { targetInfoAllowed, contestWinChance, chanceLabelsOn } from "../../activations/targeting-ui.js";
 
@@ -23,8 +23,7 @@ function contestStats(actor)
 }
 
 // Two-token / two-stat HASE contest card. Any of tokenA/skillA/tokenB/skillB can be pre-set.
-export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = null, skillB = null, title = 'HASE Contest', sendToOwner = true,
-    accuracy1 = 0, difficulty1 = 0, flatModifier1 = 0, accuracy2 = 0, difficulty2 = 0, flatModifier2 = 0 } = {})
+export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = null, skillB = null, title = 'HASE Contest', sendToOwner = true } = {})
 {
     return _queueCard(() => new Promise((resolve) =>
     {
@@ -58,7 +57,6 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
         // Same gold pulsing footprint as the attack-roll smart-targeting shape (target-shapes.js).
         let markG = null;
         let markPulse = null;
-        let tether = null;
 
         // Broadcast the two contender footprints as a gold ghost, like placed shapes. Hidden tokens excluded.
         const presenceData = () =>
@@ -134,18 +132,6 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             if (markG && !markG.destroyed)
                 markG.destroy({ children: true });
             markG = null;
-            tether?.destroy();
-            tether = null;
-        };
-        const refreshTether = () =>
-        {
-            if (!state.a.token || !state.b.token)
-            {
-                tether?.setPairs([]);
-                return;
-            }
-            tether ??= createTokenTether();
-            tether.setPairs([[state.a.token, state.b.token]]);
         };
 
         let cardEl;
@@ -183,7 +169,6 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             clearMark(side);
             if (token)
                 s.mark = drawMark(token);
-            refreshTether();
             broadcastToolPresence('haseContest', presenceData());
 
             const img = colEl.find('[data-role="token-img"]');
@@ -254,8 +239,7 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             if (!(a.token && a.skill && b.token && b.skill))
                 return;
             cleanup();
-            const result = await api?.executeContestedCheck?.(a.token, a.skill, b.token, b.skill,
-                { title, sendToOwner: state.sendToOwner, accuracy1, difficulty1, flatModifier1, accuracy2, difficulty2, flatModifier2 });
+            const result = await api?.executeContestedCheck?.(a.token, a.skill, b.token, b.skill, { title, sendToOwner: state.sendToOwner });
             resolve(result ?? null);
         });
 

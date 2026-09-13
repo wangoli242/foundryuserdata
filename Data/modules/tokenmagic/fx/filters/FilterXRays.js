@@ -9,7 +9,7 @@ export class FilterXRays extends CustomFilter {
 		let { time, color, divisor, intensity, blend, anchorX, anchorY, dimX, dimY } = Object.assign(
 			{},
 			FilterXRays.defaults,
-			params,
+			params
 		);
 
 		// using specific vertex shader and fragment shader
@@ -53,7 +53,7 @@ export class FilterXRays extends CustomFilter {
 	}
 
 	set color(value) {
-		new Color(value).applyRGB(this.uniforms.color);
+		new PIXI.Color(value).toRgbArray(this.uniforms.color);
 	}
 
 	get divisor() {

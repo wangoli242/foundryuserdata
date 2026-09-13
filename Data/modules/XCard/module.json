@@ -12,7 +12,7 @@
   "version": "0.0.13",
   "compatibility": {
     "minimum": "0.6.0",
-    "verified": "13.341"
+    "verified": "14.438"
   },
   "scripts": [
     "src/XCard.js"

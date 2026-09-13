@@ -9,7 +9,7 @@ export class FilterSpiderWeb extends CustomFilter {
 		let { time, anchorX, anchorY, color, thickness, div1, div2, tear, amplitude, alphaDiscard } = Object.assign(
 			{},
 			FilterSpiderWeb.defaults,
-			params,
+			params
 		);
 
 		// using specific vertex shader and fragment shader
@@ -53,7 +53,7 @@ export class FilterSpiderWeb extends CustomFilter {
 	}
 
 	set color(value) {
-		new Color(value).applyRGB(this.uniforms.color);
+		new PIXI.Color(value).toRgbArray(this.uniforms.color);
 	}
 
 	get anchorX() {
@@ -61,7 +61,7 @@ export class FilterSpiderWeb extends CustomFilter {
 	}
 
 	set anchorX(value) {
-		this.uniforms.anchor[0] = value;
+		this.uniforms.anchor[0] = 0.5;
 	}
 
 	get anchorY() {
@@ -69,7 +69,7 @@ export class FilterSpiderWeb extends CustomFilter {
 	}
 
 	set anchorY(value) {
-		this.uniforms.anchor[1] = value;
+		this.uniforms.anchor[1] = 0.5;
 	}
 
 	get thickness() {

@@ -101,6 +101,7 @@ export async function _updateToken(tokenDoc, update, context, userId)
     {
         return user.active && user.isGM;
     }) ?? {};
+    // ruler segments may not have synced tokenDoc.x/y yet, so prefer update coords
     const finalPos = (update.x !== undefined || update.y !== undefined)
         ? { x: update.x ?? tokenDoc.x, y: update.y ?? tokenDoc.y }
         : null;
@@ -109,8 +110,9 @@ export async function _updateToken(tokenDoc, update, context, userId)
     const leaving = previous.filter(p => !current.includes(p));
     const entering = current.filter(p => !previous.includes(p));
     const staying = previous.filter(p => current.includes(p));
-    // Walk the full v13 movement path so multi-waypoint drags detect every crossed template.
-    // Use the token's real (hex-aware) center so the ray lands in the correct cell.
+    // Walk the full v13 movement path so multi-waypoint drags detect all crossed templates,
+    // not just the last ruler segment. Use the token's real center (hex-aware) so the ray
+    // lands inside the correct cell instead of clipping neighbouring hexes.
     const toCenter = (pt) =>
     {
         const c = tokenDoc.getCenterPoint?.({ x: pt.x, y: pt.y });
@@ -322,17 +324,10 @@ export function _preUpdateCombat(combat, update, context, userId)
         was
     };
 }
-let _lastTurnKey = null;
-
 export function _updateCombat(combat, update, context, userId)
 {
     if ((context.direction === -1) || !combat.isActive)
         return;
-    // any combat update lands here, so dedupe on the actual turn identity
-    const key = `${combat.id}:${combat.round}:${combat.turn}:${combat.current?.tokenId ?? ""}`;
-    if (key === _lastTurnKey)
-        return;
-    _lastTurnKey = key;
 
     const prev = context[MODULE]?.was ? canvas.scene.tokens.get(combat.previous?.tokenId) : null;
     const curr = canvas.scene.tokens.get(combat.current?.tokenId);

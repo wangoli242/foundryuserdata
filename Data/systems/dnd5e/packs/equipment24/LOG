@@ -1,8 +1,0 @@
-2026/07/09-06:39:20.178213 fa3480d9dfc0 Recovering log #13
-2026/07/09-06:39:20.184563 fa3480d9dfc0 Delete type=0 #13
-2026/07/09-06:39:20.184580 fa3480d9dfc0 Delete type=3 #11
-2026/07/09-18:28:50.521160 fa346b7eefc0 Level-0 table #18: started
-2026/07/09-18:28:50.521172 fa346b7eefc0 Level-0 table #18: 0 bytes OK
-2026/07/09-18:28:50.523333 fa346b7eefc0 Delete type=0 #16
-2026/07/09-18:28:50.527851 fa346b7eefc0 Manual compaction at level-0 from '!folders!0qKr1rbesCSNE0MA' @ 72057594037927935 : 1 .. '!items.effects!phbagNet00000000.67ofG0FVqrrkAHKa' @ 0 : 0; will stop at (end)
-2026/07/09-18:28:50.527926 fa346b7eefc0 Manual compaction at level-1 from '!folders!0qKr1rbesCSNE0MA' @ 72057594037927935 : 1 .. '!items.effects!phbagNet00000000.67ofG0FVqrrkAHKa' @ 0 : 0; will stop at (end)

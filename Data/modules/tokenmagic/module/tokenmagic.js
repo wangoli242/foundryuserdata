@@ -43,9 +43,8 @@ import { FilterDDTint } from '../fx/filters/FilterDDTint.js';
 import { Anime } from '../fx/Anime.js';
 import { allPresets, PresetsLibrary } from '../fx/presets/defaultpresets.js';
 import { tmfxDataMigration } from '../migration/migration.js';
-import { emptyPreset, PlaceableType } from './constants.js';
+import { emptyPreset } from './constants.js';
 import './proto/PlaceableObjectProto.js';
-import './proto/CanvasDocumentProto.js';
 import { FilterCRT } from '../fx/filters/FilterCRT.js';
 import { FilterRGBSplit } from '../fx/filters/FilterRGBSplit.js';
 import { TokenMagicSettings } from './settings.js';
@@ -108,6 +107,14 @@ export const FilterType = {
 	rgbSplit: FilterRGBSplit,
 };
 
+export const PlaceableType = {
+	TOKEN: Token.embeddedName,
+	TILE: Tile.embeddedName,
+	TEMPLATE: MeasuredTemplate.embeddedName,
+	DRAWING: Drawing.embeddedName,
+	NOT_SUPPORTED: null,
+};
+
 function i18n(key) {
 	return game.i18n.localize(key);
 }
@@ -131,13 +138,12 @@ export const SocketAction = {
 };
 
 export function broadcast(placeable, flag, socketAction) {
-	const document = placeable.document ?? placeable;
 	const data = {
 		tmAction: socketAction,
-		tmPlaceableId: document.id,
-		tmPlaceableType: document._TMFXgetPlaceableType(),
+		tmPlaceableId: placeable.id,
+		tmPlaceableType: placeable._TMFXgetPlaceableType(),
 		tmFlag: flag,
-		tmScene: document.parent.id,
+		tmViewedScene: game.user.viewedScene,
 	};
 	game.socket.emit(moduleTM, data, (resp) => {});
 }
@@ -234,7 +240,7 @@ export function fixPath(path) {
 }
 
 export function getControlledPlaceables() {
-	const authorizedLayers = [canvas.tokens, canvas.tiles, canvas.drawings, canvas.regions, canvas.templates];
+	const authorizedLayers = [canvas.tokens, canvas.tiles, canvas.drawings];
 	if (authorizedLayers.some((layer) => layer === canvas.activeLayer)) {
 		return canvas.activeLayer.placeables.filter((p) => p.controlled === true) || [];
 	} else return [];
@@ -268,9 +274,6 @@ export function getPlaceableById(id, type) {
 		case PlaceableType.DRAWING:
 			placeable = findPlaceable(canvas.drawings.placeables, id);
 			break;
-		case PlaceableType.REGION:
-			placeable = findPlaceable(canvas.regions.placeables, id);
-			break;
 	}
 
 	return placeable;
@@ -293,34 +296,19 @@ function randomizeParams(params) {
 	if (params.randomized.hasOwnProperty('active') && !params.randomized.active) return;
 
 	for (const [param, opts] of Object.entries(params.randomized)) {
-		if (opts.hasOwnProperty('active') && !opts.active) continue;
-
 		let rVal;
-		if (Array.isArray(opts) || opts.list?.length) {
+		if (Array.isArray(opts) || opts.hasOwnProperty('list')) {
 			const list = opts.list ?? opts;
 			rVal = list[Math.floor(Math.random() * list.length)];
-		} else if (opts.color && opts.type !== 'any') {
-			rVal = Color.mix(opts.val1, opts.val2, Math.random());
 		} else {
-			if (typeof opts.val1 === 'boolean') {
-				rVal = Math.random() > 0.5;
-			} else {
-				const min = Math.min(opts.val1, opts.val2);
-				const max = Math.max(opts.val1, opts.val2);
-				const step = opts.step ?? 1;
-				const steps = Math.floor((max - min) / step) + 1;
-				const randomStep = Math.floor(Math.random() * steps);
-
-				const precision = Math.max(
-					(step.toString().split('.')[1] || '').length,
-					(min.toString().split('.')[1] || '').length,
-				);
-
-				rVal = Number((min + randomStep * step).toFixed(precision));
-			}
+			const min = Math.min(opts.val1, opts.val2);
+			const max = Math.max(opts.val1, opts.val2);
+			const step = opts.step ?? 1;
+			const stepsInRange = (max - min + (Number.isInteger(step) ? 1 : 0)) / step;
+			rVal = Math.floor(Math.random() * stepsInRange) * step + min;
 		}
-		foundry.utils.setProperty(params, param, rVal);
-		if (opts.hasOwnProperty('link')) foundry.utils.setProperty(params, opts.link, rVal);
+		setProperty(params, param, rVal);
+		if (opts.hasOwnProperty('link')) setProperty(params, opts.link, rVal);
 	}
 }
 
@@ -401,12 +389,9 @@ export function TokenMagic() {
 		if (!Array.isArray(paramsArray)) {
 			paramsArray = getPreset(paramsArray);
 		}
+		if (!(paramsArray instanceof Array && paramsArray.length > 0) || placeable == null) return;
 
-		const document = placeable.document ?? placeable;
-
-		if (!(paramsArray instanceof Array && paramsArray.length > 0) || document == null) return;
-
-		let actualFlags = replace ? null : document.getFlag('tokenmagic', 'filters');
+		let actualFlags = replace ? null : placeable.document.getFlag('tokenmagic', 'filters');
 		let newFlags = [];
 
 		for (const params of paramsArray) {
@@ -416,26 +401,26 @@ export function TokenMagic() {
 			}
 
 			if (!params.hasOwnProperty('rank')) {
-				params.rank = document._TMFXgetMaxFilterRank();
+				params.rank = placeable._TMFXgetMaxFilterRank();
 			}
 
 			if (!params.hasOwnProperty('filterId') || params.filterId == null) {
-				params.filterId = foundry.utils.randomID();
+				params.filterId = randomID();
 			}
 
 			if (!params.hasOwnProperty('enabled') || !(typeof params.enabled === 'boolean')) {
 				params.enabled = true;
 			}
 
-			if (params.hasOwnProperty('randomized') && params.randomized) {
+			if (params.hasOwnProperty('randomized')) {
 				randomizeParams(params);
 			}
 
-			params.placeableId = document.id;
-			params.filterInternalId = foundry.utils.randomID();
+			params.placeableId = placeable.id;
+			params.filterInternalId = randomID();
 			params.filterOwner = game.data.userId;
-			params.placeableType = document._TMFXgetPlaceableType();
-			params.updateId = foundry.utils.randomID();
+			params.placeableType = placeable._TMFXgetPlaceableType();
+			params.updateId = randomID();
 
 			newFlags.push({
 				tmFilters: {
@@ -452,21 +437,19 @@ export function TokenMagic() {
 			newFlags = actualFlags.concat(newFlags);
 		}
 
-		await document._TMFXsetFlag(newFlags);
+		await placeable._TMFXsetFlag(newFlags);
 	}
 
 	async function addUpdateFilters(placeable, paramsArray) {
-		if ((!paramsArray) instanceof Array || paramsArray.length < 1) {
+		if (!paramsArray instanceof Array || paramsArray.length < 1) {
 			return;
 		}
 
-		const document = placeable.document ?? placeable;
-
-		let flags = document.getFlag('tokenmagic', 'filters');
+		let flags = placeable.document.getFlag('tokenmagic', 'filters');
 		let workingFlags = [];
 		if (flags) {
 			flags.forEach((flag) => {
-				workingFlags.push(foundry.utils.duplicate(flag));
+				workingFlags.push(duplicate(flag));
 			});
 		}
 
@@ -475,21 +458,18 @@ export function TokenMagic() {
 
 		for (const params of paramsArray) {
 			updateParams = false;
-			params.updateId = foundry.utils.randomID();
+			params.updateId = randomID();
 
-			if (params.hasOwnProperty('randomized') && params.randomized) {
+			if (params.hasOwnProperty('randomized')) {
 				randomizeParams(params);
 			}
 
 			workingFlags.forEach((flag) => {
-				let match = flag.tmFilters.tmFilterId === params.filterId && flag.tmFilters.tmFilterType === params.filterType;
-				if (match && params.hasOwnProperty('filterInternalId')) {
-					match = flag.tmFilters.tmFilterInternalId === params.filterInternalId;
-				}
-
-				if (match && flag.tmFilters.hasOwnProperty('tmParams')) {
-					objectAssign(flag.tmFilters.tmParams, params);
-					updateParams = true;
+				if (flag.tmFilters.tmFilterId === params.filterId && flag.tmFilters.tmFilterType === params.filterType) {
+					if (flag.tmFilters.hasOwnProperty('tmParams')) {
+						objectAssign(flag.tmFilters.tmParams, params);
+						updateParams = true;
+					}
 				}
 			});
 
@@ -500,21 +480,21 @@ export function TokenMagic() {
 				}
 
 				if (!params.hasOwnProperty('rank')) {
-					params.rank = document._TMFXgetMaxFilterRank();
+					params.rank = placeable._TMFXgetMaxFilterRank();
 				}
 
 				if (!params.hasOwnProperty('filterId') || params.filterId == null) {
-					params.filterId = foundry.utils.randomID();
+					params.filterId = randomID();
 				}
 
 				if (!params.hasOwnProperty('enabled') || !(typeof params.enabled === 'boolean')) {
 					params.enabled = true;
 				}
 
-				params.placeableId = document.id;
-				params.filterInternalId = foundry.utils.randomID();
+				params.placeableId = placeable.id;
+				params.filterInternalId = randomID();
 				params.filterOwner = game.data.userId;
-				params.placeableType = document._TMFXgetPlaceableType();
+				params.placeableType = placeable._TMFXgetPlaceableType();
 
 				newFlags.push({
 					tmFilters: {
@@ -532,7 +512,7 @@ export function TokenMagic() {
 			workingFlags = newFlags.concat(workingFlags);
 		}
 
-		await document._TMFXsetFlag(workingFlags);
+		await placeable._TMFXsetFlag(workingFlags);
 	}
 
 	async function updateFilters(paramsArray) {
@@ -560,13 +540,18 @@ export function TokenMagic() {
 			// we must browse the collection of placeables whatever their types
 			// we have just a filterId.
 			let placeable = getPlaceableById(placeableId, PlaceableType.TOKEN);
-			if (placeable == null) placeable = getPlaceableById(placeableId, PlaceableType.TEMPLATE);
-			if (placeable == null) placeable = getPlaceableById(placeableId, PlaceableType.TILE);
-			if (placeable == null) placeable = getPlaceableById(placeableId, PlaceableType.DRAWING);
-			if (placeable == null) placeable = getPlaceableById(placeableId, PlaceableType.REGION);
-
-			if (!(placeable == null) && placeable instanceof foundry.canvas.placeables.PlaceableObject)
+			if (placeable == null) {
+				placeable = getPlaceableById(placeableId, PlaceableType.TEMPLATE);
+			}
+			if (placeable == null) {
+				placeable = getPlaceableById(placeableId, PlaceableType.TILE);
+			}
+			if (placeable == null) {
+				placeable = getPlaceableById(placeableId, PlaceableType.DRAWING);
+			}
+			if (!(placeable == null) && placeable instanceof PlaceableObject) {
 				await updateFiltersByPlaceable(placeable, paramsArray);
+			}
 		}
 	}
 
@@ -613,116 +598,102 @@ export function TokenMagic() {
 			return;
 		}
 
-		const document = placeable.document ?? placeable;
-
-		let flags = document.getFlag('tokenmagic', 'filters');
+		let flags = placeable.document.getFlag('tokenmagic', 'filters');
 		if (flags == null || !(flags instanceof Array) || flags.length < 1) {
 			return;
 		} // nothing to update...
 
 		let workingFlags = [];
 		flags.forEach((flag) => {
-			workingFlags.push(foundry.utils.duplicate(flag));
+			workingFlags.push(duplicate(flag));
 		});
 
 		for (const params of paramsArray) {
-			params.updateId = foundry.utils.randomID();
+			params.updateId = randomID();
 
-			if (params.hasOwnProperty('randomized') && params.randomized) {
+			if (params.hasOwnProperty('randomized')) {
 				randomizeParams(params);
 			}
 
 			workingFlags.forEach((flag) => {
-				let match = flag.tmFilters.tmFilterId === params.filterId && flag.tmFilters.tmFilterType === params.filterType;
-				if (match && params.hasOwnProperty('filterInternalId')) {
-					match = flag.tmFilters.tmFilterInternalId === params.filterInternalId;
-				}
-				if (match && flag.tmFilters.hasOwnProperty('tmParams')) {
-					objectAssign(flag.tmFilters.tmParams, params);
+				if (flag.tmFilters.tmFilterId === params.filterId && flag.tmFilters.tmFilterType === params.filterType) {
+					if (flag.tmFilters.hasOwnProperty('tmParams')) {
+						objectAssign(flag.tmFilters.tmParams, params);
+					}
 				}
 			});
 		}
-
-		await document._TMFXsetFlag(workingFlags);
+		await placeable._TMFXsetFlag(workingFlags);
 	}
 
 	// Deleting filters on targeted tokens
-	async function deleteFiltersOnTargeted(filterId = null, filterType = null, filterInternalId = null) {
+	async function deleteFiltersOnTargeted(filterId = null) {
 		let targeted = getTargetedTokens();
 		if (!(targeted == null) && targeted.length > 0) {
 			for (const token of targeted) {
-				await deleteFilters(token, filterId, filterType, filterInternalId);
+				await deleteFilters(token, filterId);
 			}
 		}
 	}
 
 	// Deleting filters on selected placeable(s)
-	async function deleteFiltersOnSelected(filterId = null, filterType = null, filterInternalId = null) {
+	async function deleteFiltersOnSelected(filterId = null) {
 		let placeables = getControlledPlaceables();
 		if (!(placeables == null) && placeables.length > 0) {
 			for (const placeable of placeables) {
-				await deleteFilters(placeable, filterId, filterType, filterInternalId);
+				await deleteFilters(placeable, filterId);
 			}
 		}
 	}
 
 	// Deleting all filters on a placeable in parameter
-	async function deleteFilters(placeable, filterId = null, filterType = null, filterInternalId = null) {
+	async function deleteFilters(placeable, filterId = null) {
 		if (placeable == null) {
 			return;
 		}
 
-		const document = placeable.document ?? placeable;
-
-		if (filterId == null && filterType == null && filterInternalId == null) {
-			await document._TMFXunsetFlag();
-			await document._TMFXunsetAnimeFlag();
-		} else if (typeof filterId === 'string' || typeof filterType === 'string' || typeof filterInternalId === 'string') {
-			let flags = document.getFlag('tokenmagic', 'filters');
+		if (filterId == null) {
+			await placeable._TMFXunsetFlag();
+			await placeable._TMFXunsetAnimeFlag();
+		} else if (typeof filterId === 'string') {
+			let flags = placeable.document.getFlag('tokenmagic', 'filters');
 			if (flags == null || !(flags instanceof Array) || flags.length < 1) {
 				return;
 			} // nothing to delete...
 
 			let workingFlags = [];
-			const removedInternalIds = new Set();
 			flags.forEach((flag) => {
-				const idMatch = !filterId || flag.tmFilters.tmFilterId === filterId;
-				const typeMatch = !filterType || flag.tmFilters.tmFilterType === filterType;
-				const internalIdMatch = !filterInternalId || flag.tmFilters.tmFilterInternalId === filterInternalId;
-
-				if (idMatch && typeMatch && internalIdMatch) {
-					removedInternalIds.add(flag.tmFilters.tmFilterInternalId);
-				} else {
-					workingFlags.push(foundry.utils.duplicate(flag));
+				if (flag.tmFilters.tmFilterId !== filterId) {
+					workingFlags.push(duplicate(flag));
 				}
 			});
 
-			if (workingFlags.length > 0) await document._TMFXsetFlag(workingFlags);
-			else await document._TMFXunsetFlag();
+			if (workingFlags.length > 0) await placeable._TMFXsetFlag(workingFlags);
+			else await placeable._TMFXunsetFlag();
 
-			flags = document.getFlag('tokenmagic', 'animeInfo');
+			flags = placeable.document.getFlag('tokenmagic', 'animeInfo');
 			if (flags == null || !(flags instanceof Array) || flags.length < 1) {
 				return;
 			} // nothing to delete...
 
 			workingFlags = [];
 			flags.forEach((flag) => {
-				if (!removedInternalIds.has(flag.tmFilterInternalId)) {
-					workingFlags.push(foundry.utils.duplicate(flag));
+				if (flag.tmFilterId !== filterId) {
+					workingFlags.push(duplicate(flag));
 				}
 			});
 
-			if (workingFlags.length > 0) await document._TMFXsetAnimeFlag(workingFlags);
-			else await document._TMFXunsetAnimeFlag();
+			if (workingFlags.length > 0) await placeable._TMFXsetAnimeFlag(workingFlags);
+			else await placeable._TMFXunsetAnimeFlag();
 		}
 	}
 
 	function hasFilterType(placeable, filterType) {
-		if (placeable == null || filterType == null) {
+		if (placeable == null || filterType == null || !(placeable instanceof PlaceableObject)) {
 			return null;
 		}
 
-		const flags = (placeable.document ?? placeable).getFlag('tokenmagic', 'filters');
+		let flags = placeable.document.getFlag('tokenmagic', 'filters');
 		if (flags == null || !(flags instanceof Array) || flags.length < 1) {
 			return false;
 		}
@@ -750,15 +721,15 @@ export function TokenMagic() {
 	}
 
 	function hasFilterId(placeable, filterId) {
-		if (placeable == null) {
+		if (placeable == null || !(placeable instanceof PlaceableObject)) {
 			return null;
 		}
-		let flags = (placeable.document ?? placeable).getFlag('tokenmagic', 'filters');
+		let flags = placeable.document.getFlag('tokenmagic', 'filters');
 		return _checkFilterId(placeable, filterId, flags);
 	}
 
 	function _checkFilterId(placeable, filterId, flags) {
-		if (placeable == null || filterId == null) {
+		if (placeable == null || filterId == null || !(placeable instanceof PlaceableObject)) {
 			return null;
 		}
 
@@ -833,7 +804,7 @@ export function TokenMagic() {
 			return;
 		}
 
-		let workingFilterInfo = foundry.utils.duplicate(filterInfo);
+		let workingFilterInfo = duplicate(filterInfo);
 		workingFilterInfo.tmFilters.tmParams.placeableId = placeable.id;
 		workingFilterInfo.tmFilters.tmParams.placeableType = placeable._TMFXgetPlaceableType();
 		let filter = new FilterType[workingFilterInfo.tmFilters.tmFilterType](workingFilterInfo.tmFilters.tmParams);
@@ -859,9 +830,6 @@ export function TokenMagic() {
 				placeable.document.tmfxTextureAlpha = placeable._TMFXgetSprite().alpha = updateData.opacity;
 				placeable.document.tmfxTint = updateData.tint;
 			}
-		} else if (placeableType === PlaceableType.REGION) {
-			const sprite = placeable._TMFXgetSprite();
-			if (sprite) sprite.alpha = placeable.document.getFlag('tokenmagic', 'regionData')?.alpha ?? 0.5;
 		}
 
 		let filters = placeable.document.getFlag('tokenmagic', 'filters');
@@ -869,9 +837,6 @@ export function TokenMagic() {
 			if (placeableType === PlaceableType.TEMPLATE) {
 				// get the first filterId to assign tmfxPreset
 				placeable.document.tmfxPreset = filters[0].tmFilters.tmFilterId;
-			} else if (placeableType === PlaceableType.REGION) {
-				const sprite = placeable._TMFXgetSprite();
-				if (sprite) sprite.setShaderClass(foundry.canvas.rendering.shaders.RegionShader);
 			}
 			_assignFilters(placeable, filters, bulkLoading);
 		}
@@ -999,7 +964,7 @@ export function TokenMagic() {
 								!puppet.hasOwnProperty('updateId') ||
 								(puppet.hasOwnProperty('updateId') && puppet.updateId !== filterFlag.tmFilters.tmParams.updateId)
 							) {
-								puppet.setTMParams(foundry.utils.duplicate(filterFlag.tmFilters.tmParams));
+								puppet.setTMParams(duplicate(filterFlag.tmFilters.tmParams));
 								puppet.normalizeTMParams();
 							}
 						}
@@ -1024,7 +989,7 @@ export function TokenMagic() {
 				let tmFilters = theFilters.filter((filter) =>
 					filterById
 						? filter.hasOwnProperty('filterId') && filter.filterId === filterId
-						: filter.hasOwnProperty('filterId'),
+						: filter.hasOwnProperty('filterId')
 				);
 
 				for (const filter of tmFilters) {
@@ -1039,7 +1004,7 @@ export function TokenMagic() {
 				let tmFilters = theFilters.filter((filter) =>
 					filterById
 						? !(filter.hasOwnProperty('filterId') && filter.filterId === filterId)
-						: !filter.hasOwnProperty('filterId'),
+						: !filter.hasOwnProperty('filterId')
 				);
 				return tmFilters.length === 0 ? null : tmFilters;
 			}
@@ -1293,7 +1258,7 @@ export function TokenMagic() {
 					}
 				}
 			}
-			return foundry.utils.deepClone(preset.params);
+			return deepClone(preset.params);
 		}
 		return undefined;
 	}
@@ -1461,21 +1426,6 @@ export function TokenMagic() {
 		getControlledPlaceables: getControlledPlaceables,
 		getTargetedTokens: getTargetedTokens,
 		getPlaceableById: getPlaceableById,
-		presetToggler: () => {
-			import('../gui/apps/editor/PresetToggler.js').then((module) => {
-				module.presetToggler();
-			});
-		},
-		presetSearch: (options) => {
-			import('../gui/apps/editor/PresetSearch.js').then((module) => {
-				module.presetSearch(options);
-			});
-		},
-		filterEditor: (placeable, sourceBounds) => {
-			import('../gui/apps/editor/FilterEditor.js').then((module) => {
-				module.filterEditor(placeable, sourceBounds);
-			});
-		},
 		get filterTypes() {
 			return FilterType;
 		},
@@ -1530,7 +1480,7 @@ function initSocketListener() {
 
 		async function updateFlags(targetFlag) {
 			// getting the scene coming from the socket
-			let scene = game.scenes.get(data.tmScene);
+			let scene = game.scenes.get(data.tmViewedScene);
 			if (scene == null) return;
 
 			// preparing flag data (with -= if the data is null)
@@ -1614,9 +1564,9 @@ function getAnchor(direction, angle, shapeType) {
 	return { x: x, y: y };
 }
 
-function onMeasuredTemplateConfig(templateConfig, html) {
+function onMeasuredTemplateConfig(data, html) {
 	if (!isVideoDisabled()) {
-		html.querySelector('[name="texture"]').setAttribute('type', 'imagevideo');
+		html[0].querySelector('.file-picker').dataset.type = 'imagevideo';
 	}
 
 	function compare(a, b) {
@@ -1625,7 +1575,11 @@ function onMeasuredTemplateConfig(templateConfig, html) {
 		return 0;
 	}
 
-	let tmTemplate = templateConfig.document.object;
+	let tmTemplate = data.object;
+
+	if (isNewerVersion(game.version, '0.8')) {
+		tmTemplate = tmTemplate.object;
+	}
 
 	let opacity = tmTemplate.template.alpha;
 	let tint = '';
@@ -1657,10 +1611,8 @@ function onMeasuredTemplateConfig(templateConfig, html) {
     <div class="form-group">
         <label>${i18n('TMFX.template.opacity')}</label>
         <div class="form-fields">
-			<range-picker name="flags.tokenmagic.templateData.opacity" value="${opacity}" min="0.0" max="1.0" step="0.01">
-				<input type="range" min="0.0" max="1" step="0.01">
-				<input type="number" min="0.0" max="1" step="0.01">
-			</range-picker>
+            <input type="range" name="flags.tokenmagic.templateData.opacity" value="${opacity}" min="0.0" max="1.0" step="0.05" data-dtype="Number"/>
+            <span class="range-value">${opacity}</span>
         </div>
     </div>
 
@@ -1674,34 +1626,17 @@ function onMeasuredTemplateConfig(templateConfig, html) {
     <div class="form-group">
         <label>${i18n('TMFX.template.tint')}</label>
         <div class="form-fields">
-			<color-picker name="flags.tokenmagic.templateData.tint" value="${tint}" placeholder="">
-				<input type="text" placeholder="">
-				<input type="color">
-			</color-picker>
+            <input class="color" type="text" name="flags.tokenmagic.templateData.tint" value="${tint}"/>
+            <input type="color" value="${tint}" data-edit="flags.tokenmagic.templateData.tint"/>
         </div>
     </div>
     `;
 
 	// injecting
-	const formGroup = html.querySelector('[name="texture"]').closest('.form-group');
-	$(formGroup).after(divPreset);
-	templateConfig.setPosition({ height: 'auto' });
-}
+	const htmlForm = html.find('.form-group');
+	htmlForm.last().after(divPreset);
 
-async function onRegionConfig(regionConfig, html) {
-	if (html.querySelector('[name="flags.tokenmagic.regionData.alpha"]')) return;
-
-	const region = regionConfig.document;
-
-	let tmfxRegionData = region.getFlag('tokenmagic', 'regionData');
-	let alpha = tmfxRegionData?.alpha ?? region.object?._TMFXgetSprite()?.alpha ?? 0.5;
-
-	const alphaRangePicker = await foundry.applications.handlebars.renderTemplate(
-		'modules/tokenmagic/templates/settings/regionAlpha.hbs',
-		{ alpha },
-	);
-
-	$(html).find('[name="color"]').closest('.form-group').after(alphaRangePicker);
+	$(html).css({ 'min-height': '525px' });
 }
 
 /* -------------------------------------------- */
@@ -1718,7 +1653,6 @@ Hooks.on('ready', () => {
 		ui.notifications.warn("The 'Token Magic FX' module recommends to install and activate the 'libWrapper' module.");
 
 	Hooks.on('renderMeasuredTemplateConfig', onMeasuredTemplateConfig);
-	Hooks.on('renderRegionConfig', onRegionConfig);
 });
 
 /* -------------------------------------------- */
@@ -1760,8 +1694,6 @@ Hooks.on('canvasReady', (canvas) => {
 	Magic._loadFilters(drawings);
 	const templates = canvas.templates.placeables;
 	Magic._loadFilters(templates);
-	const regions = canvas.regions.placeables;
-	Magic._loadFilters(regions);
 
 	Anime.activateAnimation();
 });
@@ -1893,52 +1825,6 @@ Hooks.on('updateDrawing', (document, options) => {
 });
 
 /* -------------------------------------------- */
-/*  Regions Management                         */
-/* -------------------------------------------- */
-
-Hooks.on('createRegion', (document) => {
-	if (document.parent.id !== game.user.viewedScene) return;
-
-	if (document.flags?.tokenmagic?.filters) {
-		let placeable = getPlaceableById(document._id, PlaceableType.REGION);
-		requestLoadFilters(placeable, 250);
-	}
-});
-
-/* -------------------------------------------- */
-
-Hooks.on('deleteRegion', (_, document) => {
-	if (!(document == null || !document._id)) {
-		Anime.removeAnimation(document._id);
-	}
-});
-
-/* -------------------------------------------- */
-
-Hooks.on('updateRegion', (document, options) => {
-	if (document.parent.id !== game.user.viewedScene) return;
-	let placeable = getPlaceableById(document._id, PlaceableType.REGION);
-
-	if (!options.flags?.tokenmagic || options.x || options.y) {
-		Anime.removeAnimation(document._id); // removing animations on this placeable
-		Magic._clearImgFiltersByPlaceable(placeable); // clearing the filters (owned by tokenmagic)
-		requestLoadFilters(placeable, 250);
-	} else {
-		if (!placeable.loadingRequest) {
-			Magic._updateFilters(document, options, PlaceableType.REGION);
-
-			const sprite = getPlaceableById(document._id, PlaceableType.REGION)?._TMFXgetSprite();
-			if (sprite) {
-				const filters = document.getFlag('tokenmagic', 'filters');
-				if (filters) sprite.setShaderClass(foundry.canvas.rendering.shaders.RegionShader);
-				else sprite.setShaderClass(foundry.canvas.rendering.shaders.HighlightRegionShader);
-				sprite.alpha = document.getFlag('tokenmagic', 'regionData')?.alpha ?? 0.5;
-			}
-		}
-	}
-});
-
-/* -------------------------------------------- */
 /*  Measured Templates Management               */
 /* -------------------------------------------- */
 
@@ -1973,9 +1859,6 @@ Hooks.on('updateMeasuredTemplate', (document, options) => {
 		if (!placeable.loadingRequest) {
 			Magic._updateFilters(document, options, PlaceableType.TEMPLATE);
 			Magic._updateTemplateData(document, options, PlaceableType.TEMPLATE);
-		}
-		if ('-=texture' in options) {
-			document.object?.draw();
 		}
 	}
 });
@@ -2105,7 +1988,7 @@ Hooks.on('preCreateMeasuredTemplate', (document) => {
 		if (document.flags.tokenmagic) {
 			return;
 		}
-		document.flags = foundry.utils.mergeObject(document.flags, tmfxBaseFlags, true, true);
+		document.flags = mergeObject(document.flags, tmfxBaseFlags, true, true);
 	}
 
 	// normalizing color to value if needed
@@ -2161,7 +2044,7 @@ Hooks.on('preCreateMeasuredTemplate', (document) => {
 				}
 
 				params.placeableId = null;
-				params.filterInternalId = foundry.utils.randomID();
+				params.filterInternalId = randomID();
 				params.filterOwner = game.data.userId;
 				params.placeableType = PlaceableType.TEMPLATE;
 
@@ -2194,75 +2077,4 @@ Hooks.on('preCreateMeasuredTemplate', (document) => {
 		options: null,
 	};
 	document.updateSource({ flags: { tokenmagic: tmfxFlags } });
-});
-
-/* -------------------------------------------- */
-
-Hooks.on('renderBasePlaceableHUD', (hud, form, data, options) => {
-	if (!game.user.isGM || !hud.document._TMFXgetPlaceableType?.()) return;
-
-	const alwaysDisplay = game.settings.get('tokenmagic', 'alwaysDisplayEditorControl');
-	if (!alwaysDisplay && !hud.object.document.getFlag('tokenmagic', 'filters')?.length) {
-		return;
-	}
-
-	const leftColumn = form.querySelector('.placeable-hud .col.left');
-	if (!leftColumn) return;
-
-	const button = document.createElement('button');
-	button.type = 'button';
-	button.classList.add('control-icon');
-
-	button.dataset.action = 'tmfx-editor';
-	button.dataset.tooltip = game.i18n.localize('TMFX.hud.title');
-
-	const icon = document.createElement('i');
-	icon.classList.add('fa-solid', 'fa-fire');
-
-	button.appendChild(icon);
-	button.addEventListener('click', (event) => {
-		if (event.pointerType)
-			window.TokenMagic.filterEditor(hud.object, event.target.closest('.col.left').getBoundingClientRect());
-	});
-
-	leftColumn.appendChild(button);
-});
-
-Hooks.on('getHeaderControlsDocumentSheetV2', (config, controls) => {
-	if (config.document._TMFXgetPlaceableType?.()) {
-		controls.push({
-			onClick: () => {
-				window.TokenMagic.filterEditor(config.document);
-			},
-			icon: 'fa-solid fa-fire',
-			label: 'TMFX.hud.title',
-			visible: game.user.isGM,
-		});
-	}
-});
-
-Hooks.on('dropCanvasData', async (canvas, data, event) => {
-	const { type, x, y, subtype } = data;
-	if (
-		type === 'TMFX Filter' ||
-		type === 'TMFX Preset' ||
-		(type === 'CommunityGalleryEntry' && subtype === 'TMFX Preset')
-	) {
-		const placeables = canvas.activeLayer?.placeables
-			?.filter((p) => p.visible && p.bounds?.contains(x, y))
-			.map((p) => p.document)
-			.sort(
-				(p1, p2) =>
-					p1.elevation - p2.elevation ||
-					p1.sort - p2.sort ||
-					p1.zIndex - p2.zIndex ||
-					p1._lastSortedIndex - p2._lastSortedIndex,
-			);
-		const placeable = placeables?.[placeables.length - 1];
-		if (placeable && Object.values(PlaceableType).includes(placeable.documentName)) {
-			import('../gui/apps/editor/FilterEditor.js').then((module) => {
-				module.handleTMFXDropEvent(placeable, data);
-			});
-		}
-	}
 });

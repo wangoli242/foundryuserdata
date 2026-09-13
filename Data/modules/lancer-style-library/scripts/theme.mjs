@@ -52,8 +52,8 @@ function applyTheme()
 Hooks.once('init', () =>
 {
     game.settings.register(MODULE, 'theme', {
-        name: 'Style Library Theme',
-        hint: 'Applies to all Lancer Style Library windows.',
+        name: 'Dialog Theme',
+        hint: 'Panel colour for Lancer dialogs and the Token Action HUD.',
         scope: 'client',
         config: true,
         type: String,

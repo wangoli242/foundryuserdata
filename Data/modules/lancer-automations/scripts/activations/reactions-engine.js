@@ -318,15 +318,7 @@ Hooks.on('lancer-automations.runOnMessage', ({ token, itemLid, reactionPath, act
         .catch(e => console.error('lancer-automations | onMessage error:', e));
 });
 
-/** The reactor's own entry of data.targets ({ target/token, roll, crit, ... }), or null. */
-function findTargetEntry(data, token)
-{
-    if (!Array.isArray(data.targets))
-        return null;
-    return data.targets.find(entry => entry?.constructor === Object && (entry.target ?? entry.token)?.id === token.id) ?? null;
-}
-
-function evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isTarget, isInCombat)
+function evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isInCombat)
 {
     const cancelledBy = data._cancelledBy;
     if (cancelledBy?.length > 0)
@@ -353,9 +345,9 @@ function evaluateGeneralReaction(reactionName, reaction, triggerType, data, toke
         dbgAuto('skip:', token.name, reactionName, 'reactor is the trigger source', { setting: 'triggerSelf', value: !!reaction.triggerSelf });
         return null;
     }
-    if (!isSelf && reaction.triggerOther === false && !(reaction.triggerTarget === true && isTarget))
+    if (!isSelf && reaction.triggerOther === false)
     {
-        dbgAuto('skip:', token.name, reactionName, 'reactor is not the trigger source or target', { setting: 'triggerOther', value: false });
+        dbgAuto('skip:', token.name, reactionName, 'reactor is not the trigger source', { setting: 'triggerOther', value: false });
         return null;
     }
     if (reaction.checkReaction && !(isSelf && data.reactionJustConsumed) && !hasReactionAvailable(token))
@@ -386,7 +378,7 @@ function evaluateGeneralReaction(reactionName, reaction, triggerType, data, toke
             dbgAuto('skip:', token.name, reactionName, 'cannot provoke', { setting: 'requireCanProvoke', value: true, reasons: provokeReasons });
             return null;
         }
-        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction, isTarget, targetEntry: findTargetEntry(data, token) };
+        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction };
         enrichedData.debugActivation = function (label)
         {
             return debugActivation(triggerType, this ?? enrichedData, token, null, reactionName, label);
@@ -463,7 +455,7 @@ function _buildSendMessageToReactor(token, item, reactionPath, activationName, t
             targetUserId = ownerIds.at(0) ?? null;
             console.warn(`lancer-automations | sendMessageToReactor: no userId provided, falling back to token owner "${targetUserId}" for ${token.name}.`);
         }
-        if (!targetUserId || targetUserId === game.user.id || !game.users.get(targetUserId)?.active)
+        if (!targetUserId || targetUserId === game.user.id)
             return await checkOnMessageReactions(token, itemLid, reactionPath, activationName, triggerType, data);
         const requestId = wait ? `omsg_${Date.now()}_${Math.random().toString(36).slice(2, 8)}` : null;
         game.socket.emit('module.lancer-automations', {
@@ -701,9 +693,8 @@ async function checkReactions(triggerType, data)
     for (const token of orderedTokens)
     {
         const isSelf = data.triggeringToken?.id === token.id;
-        const isTarget = (data.hitTokens ?? []).some(hitToken => hitToken.id === token.id);
-        // Hidden triggering tokens: only self- and target-reactions fire (being attacked is knowable).
-        if (triggeringTokenHidden && !isSelf && !isTarget)
+        // Hidden triggering tokens: only self-reactions fire.
+        if (triggeringTokenHidden && !isSelf)
             continue;
         const isInCombat = token.inCombat && !!game.combat?.started;
 
@@ -711,7 +702,7 @@ async function checkReactions(triggerType, data)
         const distanceToTrigger = sourceToken ? getTokenDistance(token, sourceToken) : null;
         const provokeReasons = [];
         const canTriggerReaction = api.canProvokeReaction(sourceToken, token, provokeReasons);
-        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction, isTarget, targetEntry: findTargetEntry(data, token) };
+        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction };
 
         const items = getReactionItems(token);
         for (const item of items)
@@ -775,9 +766,9 @@ async function checkReactions(triggerType, data)
                 }
                 else
                 {
-                    if (reaction.triggerOther === false && !(reaction.triggerTarget === true && isTarget))
+                    if (reaction.triggerOther === false)
                     {
-                        dbgAuto('skip:', token.name, item.name, 'reactor is not the trigger source or target', { setting: 'triggerOther', value: !!reaction.triggerOther });
+                        dbgAuto('skip:', token.name, item.name, 'reactor is not the trigger source', { setting: 'triggerOther', value: !!reaction.triggerOther });
                         continue;
                     }
                 }
@@ -1043,7 +1034,7 @@ async function checkReactions(triggerType, data)
         {
             const reactionName = actionBasedReaction.name;
             const reaction = actionBasedReaction.reaction;
-            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isTarget, isInCombat);
+            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isInCombat);
             if (enrichedData)
             {
                 const reactionTriggerData = { ...enrichedData,
@@ -1109,7 +1100,7 @@ async function checkReactions(triggerType, data)
 
         for (const [reactionName, reaction] of nonActionBasedReactions)
         {
-            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isTarget, isInCombat);
+            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isInCombat);
             if (enrichedData)
             {
                 const reactionTriggerData = { ...enrichedData,
@@ -1272,16 +1263,18 @@ async function checkReactions(triggerType, data)
 }
 
 // Origin can appear as triggering token, single target, or in targets array.
-// role: 'source' = origin caused the event, 'target' = origin is one of its targets, else either side.
-function isOriginInvolved(originId, role, data)
+function isOriginInvolved(originId, triggerType, data)
 {
-    const isSource = data.triggeringToken?.id === originId;
-    const isTarget = (data.hitTokens ?? []).some(hitToken => hitToken.id === originId) || data.target?.id === originId;
-    if (role === 'source')
-        return isSource;
-    if (role === 'target')
-        return isTarget;
-    return isSource || isTarget;
+    if (data.triggeringToken?.id === originId)
+        return true;
+    if (data.target?.id === originId)
+        return true;
+    if (data.targets && Array.isArray(data.targets))
+    {
+        if (data.targets.some(t => t.id === originId))
+            return true;
+    }
+    return false;
 }
 
 function passesBuiltInFilters(consumption, triggerType, data)
@@ -1382,7 +1375,7 @@ export async function processEffectConsumption(triggerType, data)
                 continue;
 
             const originId = consumption.originId || token.id;
-            if (!isOriginInvolved(originId, consumption.role, data))
+            if (!isOriginInvolved(originId, triggerType, data))
                 continue;
 
             if (!passesBuiltInFilters(consumption, triggerType, data))
@@ -1449,12 +1442,11 @@ async function _handleTriggerBody(triggerType, data)
     // runInFlowBody: child flow.begin() from reactions routes to innerChain, avoids parent-await deadlock.
     return runInFlowBody(async () =>
     {
-        // Normalized target list: entries may be raw tokens or { target }/{ token } wrappers, single target included.
+        // Normalized target list: entries may be raw tokens or { target } wrappers, single target included.
         if (!('hitTokens' in data))
         {
-            const unwrap = entry => (entry?.constructor === Object ? (entry.target ?? entry.token) : entry);
-            const single = data.target ?? data.token ?? data.checkAgainstToken;
-            const raw = Array.isArray(data.targets) ? data.targets.map(unwrap) : (single ? [unwrap(single)] : []);
+            const unwrap = entry => (entry?.constructor === Object ? entry.target : entry);
+            const raw = Array.isArray(data.targets) ? data.targets.map(unwrap) : (data.target ? [unwrap(data.target)] : []);
             data.hitTokens = raw.filter(candidate => candidate?.actor);
         }
         data.startRelatedFlow = async () =>

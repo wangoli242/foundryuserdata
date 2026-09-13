@@ -63,7 +63,23 @@
 				"alpha": 0.7,
 				"padding": 10,
 				"shadowOnly": false,
-				"color": 0
+				"color": 0,
+				"animated": {
+					"blur": {
+						"active": true,
+						"loopDuration": 1500,
+						"animType": "syncCosOscillation",
+						"val1": 2,
+						"val2": 3
+					},
+					"rotation": {
+						"active": true,
+						"loopDuration": 150,
+						"animType": "syncSinOscillation",
+						"val1": 33,
+						"val2": 35
+					}
+				}
 			}
 		],
 		"library": "tmfx-main"

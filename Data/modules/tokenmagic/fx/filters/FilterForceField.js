@@ -70,7 +70,7 @@ export class FilterForceField extends CustomFilter {
 	}
 
 	set color(value) {
-		new Color(value).applyRGB(this.uniforms.color);
+		new PIXI.Color(value).toRgbArray(this.uniforms.color);
 	}
 
 	get blend() {

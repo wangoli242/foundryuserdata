@@ -2336,3 +2336,526 @@
 {"level":"info","message":"Created client session 53af915e0b22965bf2b4cf50","timestamp":"2026-09-12 21:52:24"}
 {"level":"info","message":"Created client session e38afa94a14e245543b7aab0","timestamp":"2026-09-12 21:52:26"}
 {"level":"info","message":"Created client session 10b666341d7c8c8ac5be4068","timestamp":"2026-09-12 21:52:26"}
+{"level":"info","message":"Created client session ce3a3339c5b64ddb1bc38f57","timestamp":"2026-09-12 22:10:29"}
+{"level":"info","message":"Administrator authentication successful for session ce3a3339c5b64ddb1bc38f57","timestamp":"2026-09-12 22:25:27"}
+{"level":"warn","message":"The system \"worldbuilding\" is using \"gridDistance\" which is deprecated in favor of \"grid.distance\".\nDeprecated since Version 12\nBackwards-compatible support will be removed in Version 14","timestamp":"2026-09-12 22:25:28"}
+{"level":"warn","message":"The system \"worldbuilding\" is using \"gridUnits\" which is deprecated in favor of \"grid.units\".\nDeprecated since Version 12\nBackwards-compatible support will be removed in Version 14","timestamp":"2026-09-12 22:25:28"}
+{"level":"info","message":"Core software stable update 14.367 is available!","timestamp":"2026-09-12 22:25:28"}
+{"level":"info","message":"Shutting down Foundry Virtual Tabletop server","timestamp":"2026-09-12 22:33:00"}
+{"level":"info","message":"Running on Node.js - Version 24.15.0","timestamp":"2026-09-12 22:52:55"}
+{"level":"info","message":"Foundry Virtual Tabletop - Version 13 Build 351","timestamp":"2026-09-12 22:52:55"}
+{"level":"info","message":"User Data Directory - \"/home/ubuntu/foundryuserdata\"","timestamp":"2026-09-12 22:52:55"}
+{"level":"info","message":"Application Options:\n{\n  \"compressStatic\": true,\n  \"fullscreen\": false,\n  \"hostname\": \"halfwayforte.duckdns.org\",\n  \"language\": \"en.core\",\n  \"localHostname\": null,\n  \"port\": 30000,\n  \"proxyPort\": 443,\n  \"proxySSL\": true,\n  \"routePrefix\": null,\n  \"updateChannel\": \"stable\",\n  \"upnp\": true,\n  \"awsConfig\": null,\n  \"compressSocket\": true,\n  \"cssTheme\": \"dark\",\n  \"deleteNEDB\": false,\n  \"hotReload\": false,\n  \"passwordSalt\": null,\n  \"sslCert\": null,\n  \"sslKey\": null,\n  \"world\": null,\n  \"serviceConfig\": null,\n  \"telemetry\": false,\n  \"adminPassword\": \"••••••••••••••••\",\n  \"noBackups\": false\n}","timestamp":"2026-09-12 22:52:55"}
+{"level":"info","message":"Software license verification succeeded","timestamp":"2026-09-12 22:52:55"}
+{"level":"info","message":"Requesting UPnP port forwarding to destination port 30000","timestamp":"2026-09-12 22:52:55"}
+{"level":"info","message":"Server started and listening on port 30000","timestamp":"2026-09-12 22:52:55"}
+{"level":"info","message":"Created client session cccd1442f3f683fa7e657b63","timestamp":"2026-09-12 22:52:55"}
+{"level":"error","message":"Invalid signature file for protected module \"cinematic-cut-ins\"","timestamp":"2026-09-12 22:52:56"}
+{"level":"info","message":"Administrator authentication successful for session cccd1442f3f683fa7e657b63","timestamp":"2026-09-12 22:53:00"}
+{"level":"info","message":"Core software stable update 14.367 is available!","timestamp":"2026-09-12 22:53:01"}
+{"level":"error","message":"Invalid signature file for protected module \"cinematic-cut-ins\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"actors\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 7%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"cards\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 14%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"messages\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 21%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"combats\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 29%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"fog\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 36%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"folders\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 43%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"items\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 50%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"journal\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 57%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"macros\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 64%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"playlists\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 71%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"tables\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 79%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"scenes\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 86%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"settings\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 93%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"users\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading World Data - 100%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 7%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 14%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 21%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 29%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 36%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 43%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 50%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 57%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 64%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 71%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 79%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 86%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 93%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Migrating World Data - 100%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"world.pilot-items\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 5%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"world.player-actors\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 11%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"world.mech-items\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 16%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"world.npc-actors\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 21%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"world.npc-items\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 26%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"world.status-items\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 32%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"world.pass-the-torch-details\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 37%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"lancer.core_macros\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 42%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"lancer.lancer_info\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 47%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"JB2A_DnD5e.jb2a-sequencer\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 53%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"battle-transitions.bt-sample-macros\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 58%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"csm-lancer-qol.macro\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 63%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"lancer-automations.macros\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 68%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"lancer-weapon-fx.weaponfx\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 74%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"psfx.psfx-macros\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 79%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"theatre.theatre-inserts-macros\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 84%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"tokenmagic.tmMacros\"","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Launching World | Loading Package Data - 89%","timestamp":"2026-09-12 22:53:04"}
+{"level":"info","message":"Connected to database \"tokenmagic.tmSampleCompendium\"","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Loading Package Data - 95%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Connected to database \"wall-height.wall-height-macros\"","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Loading Package Data - 100%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Created 0 Folder documents with ids: []","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 5%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 11%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 16%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 21%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 26%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 32%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 37%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 42%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 47%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 53%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 58%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 63%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 68%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 74%","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [25k1icw3Ch3eo6VZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [3fAUx2H2A8hSj2fg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [5Su5ERGZKucfkGJ2] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [6ClwtXQy2gQbeXbX] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7NdinQmQ472eZnKh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7fc3VwRBiux8eER4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7s5pLkAwQMos3T0Z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [F43vNkkyrlK1AIO4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [QZhWbDtFroGi7hZW] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [SleaRNST8ONdUBTu] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [TXeffYIICFjrqpbt] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [VT4n0Z0pTt0x19X8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [XuJvJcSIPPQqxYNh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [ZUwLESXi2N0fmLwb] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [aEX3nSX54TsJlrVs] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [fFuEISVrfqmzdTda] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [i3hiEJIWrdvzwj7z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [iU59ZeAqWHhgILUE] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [l1VaZSswhOg5Y8Z5] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [lJDOlXizpTk24FAr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p5HlqVt50xuW73pr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p9Vl1exqK4O21sqY] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [rIrcTKbaoBAt6hV8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [szabKdSxqAmKEotU] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [t7GgAA1jqWyDWC74] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [tGj125Zku5wjux3j] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [uMuY6C8BFMlHxP5s] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [utsu2lBPZmwAHJDZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"error","message":"An error occurred during the migration of Macro record [zYCX2BmlEYEBELbg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-12 22:53:05"}
+{"level":"warn","message":"Database psfx.psfx-macros was not fully migrated due to errors during migration.","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 79%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 84%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 89%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 95%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Migrating Package Data - 100%","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Launching World | Complete","timestamp":"2026-09-12 22:53:05"}
+{"level":"info","message":"Created client session d98db2984524348aab39d26c","timestamp":"2026-09-12 22:53:17"}
+{"level":"info","message":"Created client session d9f766ae472c45a121fba3a2","timestamp":"2026-09-12 22:53:23"}
+{"ip":"70.160.11.31","level":"info","message":"User authentication successful for user Gamemaster","session":"d9f766ae472c45a121fba3a2","timestamp":"2026-09-12 22:53:29"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-12 22:53:33"}
+{"level":"info","message":"Vended World data to User [kPj3BMrSMsDT2a8C] in 566ms","timestamp":"2026-09-12 22:53:33"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-09-12 22:53:36"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Wilco","session":"cccd1442f3f683fa7e657b63","timestamp":"2026-09-12 22:53:46"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-12 22:53:49"}
+{"level":"info","message":"Vended World data to User [JqADFfX412VyhcGg] in 381ms","timestamp":"2026-09-12 22:53:49"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-12 22:54:45"}
+{"level":"info","message":"Vended World data to User [kPj3BMrSMsDT2a8C] in 487ms","timestamp":"2026-09-12 22:54:45"}
+{"level":"info","message":"Created client session abe605d61f51aaeaa71696a9","timestamp":"2026-09-12 22:54:48"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-12 22:54:50"}
+{"level":"info","message":"Vended World data to User [JqADFfX412VyhcGg] in 351ms","timestamp":"2026-09-12 22:54:50"}
+{"level":"info","message":"Created client session 4635a71a53a6fc9b167b8acc","timestamp":"2026-09-12 22:55:09"}
+{"ip":"107.199.13.95","level":"info","message":"User authentication successful for user Vadim","session":"4635a71a53a6fc9b167b8acc","timestamp":"2026-09-12 22:55:13"}
+{"level":"info","message":"Created client session e2fb79000103561d57b9fefa","timestamp":"2026-09-12 22:55:15"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-12 22:55:17"}
+{"level":"info","message":"Vended World data to User [9ycXDSOn9B4w87g4] in 385ms","timestamp":"2026-09-12 22:55:17"}
+{"ip":"73.109.124.145","level":"info","message":"User authentication successful for user Knockout","session":"e2fb79000103561d57b9fefa","timestamp":"2026-09-12 22:55:28"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-12 22:55:32"}
+{"level":"info","message":"Vended World data to User [LCOFCQqf71YOOrER] in 448ms","timestamp":"2026-09-12 22:55:32"}
+{"level":"info","message":"Created Drawing with id [vB7PU2A1z3yWfabZ] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:55:43"}
+{"level":"info","message":"Created Drawing with id [6eMBXqp3EtAz8nxn] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:55:45"}
+{"level":"info","message":"Created Drawing with id [MbwA9lKpU2Gw9QV2] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:55:46"}
+{"level":"info","message":"Created Drawing with id [GhEKHBQgwxmfOWHX] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:55:53"}
+{"level":"info","message":"Created Drawing with id [8aVsIzcJdwo646Jg] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:55:55"}
+{"level":"info","message":"Created Drawing with id [U2aReKUOAKQXi7YW] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:55:57"}
+{"level":"info","message":"Created Drawing with id [EUkW9T5EK2sS4By4] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:55:58"}
+{"level":"info","message":"Created Drawing with id [y9r16SiS2nzTEQrX] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:56:00"}
+{"level":"info","message":"Created Drawing with id [tfMOTHeFrFHwDYFb] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:56:02"}
+{"level":"info","message":"Created Drawing with id [oy5TpGj7JplqOret] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:56:19"}
+{"level":"info","message":"Created Drawing with id [CRQoZ9hiIyJ5Jx4a] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:56:42"}
+{"level":"info","message":"Created Drawing with id [QbuplIC8OWC3KqPz] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:56:46"}
+{"level":"info","message":"Created Drawing with id [YvgciK8AAhMwPslH] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:57:20"}
+{"level":"info","message":"Created Drawing with id [Q2jqNpf0rkTdw0qL] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:57:35"}
+{"level":"info","message":"Created Drawing with id [3j5anlyeuse1yrKd] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:57:52"}
+{"level":"info","message":"Created Drawing with id [V9UonLdwmUe8ahVs] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:58:14"}
+{"level":"info","message":"Created Drawing with id [Gtt6hefJgtgd6BCe] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:58:31"}
+{"level":"info","message":"Created Drawing with id [eHWxOGZCriH09X2p] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:59:05"}
+{"level":"info","message":"Created Drawing with id [R6PBrz4c1NCz6k5C] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:59:13"}
+{"level":"info","message":"Created Drawing with id [wUqDP4ZeAjhiV2OO] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:59:23"}
+{"level":"info","message":"Created Drawing with id [dWpOeNwMdg4959RK] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:59:37"}
+{"level":"info","message":"Created Drawing with id [2NTC29FGsR8Rku6e] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 22:59:47"}
+{"level":"info","message":"Created Drawing with id [aiLjpes7RzsZxt8K] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 23:00:30"}
+{"level":"info","message":"Created Drawing with id [AUE2PAW7zSHbEMQQ] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 23:01:56"}
+{"level":"info","message":"Deleted Drawing with id [AUE2PAW7zSHbEMQQ] in parent Scene [4u4PZdHaHih4b0Tq]","timestamp":"2026-09-12 23:02:03"}
+{"level":"info","message":"Created Drawing with id [n84abRmfrCR61t9n] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:03:44"}
+{"level":"info","message":"Created Drawing with id [o7JayGN1JeW9w8Uw] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:03:46"}
+{"level":"info","message":"Created Drawing with id [7GgEXrjneWmrkG7w] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:05:09"}
+{"level":"info","message":"Created ChatMessage with id [HcI6f6rJWRAKIFmv]","timestamp":"2026-09-12 23:06:51"}
+{"level":"info","message":"Created ChatMessage with id [GaZN7O2uvYCXoNyu]","timestamp":"2026-09-12 23:06:51"}
+{"level":"info","message":"Created Drawing with id [WxYe3uRTmNWzD4vS] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:08:54"}
+{"level":"info","message":"Created Drawing with id [VTz0PGa8MC2nyCdV] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:08:57"}
+{"level":"info","message":"Created Drawing with id [afNAFSfyb397O5ws] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:08:58"}
+{"level":"info","message":"Created Drawing with id [nd4bflcmK1w885KB] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:08:59"}
+{"level":"info","message":"Created Drawing with id [yvKPORPWYXRhyNMh] in parent Scene [yG2EpwtVMcWAa39l]","timestamp":"2026-09-12 23:09:01"}
+{"level":"info","message":"Created Drawing with id [p2q2qJu9u4kgcGpJ] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:09:20"}
+{"level":"info","message":"Created Drawing with id [RSdvzFjeAKE20M9m] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:09:31"}
+{"level":"info","message":"Created Drawing with id [khnQsaW56FlwzjdL] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:09:35"}
+{"level":"info","message":"Created Drawing with id [WceA6oeyeZDTKteH] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:10:33"}
+{"level":"info","message":"Deleted Drawing with id [WceA6oeyeZDTKteH] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:10:34"}
+{"level":"info","message":"Deleted Drawing with id [khnQsaW56FlwzjdL] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:10:50"}
+{"level":"info","message":"Created Drawing with id [ZoQTxjPw49TLqqfG] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:11:43"}
+{"level":"info","message":"Created Drawing with id [AfqL913vKA5JZfhU] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:11:53"}
+{"level":"info","message":"Created Drawing with id [iv4S5jziYMRLyzkU] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:12:02"}
+{"level":"info","message":"Created client session 2086967e0ecfacf7440ddef7","timestamp":"2026-09-12 23:12:05"}
+{"level":"info","message":"Created client session 94684b1dac14633e1ed05878","timestamp":"2026-09-12 23:12:06"}
+{"level":"info","message":"Created client session cbddd3333f19bc79ca8a4d01","timestamp":"2026-09-12 23:12:36"}
+{"level":"info","message":"Created client session d7cb055621a21bac2d1ed22f","timestamp":"2026-09-12 23:12:36"}
+{"level":"info","message":"Created client session d9daf9c101939a1dd2f28b4a","timestamp":"2026-09-12 23:12:36"}
+{"level":"info","message":"Created client session 120a557ae26b425c2ac902a3","timestamp":"2026-09-12 23:12:37"}
+{"level":"info","message":"Created client session 5ee09e5514217317119617bd","timestamp":"2026-09-12 23:12:38"}
+{"level":"info","message":"Created client session d44f459144fef64922623a7a","timestamp":"2026-09-12 23:12:38"}
+{"level":"info","message":"Created ChatMessage with id [yoXSRvc3v4EmByqN]","timestamp":"2026-09-12 23:14:15"}
+{"level":"info","message":"Created Drawing with id [fYQ8jE5Lvz1UlMex] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:15:34"}
+{"level":"info","message":"Created Drawing with id [4UK2rZ2bUonV4gUx] in parent Scene [AWa2gn1y4kmswyFC]","timestamp":"2026-09-12 23:16:05"}
+{"level":"info","message":"Deleted 3 ChatMessage documents with ids: [HcI6f6rJWRAKIFmv,GaZN7O2uvYCXoNyu,yoXSRvc3v4EmByqN]","timestamp":"2026-09-12 23:26:22"}
+{"level":"info","message":"Created Drawing with id [mSOerhy367Po9qr2] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:26:28"}
+{"level":"info","message":"Created Drawing with id [MTvBCyNJEZc04Agn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:26:40"}
+{"level":"info","message":"Deleted Drawing with id [MTvBCyNJEZc04Agn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:26:42"}
+{"level":"info","message":"Created Drawing with id [WhMZxfhvLIgMgfAN] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:26:54"}
+{"level":"info","message":"Deleted Drawing with id [WhMZxfhvLIgMgfAN] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:26:55"}
+{"level":"info","message":"Created Drawing with id [AY6wHkUeBGDo5q0Z] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:04"}
+{"level":"info","message":"Deleted Drawing with id [AY6wHkUeBGDo5q0Z] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:05"}
+{"level":"info","message":"Created Drawing with id [zr79moJjwItT4zaD] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:13"}
+{"level":"info","message":"Deleted Drawing with id [zr79moJjwItT4zaD] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:14"}
+{"level":"info","message":"Created Drawing with id [WuaneA6eWJiW4BIZ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:28"}
+{"level":"info","message":"Deleted Drawing with id [WuaneA6eWJiW4BIZ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:31"}
+{"level":"info","message":"Created Drawing with id [HrJh2RgTrK1jPqQO] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:32"}
+{"level":"info","message":"Deleted Drawing with id [HrJh2RgTrK1jPqQO] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:34"}
+{"level":"info","message":"Created Drawing with id [2uHyqa0abC7EibYI] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:49"}
+{"level":"info","message":"Created Drawing with id [usPKjcQ5A2sSna2r] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:50"}
+{"level":"info","message":"Created Drawing with id [TuNQTf4ABlqTOXOz] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:51"}
+{"level":"info","message":"Deleted Drawing with id [TuNQTf4ABlqTOXOz] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:53"}
+{"level":"info","message":"Deleted Drawing with id [usPKjcQ5A2sSna2r] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:53"}
+{"level":"info","message":"Deleted Drawing with id [2uHyqa0abC7EibYI] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:27:53"}
+{"level":"info","message":"Created Drawing with id [4PKFxzQAIvRHLKSY] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:02"}
+{"level":"info","message":"Created Drawing with id [iRQMSf1XrTuUlofm] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:03"}
+{"level":"info","message":"Deleted Drawing with id [iRQMSf1XrTuUlofm] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:04"}
+{"level":"info","message":"Deleted Drawing with id [4PKFxzQAIvRHLKSY] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:04"}
+{"level":"info","message":"Created Drawing with id [36fsQLLMce2s3YHo] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:11"}
+{"level":"info","message":"Created Drawing with id [0UsvdfmVJbV4UOEx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:12"}
+{"level":"info","message":"Deleted Drawing with id [36fsQLLMce2s3YHo] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:14"}
+{"level":"info","message":"Created Drawing with id [lEcy0rMlNYcXRrP9] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:26"}
+{"level":"info","message":"Created Drawing with id [NwOnc7EUo6hhbHST] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:28"}
+{"level":"info","message":"Deleted Drawing with id [NwOnc7EUo6hhbHST] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:30"}
+{"level":"info","message":"Deleted Drawing with id [lEcy0rMlNYcXRrP9] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:31"}
+{"level":"info","message":"Created Drawing with id [CTZwnZepeu1aYicB] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:48"}
+{"level":"info","message":"Deleted Drawing with id [CTZwnZepeu1aYicB] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:50"}
+{"level":"info","message":"Created Drawing with id [Zlfjbt9H7Uvd7nEy] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:28:56"}
+{"level":"info","message":"Created Drawing with id [MI7FzaKoUz4MdNvQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:06"}
+{"level":"info","message":"Created Drawing with id [uoqUfkSdCgRR2FxJ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:08"}
+{"level":"info","message":"Created Drawing with id [1TB2YKrScb64tBpC] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:09"}
+{"level":"info","message":"Created Drawing with id [P9NuiqB0VyCiCFFn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:11"}
+{"level":"info","message":"Created Drawing with id [sZNgbPdhi4qPzlYm] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:13"}
+{"level":"info","message":"Deleted Drawing with id [sZNgbPdhi4qPzlYm] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:14"}
+{"level":"info","message":"Created Drawing with id [eP7ItOYvj0bCL2Lk] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:18"}
+{"level":"info","message":"Created Drawing with id [7KmNSfCH6RKiBOFi] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:19"}
+{"level":"info","message":"Created Drawing with id [2Z6nmaHjtOUKBq8O] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:24"}
+{"level":"info","message":"Created Drawing with id [iaNGBLjNGWeiqzot] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:26"}
+{"level":"info","message":"Deleted Drawing with id [0UsvdfmVJbV4UOEx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:26"}
+{"level":"info","message":"Created Drawing with id [TJQCP8xa7c4aJEDt] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:30"}
+{"level":"info","message":"Created Drawing with id [IbjKXp63pqJWaZL7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:41"}
+{"level":"info","message":"Created Drawing with id [lil7VTMqL0Trc6o0] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:42"}
+{"level":"info","message":"Created Drawing with id [BNwwhUPxwAtSQ6BB] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:42"}
+{"level":"info","message":"Created Drawing with id [YRUTGQ0Qda8wPGR7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:42"}
+{"level":"info","message":"Created Drawing with id [GhPAWfULHruOealX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:43"}
+{"level":"info","message":"Created Drawing with id [qa76mbPeP0UIxXjx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:43"}
+{"level":"info","message":"Created ChatMessage with id [oBfZeRK5mHQGdImh]","timestamp":"2026-09-12 23:29:44"}
+{"level":"info","message":"Deleted Drawing with id [qa76mbPeP0UIxXjx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:45"}
+{"level":"info","message":"Deleted Drawing with id [GhPAWfULHruOealX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:45"}
+{"level":"info","message":"Deleted Drawing with id [YRUTGQ0Qda8wPGR7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:45"}
+{"level":"info","message":"Deleted Drawing with id [BNwwhUPxwAtSQ6BB] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:46"}
+{"level":"info","message":"Deleted Drawing with id [lil7VTMqL0Trc6o0] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:46"}
+{"level":"info","message":"Deleted Drawing with id [IbjKXp63pqJWaZL7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:29:46"}
+{"level":"info","message":"Created Drawing with id [7JUBSwIhx9icOSfn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:30:01"}
+{"level":"info","message":"Created Drawing with id [AEb4eIhQmEjH6RZ6] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:30:19"}
+{"level":"info","message":"Created Drawing with id [cLQ0Mr5H2HCBt4J6] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:30:25"}
+{"level":"info","message":"Created Drawing with id [43B5WjmFb5junABz] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:30:38"}
+{"level":"info","message":"Created Drawing with id [dRO1twoeV3WqQsvc] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:30:39"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-12 23:31:01"}
+{"level":"info","message":"Vended World data to User [9ycXDSOn9B4w87g4] in 505ms","timestamp":"2026-09-12 23:31:01"}
+{"level":"info","message":"Created Drawing with id [qZFHDxzWxl4Li7EE] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:31:03"}
+{"level":"info","message":"Created Drawing with id [pzCXfqCsi0Y97mvT] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:31:32"}
+{"level":"info","message":"Created Drawing with id [tuf2UfcnEZnoGwgu] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:31:51"}
+{"level":"info","message":"Created Drawing with id [Znj0WdBltLRhxzvV] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:31:52"}
+{"level":"info","message":"Created Drawing with id [WTs81JdML0f1YBIt] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:31:52"}
+{"level":"info","message":"Created Drawing with id [kjzgenABUB6wzeXU] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:31:52"}
+{"level":"info","message":"Created Drawing with id [pPwZ9uda8PZ2IH5i] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:20"}
+{"level":"info","message":"Created Drawing with id [P1txJDWD6bOR6avQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:23"}
+{"level":"info","message":"Created Drawing with id [lMjpFlz5BBf2L1Jb] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:25"}
+{"level":"info","message":"Created Drawing with id [PgtWq59YMQt8Tk1v] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:31"}
+{"level":"info","message":"Created Drawing with id [ZPiKWuYmhpqRUlV9] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:33"}
+{"level":"info","message":"Created Drawing with id [BwK3bbYeEVSvEsCz] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:35"}
+{"level":"info","message":"Created Drawing with id [7eJt8UdW6pEFDbGO] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:36"}
+{"level":"info","message":"Created Drawing with id [yqACANuwAQdQo4zx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:38"}
+{"level":"info","message":"Created Drawing with id [82ON11dvgFclk4uW] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:38"}
+{"level":"info","message":"Created Drawing with id [h3LO3NzVPR4IzteH] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:41"}
+{"level":"info","message":"Created Drawing with id [QXYMUqkwgFsz8Ghf] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:50"}
+{"level":"info","message":"Deleted Drawing with id [QXYMUqkwgFsz8Ghf] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:52"}
+{"level":"info","message":"Created Drawing with id [iXtJyLp640Nkon9P] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:53"}
+{"level":"info","message":"Created Drawing with id [5mX7O0rUEqB5WG2k] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:55"}
+{"level":"info","message":"Created Drawing with id [GBjrR0227gXn9J5X] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:33:56"}
+{"level":"info","message":"Created Drawing with id [YjZfz8IJzJUAKIwn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:53"}
+{"level":"info","message":"Created Drawing with id [fyxoeCSf41D73Ve1] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:54"}
+{"level":"info","message":"Created Drawing with id [ELWAkOWCc0rJhqlX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:54"}
+{"level":"info","message":"Created Drawing with id [JcahV1ocDdNqnOw7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:54"}
+{"level":"info","message":"Created Drawing with id [JkVZyb7tvWPEcoOq] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:55"}
+{"level":"info","message":"Created Drawing with id [A1HBXZnbcgyOwu1a] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:55"}
+{"level":"info","message":"Created Drawing with id [l1xSkojyJRx2o9My] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:55"}
+{"level":"info","message":"Created Drawing with id [2EySfmyCS2s7SlMy] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:56"}
+{"level":"info","message":"Created Drawing with id [maDWrlpYmfUqE2r2] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:56"}
+{"level":"info","message":"Created Drawing with id [gR6VkVfhqt5byDQT] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:57"}
+{"level":"info","message":"Created Drawing with id [uQZsnzve0YPK83nl] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:57"}
+{"level":"info","message":"Created Drawing with id [cu6r17Cg7CnhRwRF] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:58"}
+{"level":"info","message":"Created Drawing with id [FJPuUbhKjuBmxs4n] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:35:58"}
+{"level":"info","message":"Created Drawing with id [4WCvlyhpAausf5yY] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:00"}
+{"level":"info","message":"Created Drawing with id [f2UHIZtsHUzYXCAo] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:00"}
+{"level":"info","message":"Created Drawing with id [WqW1zb8dXDhvMdGo] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:01"}
+{"level":"info","message":"Created Drawing with id [9dKaKmPMxiZutnRp] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:01"}
+{"level":"info","message":"Created Drawing with id [2SrLNDHmZ7lHONaw] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:01"}
+{"level":"info","message":"Created Drawing with id [lN08zUQEyJEjg0KR] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:01"}
+{"level":"info","message":"Created Drawing with id [G7IoEg6XToJoiYzK] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:02"}
+{"level":"info","message":"Created Drawing with id [D8HEljjsFeFzPTIx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:02"}
+{"level":"info","message":"Created Drawing with id [WZ2xJZfj7J41I8Ay] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:02"}
+{"level":"info","message":"Created Drawing with id [foPj7VKlACBNCqUR] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:03"}
+{"level":"info","message":"Created Drawing with id [jSAAcxG29SCReRmT] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:03"}
+{"level":"info","message":"Created Drawing with id [9YvBwjE79itCJlQH] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:04"}
+{"level":"info","message":"Created Drawing with id [dU89Fev5eVvDLjO1] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:05"}
+{"level":"info","message":"Created Drawing with id [uimBpay1l6VK8fCL] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:06"}
+{"level":"info","message":"Created Drawing with id [cm52CTu5uAnDhgkn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:06"}
+{"level":"info","message":"Created Drawing with id [CGNozikj3xJLonev] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:07"}
+{"level":"info","message":"Created Drawing with id [iMFNzkAzfLeBbnEJ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:08"}
+{"level":"info","message":"Created Drawing with id [yWWhEyY4LnkHZVU4] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:09"}
+{"level":"info","message":"Created Drawing with id [dp2l6nz8qjY8s050] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:09"}
+{"level":"info","message":"Created Drawing with id [9A41LBzuESAEkyla] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:10"}
+{"level":"info","message":"Created Drawing with id [K0z6hHT3ccBLTFKo] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:11"}
+{"level":"info","message":"Created Drawing with id [UWrP9iJCfMxRsNdS] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:11"}
+{"level":"info","message":"Created Drawing with id [V5FR0LSCe6asuQHE] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:36:13"}
+{"level":"info","message":"Created Drawing with id [Empiior4Vq35CLKp] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:50"}
+{"level":"info","message":"Created Drawing with id [W1HrMMPWHCMxIkKt] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:50"}
+{"level":"info","message":"Created Drawing with id [ZgOztLK7WNOPzLPc] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:51"}
+{"level":"info","message":"Created Drawing with id [qYalcKYye2aUMwsL] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:52"}
+{"level":"info","message":"Created Drawing with id [fyHkO2xXT8jEo0TT] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:52"}
+{"level":"info","message":"Created Drawing with id [eAOn2decUvQEwRtA] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:53"}
+{"level":"info","message":"Created Drawing with id [d2UiKCxnoICme5aE] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:54"}
+{"level":"info","message":"Created Drawing with id [HtidvMNNHIogcQsg] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:55"}
+{"level":"info","message":"Created Drawing with id [LnEM64IZ8ufXHMao] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:55"}
+{"level":"info","message":"Created Drawing with id [ItESMW9k4PUKVSc8] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:55"}
+{"level":"info","message":"Created Drawing with id [DLdSqb1DkahYi2vt] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:56"}
+{"level":"info","message":"Created Drawing with id [xs8H4sxUN5mGiGNM] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:56"}
+{"level":"info","message":"Created Drawing with id [wphFlxjtjYATsjQJ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:57"}
+{"level":"info","message":"Created Drawing with id [LZSz6kWJxFyRKqLV] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:57"}
+{"level":"info","message":"Created Drawing with id [UP7FolIo7GO1YP3D] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:58"}
+{"level":"info","message":"Created Drawing with id [5IqE2grMHofFfXlK] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:37:59"}
+{"level":"info","message":"Deleted Drawing with id [5IqE2grMHofFfXlK] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:01"}
+{"level":"info","message":"Created Drawing with id [NuOzBSRqEsp5u7Qu] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:01"}
+{"level":"info","message":"Created Drawing with id [QJcOBse1io5oF7i7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:02"}
+{"level":"info","message":"Created Drawing with id [vXPGzfAFASQAoFnE] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:02"}
+{"level":"info","message":"Created Drawing with id [gsXzBAeVpmfwx8tp] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:03"}
+{"level":"info","message":"Created Drawing with id [HBjuYMSTxQq83myd] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:03"}
+{"level":"info","message":"Created Drawing with id [KGVfxUQLhZ5mnfCD] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:04"}
+{"level":"info","message":"Created Drawing with id [JynoYiwp02jrGCrL] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:04"}
+{"level":"info","message":"Created Drawing with id [YmmZbpSuCZSW0Hb8] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:06"}
+{"level":"info","message":"Created Drawing with id [UQTg4arHgf6GgiLT] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:06"}
+{"level":"info","message":"Created Drawing with id [SMVoiSCQvH21ALYS] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:07"}
+{"level":"info","message":"Created Drawing with id [fXkTrqbstyR3Nlxv] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:07"}
+{"level":"info","message":"Created Drawing with id [4mjnuYP5mnpRV7XK] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:07"}
+{"level":"info","message":"Created Drawing with id [3sqXTOiFrgKsGIBT] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:08"}
+{"level":"info","message":"Created Drawing with id [JFNBVibnN1mnAjdn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:10"}
+{"level":"info","message":"Created Drawing with id [xK2VqkMGpZiBjIIA] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:11"}
+{"level":"info","message":"Created Drawing with id [Zx5Q1NtiezZ8pcUD] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:12"}
+{"level":"info","message":"Created Drawing with id [Qsk2GXowTK98PQeZ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:12"}
+{"level":"info","message":"Created Drawing with id [jGB57drG0tIj2wPG] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:13"}
+{"level":"info","message":"Created Drawing with id [be24Z8rpDFtALxhz] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:15"}
+{"level":"info","message":"Created Drawing with id [NvQh30DSXXkoPMeq] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:15"}
+{"level":"info","message":"Created Drawing with id [jSvyqybbXO9LOpC1] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:15"}
+{"level":"info","message":"Created Drawing with id [eBM3D65nmGAHS5av] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:16"}
+{"level":"info","message":"Created Drawing with id [4RPEWRDoWPL90KAQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:17"}
+{"level":"info","message":"Deleted Drawing with id [4RPEWRDoWPL90KAQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:18"}
+{"level":"info","message":"Deleted Drawing with id [eBM3D65nmGAHS5av] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:18"}
+{"level":"info","message":"Deleted Drawing with id [jSvyqybbXO9LOpC1] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:19"}
+{"level":"info","message":"Deleted Drawing with id [NvQh30DSXXkoPMeq] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:19"}
+{"level":"info","message":"Deleted Drawing with id [be24Z8rpDFtALxhz] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:19"}
+{"level":"info","message":"Deleted Drawing with id [jGB57drG0tIj2wPG] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:20"}
+{"level":"info","message":"Deleted Drawing with id [Qsk2GXowTK98PQeZ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:20"}
+{"level":"info","message":"Deleted Drawing with id [Zx5Q1NtiezZ8pcUD] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:21"}
+{"level":"info","message":"Created Drawing with id [GUHAzh7FBXwCUY1c] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:24"}
+{"level":"info","message":"Created Drawing with id [jenG7C0up8hrQd3F] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:25"}
+{"level":"info","message":"Created Drawing with id [LnljGn42rJ56ZNKs] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:25"}
+{"level":"info","message":"Created Drawing with id [iujbwijlyLPaJQM1] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:26"}
+{"level":"info","message":"Created Drawing with id [ZAWyZXEwA7umbsiO] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:26"}
+{"level":"info","message":"Created Drawing with id [BmCpvUvU7ACK5Srx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:27"}
+{"level":"info","message":"Created Drawing with id [Q9eQnTrT5dKKtjkG] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:27"}
+{"level":"info","message":"Created Drawing with id [1DZFFYXQENYm31vW] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:28"}
+{"level":"info","message":"Created Drawing with id [GuLfg0wZFn3p3Fo9] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:28"}
+{"level":"info","message":"Created Drawing with id [Nmb9Akbzg0m0q5qI] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:28"}
+{"level":"info","message":"Created Drawing with id [rNF8MCF8T1n6HPiK] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:30"}
+{"level":"info","message":"Created Drawing with id [O3E0FvhfQd684pM7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:31"}
+{"level":"info","message":"Created Drawing with id [3wIwKeYTNptcfhFk] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:31"}
+{"level":"info","message":"Created Drawing with id [itYiuqRp814IXgBx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:32"}
+{"level":"info","message":"Created Drawing with id [RwuvLLtlfodObTTw] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:32"}
+{"level":"info","message":"Created Drawing with id [arubBTQghjxhjPNn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:33"}
+{"level":"info","message":"Created Drawing with id [TBgMwzi81tPvCNkI] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:34"}
+{"level":"info","message":"Created Drawing with id [xZRmEUvDJMopZOKA] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:34"}
+{"level":"info","message":"Created Drawing with id [kBvO8bJkzZtcjdlh] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:44"}
+{"level":"info","message":"Created client session 05f5759095a6a2414bb4162a","timestamp":"2026-09-12 23:38:44"}
+{"level":"info","message":"Created Drawing with id [jQDh18WL7bbu4MnM] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:44"}
+{"level":"info","message":"Created Drawing with id [CIItHI8bhkQ1rPOX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:45"}
+{"level":"info","message":"Created Drawing with id [4sG1u6ZA1sjHnnvk] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:45"}
+{"level":"info","message":"Created Drawing with id [iB6nIKvBOKu9Vzar] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:46"}
+{"level":"info","message":"Created Drawing with id [ZwUkwFagurlxP96A] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:46"}
+{"level":"info","message":"Created Drawing with id [3pcWQxPFkEnvnFg7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:47"}
+{"level":"info","message":"Created Drawing with id [D39kMNiTlIsubvbd] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:47"}
+{"level":"info","message":"Created Drawing with id [nea3FRLM4BnIGm6h] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:47"}
+{"level":"info","message":"Created Drawing with id [VSnSPFThTL42H69v] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:48"}
+{"level":"info","message":"Created Drawing with id [hL6JzLl5aUH2tCsp] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:48"}
+{"level":"info","message":"Created Drawing with id [649XVm7e19XdFWxI] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:49"}
+{"level":"info","message":"Created Drawing with id [RcIRzg1vi8f2d0WC] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:49"}
+{"level":"info","message":"Created Drawing with id [W3lr6ZzFXo4BvEC0] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:50"}
+{"level":"info","message":"Created Drawing with id [WWLzX2x3hXfylnwv] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:50"}
+{"level":"info","message":"Created Drawing with id [UdwjfBvjtZTlbqYn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:51"}
+{"level":"info","message":"Created Drawing with id [ymPtUAaX5dckJ8P8] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:51"}
+{"level":"info","message":"Created Drawing with id [Liih4ueHTIexdxNA] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:52"}
+{"level":"info","message":"Created Drawing with id [aJM4bgWm2AJGRJuQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:52"}
+{"level":"info","message":"Created Drawing with id [8jX8Vpg5SW245ESy] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:52"}
+{"level":"info","message":"Created Drawing with id [qTYVOSVuSRkhEZIb] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:53"}
+{"level":"info","message":"Created Drawing with id [W06JFoCMOBHa13bH] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:53"}
+{"level":"info","message":"Created Drawing with id [tVc4TZRxN0PsXEWq] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:53"}
+{"level":"info","message":"Created Drawing with id [beQaSLEwPgMZr1qJ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:54"}
+{"level":"info","message":"Created Drawing with id [g8zj7XStU2Lp2Zso] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:54"}
+{"level":"info","message":"Created Drawing with id [J2XWn6C8HkqFvt7w] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:55"}
+{"level":"info","message":"Created Drawing with id [zDzo8aSB7H1jMGLG] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:55"}
+{"level":"info","message":"Created Drawing with id [qlKGOCsLI9WgheTn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:56"}
+{"level":"info","message":"Created Drawing with id [iqfsiAuF4pzPjbtM] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:57"}
+{"level":"info","message":"Created Drawing with id [YRCDf6eJ5NXLluEQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:57"}
+{"level":"info","message":"Created Drawing with id [fO443nnZrrmc8RqX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:58"}
+{"level":"info","message":"Created Drawing with id [3amNkcBNKf5kjK79] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:58"}
+{"level":"info","message":"Created Drawing with id [cjLPyoPDyPLOpf1k] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:59"}
+{"level":"info","message":"Created Drawing with id [9tTaeNHzG5Xpsb0r] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:38:59"}
+{"level":"info","message":"Created Drawing with id [0W3N6zC4OXcthczb] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:00"}
+{"level":"info","message":"Created Drawing with id [v03ypC2ARFVQ9OHO] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:00"}
+{"level":"info","message":"Created Drawing with id [Ak3bhpEBRfBwcLZA] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:00"}
+{"level":"info","message":"Created Drawing with id [ytRMU4N4wYZto1JO] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:01"}
+{"level":"info","message":"Created Drawing with id [RERJANAPlBamwIcV] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:01"}
+{"level":"info","message":"Created Drawing with id [GmmeuC7IMvUrcf7L] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:02"}
+{"level":"info","message":"Created Drawing with id [SCDowByfGqnj5WDr] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:03"}
+{"level":"info","message":"Created Drawing with id [L36PpRlPiPtvHOH6] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:03"}
+{"level":"info","message":"Created Drawing with id [vwhrWfAL5AWpadJm] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:04"}
+{"level":"info","message":"Created Drawing with id [VJpUnfnGgzT0C3xB] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:05"}
+{"level":"info","message":"Created Drawing with id [aFPZoigIiler6uk1] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:05"}
+{"level":"info","message":"Created Drawing with id [6FCQpp4U1iqTEPXB] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:06"}
+{"level":"info","message":"Created Drawing with id [iNcxAD2KJXSDuRsv] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:06"}
+{"level":"info","message":"Created Drawing with id [otfVFVNXGBdCPnOQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:07"}
+{"level":"info","message":"Created Drawing with id [iHOX3bvGlbDyWi62] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:08"}
+{"level":"info","message":"Created Drawing with id [lPQRlPeSSVOQncSX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:08"}
+{"level":"info","message":"Created Drawing with id [4bS6YmdDcbAh3k9c] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:09"}
+{"level":"info","message":"Created Drawing with id [5zzv8fSDTkwJV6tP] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:09"}
+{"level":"info","message":"Created Drawing with id [F80lQnuHqJFiwSSd] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:22"}
+{"level":"info","message":"Created Drawing with id [Jd9xOUQijq0RK2dX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:24"}
+{"level":"info","message":"Created Drawing with id [9L04AQSZt7OFi3Gg] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:24"}
+{"level":"info","message":"Deleted Drawing with id [9L04AQSZt7OFi3Gg] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:30"}
+{"level":"info","message":"Deleted Drawing with id [Jd9xOUQijq0RK2dX] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:31"}
+{"level":"info","message":"Deleted Drawing with id [F80lQnuHqJFiwSSd] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:31"}
+{"level":"info","message":"Created Drawing with id [CI4kjxg7GvXgUVhU] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:33"}
+{"level":"info","message":"Created Drawing with id [P4jLiCZTP4SScqgj] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:33"}
+{"level":"info","message":"Created Drawing with id [1BouE1148frGDrJ7] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:34"}
+{"level":"info","message":"Created Drawing with id [u9eHlwLx8pCFRd4G] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:34"}
+{"level":"info","message":"Created Drawing with id [YbYl3F1WKjWKw7qK] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:35"}
+{"level":"info","message":"Created Drawing with id [vfHiaHRTvHLWGIXu] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:35"}
+{"level":"info","message":"Created Drawing with id [VPR2WEIvygxrpfJn] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:35"}
+{"level":"info","message":"Created Drawing with id [VxVpunIpU5XLEpNN] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:36"}
+{"level":"info","message":"Created Drawing with id [8KSsIXjmYIQKvWjQ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:37"}
+{"level":"info","message":"Created Drawing with id [JdYaCBiSxk7G4d6T] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:37"}
+{"level":"info","message":"Created Drawing with id [tLshLJ9nwPjEYKca] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:38"}
+{"level":"info","message":"Created Drawing with id [IZ3tvqL3SYieByas] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:39"}
+{"level":"info","message":"Created Drawing with id [cjH0kMQuUAXxG7o6] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:39"}
+{"level":"info","message":"Created Drawing with id [BdFmMLDPi2tWywDC] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:40"}
+{"level":"info","message":"Deleted Drawing with id [BdFmMLDPi2tWywDC] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:40"}
+{"level":"info","message":"Deleted Drawing with id [cjH0kMQuUAXxG7o6] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:41"}
+{"level":"info","message":"Created Drawing with id [twcyL2xfJJnJMsmZ] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:52"}
+{"level":"info","message":"Created Drawing with id [YwVqbsSemQNYVTQ4] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:52"}
+{"level":"info","message":"Created Drawing with id [IStD8KnoCOUXgkE6] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:53"}
+{"level":"info","message":"Created Drawing with id [p1XicEFQLIrLNPMw] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:53"}
+{"level":"info","message":"Created Drawing with id [vql6TYsooyoAjMpV] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:55"}
+{"level":"info","message":"Created Drawing with id [PmLjTeFJHcUYpu73] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:55"}
+{"level":"info","message":"Created Drawing with id [mGV3FZXYM8RREFfF] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:39:59"}
+{"level":"info","message":"Created Drawing with id [JvzJM1QF6vGj92Av] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:40:01"}
+{"level":"info","message":"Created Drawing with id [GRWh4N9sV6qagrwk] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:40:02"}
+{"level":"info","message":"Created Drawing with id [jp8mt5VJ54XKrvt4] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:40:03"}
+{"level":"info","message":"Created Drawing with id [Jya91uy1ofoaAjS9] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:40:05"}
+{"level":"info","message":"Created Drawing with id [ppgapS6kfHLPuS2p] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:40:06"}
+{"level":"info","message":"Created Drawing with id [HoXJlnfY5vCsKfEV] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:42:41"}
+{"level":"info","message":"Created Drawing with id [71Pej1hx8RjVTG6k] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:42:42"}
+{"level":"info","message":"Created Drawing with id [lWdmD17C63aCuQ8v] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:42:43"}
+{"level":"info","message":"Created ChatMessage with id [ykGPI411EGkqqFny]","timestamp":"2026-09-12 23:44:36"}
+{"level":"info","message":"Created Drawing with id [hUZztFJ8WarFmaaM] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:47:23"}
+{"level":"info","message":"Created Drawing with id [fxJ73iTN9mZ8yx6W] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:47:31"}
+{"level":"info","message":"Deleted Drawing with id [fxJ73iTN9mZ8yx6W] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:47:32"}
+{"level":"info","message":"Created ChatMessage with id [TJBehuW3fvkTuL2b]","timestamp":"2026-09-12 23:48:13"}
+{"level":"info","message":"Created Drawing with id [4d6Zpuk8EJWN1J3K] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:52:01"}
+{"level":"info","message":"Created client session 7b9f0c3c4b12904c4a7ba64b","timestamp":"2026-09-12 23:52:42"}
+{"level":"info","message":"Created client session 9c132b13e00a5501b6e01a1a","timestamp":"2026-09-12 23:52:43"}
+{"level":"info","message":"Created client session 5aa45f400628d3e2af02c360","timestamp":"2026-09-12 23:53:13"}
+{"level":"info","message":"Created client session 165d13a356b18e122650fdc9","timestamp":"2026-09-12 23:53:13"}
+{"level":"info","message":"Created client session ae27a4d23e14e656b51949f0","timestamp":"2026-09-12 23:53:13"}
+{"level":"info","message":"Created client session 91f6c5628e87dd37d0711aa0","timestamp":"2026-09-12 23:53:14"}
+{"level":"info","message":"Created client session 35f428bfa141c1f0ebe21836","timestamp":"2026-09-12 23:53:14"}
+{"level":"info","message":"Created client session 24334172d0893ac74848e163","timestamp":"2026-09-12 23:53:15"}
+{"level":"info","message":"Created Drawing with id [TpFd2tJ3vgfN6pgx] in parent Scene [xwh0pS2x2SCtJmSk]","timestamp":"2026-09-12 23:56:59"}
+{"level":"info","message":"Created ChatMessage with id [sSyrz8R0X8YeoLoK]","timestamp":"2026-09-12 23:57:04"}
+{"level":"info","message":"Created ChatMessage with id [wCK5wWsiPpr1Ficx]","timestamp":"2026-09-12 23:59:06"}
+{"level":"info","message":"Created ChatMessage with id [XoPoiIrtlHMcSYFw]","timestamp":"2026-09-12 23:59:15"}

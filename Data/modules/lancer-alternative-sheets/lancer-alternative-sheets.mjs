@@ -21904,24 +21904,19 @@ function LimitedBondBox($$anchor, $$props) {
   var _a;
   push($$props, !0);
   const actorUuid = (_a = getActorContext()) == null ? void 0 : _a.uuid, qualityMode = getExtraEffectsEnabled(), log = /* @__PURE__ */ derived(() => $$props.logText || getLocalized("LA.limited.tooltip"));
-  function handlePowerUse(event2, index2) {
-    event2.stopPropagation();
-    const path = `system.powers.${$$props.power.index}`, val = $$props.power.uses.value >= index2 + 1 ? Math.max($$props.power.uses.value - 1, $$props.power.uses.min) : Math.min($$props.power.uses.value + 1, $$props.power.uses.max);
-    console.log($$props.bond, $$props.power.uses.value, $$props.power.uses.min, $$props.power.uses.max, index2 + 1), $$props.bond.update({ [`${path}.uses.value`]: val });
-  }
-  __name(handlePowerUse, "handlePowerUse");
   var fragment = comment(), node = first_child(fragment);
   {
     var consequent = /* @__PURE__ */ __name(($$anchor2) => {
       var div = root_1$7(), span = child(div), text2 = child(span), node_1 = sibling(span, 2);
-      each(node_1, 17, () => ({ length: $$props.power.uses.max }), index, ($$anchor3, _, index2) => {
+      each(node_1, 17, () => ({ length: $$props.usesMax }), index, ($$anchor3, _, index2) => {
         var button = root_2$5();
         set_class(button, `la-prmy-header la-scdy-primary -fontsize7
-            ${(qualityMode ? "-glow-prmy -glow-scdy-hover" : "") ?? ""}`), button.__click = (e) => handlePowerUse(e, index2);
+            ${(qualityMode ? "-glow-prmy -glow-scdy-hover" : "") ?? ""}`);
         var i = child(button);
         template_effect(
           ($0) => {
-            set_attribute(button, "aria-label", $0), set_class(i, `mdi ${(index2 < $$props.power.uses.value ? "mdi-hexagon-slice-6" : "mdi-hexagon-outline") ?? ""}`);
+            set_attribute(button, "aria-label", $0), set_class(i, `mdi ${(index2 < $$props.usesValue ? "mdi-hexagon-slice-6" : "mdi-hexagon-outline") ?? ""}
+                power-uses-hex`), set_attribute(i, "data-available", index2 < $$props.usesValue), set_attribute(i, "data-uuid", $$props.uuid), set_attribute(i, "data-power-index", $$props.power), set_attribute(i, "data-path", `system.bond.system.powers.${$$props.power}`);
           },
           [() => getLocalized("LA.use.label")]
         ), event("pointerenter", button, function(...$$args) {
@@ -21934,13 +21929,12 @@ function LimitedBondBox($$anchor, $$props) {
       }), template_effect(($0) => set_text(text2, $0), [() => getLocalized("LA.limited.label")]), append($$anchor2, div);
     }, "consequent");
     if_block(node, ($$render) => {
-      $$props.power.uses && $$render(consequent);
+      $$props.usesMax && $$render(consequent);
     });
   }
   append($$anchor, fragment), pop();
 }
 __name(LimitedBondBox, "LimitedBondBox");
-delegate(["click"]);
 var root_9$4 = /* @__PURE__ */ template('<span class="la-text-header -aligncontentcenter -fontsizesmall -upper"> </span>'), root_7$4 = /* @__PURE__ */ template('<div class="la-flexcol -gap0 -widthfull -padding2-l -fontface-stylized"><div class="la-flexrow clipped-bot-alt la-bckg-header-anti -widthfull"><!> <!></div></div>'), root_12$3 = /* @__PURE__ */ template('<span class="-fontsizesmall -letterspacing0"> </span>'), root_13$2 = /* @__PURE__ */ template('<span class="-fontsizesmall -letterspacing0"> </span>'), root_14$3 = /* @__PURE__ */ template('<i class="mdi mdi-message"></i>'), root_11$3 = /* @__PURE__ */ template('<span class="la-flexrow -gap0 -padding2-r"><!> <!></span> <!>', 1), root_15$3 = /* @__PURE__ */ template('<div class="la-generated -widthfull -gap1 la-flexcol"><!></div>'), root_4$4 = /* @__PURE__ */ template('<div class="la-flexcol -gap0 -widthfull"></div>');
 function Power($$anchor, $$props) {
   push($$props, !0);
@@ -22016,11 +22010,17 @@ function Power($$anchor, $$props) {
                       {
                         var consequent = /* @__PURE__ */ __name(($$anchor8) => {
                           LimitedBondBox($$anchor8, {
-                            get bond() {
-                              return $$props.system.bond;
+                            get usesValue() {
+                              return get$1(power).uses.value;
+                            },
+                            get usesMax() {
+                              return get$1(power).uses.max;
+                            },
+                            get uuid() {
+                              return get$1(bondUUID);
                             },
                             get power() {
-                              return get$1(power);
+                              return get$1(power).index;
                             }
                           });
                         }, "consequent");
@@ -22403,7 +22403,7 @@ function setBondQNAMode(uuid, enabled) {
   PilotStore.set(uuid, { bondQNAMode: enabled });
 }
 __name(setBondQNAMode, "setBondQNAMode");
-var root_3$5 = /* @__PURE__ */ template('<div class="la-flexrow"><input type="checkbox"> <span class="-fontsizemedium -lineheight5 -padding0-lr"> </span></div>'), root_4$2 = /* @__PURE__ */ template('<option style="color: black"> </option>'), root_2$4 = /* @__PURE__ */ template('<div class="la-bond-card__content la-flexcol -positionabsolute -margin0-tb -heightfull -justifyevenly la-reveal"><div></div> <div><div class="la-flexrow -widthfull"><input type="checkbox" name="system.bond_state.xp_checklist.minor_ideal"> <select class="la-bond__select -fontsizemedium -lineheight5 la-bckg-transparent la-text-text -widthfull" name="system.bond_state.minor_ideal" data-type="String"></select></div> <div class="la-flexrow"><input type="checkbox" name="system.bond_state.xp_checklist.veteran_power"> <span class="-fontsizemedium -lineheight5 -padding0-lr"> </span></div></div></div>'), root_7$3 = /* @__PURE__ */ template("<option> </option>"), root_6$6 = /* @__PURE__ */ template('<div><span class="-fontsizemedium -lineheight5"> </span> <select class="la-bond__select -fontsizemedium -lineheight5 la-bckg-transparent la-text-text" data-type="String"></select></div>'), root_5$6 = /* @__PURE__ */ template('<div class="la-bond-card__content la-flexcol -positionabsolute -margin0-tb -heightfull -justifyevenly la-reveal"></div>'), root_1$6 = /* @__PURE__ */ template('<div><!> <span class="-fontsize6 -letterspacing1 -upper"> </span> <div class="-widthhalf -padding0-tb -fontface-stylized"><!></div> <div><div class="la-bond-card__img-anchor -margin7-tb"><img class="la-bond-card__img"></div> <!></div> <div class="la-flexrow"><!> <div><!> <!></div> <div class="la-flexrow -positionabsolute -left0 -padding3-l -gap1"><i></i> <!> <!></div></div></div>');
+var root_3$5 = /* @__PURE__ */ template('<div class="la-flexrow"><input type="checkbox"> <span class="-fontsizemedium -lineheight5 -padding0-lr"> </span></div>'), root_4$2 = /* @__PURE__ */ template('<option style="color: black"> </option>'), root_2$4 = /* @__PURE__ */ template('<div class="la-bond-card__content la-flexcol -positionabsolute -margin0-tb -heightfull -justifyevenly la-reveal"><div></div> <div><div class="la-flexrow -widthfull"><input type="checkbox" name="system.bond_state.xp_checklist.minor_ideal"> <select class="la-bond__select -fontsizemedium -lineheight5 la-bckg-transparent la-text-text -widthfull" name="system.bond_state.minor_ideal" data-type="String"></select></div> <div class="la-flexrow"><input type="checkbox" name="system.bond_state.xp_checklist.veteran_power"> <span class="-fontsizemedium -lineheight5 -padding0-lr"> </span></div></div></div>'), root_7$3 = /* @__PURE__ */ template("<option> </option>"), root_6$6 = /* @__PURE__ */ template('<div><span class="-fontsizemedium -lineheight5"> </span> <select class="la-bond__select -fontsizemedium -lineheight5 la-bckg-transparent la-text-text" data-type="String"></select></div>'), root_5$6 = /* @__PURE__ */ template('<div class="la-bond-card__content la-flexcol -positionabsolute -margin0-tb -heightfull -justifyevenly la-reveal"></div>'), root_1$6 = /* @__PURE__ */ template('<div><span class="-fontsize6 -letterspacing1 -upper"> </span> <div class="-widthhalf -padding0-tb -fontface-stylized"><!></div> <div><div class="la-bond-card__img-anchor -margin7-tb"><img class="la-bond-card__img"></div> <!></div> <div class="la-flexrow"><!> <div><!> <!></div> <div class="la-flexrow -positionabsolute -left0 -padding3-l -gap1"><i></i> <!> <!></div></div></div>');
 function Passion($$anchor, $$props) {
   push($$props, !0);
   let bondImageSrc = state(proxy(getBondImageSrc($$props.actor.uuid)));
@@ -22436,56 +22436,15 @@ function Passion($$anchor, $$props) {
     });
   }
   __name(tallyAndUpdate, "tallyAndUpdate");
-  function editBond(event2) {
-    event2.stopPropagation();
-    const doc = fromUuidSync($$props.system.bond.uuid);
-    if (doc) {
-      const sheet = doc.sheet;
-      sheet != null && sheet.rendered ? sheet.maximize().then(() => sheet.bringToTop()) : sheet == null || sheet.render(!0);
-    }
-  }
-  __name(editBond, "editBond");
-  function removeBond(event2) {
-    event2.stopPropagation();
-    const doc = fromUuidSync($$props.system.bond.uuid);
-    doc && doc.delete();
-  }
-  __name(removeBond, "removeBond");
   var fragment = comment(), node = first_child(fragment);
   {
     var consequent_1 = /* @__PURE__ */ __name(($$anchor2) => {
       var div = root_1$6();
       set_class(div, `la-flexcol -widthfull -margin1-b -padding1-tb la-reveal-hover
         ${(qualityMode ? "la-bg-scroll-alt" : "la-bg-alt") ?? ""}`);
-      var node_1 = child(div);
-      const expression = /* @__PURE__ */ derived(() => [
-        "mdi mdi-close-thick la-text-error -fontsize6 -lineheight8 -justifycenter -aligncenter -positionabsolute -left2",
-        get$1(advancedOptions) ? "" : "-visibilityhidden",
-        qualityMode ? " la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
-      ]), expression_1 = /* @__PURE__ */ derived(() => getLocalized("LA.delete.tooltip")), expression_2 = /* @__PURE__ */ derived(() => getLocalized("LA.delete.tooltip"));
-      GlyphButton(node_1, {
-        get style() {
-          return get$1(expression);
-        },
-        get flowClass() {
-          return FlowClass.None;
-        },
-        onClick: removeBond,
-        tooltipEnabled,
-        get tooltipTheme() {
-          return get$1(theme);
-        },
-        get tooltip() {
-          return get$1(expression_1);
-        },
-        get logText() {
-          return get$1(expression_2);
-        },
-        logging: !0
-      });
-      var span = sibling(node_1, 2), text2 = child(span), div_1 = sibling(span, 2), node_2 = child(div_1);
-      const expression_3 = /* @__PURE__ */ derived(() => getLocalized("LA.hitpoint.tooltip"));
-      StatusBar(node_2, {
+      var span = child(div), text2 = child(span), div_1 = sibling(span, 2), node_1 = child(div_1);
+      const expression = /* @__PURE__ */ derived(() => getLocalized("LA.hitpoint.tooltip"));
+      StatusBar(node_1, {
         dataName: "system.bond_state.xp.value",
         nameStyle: [logographic ? "-fontsizemedium" : ""],
         get currentValue() {
@@ -22501,7 +22460,7 @@ function Passion($$anchor, $$props) {
         clipPath: "clipped",
         tooltipEnabled,
         get tooltip() {
-          return get$1(expression_3);
+          return get$1(expression);
         },
         get tooltipDirection() {
           return TooltipDirection.RIGHT;
@@ -22510,7 +22469,7 @@ function Passion($$anchor, $$props) {
       var div_2 = sibling(div_1, 2);
       set_class(div_2, `la-flexrow -positionrelative -widthfull -aligncenter
             ${(qualityMode ? "la-bond-card-spin" : "la-bond-card") ?? ""}`);
-      var div_3 = child(div_2), img = child(div_3), node_3 = sibling(div_3, 2);
+      var div_3 = child(div_2), img = child(div_3), node_2 = sibling(div_3, 2);
       {
         var consequent = /* @__PURE__ */ __name(($$anchor3) => {
           var div_4 = root_2$4(), div_5 = child(div_4);
@@ -22555,15 +22514,15 @@ function Passion($$anchor, $$props) {
             }), append($$anchor4, div_11);
           }), append($$anchor3, div_10);
         }, "alternate");
-        if_block(node_3, ($$render) => {
+        if_block(node_2, ($$render) => {
           get$1(questionAnswer) ? $$render(alternate, !1) : $$render(consequent);
         });
       }
-      var div_12 = sibling(div_2, 2), node_4 = child(div_12);
-      const expression_4 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.tally.label")), expression_5 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.tally.tooltip")), expression_6 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.tally.tooltip"));
-      FlowButton(node_4, {
+      var div_12 = sibling(div_2, 2), node_3 = child(div_12);
+      const expression_1 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.tally.label")), expression_2 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.tally.tooltip")), expression_3 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.tally.tooltip"));
+      FlowButton(node_3, {
         get text() {
-          return get$1(expression_4);
+          return get$1(expression_1);
         },
         style: [
           "clipped la-bckg-secondary -padding0-tb -flex1"
@@ -22579,26 +22538,55 @@ function Passion($$anchor, $$props) {
           return TooltipDirection.DOWN;
         },
         get tooltip() {
+          return get$1(expression_2);
+        },
+        get logText() {
+          return get$1(expression_3);
+        },
+        logging: !0,
+        onClick: tallyAndUpdate
+      });
+      var div_13 = sibling(node_3, 2), node_4 = child(div_13);
+      const expression_4 = /* @__PURE__ */ derived(() => [
+        "mdi mdi-image-edit la-text-secondary -fontsize7 la-flexrow -justifycenter -aligncenter",
+        qualityMode ? "-glow-prmy la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
+      ]), expression_5 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.changeImage.tooltip")), expression_6 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.changeImage.tooltip"));
+      GlyphButton(node_4, {
+        get style() {
+          return get$1(expression_4);
+        },
+        get flowClass() {
+          return FlowClass.None;
+        },
+        tooltipEnabled,
+        get tooltipTheme() {
+          return get$1(theme);
+        },
+        get tooltip() {
           return get$1(expression_5);
         },
         get logText() {
           return get$1(expression_6);
         },
         logging: !0,
-        onClick: tallyAndUpdate
+        onClick: browseImage
       });
-      var div_13 = sibling(node_4, 2), node_5 = child(div_13);
+      var node_5 = sibling(node_4, 2);
       const expression_7 = /* @__PURE__ */ derived(() => [
-        "mdi mdi-image-edit la-text-secondary -fontsize7 la-flexrow -justifycenter -aligncenter",
-        qualityMode ? " la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
-      ]), expression_8 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.changeImage.tooltip")), expression_9 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.changeImage.tooltip"));
+        "mdi mdi-pencil la-text-secondary -fontsize6 -lineheight8 -justifycenter -aligncenter",
+        qualityMode ? " -glow-prmy la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
+      ]), expression_8 = /* @__PURE__ */ derived(() => getLocalized("LA.edit.tooltip")), expression_9 = /* @__PURE__ */ derived(() => getLocalized("LA.edit.tooltip"));
       GlyphButton(node_5, {
         get style() {
           return get$1(expression_7);
         },
         get flowClass() {
-          return FlowClass.None;
+          return FlowClass.ContextMenu;
         },
+        get uuid() {
+          return $$props.system.bond.uuid;
+        },
+        path: "itemTypes.bond",
         tooltipEnabled,
         get tooltipTheme() {
           return get$1(theme);
@@ -22609,14 +22597,14 @@ function Passion($$anchor, $$props) {
         get logText() {
           return get$1(expression_9);
         },
-        logging: !0,
-        onClick: browseImage
+        logging: !0
       });
-      var node_6 = sibling(node_5, 2);
+      var div_14 = sibling(div_13, 2), i = child(div_14), node_6 = sibling(i, 2);
       const expression_10 = /* @__PURE__ */ derived(() => [
-        "mdi mdi-file-document-edit la-text-secondary -fontsize6 -lineheight8 -justifycenter -aligncenter",
-        qualityMode ? " la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
-      ]), expression_11 = /* @__PURE__ */ derived(() => getLocalized("LA.edit.tooltip")), expression_12 = /* @__PURE__ */ derived(() => getLocalized("LA.edit.tooltip"));
+        "la-text-secondary -fontsize7 la-flexrow -justifycenter -aligncenter",
+        get$1(questionAnswer) ? "mdi mdi-list-box" : "mdi mdi-help-circle",
+        qualityMode ? "-glow-prmy la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
+      ]), expression_11 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.swap.tooltip")), expression_12 = /* @__PURE__ */ derived(() => getLocalized(get$1(questionAnswer) ? "LA.pilot.bond.xp.tooltip" : "LA.pilot.bond.qa.tooltip"));
       GlyphButton(node_6, {
         get style() {
           return get$1(expression_10);
@@ -22624,7 +22612,6 @@ function Passion($$anchor, $$props) {
         get flowClass() {
           return FlowClass.None;
         },
-        onClick: editBond,
         tooltipEnabled,
         get tooltipTheme() {
           return get$1(theme);
@@ -22635,20 +22622,22 @@ function Passion($$anchor, $$props) {
         get logText() {
           return get$1(expression_12);
         },
-        logging: !0
+        logging: !0,
+        onClick: /* @__PURE__ */ __name(() => {
+          setBondQNAMode($$props.actor.uuid, !get$1(questionAnswer));
+        }, "onClick")
       });
-      var div_14 = sibling(div_13, 2), i = child(div_14), node_7 = sibling(i, 2);
+      var node_7 = sibling(node_6, 2);
       const expression_13 = /* @__PURE__ */ derived(() => [
-        "la-text-secondary -fontsize7 la-flexrow -justifycenter -aligncenter",
-        get$1(questionAnswer) ? "mdi mdi-list-box" : "mdi mdi-help-circle",
-        qualityMode ? " la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
-      ]), expression_14 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.swap.tooltip")), expression_15 = /* @__PURE__ */ derived(() => getLocalized(get$1(questionAnswer) ? "LA.pilot.bond.xp.tooltip" : "LA.pilot.bond.qa.tooltip"));
+        "mdi mdi-refresh-circle la-text-secondary -fontsize7 -justifycenter",
+        qualityMode ? "-glow-prmy la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
+      ]), expression_14 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.power.refresh.tooltip")), expression_15 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.power.refresh.tooltip"));
       GlyphButton(node_7, {
         get style() {
           return get$1(expression_13);
         },
         get flowClass() {
-          return FlowClass.None;
+          return FlowClass.BondPowerRefresh;
         },
         tooltipEnabled,
         get tooltipTheme() {
@@ -22659,33 +22648,6 @@ function Passion($$anchor, $$props) {
         },
         get logText() {
           return get$1(expression_15);
-        },
-        logging: !0,
-        onClick: /* @__PURE__ */ __name(() => {
-          setBondQNAMode($$props.actor.uuid, !get$1(questionAnswer));
-        }, "onClick")
-      });
-      var node_8 = sibling(node_7, 2);
-      const expression_16 = /* @__PURE__ */ derived(() => [
-        "mdi mdi-refresh-circle la-text-secondary -fontsize7 -justifycenter",
-        qualityMode ? " la-prmy-primary -glow-prmy-hover " + getGlowColor() : ""
-      ]), expression_17 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.power.refresh.tooltip")), expression_18 = /* @__PURE__ */ derived(() => getLocalized("LA.pilot.bond.power.refresh.tooltip"));
-      GlyphButton(node_8, {
-        get style() {
-          return get$1(expression_16);
-        },
-        get flowClass() {
-          return FlowClass.BondPowerRefresh;
-        },
-        tooltipEnabled,
-        get tooltipTheme() {
-          return get$1(theme);
-        },
-        get tooltip() {
-          return get$1(expression_17);
-        },
-        get logText() {
-          return get$1(expression_18);
         },
         logging: !0,
         onClick: /* @__PURE__ */ __name(() => {

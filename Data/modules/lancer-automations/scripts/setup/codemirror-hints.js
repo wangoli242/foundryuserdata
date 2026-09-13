@@ -50,8 +50,6 @@ const TRIGGER_MANIFEST = [
     { name: 'flowState', returns: 'FlowState', doc: 'actionData' },
     { name: 'extraData', returns: 'object', summary: 'Injected by startRelatedFlowToReactor.' },
     { name: 'hitTokens', returns: 'Token[]', summary: 'Targets flattened to plain Tokens.' },
-    { name: 'isTarget', returns: 'boolean', summary: 'True when the reactor is one of the event targets.' },
-    { name: 'targetEntry', returns: 'object | null', summary: 'The reactor\'s own targets entry (roll, crit, ...) when the trigger has per-target entries.' },
     { name: 'targets', returns: 'Token[] | Array<{ target, roll, crit? }>' },
     { name: 'target', returns: 'Token' },
     { name: 'weapon', returns: 'Item' },
@@ -119,7 +117,6 @@ const TRIGGER_MANIFEST = [
 
 const COMMON_TRIGGER_FIELDS = new Set([
     'triggeringToken', 'distanceToTrigger', 'canTriggerReaction',
-    'hitTokens', 'isTarget', 'targetEntry',
     'startRelatedFlow', 'startRelatedFlowToReactor', 'sendMessageToReactor',
     'debugActivation',
 ]);
@@ -738,7 +735,8 @@ export function apiDocUrl(name)
     if (!entry && !ref)
         return null;
     const file = entry?.file ?? ref.file;
-    return `https://agraael.github.io/lancer-automations/${file.replace(/\.md$/, '.html')}`;
+    const line = entry?.line ?? ref.line;
+    return `https://github.com/Agraael/lancer-automations/blob/main/doc/${file}#L${line}`;
 }
 
 // Live api surface (spread-composed names included), enriched from the generated manifest.

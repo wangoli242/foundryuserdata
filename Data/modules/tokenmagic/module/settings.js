@@ -1,33 +1,78 @@
-import { presets as defaultPresets } from '../fx/presets/defaultpresets.js';
+import { presets as defaultPresets, PresetsLibrary } from '../fx/presets/defaultpresets.js';
 import { DataVersion } from '../migration/migration.js';
 import { TokenMagic, isVideoDisabled, fixPath } from './tokenmagic.js';
-import { AutoTemplateDND5E } from '../gui/apps/autoTemplate/dnd5e.js';
-import { AutoTemplatePF2E } from '../gui/apps/autoTemplate/pf2e.js';
-import { AutoTemplateTheWitcherTRPG } from '../gui/apps/autoTemplate/TheWitcherTRPG.js';
-import { emptyPreset } from './constants.js';
+import { dnd5eTemplates } from './autoTemplate/dnd5e.js';
+import { pf2eTemplates } from './autoTemplate/pf2e.js';
+import { witcherTemplates } from './autoTemplate/TheWitcherTRPG.js';
+import { defaultOpacity, emptyPreset } from './constants.js';
 
 const Magic = TokenMagic();
 
-export class TokenMagicSettings {
+export class TokenMagicSettings extends FormApplication {
+	constructor(object = {}, options) {
+		super(object, options);
+	}
+
+	/** @override */
+	static get defaultOptions() {
+		return {
+			...super.defaultOptions,
+			template: 'modules/tokenmagic/templates/settings/settings.html',
+			height: 'auto',
+			title: game.i18n.localize('TMFX.settings.autoTemplateSettings.dialog.title'),
+			width: 600,
+			classes: ['tokenmagic', 'settings'],
+			tabs: [
+				{
+					navSelector: '.tabs',
+					contentSelector: 'form',
+					initial: 'name',
+				},
+			],
+			submitOnClose: false,
+		};
+	}
+
 	static init() {
-		const autoTemplateClass = this.getSystemTemplateClass();
-		const hasAutoTemplates = !!autoTemplateClass;
-		if (autoTemplateClass) {
-			game.settings.registerMenu('tokenmagic', 'autoTemplateSettings', {
+		const menuAutoTemplateSettings = {
+			key: 'autoTemplateSettings',
+			config: {
 				name: game.i18n.localize('TMFX.settings.autoTemplateSettings.button.name'),
 				label: game.i18n.localize('TMFX.settings.autoTemplateSettings.button.label'),
 				hint: game.i18n.localize('TMFX.settings.autoTemplateSettings.button.hint'),
-				type: autoTemplateClass,
+				type: TokenMagicSettings,
 				restricted: true,
-			});
-			game.settings.register('tokenmagic', 'autoTemplateSettings', {
+			},
+		};
+
+		const settingAutoTemplateSettings = {
+			key: 'autoTemplateSettings',
+			config: {
 				name: game.i18n.localize('TMFX.settings.autoTemplateSettings.name'),
 				hint: game.i18n.localize('TMFX.settings.autoTemplateSettings.hint'),
 				scope: 'world',
 				config: false,
-				default: autoTemplateClass.defaultConfiguration,
+				default: {},
 				type: Object,
-			});
+			},
+		};
+
+		const templates = this.getSystemTemplates();
+		let hasAutoTemplates = !!templates;
+		if (templates) {
+			game.settings.registerMenu('tokenmagic', menuAutoTemplateSettings.key, menuAutoTemplateSettings.config);
+			game.settings.register(
+				'tokenmagic',
+				settingAutoTemplateSettings.key,
+				mergeObject(
+					settingAutoTemplateSettings.config,
+					{
+						default: templates.constructor.defaultConfiguration,
+					},
+					true,
+					true
+				)
+			);
 		}
 
 		game.settings.register('tokenmagic', 'autoTemplateEnabled', {
@@ -47,7 +92,7 @@ export class TokenMagicSettings {
 			config: true,
 			default: hasAutoTemplates,
 			type: Boolean,
-			requiresReload: true,
+			onChange: () => window.location.reload(),
 		});
 
 		game.settings.register('tokenmagic', 'autohideTemplateElements', {
@@ -57,7 +102,7 @@ export class TokenMagicSettings {
 			config: true,
 			default: true,
 			type: Boolean,
-			requiresReload: true,
+			onChange: () => window.location.reload(),
 		});
 
 		game.settings.register('tokenmagic', 'useAdditivePadding', {
@@ -112,7 +157,7 @@ export class TokenMagicSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			requiresReload: true,
+			onChange: () => window.location.reload(),
 		});
 
 		game.settings.register('tokenmagic', 'disableCaching', {
@@ -131,7 +176,7 @@ export class TokenMagicSettings {
 			config: true,
 			default: false,
 			type: Boolean,
-			requiresReload: true,
+			onChange: () => window.location.reload(),
 		});
 
 		game.settings.register('tokenmagic', 'presets', {
@@ -152,14 +197,15 @@ export class TokenMagicSettings {
 			type: String,
 		});
 
-		game.settings.register('tokenmagic', 'alwaysDisplayEditorControl', {
-			name: game.i18n.localize('TMFX.settings.alwaysDisplayEditorControl.name'),
-			hint: game.i18n.localize('TMFX.settings.alwaysDisplayEditorControl.hint'),
-			scope: 'world',
-			config: true,
-			default: true,
-			type: Boolean,
-		});
+		loadTemplates([
+			'modules/tokenmagic/templates/settings/settings.html',
+			'modules/tokenmagic/templates/settings/dnd5e/categories.html',
+			'modules/tokenmagic/templates/settings/dnd5e/overrides.html',
+			'modules/tokenmagic/templates/settings/pf2e/categories.html',
+			'modules/tokenmagic/templates/settings/pf2e/overrides.html',
+			'modules/tokenmagic/templates/settings/TheWitcherTRPG/categories.html',
+			'modules/tokenmagic/templates/settings/TheWitcherTRPG/overrides.html',
+		]);
 	}
 
 	static configureAutoTemplate(enabled = false) {
@@ -167,25 +213,98 @@ export class TokenMagicSettings {
 	}
 
 	static getSystemTemplates() {
-		if (this._autoTemplate) return this._autoTemplate;
-
-		const cls = this.getSystemTemplateClass();
-		this._autoTemplate = cls ? new cls() : null;
-
-		return this._autoTemplate;
-	}
-
-	static getSystemTemplateClass() {
 		switch (game.system.id) {
 			case 'dnd5e':
-				return AutoTemplateDND5E;
+				return dnd5eTemplates;
 			case 'pf2e':
-				return AutoTemplatePF2E;
+				return pf2eTemplates;
 			case 'TheWitcherTRPG':
-				return AutoTemplateTheWitcherTRPG;
+				return witcherTemplates;
 			default:
 				return null;
 		}
+	}
+
+	getSettingsData() {
+		let settingsData = {
+			autoTemplateEnable: game.settings.get('tokenmagic', 'autoTemplateEnabled'),
+		};
+		if (TokenMagicSettings.getSystemTemplates()) {
+			settingsData['autoTemplateSettings'] = game.settings.get('tokenmagic', 'autoTemplateSettings');
+		}
+		return settingsData;
+	}
+
+	/** @override */
+	getData() {
+		let data = super.getData();
+		data.hasAutoTemplates = false;
+		data.emptyPreset = emptyPreset;
+		const templates = TokenMagicSettings.getSystemTemplates();
+		if (templates) {
+			mergeObject(data, templates.getData());
+		}
+
+		data.presets = Magic.getPresets(PresetsLibrary.TEMPLATE).sort(function (a, b) {
+			if (a.name < b.name) return -1;
+			if (a.name > b.name) return 1;
+			return 0;
+		});
+		data.system = { id: game.system.id, title: game.system.title };
+		data.settings = this.getSettingsData();
+		data.submitText = game.i18n.localize('TMFX.save');
+		return data;
+	}
+
+	/** @override */
+	async _updateObject(_, formData) {
+		const data = expandObject(formData);
+		for (let [key, value] of Object.entries(data)) {
+			if (key === 'autoTemplateSettings' && value.overrides) {
+				const compacted = {};
+				Object.values(value.overrides).forEach((val, idx) => (compacted[idx] = val));
+				value.overrides = compacted;
+			}
+			await game.settings.set('tokenmagic', key, value);
+		}
+	}
+
+	/** @override */
+	activateListeners(html) {
+		super.activateListeners(html);
+
+		html.find('button.add-override').click(this._onAddOverride.bind(this));
+		html.find('button.remove-override').click(this._onRemoveOverride.bind(this));
+	}
+
+	async _onAddOverride(event) {
+		event.preventDefault();
+		let idx = 0;
+		const entries = event.target.closest('div.tab').querySelectorAll('div.override-entry');
+		const last = entries[entries.length - 1];
+		if (last) {
+			idx = last.dataset.idx + 1;
+		}
+		let updateData = {};
+		updateData[`autoTemplateSettings.overrides.${idx}.target`] = '';
+		updateData[`autoTemplateSettings.overrides.${idx}.opacity`] = defaultOpacity;
+		updateData[`autoTemplateSettings.overrides.${idx}.tint`] = null;
+		updateData[`autoTemplateSettings.overrides.${idx}.preset`] = emptyPreset;
+		updateData[`autoTemplateSettings.overrides.${idx}.texture`] = null;
+		await this._onSubmit(event, { updateData: updateData, preventClose: true });
+		this.render();
+	}
+
+	async _onRemoveOverride(event) {
+		event.preventDefault();
+		let idx = event.target.dataset.idx;
+		const el = event.target.closest(`div[data-idx="${idx}"]`);
+		if (!el) {
+			return true;
+		}
+		el.remove();
+		await this._onSubmit(event, { preventClose: true });
+		this.render();
 	}
 }
 
@@ -203,26 +322,29 @@ Hooks.once('init', () => {
 	TokenMagicSettings.configureAutoTemplate(game.settings.get('tokenmagic', 'autoTemplateEnabled'));
 
 	const wmtdUpdate = async function (wrapped, ...args) {
-		const [update] = args;
+		const [document] = args;
 		let preset, hasPresetData;
 
-		const tex = update.texture ?? '';
-		const hasTexture = !!update.texture;
-		const opt = update.flags?.tokenmagic?.options ?? null;
+		const tex = document.texture ?? '';
+		const hasTexture = !!document.texture;
+		const opt = document.flags?.tokenmagic?.options ?? null;
 		if (!opt) {
-			preset = update['flags.tokenmagic.templateData.preset'];
+			preset = document['flags.tokenmagic.templateData.preset'];
 		}
 		hasPresetData = !!preset;
 
+		//const hasOpt = data["flags.tokenmagic"]?.options ?? null;
+
 		if (hasTexture) {
-			update.texture = fixPath(update.texture);
+			document.texture = fixPath(document.texture);
 		}
 
 		if (opt == null) {
 			if (hasPresetData && preset !== emptyPreset) {
 				let defaultTexture = Magic._getPresetTemplateDefaultTexture(preset);
 				if (!(defaultTexture == null)) {
-					if (tex === '' || tex.startsWith('modules/tokenmagic/fx/assets/templates/')) update.texture = defaultTexture;
+					if (tex === '' || tex.startsWith('modules/tokenmagic/fx/assets/templates/'))
+						document.texture = defaultTexture;
 				}
 			} else if (
 				hasTexture &&
@@ -241,13 +363,16 @@ Hooks.once('init', () => {
 		if (this.document.texture) {
 			this.document.texture = fixPath(this.document.texture);
 		}
-		return await wrapped(...args);
+		const retVal = await wrapped(...args);
+		this.template.alpha = this.document.getFlag('tokenmagic', 'templateData')?.opacity ?? 1;
+		return retVal;
 	};
 
 	let wmtApplyRenderFlags;
 	let wmtApplyRenderFlagsType;
 
 	let wmtRefreshTemplate;
+	let wmtRefreshTemplateType;
 
 	if (!isVideoDisabled()) {
 		const toRadians = Math.toRadians;
@@ -262,6 +387,8 @@ Hooks.once('init', () => {
 
 		/* ------------------------------------------------------------------------------------ */
 
+		wmtRefreshTemplateType = 'OVERRIDE';
+
 		/**
 		 *
 		 * @return {wmtRefreshTemplate}
@@ -271,7 +398,7 @@ Hooks.once('init', () => {
 			if (!this.isVisible) return;
 
 			// Draw the Template outline
-			t.lineStyle(this._borderThickness, this.document.borderColor, 0.75).beginFill(0x000000, 0.0);
+			t.lineStyle(this._borderThickness, this.borderColor, 0.75).beginFill(0x000000, 0.0);
 
 			// Fill Color or Texture
 			if (this.texture) {
@@ -308,7 +435,7 @@ Hooks.once('init', () => {
 					const rays = angles.map((a) => Ray.fromAngle(0, 0, direction + Math.toRadians(a), distance + 1));
 					const height = Math.sqrt(
 						(rays[0].B.x - rays[1].B.x) * (rays[0].B.x - rays[1].B.x) +
-							(rays[0].B.y - rays[1].B.y) * (rays[0].B.y - rays[1].B.y),
+							(rays[0].B.y - rays[1].B.y) * (rays[0].B.y - rays[1].B.y)
 					);
 					mat.scale(width / this.texture.width, height / this.texture.height);
 					mat.translate(0, -height / 2);
@@ -320,7 +447,7 @@ Hooks.once('init', () => {
 					matrix: mat,
 					alpha: 1.0,
 				});
-				const source = foundry.utils.getProperty(this.texture, 'baseTexture.resource.source');
+				const source = getProperty(this.texture, 'baseTexture.resource.source');
 				if (source && source.tagName === 'VIDEO') {
 					source.loop = true;
 					source.muted = true;
@@ -335,8 +462,13 @@ Hooks.once('init', () => {
 			t.lineStyle(this._borderThickness, 0x000000)
 				.beginFill(0x000000, 0.5)
 				.drawCircle(0, 0, 6)
-				.drawCircle(this.ray.dx, this.ray.dy, 6)
-				.endFill();
+				.drawCircle(this.ray.dx, this.ray.dy, 6);
+
+			// Update visibility
+			this.controlIcon.visible = !!this.layer.active;
+			this.controlIcon.border.visible = !!this.hover;
+			const alpha = this.document.getFlag('tokenmagic', 'templateData')?.opacity ?? 1;
+			t.alpha = this.hover ? alpha / 1.25 : alpha;
 
 			return this;
 		};
@@ -389,8 +521,8 @@ Hooks.once('init', () => {
 				}
 
 				if (template.ruler) template.ruler.renderable = show;
-				if (template.controlIcon) template.controlIcon.renderable = template.isOwner;
-				if (template.handle) template.handle.renderable = template.isOwner;
+				if (template.controlIcon) template.controlIcon.renderable = template.owner;
+				if (template.handle) template.handle.renderable = template.owner;
 			}
 			return retVal;
 		};
@@ -413,7 +545,7 @@ Hooks.once('init', () => {
 			canvas.stage.on('mousemove', (event) => {
 				const { x: mx, y: my } = event.data.getLocalPosition(canvas.templates);
 				for (const template of canvas.templates.placeables) {
-					const hl = canvas.interface.grid.getHighlightLayer(template.highlightId);
+					const hl = canvas.grid.getHighlightLayer(`MeasuredTemplate.${template.id}`);
 					const opacity = template.document.getFlag('tokenmagic', 'templateData')?.opacity ?? 1;
 					if (template.texture && template.texture !== '') {
 						const { x: cx, y: cy } = template.center;
@@ -429,37 +561,53 @@ Hooks.once('init', () => {
 		});
 	}
 
-	libWrapper.register('tokenmagic', 'MeasuredTemplateDocument.prototype.update', wmtdUpdate, 'WRAPPER');
-	libWrapper.register('tokenmagic', 'foundry.canvas.placeables.MeasuredTemplate.prototype._draw', wmtDraw, 'WRAPPER');
+	if (game.modules.get('lib-wrapper')?.active) {
+		libWrapper.register('tokenmagic', 'MeasuredTemplateDocument.prototype.update', wmtdUpdate, 'WRAPPER');
+		libWrapper.register('tokenmagic', 'MeasuredTemplate.prototype._draw', wmtDraw, 'WRAPPER');
+		if (wmtApplyRenderFlags)
+			libWrapper.register(
+				'tokenmagic',
+				'MeasuredTemplate.prototype._applyRenderFlags',
+				wmtApplyRenderFlags,
+				wmtApplyRenderFlagsType
+			);
+		if (wmtRefreshTemplate)
+			libWrapper.register(
+				'tokenmagic',
+				'MeasuredTemplate.prototype._refreshTemplate',
+				wmtRefreshTemplate,
+				wmtRefreshTemplateType
+			);
+	} else {
+		const cmtdUpdate = MeasuredTemplateDocument.prototype.update;
+		MeasuredTemplateDocument.prototype.update = function () {
+			return wmtdUpdate.call(this, cmtdUpdate.bind(this), ...arguments);
+		};
+		const cmtDraw = MeasuredTemplate.prototype._draw;
+		MeasuredTemplate.prototype._draw = function () {
+			return wmtDraw.call(this, cmtDraw.bind(this), ...arguments);
+		};
 
-	libWrapper.register(
-		'tokenmagic',
-		'foundry.canvas.placeables.MeasuredTemplate.prototype._refreshState',
-		function (wrapped, ...args) {
-			const result = wrapped(...args);
+		if (wmtApplyRenderFlags) {
+			if (wmtApplyRenderFlagsType && wmtApplyRenderFlagsType !== 'OVERRIDE') {
+				const cmtApplyRenderFlags = MeasuredTemplate.prototype._applyRenderFlags;
+				MeasuredTemplate.prototype._applyRenderFlags = function () {
+					return wmtApplyRenderFlags.call(this, cmtApplyRenderFlags.bind(this), ...arguments);
+				};
+			} else {
+				MeasuredTemplate.prototype._applyRenderFlags = wmtApplyRenderFlags;
+			}
+		}
 
-			// Update visibility
-			this.template.alpha = this.document.getFlag('tokenmagic', 'templateData')?.opacity ?? 1;
-			this.controlIcon.visible = !!this.layer.active;
-			this.controlIcon.border.visible = !!this.hover;
-
-			return result;
-		},
-		'WRAPPER',
-	);
-
-	if (wmtApplyRenderFlags)
-		libWrapper.register(
-			'tokenmagic',
-			'foundry.canvas.placeables.MeasuredTemplate.prototype._applyRenderFlags',
-			wmtApplyRenderFlags,
-			wmtApplyRenderFlagsType,
-		);
-	if (wmtRefreshTemplate)
-		libWrapper.register(
-			'tokenmagic',
-			'foundry.canvas.placeables.MeasuredTemplate.prototype._refreshTemplate',
-			wmtRefreshTemplate,
-			'OVERRIDE',
-		);
+		if (wmtRefreshTemplate) {
+			if (wmtRefreshTemplateType && wmtRefreshTemplateType !== 'OVERRIDE') {
+				const cmtRefreshTemplate = MeasuredTemplate.prototype._refreshTemplate;
+				MeasuredTemplate.prototype._refreshTemplate = function () {
+					return wmtRefreshTemplate.call(this, cmtRefreshTemplate.bind(this), ...arguments);
+				};
+			} else {
+				MeasuredTemplate.prototype._refreshTemplate = wmtRefreshTemplate;
+			}
+		}
+	}
 });

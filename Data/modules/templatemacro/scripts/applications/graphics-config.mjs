@@ -97,14 +97,6 @@ function _listTargetFilterGroups() {
   return { flat, groups };
 }
 
-function _listStatusEffects() {
-  const entries = (CONFIG.statusEffects ?? [])
-    .filter(status => status?.id)
-    .map(status => ({ value: status.id, label: game.i18n.localize(status.name ?? status.label ?? status.id) }));
-  entries.sort((left, right) => left.label.localeCompare(right.label));
-  return entries;
-}
-
 const DEFAULT_STATE = () => ({
   // Entry mode (library entry editing)
   entryName: "New Template",
@@ -123,9 +115,6 @@ const DEFAULT_STATE = () => ({
   fillColorNative: "#0d0d0d",
   textureNative: "",
   hidden: false,
-  // TokenMagic FX native fields (non-advanced mode)
-  tmfxPreset: "NOFX",
-  tmfxTint: "",
   attachedTokenId: "",
   // Rendering mode
   useCustomRender: false,
@@ -149,10 +138,6 @@ const DEFAULT_STATE = () => ({
   fillTextureOffset: { x: 0, y: 0 },
   fillTextureOffsetAnimation: null,
   fillTextureScale: { x: 100, y: 100 },
-  fillTextureCentered: false,
-  aboveTokens: false,
-  fillTextureScaleWithSize: false,
-  fillTextureSourceColor: false,
   // Label
   centerLabel: "",
   // Difficult terrain (read by lancer-automations movement cost)
@@ -203,9 +188,6 @@ function readTemplateDoc(doc) {
   state.fillColorNative = doc.fillColor ?? "#0d0d0d";
   state.textureNative = doc.texture ?? "";
   state.hidden = !!doc.hidden;
-  const tmfxData = doc.getFlag("tokenmagic", "templateData") ?? {};
-  state.tmfxPreset = tmfxData.preset ?? "NOFX";
-  state.tmfxTint = typeof tmfxData.tint === "number" ? intToHex(tmfxData.tint) : (tmfxData.tint ?? "");
   state.attachedTokenId = flag("attachedTokenId", "");
   state.useCustomRender = !!flag("useCustomRender", false);
   state.radiusOffset = flag("radiusOffset", 0);
@@ -225,10 +207,6 @@ function readTemplateDoc(doc) {
   state.fillTextureOffset = flag("fillTextureOffset", { x: 0, y: 0 });
   state.fillTextureOffsetAnimation = flag("fillTextureOffsetAnimation", null);
   state.fillTextureScale = flag("fillTextureScale", { x: 100, y: 100 });
-  state.fillTextureCentered = !!flag("fillTextureCentered", false);
-  state.aboveTokens = !!flag("aboveTokens", false);
-  state.fillTextureScaleWithSize = !!flag("fillTextureScaleWithSize", false);
-  state.fillTextureSourceColor = !!flag("fillTextureSourceColor", false);
   state.centerLabel = flag("centerLabel", "");
   state.movementPenalty = flag("movementPenalty", 0);
   state.flatMovementPenalty = flag("flatMovementPenalty", true);
@@ -356,7 +334,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
     const showMacros = this.mode === MODES.TEMPLATE || this.mode === MODES.PLACEMENT || this.mode === MODES.ENTRY;
     const showTemplate = this.mode === MODES.TEMPLATE;
     const showEntryHeader = this.mode === MODES.ENTRY;
-    const entryId = showEntryHeader ? (this.target?.id ?? "") : "";
     const templateTypes = [
       { value: "circle", label: "Circle", selected: s.t === "circle" },
       { value: "rect", label: "Rectangle", selected: s.t === "rect" },
@@ -370,10 +347,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       selected: t.id === s.attachedTokenId
     }));
     tokenOptions.unshift({ value: "", label: "None", selected: !s.attachedTokenId });
-    const hasTokenMagic = !!game.modules.get("tokenmagic")?.active;
-    const tmfxPresets = hasTokenMagic ? (window.TokenMagic?.getPresets?.("tmfx-template") ?? []) : [];
-    const tmfxPresetOptions = [{ value: "NOFX", label: "None", selected: (s.tmfxPreset ?? "NOFX") === "NOFX" }]
-      .concat(tmfxPresets.map(preset => ({ value: preset.name, label: preset.name, selected: preset.name === s.tmfxPreset })));
     const lineEasing = s.lineColorAnimation?.easingFunc;
     const fillEasing = s.fillColorAnimation?.easingFunc;
     const triggerOptions = TRIGGERS.filter(t => t !== "never").map(t => ({ value: t, label: t }));
@@ -387,25 +360,16 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       { value: "remove", label: "Remove" }
     ];
     const _filters = _listTargetFilterGroups();
-    const statusEffects = _listStatusEffects();
     const actionRows = (s.actions ?? []).map((a, i) => {
       const macroName = a.actionType === ACTION_TYPES.MACRO && a.macroUuid
         ? (fromUuidSync(a.macroUuid)?.name ?? a.macroUuid)
         : "";
-      const knownStatus = statusEffects.find(status => status.value === a.effectName);
-      const statusOptions = [{ value: "", label: "None", selected: !a.effectName }];
-      if (a.effectName && !knownStatus)
-        statusOptions.push({ value: a.effectName, label: `${a.effectName} (missing)`, selected: true });
-      for (const status of statusEffects)
-        statusOptions.push({ ...status, selected: status.value === a.effectName });
-      const firstCodeLine = (a.code ?? "").split("\n").map(line => line.trim()).find(Boolean) ?? "";
       const summary = a.actionType === ACTION_TYPES.CODE
-        ? (firstCodeLine.slice(0, 60) || "(empty)")
+        ? (a.code?.split("\n")[0]?.trim().slice(0, 60) || "(empty)")
         : a.actionType === ACTION_TYPES.MACRO
           ? (macroName || "(no macro)")
-          : (knownStatus?.label || a.effectName || "(no effect)");
+          : (a.effectName || "(no effect)");
       return {
-        statusOptions,
         index: i,
         ...a,
         icon: ACTION_ICON[a.actionType] ?? "fa-code",
@@ -429,12 +393,9 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       showMacros,
       showTemplate,
       showEntryHeader,
-      entryId,
       isTemplateMode: this.mode === MODES.TEMPLATE,
       hasMovementRuler: !!game.modules.get("lancer-automations")?.active,
       hasLancerAutomations: !!game.modules.get("lancer-automations")?.active,
-      hasTokenMagic,
-      tmfxPresetOptions,
       isCircle: s.t === "circle",
       templateTypes,
       tokenOptions,
@@ -493,11 +454,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
     html.find("select[name='fillType']").on("change", (ev) => {
       this._snapshot(html);
       this._formState.fillType = Number(ev.currentTarget.value);
-      this.render();
-    });
-    html.find("input[name='fillTextureCentered']").on("change", (ev) => {
-      this._snapshot(html);
-      this._formState.fillTextureCentered = !!ev.currentTarget.checked;
       this.render();
     });
 
@@ -594,14 +550,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       }).browse();
     });
 
-    html.find(".tmac-entry-copy-id").on("click", (ev) => {
-      ev.preventDefault();
-      const id = ev.currentTarget.dataset.entryId;
-      if (!id) return;
-      game.clipboard.copyPlainText(id);
-      ui.notifications.info(`Copied ID: ${id}`);
-    });
-
     html.find(".tmac-entry-pick-icon").on("click", (ev) => {
       ev.preventDefault();
       const input = html.find('input[name="entryIcon"]')[0];
@@ -659,7 +607,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       "lineDashSize", "lineGapSize", "lineDashOffsetAnimation", "lineColorAnimation",
       "fillType", "fillColor", "fillOpacity", "fillColorAnimation",
       "fillTexture", "fillTextureOffset", "fillTextureOffsetAnimation", "fillTextureScale",
-      "fillTextureCentered", "fillTextureScaleWithSize", "fillTextureSourceColor", "aboveTokens",
       "centerLabel", "movementPenalty", "flatMovementPenalty", "elevationGated", "elevationRangeManual", "elevationRange", "innerRadius", "actions"
     ];
     const graphicsState = {};
@@ -1074,8 +1021,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       s.fillColorNative = str(fd.fillColorNative, s.fillColorNative);
       s.textureNative = str(fd.textureNative, s.textureNative);
       s.hidden = !!fd.hidden;
-      s.tmfxPreset = str(fd.tmfxPreset, s.tmfxPreset);
-      s.tmfxTint = str(fd.tmfxTint, s.tmfxTint);
       s.attachedTokenId = str(fd.attachedTokenId, s.attachedTokenId);
     }
     if (this.mode === MODES.ENTRY) {
@@ -1103,10 +1048,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       x: num(fd.fillTextureScaleX, s.fillTextureScale.x),
       y: num(fd.fillTextureScaleY, s.fillTextureScale.y)
     };
-    s.fillTextureCentered = !!fd.fillTextureCentered;
-    s.aboveTokens = !!fd.aboveTokens;
-    s.fillTextureScaleWithSize = !!fd.fillTextureScaleWithSize;
-    s.fillTextureSourceColor = !!fd.fillTextureSourceColor;
     s.centerLabel = str(fd.centerLabel, s.centerLabel);
     s.movementPenalty = num(fd.movementPenalty, s.movementPenalty);
     s.flatMovementPenalty = !!fd.flatMovementPenalty;
@@ -1132,7 +1073,7 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       };
     }
 
-    if (this.mode !== MODES.DEFAULTS) {
+    if (this.mode === MODES.TEMPLATE || this.mode === MODES.PLACEMENT) {
       for (let i = 0; i < (s.actions?.length ?? 0); i++) {
         const a = s.actions[i];
         a.trigger = str(fd[`action_${i}_trigger`], a.trigger);
@@ -1182,7 +1123,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       "lineDashSize", "lineGapSize", "lineDashOffsetAnimation", "lineColorAnimation",
       "fillType", "fillColor", "fillOpacity", "fillColorAnimation",
       "fillTexture", "fillTextureOffset", "fillTextureOffsetAnimation", "fillTextureScale",
-      "fillTextureCentered", "fillTextureScaleWithSize", "fillTextureSourceColor", "aboveTokens",
       "centerLabel", "movementPenalty", "flatMovementPenalty", "elevationGated", "elevationRangeManual", "elevationRange", "innerRadius", "actions"
     ];
     for (const k of GRAPHICS_KEYS) this.target.graphicsState[k] = s[k];
@@ -1231,10 +1171,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
       fillTextureOffset: s.fillTextureOffset,
       fillTextureOffsetAnimation: s.fillTextureOffsetAnimation,
       fillTextureScale: s.fillTextureScale,
-      fillTextureCentered: s.fillTextureCentered,
-      fillTextureScaleWithSize: s.fillTextureScaleWithSize,
-      fillTextureSourceColor: s.fillTextureSourceColor,
-      aboveTokens: s.aboveTokens,
       centerLabel: s.centerLabel,
       schemaVersion: 2
     };
@@ -1271,21 +1207,6 @@ export class TemplatemacroGraphicsConfig extends HandlebarsApplicationMixin(Docu
     }
     if (s.useCustomRender && !prevUseCustom) {
       update["flags.tokenmagic.templateData.opacity"] = 0;
-    }
-    if (game.modules.get("tokenmagic")?.active) {
-      update["flags.tokenmagic.templateData.preset"] = s.tmfxPreset || "NOFX";
-      update["flags.tokenmagic.templateData.tint"] = s.tmfxTint || "";
-      const tmfxOpacity = t.getFlag("tokenmagic", "templateData")?.opacity;
-      update["flags.tokenmagic.templateData.opacity"] = s.useCustomRender ? 0 : (tmfxOpacity > 0 ? tmfxOpacity : 1);
-      const TMFX_TEXTURE_DIR = "modules/tokenmagic/fx/assets/templates/";
-      const currentTexture = update.texture ?? "";
-      const isTmfxTexture = currentTexture.startsWith(TMFX_TEXTURE_DIR);
-      if (s.tmfxPreset && s.tmfxPreset !== "NOFX") {
-        const presetTexture = window.TokenMagic?._getPresetTemplateDefaultTexture?.(s.tmfxPreset);
-        if (presetTexture && (!currentTexture || isTmfxTexture)) update.texture = presetTexture;
-      } else if (isTmfxTexture) {
-        update.texture = "";
-      }
     }
     // suppress auto-render: we wrote this update from the sheet, no need for Foundry to rerender us
     await this.target.update(update, { render: false });

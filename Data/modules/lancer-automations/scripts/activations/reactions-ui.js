@@ -86,7 +86,7 @@ export function activateReaction(triggerType, triggerData, token, item, activati
                 const path = actionIndex >= 0 ? `system.actions.${actionIndex}` : 'system.actions.0';
                 await item.beginActivationFlow(path);
             }
-            else if (item.beginSystemFlow && item.system.type !== "Weapon" && !item.is_mech_weapon?.() && !item.is_pilot_weapon?.())
+            else if (item.beginSystemFlow && item.system.type !== "Weapon")
                 await item.beginSystemFlow();
             else
             {

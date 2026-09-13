@@ -67,75 +67,13 @@ export async function onAttackStep(state)
     return true;
 }
 
-// printAttackCard serializes hit/crit into the message flag, so this has to run ahead of it.
-export async function hitImmunityStep(state)
-{
-    state = injectExtraDataUtility(state);
-    const targetInfos = state.data?.acc_diff?.targets || [];
-    const hitResults = state.data?.hit_results || [];
-
-    for (let index = 0; index < hitResults.length; index++)
-    {
-        const hitResult = hitResults[index];
-        const targetToken = hitResult?.target ?? accDiffTargetToken(targetInfos[index]);
-        const attackResult = state.data?.attack_results?.[index];
-
-        if (!targetToken)
-            continue;
-
-        if (await hasCritImmunity(targetToken.actor, state.actor, state) && (hitResult?.crit || attackResult?.crit))
-        {
-            if (hitResult)
-                hitResult.crit = false;
-            if (attackResult)
-                attackResult.crit = false;
-            ui.notifications.info(`${targetToken.name} is immune to Critical Hits!`);
-            await consumeImmunityUse(targetToken.actor, 'crit', state);
-        }
-
-        const missImmunity = await hasMissImmunity(targetToken.actor, state.actor, state);
-        const hitImmunity = await hasHitImmunity(targetToken.actor, state.actor, state);
-        if (missImmunity && hitImmunity)
-        {
-            ui.notifications.info(`${targetToken.name} is immune to miss and hit - these effects cancel each other`);
-            continue;
-        }
-
-        if (missImmunity && (hitResult?.miss || attackResult?.miss))
-        {
-            if (hitResult)
-                hitResult.hit = true;
-            if (attackResult)
-                attackResult.hit = true;
-            ui.notifications.info(`${targetToken.name} is immune to miss - attack hits!`);
-            await consumeImmunityUse(targetToken.actor, 'miss', state);
-        }
-
-        if (hitImmunity && (hitResult?.hit || attackResult?.hit))
-        {
-            if (hitResult)
-            {
-                hitResult.hit = false;
-                hitResult.crit = false;
-            }
-            if (attackResult)
-            {
-                attackResult.hit = false;
-                attackResult.crit = false;
-            }
-            ui.notifications.info(`${targetToken.name} is immune to Hits: attack misses!`);
-            await consumeImmunityUse(targetToken.actor, 'hit', state);
-        }
-    }
-    return true;
-}
-
 export async function onHitMissStep(state)
 {
     state = injectExtraDataUtility(state);
     const actor = state.actor;
-    const weapon = state.item;
+    const item = state.item;
     const token = actor?.token ? canvas.tokens.get(actor.token.id) : actor?.getActiveTokens()?.[0];
+    const weapon = item;
     const targetInfos = state.data?.acc_diff?.targets || [];
     const hitResults = state.data?.hit_results || [];
 
@@ -144,19 +82,72 @@ export async function onHitMissStep(state)
     const hitTargets = [];
     const missTargets = [];
 
-    for (let index = 0; index < hitResults.length; index++)
+    for (let i = 0; i < hitResults.length; i++)
     {
-        const hitResult = hitResults[index];
-        const targetToken = hitResult?.target ?? accDiffTargetToken(targetInfos[index]);
-        const roll = hitResult?.roll || state.data?.attack_results?.[index]?.roll;
+        const hitResult = hitResults[i];
+        const targetToken = hitResult?.target ?? accDiffTargetToken(targetInfos[i]);
+        const roll = hitResult?.roll || state.data?.attack_results?.[i]?.roll;
 
         if (!targetToken)
             continue;
 
-        if (hitResult?.hit)
-            hitTargets.push({ target: targetToken, roll: roll, crit: hitResult?.crit || false });
+        if (await hasCritImmunity(targetToken.actor, state.actor, state) && (hitResult?.crit || state.data?.attack_results?.[i]?.crit))
+        {
+            if (hitResult)
+                hitResult.crit = false;
+            if (state.data?.attack_results?.[i])
+                state.data.attack_results[i].crit = false;
+            ui.notifications.info(`${targetToken.name} is immune to Critical Hits!`);
+            await consumeImmunityUse(targetToken.actor, 'crit', state);
+        }
+
+        const missImmunity = await hasMissImmunity(targetToken.actor, state.actor, state);
+        const hitImmunity = await hasHitImmunity(targetToken.actor, state.actor, state);
+        if (missImmunity && hitImmunity)
+            ui.notifications.info(`${targetToken.name} is immune to miss and hit - these effects cancel each other`);
         else
-            missTargets.push({ target: targetToken, roll: roll });
+        {
+            if (missImmunity && (hitResult?.miss || state.data?.attack_results?.[i]?.miss))
+            {
+                if (hitResult)
+                    hitResult.hit = true;
+                if (state.data?.attack_results?.[i])
+                    state.data.attack_results[i].hit = true;
+                ui.notifications.info(`${targetToken.name} is immune to miss - attack hits!`);
+                await consumeImmunityUse(targetToken.actor, 'miss', state);
+            }
+
+            if (hitImmunity && (hitResult?.hit || state.data?.attack_results?.[i]?.hit))
+            {
+                if (hitResult)
+                {
+                    hitResult.hit = false;
+                    hitResult.crit = false;
+                }
+                if (state.data?.attack_results?.[i])
+                {
+                    state.data.attack_results[i].hit = false;
+                    state.data.attack_results[i].crit = false;
+                }
+                ui.notifications.info(`${targetToken.name} is immune to Hits: attack misses!`);
+                await consumeImmunityUse(targetToken.actor, 'hit', state);
+            }
+        }
+        if (hitResult?.hit)
+        {
+            hitTargets.push({
+                target: targetToken,
+                roll: roll,
+                crit: hitResult?.crit || false
+            });
+        }
+        else
+        {
+            missTargets.push({
+                target: targetToken,
+                roll: roll
+            });
+        }
     }
 
     if (hitTargets.length > 0)
@@ -625,7 +616,6 @@ export function _buildCancelFn({ setFlag, cancelledBy, getIgnoreCallback, defaul
 // cancelKey must stay the exact name reaction code reads from trigger data (e.g. triggerData.cancelAttack)
 async function runCancellableStep(state, { trigger, cancelKey, reason, title, token, data = {}, postData = {}, getIgnoreCallback = null, choice2Text = undefined })
 {
-    state = injectExtraDataUtility(state);
     if (!state.data)
         state.data = {};
     if (!state.data._cancelledBy)
@@ -780,7 +770,6 @@ export async function onInitTechAttackStep(state)
 
 export async function onActivationStep(state)
 {
-    state = injectExtraDataUtility(state);
     const actor = state.actor;
     const token = actor?.token ? canvas.tokens.get(actor.token.id) : actor?.getActiveTokens()?.[0];
     let item = state.item;
@@ -962,7 +951,6 @@ export async function consumeGenericPrintResourcesStep(state)
 
 export async function onInitActivationStep(state)
 {
-    state = injectExtraDataUtility(state);
     const actor = state.actor;
     const token = actor?.token ? canvas.tokens.get(actor.token.id) : actor?.getActiveTokens()?.[0];
     let item = state.item;

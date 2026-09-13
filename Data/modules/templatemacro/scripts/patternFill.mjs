@@ -63,9 +63,6 @@ function _mergeFingerprint(doc)
     const label = doc.getFlag?.("templatemacro", "centerLabel") ?? "";
     if (!label)
         return null;
-    // A centered texture is drawn once per template, so merged cells would each keep their own copy.
-    if (doc.getFlag?.("templatemacro", "fillTextureCentered"))
-        return null;
     const flag = (k, fb) => doc.getFlag?.("templatemacro", k) ?? fb;
     return JSON.stringify({
         label,
@@ -324,7 +321,7 @@ function animationTick(template, dt)
     const config = getPatternFillConfig(doc);
     const hasAnyAnim = config.fillAnimation || config.fillPulse
     || !!config.lineColorAnimation || !!config.fillColorAnimation
-    || (!!config.fillTextureOffsetAnimation && !config.fillTextureCentered) || config.lineDashOffsetAnimation !== 0;
+    || !!config.fillTextureOffsetAnimation || config.lineDashOffsetAnimation !== 0;
     if (!hasAnyAnim)
     {
         stopAnimation(template);
@@ -433,9 +430,6 @@ export function getPatternFillConfig(templateDoc)
         fillTextureScale: flag("fillTextureScale", fallbackScale),
         fillTextureOffset: flag("fillTextureOffset", { x: 0, y: 0 }),
         fillTextureOffsetAnimation: flag("fillTextureOffsetAnimation", null),
-        fillTextureCentered: !!flag("fillTextureCentered", false),
-        fillTextureScaleWithSize: !!flag("fillTextureScaleWithSize", false),
-        fillTextureSourceColor: !!flag("fillTextureSourceColor", false),
         fillColor: flag("fillColor", templateDoc.fillColor ?? "#000000"),
         fillOpacity: flag("fillOpacity", 0.25),
         fillColorAnimation: flag("fillColorAnimation", null),
@@ -498,7 +492,7 @@ function getCachedTexture(path)
 
 function drawSolidFallback(template, config)
 {
-    const highlightLayer = _fillLayerFor(template);
+    const highlightLayer = canvas.interface.grid.getHighlightLayer(template.highlightId);
     if (!highlightLayer)
         return;
 
@@ -724,7 +718,7 @@ function _getCachedGeometry(template)
 function highlightGridWithPattern(template)
 {
     const doc = template.document;
-    const highlightLayer = _fillLayerFor(template);
+    const highlightLayer = canvas.interface.grid.getHighlightLayer(template.highlightId);
     if (!highlightLayer)
         return;
 
@@ -740,7 +734,7 @@ function highlightGridWithPattern(template)
     const config = getPatternFillConfig(doc);
     const needsAnim = config.fillAnimation || config.fillPulse
     || !!config.lineColorAnimation || !!config.fillColorAnimation
-    || (!!config.fillTextureOffsetAnimation && !config.fillTextureCentered) || config.lineDashOffsetAnimation !== 0;
+    || !!config.fillTextureOffsetAnimation || config.lineDashOffsetAnimation !== 0;
     if (needsAnim)
         startAnimation(template); else
         stopAnimation(template);
@@ -751,7 +745,6 @@ function highlightGridWithPattern(template)
 
     if (config.fillType !== FILL_TYPES.PATTERN)
     {
-        _destroyCenterTexture(template);
         drawSolidFallback(template, config);
         return;
     }
@@ -759,7 +752,6 @@ function highlightGridWithPattern(template)
     const texture = getCachedTexture(config.fillTexture);
     if (!texture)
     {
-        _destroyCenterTexture(template);
         drawSolidFallback(template, config);
         loadTexture(config.fillTexture).then(tex =>
         {
@@ -775,7 +767,7 @@ function highlightGridWithPattern(template)
         return;
     }
 
-    const fillColor = config.fillTextureSourceColor ? 0xFFFFFF : Color.from(fillColorHex);
+    const fillColor = Color.from(fillColorHex);
     const { x: scaleX, y: scaleY } = config.fillTextureScale;
     const animOffset = getAnimationOffset(template.id);
     const finalOffsetX = (config.fillTextureOffset?.x ?? 0) + animOffset.x;
@@ -788,16 +780,10 @@ function highlightGridWithPattern(template)
         const shape = template._getGridHighlightShape?.() ?? template.shape;
         if (!shape)
             return;
-        if (config.fillTextureCentered)
-            _drawCenteredTexture(template, texture, config, [shape], fillColor, fillOpacity);
-        else
-        {
-            _destroyCenterTexture(template);
-            highlightLayer.beginTextureFill({ texture, color: fillColor, alpha: fillOpacity, matrix: fillMatrix });
-            highlightLayer.lineStyle(0);
-            highlightLayer.drawShape(shape);
-            highlightLayer.endFill();
-        }
+        highlightLayer.beginTextureFill({ texture, color: fillColor, alpha: fillOpacity, matrix: fillMatrix });
+        highlightLayer.lineStyle(0);
+        highlightLayer.drawShape(shape);
+        highlightLayer.endFill();
         if (drawLine)
         {
             const gfx = _getBorderGfx(template);
@@ -841,17 +827,11 @@ function highlightGridWithPattern(template)
         })
         .map(({ shape, points }) => ({ shape, points }));
 
-    if (config.fillTextureCentered)
-        _drawCenteredTexture(template, texture, config, cellShapes.map(({ shape }) => shape), fillColor, fillOpacity);
-    else
+    for (const { shape } of cellShapes)
     {
-        _destroyCenterTexture(template);
-        for (const { shape } of cellShapes)
-        {
-            highlightLayer.beginTextureFill({ texture, color: fillColor, alpha: fillOpacity, matrix: fillMatrix });
-            highlightLayer.drawShape(shape);
-            highlightLayer.endFill();
-        }
+        highlightLayer.beginTextureFill({ texture, color: fillColor, alpha: fillOpacity, matrix: fillMatrix });
+        highlightLayer.drawShape(shape);
+        highlightLayer.endFill();
     }
 
     if (drawLine)
@@ -878,8 +858,7 @@ function _suppressNativeShape(template)
     if (!template?.template)
         return;
     const useCustom = !!template.document?.getFlag(MODULE, "useCustomRender");
-    const tmfxOpacity = template.document?.getFlag("tokenmagic", "templateData")?.opacity;
-    template.template.alpha = useCustom ? 0 : (tmfxOpacity > 0 ? tmfxOpacity : 1);
+    template.template.alpha = useCustom ? 0 : 1;
 }
 
 function _getBorderGfx(template)
@@ -905,118 +884,6 @@ function _destroyBorderGfx(template)
     template._tmacBorder = null;
 }
 
-function _destroyAboveGfx(template)
-{
-    const gfx = template?._tmacAbove;
-    if (!gfx)
-        return;
-    gfx.parent?.removeChild(gfx);
-    if (!gfx.destroyed)
-        gfx.destroy({ children: true });
-    template._tmacAbove = null;
-}
-
-// Fill target: the grid highlight (under tokens) or our own world-coord layer on the
-// template layer, which draws above them.
-function _fillLayerFor(template)
-{
-    if (!template.document.getFlag(MODULE, "aboveTokens"))
-    {
-        _destroyAboveGfx(template);
-        return canvas.interface.grid.getHighlightLayer(template.highlightId);
-    }
-    const highlight = canvas.interface.grid.getHighlightLayer(template.highlightId);
-    if (highlight)
-        highlight.clear();
-    if (template._tmacAbove && !template._tmacAbove.destroyed)
-        return template._tmacAbove;
-    const gfx = new PIXI.Graphics();
-    template._tmacAbove = gfx;
-    canvas.templates?.addChild(gfx);
-    template.once("destroyed", () => _destroyAboveGfx(template));
-    return gfx;
-}
-
-function _destroyCenterTexture(template)
-{
-    const sprite = template?._tmacCenterTex;
-    const mask = template?._tmacCenterMask;
-    if (sprite)
-    {
-        sprite.mask = null;
-        sprite.parent?.removeChild(sprite);
-        if (!sprite.destroyed)
-            sprite.destroy();
-        template._tmacCenterTex = null;
-    }
-    if (mask)
-    {
-        mask.parent?.removeChild(mask);
-        if (!mask.destroyed)
-            mask.destroy();
-        template._tmacCenterMask = null;
-    }
-}
-
-// One un-tiled copy of the texture on the highlight layer (world coords), clipped to the drawn cells.
-function _drawCenteredTexture(template, texture, config, shapes, tint, alpha)
-{
-    const layer = _fillLayerFor(template);
-    if (!layer || !shapes.length)
-    {
-        _destroyCenterTexture(template);
-        return;
-    }
-
-    if (!template._tmacCenterTex || template._tmacCenterTex.destroyed)
-    {
-        _destroyCenterTexture(template);
-        const sprite = new PIXI.Sprite(texture);
-        sprite.anchor.set(0.5, 0.5);
-        const mask = new PIXI.Graphics();
-        sprite.mask = mask;
-        template._tmacCenterTex = sprite;
-        template._tmacCenterMask = mask;
-        template.once("destroyed", () => _destroyCenterTexture(template));
-    }
-
-    const sprite = template._tmacCenterTex;
-    const mask = template._tmacCenterMask;
-    if (sprite.texture !== texture)
-        sprite.texture = texture;
-
-    // Foundry only drives video playback for its own objects; a raw sprite gets a paused element.
-    const videoSource = texture.baseTexture?.resource?.source;
-    if (videoSource instanceof HTMLVideoElement && videoSource.paused)
-    {
-        if (texture.baseTexture.resource.autoUpdate === false)
-            texture.baseTexture.resource.autoUpdate = true;
-        game.video?.play?.(videoSource, { loop: true, volume: 0 }) ?? videoSource.play?.();
-    }
-    if (sprite.parent !== layer)
-        layer.addChild(sprite);
-    if (mask.parent !== layer)
-        layer.addChild(mask);
-
-    mask.clear();
-    mask.beginFill(0xFFFFFF, 1);
-    for (const shape of shapes)
-        mask.drawShape(shape);
-    mask.endFill();
-
-    const bounds = mask.getLocalBounds();
-    const sizeFactor = config.fillTextureScaleWithSize ? Math.max(1, Number(template.document.distance) || 1) : 1;
-    sprite.width = texture.width * (config.fillTextureScale.x / 100) * sizeFactor;
-    sprite.height = texture.height * (config.fillTextureScale.y / 100) * sizeFactor;
-    sprite.position.set(
-        bounds.x + (bounds.width / 2) + (config.fillTextureOffset?.x ?? 0),
-        bounds.y + (bounds.height / 2) + (config.fillTextureOffset?.y ?? 0)
-    );
-    sprite.tint = tint;
-    sprite.alpha = alpha;
-    sprite.visible = true;
-}
-
 async function _applyCustomControlIcon(template)
 {
     if (!template?.controlIcon)
@@ -1034,56 +901,6 @@ async function _applyCustomControlIcon(template)
     {
         iconSprite.texture = tex;
     }
-}
-
-const _tmfxResyncTimers = new Map();
-
-function _resyncTmfxFilters(template)
-{
-    const id = template?.document?.id;
-    const tm = window.TokenMagic;
-    if (!id || !tm?._singleLoadFilters || !template.document?.flags?.tokenmagic?.filters?.length)
-        return;
-    const map = tm._getAnimeMap?.();
-    if (map)
-    {
-        for (const [key, anime] of map)
-            if (anime?.puppet?.placeableId === id)
-                map.delete(key);
-    }
-    tm._clearImgFiltersByPlaceable(template);
-    tm._singleLoadFilters(template);
-}
-
-function _tmfxNeedsResync(template)
-{
-    const tm = window.TokenMagic;
-    const flagFilters = template.document?.flags?.tokenmagic?.filters;
-    if (!(tm?._getAnimeMap && flagFilters?.length))
-        return false;
-    const applied = template.template?.filters?.filter(entry => entry.filterId) ?? [];
-    if (!applied.length)
-        return true;
-    const puppets = new Set();
-    for (const anime of tm._getAnimeMap().values())
-        puppets.add(anime.puppet);
-    return applied.some(entry => entry.animated && !puppets.has(entry));
-}
-
-function _scheduleTmfxResync(template, attempt = 0)
-{
-    const id = template?.document?.id;
-    if (!id)
-        return;
-    clearTimeout(_tmfxResyncTimers.get(id));
-    _tmfxResyncTimers.set(id, setTimeout(() =>
-    {
-        _tmfxResyncTimers.delete(id);
-        if (!template.loadingRequest && _tmfxNeedsResync(template))
-            _resyncTmfxFilters(template);
-        if (attempt < 12)
-            _scheduleTmfxResync(template, attempt + 1);
-    }, 150));
 }
 
 export function registerPatternFillHooks()
@@ -1106,7 +923,7 @@ export function registerPatternFillHooks()
     Hooks.on("updateMeasuredTemplate", (doc, changes) =>
     {
         if (changes.flags?.templatemacro || "x" in changes || "y" in changes || "distance" in changes
-        || "direction" in changes || "angle" in changes || "width" in changes || "elevation" in changes)
+        || "direction" in changes || "angle" in changes || "width" in changes)
         {
             const template = doc.object;
             if (!template)
@@ -1117,8 +934,6 @@ export function registerPatternFillHooks()
                 useCustomChanged ? template.draw() : template.refresh();
                 _refreshMergeSiblings(doc);
             }, 50);
-            if (game.modules.get("tokenmagic")?.active)
-                _scheduleTmfxResync(template);
         }
     });
 
@@ -1126,8 +941,6 @@ export function registerPatternFillHooks()
 
     Hooks.on("deleteMeasuredTemplate", (doc) =>
     {
-        clearTimeout(_tmfxResyncTimers.get(doc.id));
-        _tmfxResyncTimers.delete(doc.id);
         _geometryCache.delete(doc.id);
         const state = animationState.get(doc.id);
         if (state)
@@ -1144,10 +957,7 @@ export function registerPatternFillHooks()
             centerLabelObjects.delete(doc.id);
         }
         if (doc.object)
-        {
             _destroyBorderGfx(doc.object);
-            _destroyCenterTexture(doc.object);
-        }
         setTimeout(() => _refreshMergeSiblings(doc), 50);
     });
 
@@ -1156,8 +966,6 @@ export function registerPatternFillHooks()
         _refreshCenterLabel(template);
         _applyCustomControlIcon(template);
         _suppressNativeShape(template);
-        if (game.modules.get("tokenmagic")?.active)
-            _scheduleTmfxResync(template);
     });
 
     Hooks.on("refreshMeasuredTemplate", (template) =>

@@ -80,15 +80,6 @@ export function stringToAsyncFunction(str, args = [], name = "lancer-automations
     return fn;
 }
 
-// Triggers whose payload carries targets; the only ones React as Target / consumption role can key on.
-export const TARGET_CAPABLE_TRIGGERS = new Set([
-    'onInitAttack', 'onAttack', 'onHit', 'onMiss', 'onPreDamage', 'onDamage',
-    'onInitTechAttack', 'onTechAttack', 'onTechHit', 'onTechMiss',
-    'onRoll', 'onCheck', 'onInitCheck', 'onInvoluntaryMove'
-]);
-
-const sameTriggerSet = (a, b) => Array.isArray(a) && Array.isArray(b) && a.length === b.length && a.every(trigger => b.includes(trigger));
-
 export class ReactionManager
 {
     static get ID()
@@ -293,29 +284,18 @@ export class ReactionManager
             const saved = userSaved[name];
             if (!saved)
                 result[name] = def;
-            else if (Array.isArray(def.reactions))
+            else if (Array.isArray(def.reactions) && Array.isArray(saved.reactions))
             {
-                // Group: a full saved sub replaces its default sub, enabled-only saves just toggle.
-                // A legacy flat save applies to the one sub sharing its trigger set.
-                const savedSubs = Array.isArray(saved.reactions) ? saved.reactions : null;
-                const legacyIdx = (!savedSubs && saved.triggers !== undefined)
-                    ? def.reactions.findIndex(sub => sameTriggerSet(sub.triggers, saved.triggers))
-                    : -1;
+                // Group: apply per-sub enabled states without overriding function code
                 result[name] = {
                     ...def,
                     reactions: def.reactions.map((subReaction, i) =>
                     {
-                        const savedSub = savedSubs ? savedSubs[i] : (i === legacyIdx ? saved : undefined);
-                        if (!savedSub)
-                            return subReaction;
-                        if (savedSub.triggers !== undefined)
-                            return savedSub;
-                        return savedSub.enabled === undefined ? subReaction : { ...subReaction, enabled: savedSub.enabled };
+                        const savedSub = saved.reactions[i];
+                        return savedSub?.enabled === undefined ? subReaction : { ...subReaction, enabled: savedSub.enabled };
                     })
                 };
             }
-            else if (saved.triggers !== undefined)
-                result[name] = saved; // full save shadows a flat default
             else
                 result[name] = { ...def, ...saved };
         }
@@ -346,18 +326,10 @@ export class ReactionManager
         const userSaved = game.settings.get(ReactionManager.ID, ReactionManager.SETTING_GENERAL_REACTIONS) || {};
         if (!userSaved[name])
             return;
-        const idx = (index === null || index === undefined || index === '') ? null : Number.parseInt(index);
+        const i = (index === null || index === undefined || index === '') ? null : Number.parseInt(index);
         const reactions = userSaved[name].reactions;
-        const isDefaultGroup = Array.isArray(getDefaultGeneralReactionRegistry()[name]?.reactions);
-        if (isDefaultGroup && Number.isFinite(idx) && Array.isArray(reactions) && idx >= 0 && idx < reactions.length)
-        {
-            // Slots are aligned to the default group's indices, so clear instead of splicing
-            reactions[idx] = null;
-            if (reactions.every(sub => !sub || Object.keys(sub).length === 0))
-                delete userSaved[name];
-        }
-        else if (Number.isFinite(idx) && Array.isArray(reactions) && reactions.length > 1 && idx >= 0 && idx < reactions.length)
-            reactions.splice(idx, 1);
+        if (Number.isFinite(i) && Array.isArray(reactions) && reactions.length > 1 && i >= 0 && i < reactions.length)
+            reactions.splice(i, 1);
         else
             delete userSaved[name];
         clearScriptCache();
@@ -918,30 +890,6 @@ export class ReactionConfig extends FormApplication
             if (def && isPureDefault(reaction, def))
                 continue;
 
-            if (Array.isArray(def?.reactions) && Array.isArray(reaction.reactions))
-            {
-                // Per-sub overrides of a grouped default: one row per fully saved sub
-                reaction.reactions.forEach((savedSub, index) =>
-                {
-                    if (!savedSub || savedSub.triggers === undefined)
-                        return;
-                    allReactions.push(startEnabled({
-                        name: name,
-                        lid: null,
-                        triggers: [...(savedSub.triggers || []), ...(savedSub.onInit ? ["onInit"] : [])].join(", "),
-                        isGeneral: true,
-                        isCustom: true,
-                        onlyOnSourceMatch: savedSub.onlyOnSourceMatch || false,
-                        reactionIndex: index,
-                        original: savedSub,
-                        enabled: savedSub.enabled,
-                        comments: savedSub.comments || "",
-                        workshopId: savedSub.workshopId || null
-                    }));
-                });
-                continue;
-            }
-
             allReactions.push(startEnabled({
                 name: name,
                 lid: null,
@@ -963,20 +911,16 @@ export class ReactionConfig extends FormApplication
 
             if (Array.isArray(reaction.reactions))
             {
-                const savedSubs = Array.isArray(userSaved?.reactions) ? userSaved.reactions : null;
-                const legacyIdx = (!savedSubs && userSaved?.triggers !== undefined)
-                    ? reaction.reactions.findIndex(sub => sameTriggerSet(sub.triggers, userSaved.triggers))
-                    : -1;
                 const validReactions = reaction.reactions.map((subReaction, index) =>
                 {
-                    const enabledState = savedSubs?.[index]?.enabled ?? subReaction.enabled ?? reaction.enabled;
+                    const enabledState = userSaved?.reactions?.[index]?.enabled ?? subReaction.enabled ?? reaction.enabled;
                     return startEnabled({
                         name: name,
                         lid: null,
                         triggers: [...(subReaction.triggers || []), ...(subReaction.onInit ? ["onInit"] : [])].join(", "),
                         isGeneral: true,
                         isDefault: true,
-                        isOverridden: savedSubs?.[index]?.triggers !== undefined || index === legacyIdx,
+                        isOverridden: false,
                         onlyOnSourceMatch: subReaction.onlyOnSourceMatch || false,
                         reactionIndex: index,
                         original: subReaction,
@@ -1577,7 +1521,7 @@ export class ReactionConfig extends FormApplication
         const content = /*html*/`
         <div style="font-family: 'Roboto', sans-serif; line-height: 1.5;">
             <p>This system got bigger to a point I can't explain it in a few words.</p>
-            <p>As always the main reference is the <a href="https://agraael.github.io/lancer-automations/">documentation</a> and the <a href="https://agraael.github.io/lancer-automations/API_REFERENCE.html">API reference</a>.</p>
+            <p>As always the main reference is the <a href="https://github.com/Agraael/lancer-automations/blob/main/README.md">readme.md</a> file and the <a href="https://github.com/Agraael/lancer-automations/blob/main/doc/API_REFERENCE.md">API_REFERENCE.md</a> file.</p>
             <p>You can ask me questions if you don't understand something on <a href="https://discord.com/channels/426286410496999425/1436087781666455642">discord</a>.</p>
         </div>
         `;
@@ -1609,35 +1553,17 @@ export class ReactionConfig extends FormApplication
         if (isGeneral)
         {
             const name = li.data("name");
-            const rawIndex = li.data("index");
-            const parsed = (rawIndex === undefined || rawIndex === null || rawIndex === '') ? NaN : Number.parseInt(rawIndex);
+            const index = li.data("index");
             const generals = ReactionManager.getGeneralReactions();
             const entry = generals[name];
             if (!entry)
                 return;
-            let reaction;
-            let reactionIndex;
-            if (Array.isArray(entry.reactions))
-            {
-                if (Number.isFinite(parsed))
-                {
-                    reaction = entry.reactions[parsed];
-                    reactionIndex = parsed;
-                }
-                else
-                {
-                    // Legacy flat save over a grouped default: open the save, aimed at its trigger-matched sub
-                    const userSaved = game.settings.get(ReactionManager.ID, ReactionManager.SETTING_GENERAL_REACTIONS) || {};
-                    reaction = (userSaved[name]?.triggers !== undefined) ? userSaved[name] : entry;
-                    const legacyIdx = entry.reactions.findIndex(sub => sameTriggerSet(sub.triggers, reaction.triggers));
-                    reactionIndex = legacyIdx >= 0 ? legacyIdx : undefined;
-                }
-            }
-            else
-                reaction = entry;
+            const reaction = (Array.isArray(entry.reactions) && index !== undefined)
+                ? entry.reactions[index]
+                : entry;
             if (!reaction)
                 return;
-            new ReactionEditor({ isGeneral: true, name, reaction, reactionIndex }).render(true);
+            new ReactionEditor({ isGeneral: true, name, reaction }).render(true);
         }
         else
         {
@@ -1700,14 +1626,12 @@ export class ReactionConfig extends FormApplication
             const defaultEntry = getDefaultGeneralReactionRegistry()[name];
             if (!defaultEntry)
                 return;
-            const parsed = (index === undefined || index === null || index === '') ? NaN : Number.parseInt(index);
-            const isSub = Array.isArray(defaultEntry.reactions) && Number.isFinite(parsed);
-            const reaction = isSub
-                ? foundry.utils.deepClone(defaultEntry.reactions[parsed])
+            const reaction = (Array.isArray(defaultEntry.reactions) && index !== undefined)
+                ? foundry.utils.deepClone(defaultEntry.reactions[index])
                 : foundry.utils.deepClone(defaultEntry);
             if (!reaction)
                 return;
-            new ReactionEditor({ isGeneral: true, name, reaction, reactionIndex: isSub ? parsed : undefined }).render(true);
+            new ReactionEditor({ isGeneral: true, name, reaction }).render(true);
         }
         else
         {
@@ -2167,7 +2091,6 @@ export class ReactionEditor extends FormApplication
             isReactionDefined: reaction.isReaction !== undefined,
             triggerSelf: reaction.triggerSelf === true,
             triggerOther: reaction.triggerOther !== false,
-            triggerTarget: reaction.triggerTarget === true,
             outOfCombat: reaction.outOfCombat === true,
             autoActivate: reaction.autoActivate || false,
             awaitActivationCompletion: reaction.awaitActivationCompletion ?? (reaction.autoActivate ?? false),
@@ -2270,7 +2193,6 @@ export class ReactionEditor extends FormApplication
                     awaitActivationCompletion: html.find('input[name="awaitActivationCompletion"]').prop('checked'),
                     triggerSelf: html.find('input[name="triggerSelf"]').prop('checked'),
                     triggerOther: html.find('input[name="triggerOther"]').prop('checked'),
-                    triggerTarget: html.find('input[name="triggerTarget"]').prop('checked'),
                     outOfCombat: html.find('input[name="outOfCombat"]').prop('checked'),
                     onlyOnSourceMatch: html.find('input[name="onlyOnSourceMatch"]').filter(':checked').length > 0,
                     activationType: String(html.find('select[name="activationType"]').val() || existingReaction.activationType || "flow"),
@@ -2318,7 +2240,6 @@ export class ReactionEditor extends FormApplication
         });
 
         const onlyOnSourceMatchCheckbox = html.find('input[name="onlyOnSourceMatch"]');
-        const triggerTargetCheckbox = html.find('input[name="triggerTarget"]');
         const triggerCheckboxes = html.find('input[name^="trigger."]');
 
         const sourceMatchTriggers = new Set([
@@ -2330,7 +2251,6 @@ export class ReactionEditor extends FormApplication
         const toggleSourceMatchTriggers = () =>
         {
             const isSourceMatch = onlyOnSourceMatchCheckbox.filter(':checked').length > 0;
-            const isTargetOn = triggerTargetCheckbox.prop('checked');
             const isGeneral = generalCheckbox.prop('checked');
 
             triggerCheckboxes.each(function ()
@@ -2342,7 +2262,7 @@ export class ReactionEditor extends FormApplication
                 if (triggerName === 'onDeploy' && isGeneral)
                     isCompatible = false;
 
-                if ((isSourceMatch && !isCompatible) || (isTargetOn && !TARGET_CAPABLE_TRIGGERS.has(triggerName)))
+                if (isSourceMatch && !isCompatible)
                 {
                     $(this).prop('disabled', true);
                     $(this).prop('checked', false);
@@ -2363,7 +2283,6 @@ export class ReactionEditor extends FormApplication
             onlyOnSourceMatchCheckbox.prop('checked', isChecked);
             toggleSourceMatchTriggers();
         });
-        triggerTargetCheckbox.on('change', toggleSourceMatchTriggers);
         toggleSourceMatchTriggers();
 
         const activationTypeSelect = html.find('#activationType');
@@ -2372,7 +2291,6 @@ export class ReactionEditor extends FormApplication
         const codeFields = html.find('.activation-code');
 
         const recursionWarning = html.find('#activation-recursion-warning');
-        const afterModeWarning = html.find('#activation-after-warning');
 
         const toggleRecursionWarning = () =>
         {
@@ -2381,7 +2299,6 @@ export class ReactionEditor extends FormApplication
             const hasActivationTrigger = html.find('input[name="trigger.onActivation"], input[name="trigger.onInitActivation"]').is(':checked');
             const risky = hasActivationTrigger && (type === 'flow' || ((type === 'macro' || type === 'code') && mode === 'after'));
             recursionWarning.toggle(!!risky);
-            afterModeWarning.toggle((type === 'macro' || type === 'code') && mode === 'after');
         };
 
         const toggleActivationFields = () =>
@@ -3513,7 +3430,6 @@ export class ReactionEditor extends FormApplication
                 onMessage: formData.onMessage || "",
                 triggerSelf: formData.triggerSelf === true,
                 triggerOther: formData.triggerOther === true,
-                triggerTarget: formData.triggerTarget === true,
                 outOfCombat: formData.outOfCombat === true,
                 dispositionFilter: dispositionFilter.length > 0 ? dispositionFilter : null
             };
@@ -3537,21 +3453,7 @@ export class ReactionEditor extends FormApplication
                     await game.settings.set(ReactionManager.ID, ReactionManager.SETTING_GENERAL_REACTIONS, savedGenerals);
             }
 
-            const defEntry = getDefaultGeneralReactionRegistry()[name];
-            const subIdx = Number.parseInt(formData.reactionIndex);
-            if (Array.isArray(defEntry?.reactions) && Number.isFinite(subIdx) && defEntry.reactions[subIdx])
-            {
-                // Overriding one sub of a grouped default: store in its slot, keep the others on defaults
-                const userSaved = game.settings.get(ReactionManager.ID, ReactionManager.SETTING_GENERAL_REACTIONS) || {};
-                const existing = userSaved[name];
-                const subs = Array.isArray(existing?.reactions) ? existing.reactions : [];
-                subs[subIdx] = newReaction;
-                userSaved[name] = { reactions: subs };
-                clearScriptCache();
-                await game.settings.set(ReactionManager.ID, ReactionManager.SETTING_GENERAL_REACTIONS, userSaved);
-            }
-            else
-                await ReactionManager.saveGeneralReaction(name, newReaction);
+            await ReactionManager.saveGeneralReaction(name, newReaction);
         }
         else
         {
@@ -3583,7 +3485,6 @@ export class ReactionEditor extends FormApplication
                 onMessage: formData.onMessage || "",
                 triggerSelf: formData.triggerSelf === true,
                 triggerOther: formData.triggerOther === true,
-                triggerTarget: formData.triggerTarget === true,
                 outOfCombat: formData.outOfCombat === true,
                 dispositionFilter: dispositionFilter.length > 0 ? dispositionFilter : null
             };

@@ -2,10 +2,10 @@
   "id": "lancer-alternative-sheets",
   "title": "Annoying's Lancer Alternative Sheets",
   "description": "A set of immersive alternative sheets designed around ease-of-use for the Lancer game system.",
-  "version": "1.5.7",
+  "version": "1.5.6",
   "compatibility": {
     "minimum": "13",
-    "verified": "13"
+    "verified": "13.351"
   },
   "relationships": {
     "systems": [
@@ -22,7 +22,8 @@
     {
       "name": "Annoying",
       "url": "https://github.com/annoyedb/lancer-alternative-sheets",
-      "discord": "annoying"
+      "discord": "annoying",
+      "flags": {}
     }
   ],
   "languages": [
@@ -35,12 +36,14 @@
     {
       "lang": "zh-TW",
       "name": "正體中文",
-      "path": "lang/zh-tw.json"
+      "path": "lang/zh-tw.json",
+      "flags": {}
     },
     {
       "lang": "pt-BR",
       "name": "Português (Brasil)",
-      "path": "lang/pt-br.json"
+      "path": "lang/pt-br.json",
+      "flags": {}
     }
   ],
   "esmodules": [
@@ -66,8 +69,8 @@
   },
   "socket": true,
   "url": "https://github.com/annoyedb/lancer-alternative-sheets",
-  "manifest": "https://github.com/annoyedb/lancer-alternative-sheets/releases/download/v1.5.7/module.json",
-  "download": "https://github.com/annoyedb/lancer-alternative-sheets/releases/download/v1.5.7/module.zip",
+  "manifest": "https://github.com/annoyedb/lancer-alternative-sheets/releases/download/v1.5.6/module.json",
+  "download": "https://github.com/annoyedb/lancer-alternative-sheets/releases/download/v1.5.6/module.zip",
   "readme": "https://github.com/annoyedb/lancer-alternative-sheets/blob/master/README.md",
   "changelog": "https://github.com/annoyedb/lancer-alternative-sheets/blob/master/CHANGELOG.md",
   "bugs": "https://github.com/annoyedb/lancer-alternative-sheets/issues"

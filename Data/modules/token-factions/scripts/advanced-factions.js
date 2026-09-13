@@ -806,6 +806,7 @@ export const AdvancedFactions = {
 
                             ui.notifications.info(`Updating ${actorsToUpdate.length} actors...`);
 
+                            // Update them
                             const updates = actorsToUpdate.map(a =>
                             {
                                 return {

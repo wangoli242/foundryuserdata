@@ -21,16 +21,10 @@ function LancerCombatBanner() {
       bannerContainer = document.getElementById("yourTurnContainer");
       if (bannerContainer == null) {
         let bannerContainerDiv = document.createElement("div");
+        let uiTOP = document.getElementById("ui-top");
         bannerContainerDiv.id = "yourTurnContainer";
-        bannerContainerDiv.style.position = "fixed";
-        bannerContainerDiv.style.top = "0";
-        bannerContainerDiv.style.left = "0";
-        bannerContainerDiv.style.width = "100%";
-        bannerContainerDiv.style.pointerEvents = "none";
-        bannerContainerDiv.style.zIndex = "100";
-        const parent = document.getElementById("interface") || document.body;
-        parent.appendChild(bannerContainerDiv);
-        bannerContainer = bannerContainerDiv;
+        uiTOP.appendChild(bannerContainerDiv);
+        bannerContainer = document.getElementById("yourTurnContainer");
       }
       buildSettings();
       
@@ -108,9 +102,9 @@ function LancerCombatBanner() {
       ${game.i18n.localize('ADA_COMBATBANNER.Round')} #${combat.round}
     </div>
     <p id="yourTurnText" class="yourTurnText">${callsign}</p>
-    ${mechClass ? `<div class="yourTurnSubheading">
+    <div class="yourTurnSubheading">
       「${mechClass}」</span>
-    </div>` : ""}
+    </div>
     <div id="yourTurnBannerBackground" class="yourTurnBannerBackground" height="150"></div>`;
     
     bannerContainer.append(currentImgHTML)

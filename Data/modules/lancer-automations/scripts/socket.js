@@ -673,14 +673,10 @@ const HANDLERS = {
             return;
         const msgToken = canvas.tokens.get(payload.reactorTokenId);
         if (!msgToken)
-            return emitAck('onMessageDone', payload.requestId, { returnData: null });
+            return;
         checkOnMessageReactions(msgToken, payload.itemLid ?? null, payload.reactionPath ?? null, payload.activationName ?? null, payload.triggerType, payload.data ?? {})
             .then((returnData) => emitAck('onMessageDone', payload.requestId, { returnData: returnData ?? null }))
-            .catch((error) =>
-            {
-                console.error('lancer-automations | onMessage socket error:', error);
-                emitAck('onMessageDone', payload.requestId, { returnData: null });
-            });
+            .catch((e) => console.error('lancer-automations | onMessage socket error:', e));
     },
     onMessageDone: ({ requestId, returnData }) => resolveAck(requestId, returnData ?? null),
 

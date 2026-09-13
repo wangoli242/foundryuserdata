@@ -111,8 +111,7 @@ export function registerSettings()
         scope: 'world',
         config: false,
         type: Boolean,
-        default: true,
-        requiresReload: true
+        default: true
     });
 
     game.settings.register('lancer-automations', 'enablePerRoundTurnTags', {

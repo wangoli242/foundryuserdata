@@ -5,7 +5,7 @@ export class Anime {
 		const self = this;
 		this.puppet = puppet;
 		this.animated = null;
-		this.animeId = foundry.utils.randomID();
+		this.animeId = randomID();
 
 		// Time/synchronization related variables
 		this.frameTime = {};
@@ -47,7 +47,7 @@ export class Anime {
 		return (
 			((val1 - val2) *
 				(func(
-					xpi * (isSync ? Anime.getSynchronizedTime(loopDuration, syncShift) : elapsed / loopDuration + syncShift),
+					xpi * (isSync ? Anime.getSynchronizedTime(loopDuration, syncShift) : elapsed / loopDuration + syncShift)
 				) +
 					1)) /
 				2 +
@@ -61,14 +61,12 @@ export class Anime {
 
 		return Anime.rgbToValue(
 			Math.floor(
-				Anime.oscillation(elapsed, loopDuration, syncShift, rgbValue1[0], rgbValue2[0], Math.cos, isSync, xpi),
+				Anime.oscillation(elapsed, loopDuration, syncShift, rgbValue1[0], rgbValue2[0], Math.cos, isSync, xpi)
 			),
 			Math.floor(
-				Anime.oscillation(elapsed, loopDuration, syncShift, rgbValue1[1], rgbValue2[1], Math.cos, isSync, xpi),
+				Anime.oscillation(elapsed, loopDuration, syncShift, rgbValue1[1], rgbValue2[1], Math.cos, isSync, xpi)
 			),
-			Math.floor(
-				Anime.oscillation(elapsed, loopDuration, syncShift, rgbValue1[2], rgbValue2[2], Math.cos, isSync, xpi),
-			),
+			Math.floor(Anime.oscillation(elapsed, loopDuration, syncShift, rgbValue1[2], rgbValue2[2], Math.cos, isSync, xpi))
 		);
 	}
 
@@ -302,8 +300,8 @@ export class Anime {
 			else flag = animeInfo;
 		}
 
-		flag = foundry.utils.duplicate(flag);
-		await this.puppet.targetPlaceable.document._TMFXsetAnimeFlag(flag);
+		flag = duplicate(flag);
+		await this.puppet.targetPlaceable._TMFXsetAnimeFlag(flag);
 	}
 
 	autoDisableCheck() {
@@ -376,7 +374,7 @@ export class Anime {
 			this.animated[effect].syncShift,
 			this.animated[effect].val1,
 			this.animated[effect].val2,
-			false,
+			false
 		);
 	}
 
@@ -388,7 +386,7 @@ export class Anime {
 			this.animated[effect].val1,
 			this.animated[effect].val2,
 			false,
-			Math.PI,
+			Math.PI
 		);
 	}
 
@@ -399,7 +397,7 @@ export class Anime {
 			this.animated[effect].syncShift,
 			this.animated[effect].val1,
 			this.animated[effect].val2,
-			true,
+			true
 		);
 	}
 
@@ -411,7 +409,7 @@ export class Anime {
 			this.animated[effect].val1,
 			this.animated[effect].val2,
 			Math.cos,
-			false,
+			false
 		);
 	}
 
@@ -424,7 +422,7 @@ export class Anime {
 			this.animated[effect].val2,
 			Math.cos,
 			false,
-			Math.PI,
+			Math.PI
 		);
 	}
 
@@ -436,7 +434,7 @@ export class Anime {
 			this.animated[effect].val1,
 			this.animated[effect].val2,
 			Math.sin,
-			false,
+			false
 		);
 	}
 
@@ -449,7 +447,7 @@ export class Anime {
 			this.animated[effect].val2,
 			Math.sin,
 			false,
-			Math.PI,
+			Math.PI
 		);
 	}
 
@@ -461,7 +459,7 @@ export class Anime {
 			this.animated[effect].val1,
 			this.animated[effect].val2,
 			Math.cos,
-			false,
+			false
 		);
 	}
 
@@ -473,7 +471,7 @@ export class Anime {
 			this.animated[effect].val1,
 			this.animated[effect].val2,
 			Math.cos,
-			true,
+			true
 		);
 	}
 
@@ -485,7 +483,7 @@ export class Anime {
 			this.animated[effect].val1,
 			this.animated[effect].val2,
 			Math.sin,
-			true,
+			true
 		);
 	}
 
@@ -497,7 +495,7 @@ export class Anime {
 			this.animated[effect].val1,
 			this.animated[effect].val2,
 			Math.cos,
-			true,
+			true
 		);
 	}
 
@@ -509,7 +507,7 @@ export class Anime {
 	syncRotation(effect) {
 		const computedRotation = Anime.getSynchronizedRotation(
 			this.animated[effect].loopDuration,
-			this.animated[effect].syncShift,
+			this.animated[effect].syncShift
 		);
 		this.puppet[effect] = this.animated[effect].clockWise ? computedRotation : 360 - computedRotation;
 	}

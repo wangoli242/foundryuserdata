@@ -79,7 +79,7 @@
 }
 
 .dice-so-nice .select2-dropdown {
-  background-color: var(--content-link-background);
+  background-color: white;
   border: 1px solid #aaa;
   border-radius: 4px;
   box-sizing: border-box;
@@ -270,7 +270,7 @@
 }
 
 .dice-so-nice .select2-container--default .select2-selection--multiple .select2-selection__choice {
-  background-color: var(--table-row-color-even);
+  background-color: #e4e4e4;
   border: 1px solid #aaa;
   border-radius: 4px;
   box-sizing: border-box;
@@ -310,8 +310,6 @@
   width: auto;
   line-height: 20px;
   top: 0;
-  height: 20px;
-  min-height: 20px;
 }
 
 .dice-so-nice .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:hover, .dice-so-nice .select2-container--default .select2-selection--multiple .select2-selection__choice__remove:focus {
@@ -428,7 +426,7 @@
 }
 
 .dice-so-nice .select2-container--default .select2-results__option--selected {
-  background-color: var(--table-row-color-highlight);
+  background-color: #ddd;
 }
 
 .dice-so-nice .select2-container--default .select2-results__option--highlighted.select2-results__option--selectable {

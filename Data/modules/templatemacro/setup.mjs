@@ -30,7 +30,7 @@ import {
 import { callMacro, registerCallback, unregisterCallbacks } from "./scripts/templatemacro.mjs";
 import { registerPatternFillHooks, FILL_TYPES } from "./scripts/patternFill.mjs";
 import { setupThtRulerOverlay } from "./scripts/tht-ruler-overlay.mjs";
-import { registerDragElevation, setPreviewElevationBase } from "./scripts/drag-elevation.mjs";
+import { registerDragElevation } from "./scripts/drag-elevation.mjs";
 import { checkModuleUpdate } from "./scripts/version-check.mjs";
 
 class ZoneConfig extends FormApplication {
@@ -128,8 +128,7 @@ Hooks.once("setup", () => {
     registerCallback,
     unregisterCallbacks,
     attachTemplateToToken,
-    detachTemplateFromToken,
-    setPreviewElevationBase
+    detachTemplateFromToken
   };
 
   MeasuredTemplateDocument.prototype.callMacro = async function(type = "never", options = {}) {
@@ -585,9 +584,6 @@ function _registerGraphicDefaults(zoneType) {
   reg("FillTextureOffset", Object, { x: 0, y: 0 });
   reg("FillTextureOffsetAnimation", Object, null);
   reg("FillTextureScale", Object, { x: 100, y: 100 });
-  reg("FillTextureCentered", Boolean, false);
-  reg("FillTextureScaleWithSize", Boolean, false);
-  reg("FillTextureSourceColor", Boolean, false);
   reg("CenterLabel", String, "");
   reg("Actions", Object, []);
 }
@@ -617,9 +613,6 @@ function _buildPlacementGraphicsState(zoneType) {
     fillTextureOffset: read("FillTextureOffset", { x: 0, y: 0 }),
     fillTextureOffsetAnimation: read("FillTextureOffsetAnimation", null),
     fillTextureScale: read("FillTextureScale", { x: 100, y: 100 }),
-    fillTextureCentered: read("FillTextureCentered", false),
-    fillTextureScaleWithSize: read("FillTextureScaleWithSize", false),
-    fillTextureSourceColor: read("FillTextureSourceColor", false),
     centerLabel: read("CenterLabel", ""),
     actions: read("Actions", [])
   };

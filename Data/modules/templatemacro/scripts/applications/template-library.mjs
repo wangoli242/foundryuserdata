@@ -265,9 +265,6 @@ export function applyEntryToTemplateData(doc, entry) {
     fillTextureOffset: g.fillTextureOffset ?? { x: 0, y: 0 },
     fillTextureOffsetAnimation: g.fillTextureOffsetAnimation ?? null,
     fillTextureScale: g.fillTextureScale ?? { x: 100, y: 100 },
-    fillTextureCentered: !!g.fillTextureCentered,
-    fillTextureScaleWithSize: !!g.fillTextureScaleWithSize,
-    fillTextureSourceColor: !!g.fillTextureSourceColor,
     centerLabel: g.centerLabel ?? "",
     actions: g.actions ?? entry.actions ?? [],
     libraryEntryId: entry.id,
@@ -719,6 +716,7 @@ export class TemplateLibraryConfig extends HandlebarsApplicationMixin(Applicatio
       const id = ev.currentTarget.dataset.tmacSpawnSelect;
       const entry = getSpawnLibrary().find(e => e.id === id);
       if (!entry) return;
+      this.close();
       await spawnLibraryEntry(entry);
     });
 
@@ -816,10 +814,8 @@ function _buildProtectedBehavior(kind, overrides = {}) {
     const effects = overrides.statusEffects ?? [];
     for (const sid of effects) {
       out.actions.push(
-        { id: foundry.utils.randomID(), trigger: "whenCreated", actionType: "effect", asGM: false, code: "", macroUuid: "", effectName: sid, effectMode: "apply" },
         { id: foundry.utils.randomID(), trigger: "whenEntered", actionType: "effect", asGM: false, code: "", macroUuid: "", effectName: sid, effectMode: "apply" },
-        { id: foundry.utils.randomID(), trigger: "whenLeft", actionType: "effect", asGM: false, code: "", macroUuid: "", effectName: sid, effectMode: "remove" },
-        { id: foundry.utils.randomID(), trigger: "whenDeleted", actionType: "effect", asGM: false, code: "", macroUuid: "", effectName: sid, effectMode: "remove" }
+        { id: foundry.utils.randomID(), trigger: "whenLeft", actionType: "effect", asGM: false, code: "", macroUuid: "", effectName: sid, effectMode: "remove" }
       );
     }
   }

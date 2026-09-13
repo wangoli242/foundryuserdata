@@ -147,7 +147,7 @@ export class FilterSprite extends CustomFilter {
 	}
 
 	set color(value) {
-		new Color(value).applyRGB(this.uniforms.color);
+		new PIXI.Color(value).toRgbArray(this.uniforms.color);
 	}
 
 	get colorize() {
@@ -308,7 +308,7 @@ export class FilterSprite extends CustomFilter {
 	async _playVideo(value) {
 		// Play if baseTexture resource is a video
 		if (this.tex) {
-			const source = foundry.utils.getProperty(this.tex, 'baseTexture.resource.source');
+			const source = getProperty(this.tex, 'baseTexture.resource.source');
 			if (source && source.tagName === 'VIDEO') {
 				if (isNaN(source.duration)) {
 					await new Promise((resolve) => {
@@ -350,30 +350,27 @@ export class FilterSprite extends CustomFilter {
 
 	// override
 	apply(filterManager, input, output, clear) {
-		// assignTexture may not be called if there is no imagePath in params, so we
-		// need to check here or canvas drawing will break
 		const targetSprite = this.targetSprite;
-		if (targetSprite) {
-			const tex = targetSprite._texture;
-			if (tex?.valid) {
-				if (!tex.uvMatrix) tex.uvMatrix = new PIXI.TextureMatrix(tex, 0.0);
-				tex.uvMatrix.update();
+		const tex = targetSprite._texture;
 
-				this.uniforms.uSamplerTarget = tex;
-				if (this.maintainScale) {
-					let pScale = targetSprite.parent.scale;
-					targetSprite.scale.set(1 / pScale.x, 1 / pScale.y);
-				}
+		if (tex.valid) {
+			if (!tex.uvMatrix) tex.uvMatrix = new PIXI.TextureMatrix(tex, 0.0);
+			tex.uvMatrix.update();
 
-				let w = targetSprite.worldTransform;
-				if (this.maintainAspectRatio) {
-					let scale = Math.min(w.a, w.d);
-					w.set(scale, w.b, w.c, scale, w.tx, w.ty);
-				}
-
-				this.uniforms.targetUVMatrix = filterManager.calculateSpriteMatrix(this.targetSpriteMatrix, targetSprite);
-				this.uniforms.inputClampTarget = tex.uvMatrix.uClampFrame;
+			this.uniforms.uSamplerTarget = tex;
+			if (this.maintainScale) {
+				let pScale = targetSprite.parent.scale;
+				targetSprite.scale.set(1 / pScale.x, 1 / pScale.y);
 			}
+
+			let w = targetSprite.worldTransform;
+			if (this.maintainAspectRatio) {
+				let scale = Math.min(w.a, w.d);
+				w.set(scale, w.b, w.c, scale, w.tx, w.ty);
+			}
+
+			this.uniforms.targetUVMatrix = filterManager.calculateSpriteMatrix(this.targetSpriteMatrix, targetSprite);
+			this.uniforms.inputClampTarget = tex.uvMatrix.uClampFrame;
 		}
 
 		super.apply(filterManager, input, output, clear);
