@@ -1,8 +1,8 @@
-2026/09/13-02:49:24.994041 ed3f60aeefc0 Recovering log #119
-2026/09/13-02:49:25.001191 ed3f60aeefc0 Delete type=3 #118
-2026/09/13-02:49:25.001216 ed3f60aeefc0 Delete type=0 #119
-2026/09/13-02:58:02.389058 ed3f22f7efc0 Level-0 table #123: started
-2026/09/13-02:58:02.389072 ed3f22f7efc0 Level-0 table #123: 0 bytes OK
-2026/09/13-02:58:02.391682 ed3f22f7efc0 Delete type=0 #121
-2026/09/13-02:58:02.391851 ed3f22f7efc0 Manual compaction at level-0 from '!macros!0A7GsVcYO7oJ5s22' @ 72057594037927935 : 1 .. '!macros!v24ACH5xsHghmsJD' @ 0 : 0; will stop at (end)
-2026/09/13-02:58:02.394797 ed3f22f7efc0 Manual compaction at level-1 from '!macros!0A7GsVcYO7oJ5s22' @ 72057594037927935 : 1 .. '!macros!v24ACH5xsHghmsJD' @ 0 : 0; will stop at (end)
+2026/09/13-03:22:20.431214 ed3f23ffefc0 Recovering log #122
+2026/09/13-03:22:20.438228 ed3f23ffefc0 Delete type=0 #122
+2026/09/13-03:22:20.438245 ed3f23ffefc0 Delete type=3 #120
+2026/09/13-03:22:29.855987 ed3f22f7efc0 Level-0 table #127: started
+2026/09/13-03:22:29.855999 ed3f22f7efc0 Level-0 table #127: 0 bytes OK
+2026/09/13-03:22:29.858476 ed3f22f7efc0 Delete type=0 #125
+2026/09/13-03:22:29.858746 ed3f22f7efc0 Manual compaction at level-0 from '!macros!0A7GsVcYO7oJ5s22' @ 72057594037927935 : 1 .. '!macros!v24ACH5xsHghmsJD' @ 0 : 0; will stop at (end)
+2026/09/13-03:22:29.861464 ed3f22f7efc0 Manual compaction at level-1 from '!macros!0A7GsVcYO7oJ5s22' @ 72057594037927935 : 1 .. '!macros!v24ACH5xsHghmsJD' @ 0 : 0; will stop at (end)
