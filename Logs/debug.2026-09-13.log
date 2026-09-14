@@ -6685,3 +6685,695 @@
 {"level":"info","message":"Software license verification succeeded","timestamp":"2026-09-13 04:06:54"}
 {"level":"info","message":"Requesting UPnP port forwarding to destination port 30000","timestamp":"2026-09-13 04:06:54"}
 {"level":"info","message":"Server started and listening on port 30000","timestamp":"2026-09-13 04:06:54"}
+{"level":"info","message":"Created client session 159afe8dd92df9df0fc1d632","timestamp":"2026-09-13 04:13:25"}
+{"level":"info","message":"Created client session ecd75793c020e26ad2a30800","timestamp":"2026-09-13 04:40:47"}
+{"level":"info","message":"Created client session 619f07395e478588c3dfd074","timestamp":"2026-09-13 04:40:48"}
+{"level":"info","message":"Created client session 437ea0426e04bd7744088427","timestamp":"2026-09-13 04:53:51"}
+{"level":"info","message":"Created client session 2cad516012dd753c3f85e844","timestamp":"2026-09-13 04:58:36"}
+{"level":"info","message":"Created client session d017e97809eb69db8ea0e712","timestamp":"2026-09-13 04:58:36"}
+{"level":"info","message":"Created client session 39e29bef5ca41a9a9acd3227","timestamp":"2026-09-13 04:58:37"}
+{"level":"info","message":"Created client session c0b572c249e90ef727d30c15","timestamp":"2026-09-13 04:58:37"}
+{"level":"info","message":"Created client session d895d062a20913e5e8799a40","timestamp":"2026-09-13 05:30:14"}
+{"level":"info","message":"Created client session 4a9597404874a0481399a506","timestamp":"2026-09-13 05:42:42"}
+{"level":"info","message":"Created client session 6180b853c1635796a277c76d","timestamp":"2026-09-13 06:18:11"}
+{"level":"info","message":"Created client session b98c913605d34856536a9b76","timestamp":"2026-09-13 06:18:11"}
+{"level":"info","message":"Created client session 20f8a242b0fa1f8a35058b0a","timestamp":"2026-09-13 06:32:17"}
+{"level":"info","message":"Created client session 7e0152c732bad092f611c777","timestamp":"2026-09-13 06:32:19"}
+{"level":"info","message":"Created client session bb9c6719eb2df8fe90862565","timestamp":"2026-09-13 06:35:31"}
+{"level":"info","message":"Created client session db797b50bd801ddd466b8c11","timestamp":"2026-09-13 06:53:11"}
+{"level":"info","message":"Created client session eadceafb39ed09542ac0e576","timestamp":"2026-09-13 07:55:48"}
+{"level":"info","message":"Created client session 8c7e5d454c120be12ae55b8f","timestamp":"2026-09-13 07:55:48"}
+{"level":"info","message":"Created client session e488afa22b7576e25a63611b","timestamp":"2026-09-13 07:59:24"}
+{"level":"info","message":"Created client session 63a8f36b542df41d219de7bf","timestamp":"2026-09-13 07:59:25"}
+{"level":"info","message":"Created client session 9c5c1572480ce09cf4edd294","timestamp":"2026-09-13 07:59:26"}
+{"level":"info","message":"Created client session 718d71e5eba904e965f9a26b","timestamp":"2026-09-13 08:00:50"}
+{"level":"info","message":"Created client session e714277fccda05e2f3defa75","timestamp":"2026-09-13 09:13:59"}
+{"level":"info","message":"Created client session 7e519244d7b0dbba3d10f421","timestamp":"2026-09-13 09:13:59"}
+{"level":"info","message":"Created client session 6af89db6e92c70331a5cfcdc","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 04ce4f0ea62002a9fd847acb","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 0d958a50fe4549b20a625dc9","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 68491ac35730a0486e8d4d0d","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 15e9d1a258b3b5c0fad7391e","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 9c78990e9919180a96304c67","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 61b1e9f7cd95f59a08f914b9","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 101ee5c07e14955371410050","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 1a617b73558e2218d0354bf2","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session cc8ee5a86e93fd9ebceba674","timestamp":"2026-09-13 09:14:19"}
+{"level":"info","message":"Created client session 50966402bfb547b3064b7590","timestamp":"2026-09-13 09:27:02"}
+{"level":"info","message":"Created client session c38ee9ebbf87217d7730a062","timestamp":"2026-09-13 09:27:02"}
+{"level":"info","message":"Created client session 33350ca257a7092a5ed32063","timestamp":"2026-09-13 09:28:00"}
+{"level":"info","message":"Created client session 00776f5e1ebc8abe609c2517","timestamp":"2026-09-13 09:30:10"}
+{"level":"info","message":"Created client session c92504e3fd5706bfbd23fa85","timestamp":"2026-09-13 09:33:10"}
+{"level":"info","message":"Created client session 017667ff5b600538b116e972","timestamp":"2026-09-13 09:34:14"}
+{"level":"info","message":"Created client session 06fd8674fd7b2925991b1177","timestamp":"2026-09-13 09:34:39"}
+{"level":"info","message":"Created client session 2bbef0f351b6edeb0fd882a8","timestamp":"2026-09-13 09:36:04"}
+{"level":"info","message":"Created client session 688d2633ab0c218f2f17fae1","timestamp":"2026-09-13 09:37:50"}
+{"level":"info","message":"Created client session 97dbadf555c83ab8d8675f6d","timestamp":"2026-09-13 09:38:31"}
+{"level":"info","message":"Created client session 036e7a7aca4c0a9df4d9d484","timestamp":"2026-09-13 09:39:55"}
+{"level":"info","message":"Created client session b07486399352389ec806b1fd","timestamp":"2026-09-13 09:40:52"}
+{"level":"info","message":"Created client session 1f372e14d5d140140ea04712","timestamp":"2026-09-13 09:42:03"}
+{"level":"info","message":"Created client session 22639ac1ec4de41e6ce6fc37","timestamp":"2026-09-13 09:42:20"}
+{"level":"info","message":"Created client session d006ed733950fdf01e8abd75","timestamp":"2026-09-13 09:43:06"}
+{"level":"info","message":"Created client session b82c3a75eb38c9fa6f7258be","timestamp":"2026-09-13 09:43:17"}
+{"level":"info","message":"Created client session 4b3ed95e95449b460f03ff17","timestamp":"2026-09-13 09:43:48"}
+{"level":"info","message":"Created client session 5215e32e56a6839931b2336c","timestamp":"2026-09-13 09:43:55"}
+{"level":"info","message":"Created client session ab769bbb4a814c146b8a8f9d","timestamp":"2026-09-13 09:44:35"}
+{"level":"info","message":"Created client session 47991f50fd8f3b6e62c5e4fb","timestamp":"2026-09-13 09:52:09"}
+{"level":"info","message":"Created client session 90c2387046da2c0eb0c57afa","timestamp":"2026-09-13 09:52:10"}
+{"level":"info","message":"Created client session ac5beb083de6a56ef4ebc514","timestamp":"2026-09-13 09:54:58"}
+{"level":"info","message":"Created client session b00e47bf9dc76dcd8eb77509","timestamp":"2026-09-13 10:01:19"}
+{"level":"info","message":"Created client session ceba6ac5c69b7dc0f0d4d38e","timestamp":"2026-09-13 10:01:19"}
+{"level":"info","message":"Created client session e1d540baef3aae08ab0f96f4","timestamp":"2026-09-13 10:01:36"}
+{"level":"info","message":"Created client session 9cd752229cb9b5f2b0d4f0ad","timestamp":"2026-09-13 10:01:36"}
+{"level":"info","message":"Created client session 8ab2e6ad20f272e13c738568","timestamp":"2026-09-13 10:29:31"}
+{"level":"info","message":"Created client session d175f18b6517337aa8586924","timestamp":"2026-09-13 11:30:59"}
+{"level":"info","message":"Created client session a55a7a4945fc83ea33cc37c3","timestamp":"2026-09-13 11:59:18"}
+{"level":"info","message":"Created client session d3978d27baf0f2d366346a8e","timestamp":"2026-09-13 11:59:18"}
+{"level":"info","message":"Created client session 650c3cc6bfd07672fbbd099d","timestamp":"2026-09-13 12:13:38"}
+{"level":"info","message":"Created client session 1c1df12a817f17e4352a2cb3","timestamp":"2026-09-13 12:13:38"}
+{"level":"info","message":"Created client session f7ac2eef58b52b524cad8830","timestamp":"2026-09-13 12:20:24"}
+{"level":"info","message":"Created client session 232c1ab4ba151b4d72ac3778","timestamp":"2026-09-13 12:59:33"}
+{"level":"info","message":"Created client session a983bf313585bbe61371a047","timestamp":"2026-09-13 12:59:35"}
+{"level":"info","message":"Created client session a78d00000f3c6248468a1c4d","timestamp":"2026-09-13 12:59:36"}
+{"level":"info","message":"Created client session 9d377a33d3a1d2b3c7ac167c","timestamp":"2026-09-13 12:59:38"}
+{"level":"info","message":"Created client session 5b1fa648967be751de5943ac","timestamp":"2026-09-13 12:59:39"}
+{"level":"info","message":"Created client session 41ff6b1542bdd9587270af99","timestamp":"2026-09-13 12:59:40"}
+{"level":"info","message":"Created client session 2a512d76df617877309bc1dd","timestamp":"2026-09-13 12:59:42"}
+{"level":"info","message":"Created client session 1a84ae9f821bfb6580bbbc3c","timestamp":"2026-09-13 12:59:43"}
+{"level":"info","message":"Created client session d0b8598b9dea827adb0632c1","timestamp":"2026-09-13 12:59:44"}
+{"level":"info","message":"Created client session 267d68d06928d02c9ef28aa9","timestamp":"2026-09-13 12:59:46"}
+{"level":"info","message":"Created client session 7beefb868bd8164d8cfbcd9b","timestamp":"2026-09-13 12:59:47"}
+{"level":"info","message":"Created client session 3022938781bb91c7df76c7ce","timestamp":"2026-09-13 12:59:49"}
+{"level":"info","message":"Created client session ac4d88d396fd4b0c942e7bdb","timestamp":"2026-09-13 12:59:50"}
+{"level":"info","message":"Created client session 02892e3905f3a5be537d816d","timestamp":"2026-09-13 12:59:52"}
+{"level":"info","message":"Created client session 4be1dc66b0887826a8fe9c08","timestamp":"2026-09-13 12:59:53"}
+{"level":"info","message":"Created client session 232501d34d82080b48ad08fd","timestamp":"2026-09-13 12:59:54"}
+{"level":"info","message":"Created client session d0ca95545070799c1c541b1b","timestamp":"2026-09-13 12:59:56"}
+{"level":"info","message":"Created client session eb4fd988e6a28a41f3599265","timestamp":"2026-09-13 12:59:57"}
+{"level":"info","message":"Created client session 0f568e8309072341e7ec59f1","timestamp":"2026-09-13 12:59:59"}
+{"level":"info","message":"Created client session 365284abca93f62979529bdc","timestamp":"2026-09-13 13:00:00"}
+{"level":"info","message":"Created client session 76260ed2c37f345efacd22cd","timestamp":"2026-09-13 13:00:02"}
+{"level":"info","message":"Created client session cd1d2308c8f06e6c044c37bb","timestamp":"2026-09-13 13:00:04"}
+{"level":"info","message":"Created client session 4a746d675f22821b1d6529db","timestamp":"2026-09-13 13:00:05"}
+{"level":"info","message":"Created client session 9b3f081c42cb2f2bff535dd8","timestamp":"2026-09-13 13:00:06"}
+{"level":"info","message":"Created client session d9bd4b93676fd8132e2808fa","timestamp":"2026-09-13 13:00:08"}
+{"level":"info","message":"Created client session 238d0067066db2000778a580","timestamp":"2026-09-13 13:00:09"}
+{"level":"info","message":"Created client session 82544c1916ff82b2d2285bd2","timestamp":"2026-09-13 13:00:11"}
+{"level":"info","message":"Created client session 7b465258d507de0ba6faf2a0","timestamp":"2026-09-13 13:00:12"}
+{"level":"info","message":"Created client session 02b922423813da991c25067a","timestamp":"2026-09-13 13:00:14"}
+{"level":"info","message":"Created client session 848452785131f5e1d117f5b1","timestamp":"2026-09-13 13:00:15"}
+{"level":"info","message":"Created client session 13e6582335985f1c177a6499","timestamp":"2026-09-13 13:00:17"}
+{"level":"info","message":"Created client session 3c961c43720c388977c36874","timestamp":"2026-09-13 13:00:18"}
+{"level":"info","message":"Created client session 27cdda1b0f7754da2515a01e","timestamp":"2026-09-13 13:00:20"}
+{"level":"info","message":"Created client session fc72c8432bfb0a7fb578c139","timestamp":"2026-09-13 13:00:21"}
+{"level":"info","message":"Created client session 4cb8e435e7ce85269994f8be","timestamp":"2026-09-13 13:00:22"}
+{"level":"info","message":"Created client session a867a30e535c49fe9816c104","timestamp":"2026-09-13 13:00:24"}
+{"level":"info","message":"Created client session 5ced4804cb09ecf896b17d60","timestamp":"2026-09-13 13:00:26"}
+{"level":"info","message":"Created client session d3822b9f40b5e2ea7d768cb3","timestamp":"2026-09-13 13:00:27"}
+{"level":"info","message":"Created client session b6a92bc1d7eb5e5041f389e2","timestamp":"2026-09-13 13:00:28"}
+{"level":"info","message":"Created client session ee67f9bb136e149a21427527","timestamp":"2026-09-13 13:00:30"}
+{"level":"info","message":"Created client session e9ae0cdb2cf766cfc0e85c60","timestamp":"2026-09-13 13:00:32"}
+{"level":"info","message":"Created client session 97ba0d7abf1d53d0258dcd8c","timestamp":"2026-09-13 13:00:33"}
+{"level":"info","message":"Created client session f7dc529c2cac477001ca3463","timestamp":"2026-09-13 13:00:35"}
+{"level":"info","message":"Created client session 5954d5884e711e88335088ad","timestamp":"2026-09-13 13:00:36"}
+{"level":"info","message":"Created client session 5dbfe0ec9a6cb1995b4d1623","timestamp":"2026-09-13 13:00:37"}
+{"level":"info","message":"Created client session f1fa8d2e10b9eb7ef3876e11","timestamp":"2026-09-13 13:00:39"}
+{"level":"info","message":"Created client session 550112ebd3f812f76a823d8c","timestamp":"2026-09-13 13:00:40"}
+{"level":"info","message":"Created client session 3f54cc955f7615a5fd5486d8","timestamp":"2026-09-13 13:13:26"}
+{"level":"info","message":"Created client session 15c173e438526d50c96828af","timestamp":"2026-09-13 13:15:01"}
+{"level":"info","message":"Created client session a2d6071753fa5e86eca3d738","timestamp":"2026-09-13 13:42:41"}
+{"level":"info","message":"Created client session 796d833ca9870f7ba2841a24","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 0a6ec24471b1b40eb67a1bba","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session c5e753b7e742f69d83173c30","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session c099e534a3a3bab600ac21c0","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 6df58359529aa5c21b225e97","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 7e1eeced0cb68fd0fb8b15d9","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session b22730ffb6cd13e595d6c6e1","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session a564217eb3b307664c64a36e","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 1b55ca7731bd66cb88b3c13d","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 2a52a08b4d9766e007d11018","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session cb9f2c330f5b05f85a3e5d35","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session df56b6775da7eecfab7d5000","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 774c011c5a8e18883878e51d","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 009afa97cfab1f17ae5c3a68","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 46361c0ecbc038fd6807a8d2","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session 65375b24e74fbf307d05ef6b","timestamp":"2026-09-13 13:45:52"}
+{"level":"info","message":"Created client session f3572143c2bd0d1e2c30c613","timestamp":"2026-09-13 14:04:30"}
+{"level":"info","message":"Created client session 03dcccdd342c85a27710178c","timestamp":"2026-09-13 14:12:58"}
+{"level":"info","message":"Created client session 362be4d642284f31b88282e5","timestamp":"2026-09-13 14:12:58"}
+{"level":"info","message":"Created client session c777b5502b3b65d2adb09b6a","timestamp":"2026-09-13 14:12:59"}
+{"level":"info","message":"Created client session 11083310d807ed2c17da9331","timestamp":"2026-09-13 14:13:05"}
+{"level":"info","message":"Created client session 91660758fc00f1eac6c54a19","timestamp":"2026-09-13 14:20:22"}
+{"level":"info","message":"Created client session 94b1b1bef9a23ee898dcecc4","timestamp":"2026-09-13 14:20:57"}
+{"level":"info","message":"Created client session 56990e8e2f9f88ee4608bf9d","timestamp":"2026-09-13 14:21:16"}
+{"level":"info","message":"Created client session ff4b15fc53ad4fa70abc949a","timestamp":"2026-09-13 14:21:16"}
+{"level":"info","message":"Created client session d358e7a89300588693d3d20e","timestamp":"2026-09-13 14:30:20"}
+{"level":"info","message":"Created client session 75fd99dda2cce803dd65ae3b","timestamp":"2026-09-13 14:30:25"}
+{"level":"info","message":"Created client session 2fdf120fd34660866d01c244","timestamp":"2026-09-13 14:30:26"}
+{"level":"info","message":"Created client session c708890cd70f6d7ca977cca8","timestamp":"2026-09-13 14:33:10"}
+{"level":"info","message":"Created client session f9aeac57115d1000f77cca52","timestamp":"2026-09-13 14:33:10"}
+{"level":"info","message":"Created client session 2d840b65e56ff9dd594bf501","timestamp":"2026-09-13 14:33:11"}
+{"level":"info","message":"Created client session 603bfb18ed3597de37e96e48","timestamp":"2026-09-13 14:33:11"}
+{"level":"info","message":"Created client session 5b9addfad7715ba32d44271c","timestamp":"2026-09-13 14:33:11"}
+{"level":"info","message":"Created client session 1296a36af29ec84dbd586308","timestamp":"2026-09-13 14:33:11"}
+{"level":"info","message":"Created client session c8a280761448076878eb274b","timestamp":"2026-09-13 14:33:11"}
+{"level":"info","message":"Created client session 3262d97894e289325fde1fb3","timestamp":"2026-09-13 14:35:21"}
+{"level":"info","message":"Created client session 46921f4868583fcf86520810","timestamp":"2026-09-13 15:00:46"}
+{"level":"info","message":"Created client session 26b8703d09c47131b62691b6","timestamp":"2026-09-13 15:00:47"}
+{"level":"info","message":"Created client session 153d252f4c1d30bb6329482d","timestamp":"2026-09-13 15:00:52"}
+{"level":"info","message":"Created client session 5ee6f9c0bddc2410ad3194bd","timestamp":"2026-09-13 15:01:04"}
+{"level":"info","message":"Created client session 400f427ab2f18aa3679bf7fe","timestamp":"2026-09-13 15:01:05"}
+{"level":"info","message":"Created client session a804e73ef1d0ded0c249c731","timestamp":"2026-09-13 15:01:10"}
+{"level":"info","message":"Created client session 474ffe5833e58a3de5e47fcb","timestamp":"2026-09-13 15:02:16"}
+{"level":"info","message":"Created client session 83402b9c0298bb10de973164","timestamp":"2026-09-13 15:03:13"}
+{"level":"info","message":"Created client session bc9472148492648167cc6caa","timestamp":"2026-09-13 15:06:42"}
+{"level":"info","message":"Created client session 8149cdfe047eb6b8dbdacea9","timestamp":"2026-09-13 15:06:46"}
+{"level":"info","message":"Created client session 71a90f1c8b58676f1d80484a","timestamp":"2026-09-13 15:06:47"}
+{"level":"info","message":"Created client session 46f66316101794cd6a5f1f73","timestamp":"2026-09-13 15:06:49"}
+{"level":"info","message":"Created client session 03dbd3975dc4588006414af9","timestamp":"2026-09-13 15:06:50"}
+{"level":"info","message":"Created client session 94f146db981e65f50c45ab10","timestamp":"2026-09-13 15:06:52"}
+{"level":"info","message":"Created client session 96e5ff01fb5d2a3a834cbee5","timestamp":"2026-09-13 15:06:53"}
+{"level":"info","message":"Created client session cb1e9fd600ec24d8600c95f2","timestamp":"2026-09-13 15:06:55"}
+{"level":"info","message":"Created client session 3f2363b72821b650de8acce9","timestamp":"2026-09-13 15:06:56"}
+{"level":"info","message":"Created client session b5c367d5994684bbf7d5e67e","timestamp":"2026-09-13 15:06:58"}
+{"level":"info","message":"Created client session 124ba96dfaa696b6003df697","timestamp":"2026-09-13 15:07:00"}
+{"level":"info","message":"Created client session 492fdd9d9e73b82c0e623bdf","timestamp":"2026-09-13 15:07:01"}
+{"level":"info","message":"Created client session 9acbadf5d02ffbc82702bd9c","timestamp":"2026-09-13 15:07:03"}
+{"level":"info","message":"Created client session 3d3fa742f7a97cbbdec84bae","timestamp":"2026-09-13 15:07:04"}
+{"level":"info","message":"Created client session 24eee4cc87bef7e59cf3cad0","timestamp":"2026-09-13 15:07:06"}
+{"level":"info","message":"Created client session 398840fe07d26dfc344278d8","timestamp":"2026-09-13 15:07:08"}
+{"level":"info","message":"Created client session 76767f30a8d8ab8b2752113d","timestamp":"2026-09-13 15:07:09"}
+{"level":"info","message":"Created client session a8ae70a040c4262d1dbdcc0e","timestamp":"2026-09-13 15:07:11"}
+{"level":"info","message":"Created client session f7ea3be19a534ac34d3c0a8f","timestamp":"2026-09-13 15:07:13"}
+{"level":"info","message":"Created client session 5f308ae92b217f3f8c0751b1","timestamp":"2026-09-13 15:07:15"}
+{"level":"info","message":"Created client session 92736b335197340c865757b7","timestamp":"2026-09-13 15:07:17"}
+{"level":"info","message":"Created client session ba600e1b96068368723978e8","timestamp":"2026-09-13 15:07:19"}
+{"level":"info","message":"Created client session 9ba5514431ac1a1bc6bbd152","timestamp":"2026-09-13 15:07:21"}
+{"level":"info","message":"Created client session 57c95932d23f2ebe74e339f6","timestamp":"2026-09-13 15:07:22"}
+{"level":"info","message":"Created client session 92ac091da401408f89a5df1a","timestamp":"2026-09-13 15:07:24"}
+{"level":"info","message":"Created client session a6f4709915c5d4157b86366e","timestamp":"2026-09-13 15:07:26"}
+{"level":"info","message":"Created client session 7a9575c5de53d9d012c72aa6","timestamp":"2026-09-13 15:07:28"}
+{"level":"info","message":"Created client session 165d4de1691aa927fb321d78","timestamp":"2026-09-13 15:07:30"}
+{"level":"info","message":"Created client session 474b38d41d56c849078b542c","timestamp":"2026-09-13 15:07:31"}
+{"level":"info","message":"Created client session 8b0d07b0f7ca0430ec34f1c8","timestamp":"2026-09-13 15:07:33"}
+{"level":"info","message":"Created client session 8670d65d7224a7761d50373c","timestamp":"2026-09-13 15:07:35"}
+{"level":"info","message":"Created client session c1c2afa64db98d256dec2a20","timestamp":"2026-09-13 15:07:37"}
+{"level":"info","message":"Created client session 55d2eed1ff9ba59a3ec550f0","timestamp":"2026-09-13 15:07:39"}
+{"level":"info","message":"Created client session bddbfc32b98a53a0e3a3fa0c","timestamp":"2026-09-13 15:07:41"}
+{"level":"info","message":"Created client session 298ff20b089308b9d6cc598d","timestamp":"2026-09-13 15:07:43"}
+{"level":"info","message":"Created client session 4f951f658af37bd4731694e7","timestamp":"2026-09-13 15:07:45"}
+{"level":"info","message":"Created client session eb446fabd27b8e3f0903d2b4","timestamp":"2026-09-13 15:07:47"}
+{"level":"info","message":"Created client session 58425183b16e552b716d9c2e","timestamp":"2026-09-13 15:23:22"}
+{"level":"info","message":"Created client session 1b23e700d12e54609eadbf0f","timestamp":"2026-09-13 15:23:22"}
+{"level":"info","message":"Created client session 36cfaeb30162ba91b2a3b610","timestamp":"2026-09-13 15:37:14"}
+{"level":"info","message":"Created client session 7cd2dcad6920690d895d1abe","timestamp":"2026-09-13 15:37:14"}
+{"level":"info","message":"Created client session 1a9a85b1453e0f25d306929d","timestamp":"2026-09-13 15:37:14"}
+{"level":"info","message":"Created client session b9fc8e94e3f8d1eaad2c7c17","timestamp":"2026-09-13 15:37:14"}
+{"level":"info","message":"Created client session 021601431dc56a0d1203aeb6","timestamp":"2026-09-13 15:37:15"}
+{"level":"info","message":"Created client session f16e980a9484627cabe62ab4","timestamp":"2026-09-13 15:37:15"}
+{"level":"info","message":"Created client session db8e312ba5c8b781977432f8","timestamp":"2026-09-13 15:37:15"}
+{"level":"info","message":"Created client session 680ab1ac1ccce39f4030f55e","timestamp":"2026-09-13 15:37:15"}
+{"level":"info","message":"Created client session a518f9a51c79186de4dd801f","timestamp":"2026-09-13 15:37:15"}
+{"level":"info","message":"Created client session 4ecbc37582ca0e820dd13853","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session e291172170a5b3c00994e06c","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session ce912f4517de70458293aab7","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session 1e79738c3a7b02a26ac0d05f","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session fc5f20194173891b7d9b985a","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session 587b1fc40ae452538048f9e3","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session fde61f58ff2d3b56f87ce4ab","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session 94c07e504e9209eae2b3e3e6","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session 45ae5c97dfe5eceee51bdaa5","timestamp":"2026-09-13 15:37:16"}
+{"level":"info","message":"Created client session 9af3fe6e5c4c8b5e2f3c1f60","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session 16ec3ba6935cd35dc8a5e07e","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session 14fd853defb91df782c0392a","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session ecd23f72ad8d5ee3b4190d07","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session 234636e21bac4bb74c328dcf","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session 9521291f72b100fde7d7e2b8","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session cd1e19464184b0e6fb03802f","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session a154e0ae2808b6e1fb9e0c63","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session 760077416a0553af68a4f542","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session 7526304fcd6b1eadf2a92ed4","timestamp":"2026-09-13 15:37:17"}
+{"level":"info","message":"Created client session 1e9d22739cd94bdd4d809340","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session e0b4e874f8eca76260302a64","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session c9ffc517e1a7a93c4a14557f","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session b163c208061da0178193a4a9","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session 2797d05c8da69f7088e0c9a3","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session 2018d7ac22601c3938ed4287","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session 52a6b1c3abdbb4795e4b0a1a","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session 5f21298554330857b378c482","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session c5c751c9a0a874b1549407de","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session 95012e2d75a2552320ba4cf2","timestamp":"2026-09-13 15:37:18"}
+{"level":"info","message":"Created client session 5b3b26ef4768d6f32d849369","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session 720825086a3e40c024aa89b0","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session 6a73b3ad76b78e0a417fa556","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session a1f97f9939fafd80f27abe65","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session 8aac2519f5fdf4c960291b94","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session 3e591dfcc79d3bf3df3c8dac","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session cbb22bf287bfbe89d31aa769","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session 4f548eba23e653b3b777db25","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session e00f9cb8decab612415b4a3a","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session dd05faf7b852d7f4ec13173f","timestamp":"2026-09-13 15:37:19"}
+{"level":"info","message":"Created client session c78d83efb3028c3b7511072c","timestamp":"2026-09-13 15:37:20"}
+{"level":"info","message":"Created client session daa1c51f89528a991f9e3564","timestamp":"2026-09-13 15:37:20"}
+{"level":"info","message":"Created client session ec7e23a5367a7f7c40c67da0","timestamp":"2026-09-13 15:37:20"}
+{"level":"info","message":"Created client session c34ed240a7cc2c0677b2cb14","timestamp":"2026-09-13 15:37:20"}
+{"level":"info","message":"Created client session b0af8079e57390547f2b28aa","timestamp":"2026-09-13 15:37:20"}
+{"level":"info","message":"Created client session 610e5b944b4bdb9df2b73c2d","timestamp":"2026-09-13 15:37:20"}
+{"level":"info","message":"Created client session 3ef7a5800a4c057500458881","timestamp":"2026-09-13 15:37:20"}
+{"level":"info","message":"Created client session 737ffb4ff0850e907e0d5885","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session 5558dec5285593d0c1c54dee","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session c4c5b40bc76e901473f9b952","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session 2dadb4d0621a98427dd4bb37","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session e1ae69ce79b1a8872bbe9a7b","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session fbac89000eada90eace95c64","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session 4516817beb2150c6d4806a51","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session cbd9f0d37886721c7b37541f","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session a70558d642f09de91792d696","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session 24e2e99972d58388b26408a8","timestamp":"2026-09-13 15:37:21"}
+{"level":"info","message":"Created client session 5e13ea76fcc26bcb546c4002","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session c5e43500b77cce99b0680c57","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session 79a47738b9eab1deba121c39","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session 99966ff0a4d3764c0cf8703d","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session 0fd1fd1e3041b617f0da5a26","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session 8b3f80763bebeb87ba14268d","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session c338a9fe9c125f6d6be78e68","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session e42360c5b9aa881db501bf80","timestamp":"2026-09-13 15:37:22"}
+{"level":"info","message":"Created client session d39369e98006051be4b9b1cf","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session 70bcc5e4f868f260f34f251c","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session e5d9a0de4bb461542b1d2217","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session 90ab321dede7c5e703485792","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session 98ebd0aa840fd84e61fb778d","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session e2673075a8fa56b1e9899680","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session 8847bb7f4145eefe0ed606d2","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session 46e8c0939decfbf0b3fbdc9d","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session 738f15b717d71da65d95d7ca","timestamp":"2026-09-13 15:37:23"}
+{"level":"info","message":"Created client session 124adeaccbf4b74e6f8055bc","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session b83e1e3f487c59d03d666d9a","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session 3cfb4ce7241f57e39ee6199d","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session 72d2d082edeef098e604479b","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session 33e162e28dcb9cc8a76ff880","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session 70ad8bb3a06e0945d6279166","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session 9282a9ec559d8105ad25ed98","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session cf5b5ed53ecb99a31f7679b6","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session 45586748254dece93d29e172","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session b5c734b9f04f3a36624afc60","timestamp":"2026-09-13 15:37:24"}
+{"level":"info","message":"Created client session e6def51231935c16d548334a","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session f106ab2abb7475889f38444a","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session ff84b132a0dc6c51785628b5","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session ae497d26c59734c3870f0a45","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session a45f79cc1ec92185b03df8f5","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session b3cff0906afddead0f055b32","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session 90b39ada42ee36a21490aa73","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session 6db3f1ccdc049708402f94d0","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session 001282fe71b669aced98283e","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session ed97b49e52d226fdd8d31c76","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session 7d0fd450cbc7ed86f35d9b9d","timestamp":"2026-09-13 15:37:25"}
+{"level":"info","message":"Created client session 0a11700295209ecf5258469e","timestamp":"2026-09-13 15:37:26"}
+{"level":"info","message":"Created client session b06834bfbd25f88195a6f5fb","timestamp":"2026-09-13 15:37:26"}
+{"level":"info","message":"Created client session 3055d555f9ab2ceb8d9e5418","timestamp":"2026-09-13 15:37:26"}
+{"level":"info","message":"Created client session 000ac1e7dd60d5bb2d175254","timestamp":"2026-09-13 15:37:26"}
+{"level":"info","message":"Created client session 751280cc1b59a9d0802a3ffe","timestamp":"2026-09-13 15:39:17"}
+{"level":"info","message":"Created client session a954abdcc32b8f1ac4545a01","timestamp":"2026-09-13 15:39:17"}
+{"level":"info","message":"Created client session 4f3b8576db3aee83c34fddf0","timestamp":"2026-09-13 15:42:05"}
+{"level":"info","message":"Created client session 2ff13da48efcafc5747d33d8","timestamp":"2026-09-13 15:46:28"}
+{"level":"info","message":"Created client session 1100f5a283fafcaca24e1800","timestamp":"2026-09-13 15:46:28"}
+{"level":"info","message":"Created client session 4f309f506d7b1402710ded35","timestamp":"2026-09-13 15:46:31"}
+{"level":"info","message":"Created client session c775c11297f1bc77b1903a50","timestamp":"2026-09-13 15:46:34"}
+{"level":"info","message":"Created client session a74a7950cb0d75f3450882f7","timestamp":"2026-09-13 16:01:13"}
+{"level":"info","message":"Created client session a43b5b8954cfc32b120a7641","timestamp":"2026-09-13 16:02:34"}
+{"level":"info","message":"Created client session ced374ec81aea8bdc78ff7f4","timestamp":"2026-09-13 16:02:38"}
+{"level":"info","message":"Created client session c4fed52f13028e9d400e99e7","timestamp":"2026-09-13 16:02:38"}
+{"level":"info","message":"Created client session ea85c1d2b7c8e5de2310e476","timestamp":"2026-09-13 16:13:29"}
+{"level":"info","message":"Created client session f7d6867962770a651e631b74","timestamp":"2026-09-13 16:13:29"}
+{"level":"info","message":"Created client session f3bd4aecdd95173f298b18de","timestamp":"2026-09-13 16:31:34"}
+{"level":"info","message":"Created client session 8917c7f1002727c10d3d97b8","timestamp":"2026-09-13 16:40:36"}
+{"level":"info","message":"Created client session f1bf4df1b99c952ae495115d","timestamp":"2026-09-13 17:06:06"}
+{"level":"info","message":"Created client session ef447a3630b73c17f6292dff","timestamp":"2026-09-13 17:06:17"}
+{"level":"info","message":"Created client session be44dbbdc72cabd32ab98e8d","timestamp":"2026-09-13 17:06:17"}
+{"level":"info","message":"Created client session d92c9820975d361e0e87c27a","timestamp":"2026-09-13 17:07:08"}
+{"level":"info","message":"Created client session ca12a0941935d9aa4238d099","timestamp":"2026-09-13 17:33:24"}
+{"level":"info","message":"Created client session 0d322c4fd72056555a5657b7","timestamp":"2026-09-13 17:33:24"}
+{"level":"info","message":"Created client session 4222ef99eba827fc49191307","timestamp":"2026-09-13 17:47:49"}
+{"level":"info","message":"Created client session 21e6a255e8641a42ae7afde4","timestamp":"2026-09-13 18:31:38"}
+{"level":"info","message":"Created client session 018d66428c2cd7249e3901c6","timestamp":"2026-09-13 18:31:38"}
+{"level":"info","message":"Created client session bd951e1d7ff63dacaf2cc8dd","timestamp":"2026-09-13 18:35:33"}
+{"level":"info","message":"Created client session 9223091b1f827e8e1dc9f434","timestamp":"2026-09-13 18:35:40"}
+{"level":"info","message":"Created client session d68da6cf4a5589a21ab69da4","timestamp":"2026-09-13 18:35:41"}
+{"level":"info","message":"Created client session 57b7f3ee6f89f5899c0e32b5","timestamp":"2026-09-13 19:14:42"}
+{"level":"info","message":"Created client session cc8ad71c52a2e9726a2bba2a","timestamp":"2026-09-13 19:31:37"}
+{"level":"info","message":"Created client session e17dd3d07ea69157b425838a","timestamp":"2026-09-13 19:33:04"}
+{"level":"info","message":"Created client session 39cee998a0fa2a5d3a124ea5","timestamp":"2026-09-13 20:06:43"}
+{"level":"info","message":"Created client session 12ea883309c92bb44969b5fe","timestamp":"2026-09-13 20:29:47"}
+{"level":"info","message":"Created client session 568604c67b48f28ebfd7ae9c","timestamp":"2026-09-13 20:29:47"}
+{"level":"info","message":"Created client session 3bd0d5f2bb45a876c0a42c42","timestamp":"2026-09-13 20:43:23"}
+{"level":"info","message":"Created client session 9323e229b1246d38954646e6","timestamp":"2026-09-13 20:43:24"}
+{"level":"info","message":"Created client session a391b22650733557ab67417d","timestamp":"2026-09-13 21:34:37"}
+{"level":"info","message":"Created client session e750ce9e3539782f8fba26ca","timestamp":"2026-09-13 21:41:16"}
+{"level":"info","message":"Created client session 2dcaf695aa0515951dec45dc","timestamp":"2026-09-13 21:41:16"}
+{"level":"info","message":"Created client session 827dbc188b58f5dd6bb3924d","timestamp":"2026-09-13 21:41:18"}
+{"level":"info","message":"Created client session dbf6b4a1610ef5e2e08846d0","timestamp":"2026-09-13 21:41:18"}
+{"level":"info","message":"Created client session 3381dab0b5350dea592fbf55","timestamp":"2026-09-13 21:55:02"}
+{"level":"info","message":"Created client session 80436a4df589d0b268475904","timestamp":"2026-09-13 22:41:52"}
+{"level":"info","message":"Created client session d7d02bccc0bca81a77fa29d5","timestamp":"2026-09-13 22:41:53"}
+{"level":"info","message":"Created client session 7b827ea538f6be64224e6880","timestamp":"2026-09-13 22:41:53"}
+{"level":"info","message":"Created client session 338a26923331451c3cdf22ad","timestamp":"2026-09-13 23:02:03"}
+{"level":"info","message":"Created client session 76f4037201294f1e3fcb15b7","timestamp":"2026-09-13 23:02:03"}
+{"level":"info","message":"Created client session b1386b5da53b06fb919224f7","timestamp":"2026-09-13 23:02:04"}
+{"level":"info","message":"Created client session b37749d314bef009b735481b","timestamp":"2026-09-13 23:02:15"}
+{"level":"info","message":"Created client session 7b22c81f360ae0eeff4cef21","timestamp":"2026-09-13 23:04:48"}
+{"level":"info","message":"Created client session 3d5ff18136a4e7940ccd88e6","timestamp":"2026-09-13 23:04:48"}
+{"level":"info","message":"Created client session 83cb9c0969a4625c8f1cd15f","timestamp":"2026-09-13 23:04:49"}
+{"level":"info","message":"Created client session 22bf457d119780f8bae09eb6","timestamp":"2026-09-13 23:04:49"}
+{"level":"info","message":"Created client session bbdd138030b043716729c0e3","timestamp":"2026-09-13 23:09:51"}
+{"level":"info","message":"Created client session fc8933a378d8cb50756bb1a1","timestamp":"2026-09-13 23:11:05"}
+{"level":"info","message":"Created client session 6bb15655ee1afd17f0777f73","timestamp":"2026-09-13 23:11:11"}
+{"level":"info","message":"Created client session cfef18aa21eaa7553f0c0c88","timestamp":"2026-09-13 23:11:15"}
+{"level":"info","message":"Created client session 1ff3fe372698c87b1d5073ed","timestamp":"2026-09-13 23:11:21"}
+{"level":"info","message":"Created client session b31996b6e354e9a286af1831","timestamp":"2026-09-13 23:28:24"}
+{"level":"info","message":"Created client session d48195cf23d06e3de39a7c25","timestamp":"2026-09-13 23:31:27"}
+{"level":"info","message":"Created client session 5a5890cdd58c5c808225468b","timestamp":"2026-09-13 23:31:27"}
+{"level":"info","message":"Created client session 79cd49dff86881ecc37f0273","timestamp":"2026-09-13 23:34:55"}
+{"level":"info","message":"Created client session 2ecf407030251cd776ea6aab","timestamp":"2026-09-13 23:34:56"}
+{"level":"info","message":"Created client session 0d11cdcb9041add632806046","timestamp":"2026-09-13 23:35:05"}
+{"level":"info","message":"Created client session 83d1b9f7aa4bc37dcebb4fce","timestamp":"2026-09-13 23:35:05"}
+{"level":"info","message":"Created client session 41e89d0d447cc29a840f7d4c","timestamp":"2026-09-13 23:35:05"}
+{"level":"info","message":"Created client session 862844dc83478a2a0a2b8892","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session f799c1c1804574cbebb788f4","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 70a4fb79c3772f35b78f458f","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session be18605803d31c65ab2fda19","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 7cfab05a7ca1428e8c14e1a4","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session c9b0108ac67c8c9575ed3fe3","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 64138c919087173207fc3141","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session fb8cd90c309a58ea973e347a","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 9dd15d48365c9268c655f338","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 1fbe3423ee413f389c94c45b","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session d5f60189b71f11ceb37fbbb5","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 92c90edbf963cdd353e2af49","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 326e393a7bdb1c21a47c2706","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session ce22e4f344c59a5034943a99","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 54e63c3922285f6d282eef11","timestamp":"2026-09-13 23:35:06"}
+{"level":"info","message":"Created client session 8ef83c6262fcd31c511a26ff","timestamp":"2026-09-13 23:35:07"}
+{"level":"info","message":"Created client session ec920e8fa9ce517d4fc1a0bf","timestamp":"2026-09-13 23:35:07"}
+{"level":"info","message":"Created client session aaab18853d0da02ce723de8a","timestamp":"2026-09-13 23:35:07"}
+{"level":"info","message":"Created client session d645898dada87a003e2e3b83","timestamp":"2026-09-13 23:35:07"}
+{"level":"info","message":"Created client session a5822686c29c11c6bfa7dc9a","timestamp":"2026-09-13 23:35:07"}
+{"level":"info","message":"Created client session bbaf62ad7f3d35c8b819ae69","timestamp":"2026-09-13 23:55:50"}
+{"level":"info","message":"Administrator authentication successful for session bbaf62ad7f3d35c8b819ae69","timestamp":"2026-09-13 23:56:29"}
+{"level":"info","message":"Core software stable update 14.367 is available!","timestamp":"2026-09-13 23:56:29"}
+{"level":"info","message":"Created World \"beneath-the-static\"","timestamp":"2026-09-13 23:56:55"}
+{"level":"info","message":"Connected to database \"actors\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 7%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"cards\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 14%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"messages\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 21%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"combats\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 29%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"fog\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 36%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"folders\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 43%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"items\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 50%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"journal\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 57%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"macros\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 64%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"playlists\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 71%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"tables\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 79%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"scenes\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 86%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"settings\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 93%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"users\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading World Data - 100%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 7%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 14%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 21%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 29%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 36%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 43%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 50%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 57%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 64%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 71%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 79%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 86%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 93%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating World Data - 100%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Created Setting with id [YuezrA1f9goTV3XO]","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Created Setting with id [TO6yEUOCB2l0GmmR]","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Created User with id [rqLnwhIjz2wZCvXC]","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Created Setting with id [wrp9BjlRH8WB9eN4]","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"lancer.core_macros\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading Package Data - 50%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Connected to database \"lancer.lancer_info\"","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Loading Package Data - 100%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Created 0 Folder documents with ids: []","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Created Setting with id [juijevOTZWqlzu8T]","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating Package Data - 50%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Migrating Package Data - 100%","timestamp":"2026-09-13 23:57:07"}
+{"level":"info","message":"Launching World | Complete","timestamp":"2026-09-13 23:57:07"}
+{"ip":"38.143.253.121","level":"info","message":"User authentication successful for user Gamemaster","session":"bbaf62ad7f3d35c8b819ae69","timestamp":"2026-09-13 23:57:10"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-13 23:57:11"}
+{"level":"info","message":"Vended World data to User [rqLnwhIjz2wZCvXC] in 210ms","timestamp":"2026-09-13 23:57:11"}
+{"level":"info","message":"Created Setting with id [LC0H1CXxkfxgPAwD]","timestamp":"2026-09-13 23:57:12"}
+{"level":"info","message":"Created 2 ChatMessage documents with ids: [8oYwtxD0jLJl6fbL,UTUGXs580d6JKgcv]","timestamp":"2026-09-13 23:57:12"}
+{"level":"info","message":"Created Setting with id [TgcHYC9Tt9M4r5OX]","timestamp":"2026-09-13 23:57:12"}
+{"level":"info","message":"Connected to database \"world.pilot-items\"","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created World Compendium Pack world.pilot-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Connected to database \"world.player-actors\"","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created World Compendium Pack world.player-actors","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Connected to database \"world.mech-items\"","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created World Compendium Pack world.mech-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Connected to database \"world.npc-actors\"","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created World Compendium Pack world.npc-actors","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Connected to database \"world.npc-items\"","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created World Compendium Pack world.npc-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Connected to database \"world.status-items\"","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created World Compendium Pack world.status-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created Folder with id [zgLRYo2zLyL6HaS6] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created Folder with id [ZAfG8vqIMcxwRXhx] in Compendium world.mech-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created Folder with id [wI3Kr41FAn1NnnNu] in Compendium world.mech-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created Folder with id [NBzkokaEGOCSgFZ5] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created Folder with id [BMo714FKjNmSkDab] in Compendium world.npc-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created 33 Item documents in Compendium world.npc-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created Folder with id [dybnR5mgbjT29vMw] in Compendium world.npc-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created 12 Item documents in Compendium world.npc-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created Folder with id [Rh2lA520fE6frwir] in Compendium world.npc-items","timestamp":"2026-09-13 23:57:34"}
+{"level":"info","message":"Created 414 Item documents in Compendium world.npc-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [xVaoaWcLerwh2A5k] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [5ka2kHvoQiiyNaqc] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [0PjFo0ps5La80lBE] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [CIoPKgi9qx12S0nU] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [hRJ9Erjd7oCkyOZm] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [MoRFhQGGvNLxuZtk] in Compendium world.mech-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [5G5oSJMNNAE2PBoI] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [INk5hlfRCswk3GdI] in Compendium world.pilot-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [6uyIuCBFoqrufu78] in Compendium world.mech-items","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Folder with id [4RcC2WquDw1ppYQ4] in Compendium world.player-actors","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created 33 Actor documents in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Item with id [T1QPppW6DOQ0Ryfp] in parent Actor [JAmBcsJsfyRdk160] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created 3 Item documents with ids: [I6YYZIDUEWSGpIuw,J1PX1eO7Yknm35Gq,IB3quuSRYrnyezYV] in parent Actor [JAmBcsJsfyRdk160] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created Item with id [L0CIAHfdW6OdZiAi] in parent Actor [M0E02rTA2GJRUazV] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:35"}
+{"level":"info","message":"Created 3 Item documents with ids: [nyqMDsQ1dyqTNsPe,L7WMgzd4wVeK9pHK,FeplRQPOtEFt2gCB] in parent Actor [M0E02rTA2GJRUazV] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [oSLvtpL2714kLExX] in parent Actor [JNDCKbPa7VSDPdpg] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [O6qSOe1BYXkToYze,32PHCgzhleEdVP87,gINd25qTjPSj0Wpp,v94OoqOapm2KTOr1] in parent Actor [JNDCKbPa7VSDPdpg] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [CKT5bS3B9GAVU8S9] in parent Actor [ol3uY11GVz2yoKCs] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [vXOOPNKlD7RmZyUN,FAWRTNltEigV3lDT,Ftf2CAKc8qThKboM,zoMW0IcJlZGcxVS8] in parent Actor [ol3uY11GVz2yoKCs] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [FZJmNnzRrLTtOAkk] in parent Actor [i9xw0ZMYzRwNba0v] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 3 Item documents with ids: [1dr9wSTYmRdiPcN1,IHLnajjw4RDrEBtW,I1bt67JA6NI6xbMC] in parent Actor [i9xw0ZMYzRwNba0v] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [70WtvVaywFHFotFs] in parent Actor [nva6tFFb0ueSVaM0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [A8YHr78GHn0uLeYS,nt0pL2N07jojAv1K,W6j3JEZ1q7qktKLG,6WpleJdJ9DQoeTV6] in parent Actor [nva6tFFb0ueSVaM0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [FnMr1ZDG6vQFljFM] in parent Actor [uTO71dbnyVxsfYe9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [gfjH3bJEFc9Mw3wO,Ju49h9zQw9k1oxCz,ywogMbPPsXdHu46q,rcht299Ner1fYzv6] in parent Actor [uTO71dbnyVxsfYe9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [IcSSHbSWodEfwOP6] in parent Actor [8ChJSflanj54PcjE] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [pYOcSsEuUzNPjlXz,DtnRs9iEoxYNIc0v,SWcfEgKzPfDZpWwT,gZNLToRy6KuZHaEx] in parent Actor [8ChJSflanj54PcjE] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [pOnhNlDj4ezLGx7R] in parent Actor [0MeZUdF7P3DZrQlx] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [aVwBCcgsWkuE9iO0,PFHocse0IgtXNwNf,I9ibChHsufxZxe8u,cnzirULbR28rw7nT] in parent Actor [0MeZUdF7P3DZrQlx] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [yaGDO8fYKs7GHyZ4] in parent Actor [R0bzQQVdVqHgov8k] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 3 Item documents with ids: [RRZYe47Qg1k8DQb0,S6EitUn9ogPyebuK,xnjN3TYfHDfqktf4] in parent Actor [R0bzQQVdVqHgov8k] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [d36TGWmwCSsC1lGt] in parent Actor [NBIGAqg8KvRYCWtO] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [rSKOBHAqMdeVReZ2,7wjMHYi5aEGC9zO3,rQhIYCLJnYoV2QuJ,qiaGpNEjONNobW5I] in parent Actor [NBIGAqg8KvRYCWtO] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [9o203UkAeveZpgvV] in parent Actor [uskBw69t4gLRXAh2] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 4 Item documents with ids: [dpmCKtzfVGqisDHT,GDV8Eott845pqTwy,tC9lhhR7YgPhs1MB,OjtdQ8FwfTsgOucu] in parent Actor [uskBw69t4gLRXAh2] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created Item with id [psZciSmhS2lkGryw] in parent Actor [1U7keqvB440Frak9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:36"}
+{"level":"info","message":"Created 3 Item documents with ids: [ESJeOSAIayYe7hWX,CW0v11II5oyRpdg7,zqLOdupy7N853nfC] in parent Actor [1U7keqvB440Frak9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [Jrj9P5V4Qz2BXvXn] in parent Actor [KjedYmfbEy3QlBUj] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 5 Item documents with ids: [brkyo9nqIrsU2VPe,t8gB0MVRjPPT1PPY,owCmTc75W2KaGO4V,lnpeeMxTAYgwd0iv,tfoTqJo1LPAPRav0] in parent Actor [KjedYmfbEy3QlBUj] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [KaeoxnOvzV3TKrYu] in parent Actor [iZE3v3Ml0k0oWvru] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 3 Item documents with ids: [4PLaJ3wurHdAhucC,8mQsgbzrPmv2mSGe,JOfgBLvqfq8czaMV] in parent Actor [iZE3v3Ml0k0oWvru] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [FBWAjvugskUyGJop] in parent Actor [Y3QgcFnivR5EqL3O] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 4 Item documents with ids: [6rm60IXIf9BUrW72,A7cQLu9UNxlIXXAX,rAEgPhxtbZMZUFQH,wpyod128bvffoZVm] in parent Actor [Y3QgcFnivR5EqL3O] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [bXGUTNqaCKVaJJBO] in parent Actor [EN2w4reDAwSRl4jR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 5 Item documents with ids: [jogKGai8oC9GbZZ4,PnPmMsm8PPCVdoOD,wDJ11oZMnGaVrXLo,dE4qsmQfBtbId98I,ZT9fGG157jMn8VhF] in parent Actor [EN2w4reDAwSRl4jR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [IZs5RzkdH1cx0ucb] in parent Actor [yZclOvMjgbT6ug4X] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 4 Item documents with ids: [xNRQ8dVkOXC1yeyC,WJHofhKqYK07mp79,MyEbNsIy6VNlOA5M,b822471Hgmc874fi] in parent Actor [yZclOvMjgbT6ug4X] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [pesaR8dSIFkH6nyC] in parent Actor [Vm10E1ZS1rwp7RKd] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 4 Item documents with ids: [nZuNpepLHYwfEa2S,9kPTxu20qYGLX2O1,plvJK0h8fjA18UlS,kam23yNpYtuHrfM2] in parent Actor [Vm10E1ZS1rwp7RKd] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [pD4PvSaMxg5ptpBt] in parent Actor [P3qHX1HttkUColdw] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 4 Item documents with ids: [UuWIOlPAKcCsdTWC,o4mvWfqihe52D2Qn,eWCh4v05fVTJLn0T,6CEdIuu2FT1ijCjL] in parent Actor [P3qHX1HttkUColdw] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [WIsiGbvksT6sYQwU] in parent Actor [fnast3favoS1b4po] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 3 Item documents with ids: [cmh6f61Hvy9LRT7F,5CAe8o5j9WessXR9,FugorEUiZStudcff] in parent Actor [fnast3favoS1b4po] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [vWTAJQwoAxZR7Sb0] in parent Actor [POmcviyjZ2OkOtJA] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 2 Item documents with ids: [L81vXSHUBFaAHTnm,iFKQXGpBdwFQxA0O] in parent Actor [POmcviyjZ2OkOtJA] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [Fjk2taLw47loLlmF] in parent Actor [cC1asq9TrNNFRDLT] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 4 Item documents with ids: [ZuuctrapxI6fqC1i,psC4vlYRit6yyaLS,fUTHDt5ks2Ui2qRx,4r09KWvw8SlB6DQU] in parent Actor [cC1asq9TrNNFRDLT] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [A0aaHQcuwVqfOR9k] in parent Actor [xLFqe6vlXWKyCL6f] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 4 Item documents with ids: [dHe6LnUNqszgT6O3,1z7UXXA0OnjJZkq4,MMGb3mamX4vEa5IL,hIxc7lcPMMMNyKUC] in parent Actor [xLFqe6vlXWKyCL6f] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created Item with id [M9fgTpeHKKUbLtN0] in parent Actor [1jUXqd1UR9MyE6FR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:37"}
+{"level":"info","message":"Created 2 Item documents with ids: [Xl5yFhF3AqyLeTGP,X6nMTBpSHfuVIJWv] in parent Actor [1jUXqd1UR9MyE6FR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [UFWuOx2hdT6wzgFB] in parent Actor [CetcpXVPfad0c6Ry] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created 4 Item documents with ids: [VB7ZLWqiCb9iO1wI,ktG2RZ3R1wjuYDix,kIcyXbtblWkNJuuY,UDMDnwPmpFZJrenk] in parent Actor [CetcpXVPfad0c6Ry] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [suXXw7GXlyvvfh0G] in parent Actor [eiezHAonErUnNuO0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created 3 Item documents with ids: [M9E71dpEJnxwSuiT,PMvuQ77Bs1q3IpIY,knj6rTUWPOoDxESL] in parent Actor [eiezHAonErUnNuO0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [ncbtaz4JZ7RIDn5u] in parent Actor [cWkwBTNS44qYfi5P] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created 4 Item documents with ids: [CRBR8aD6l4ZJGRgm,y578ZsXqh9kIfxNc,zCQIxKRGibaMilHB,FlmRM66RUPNLpFy7] in parent Actor [cWkwBTNS44qYfi5P] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [Ks8UmDimm9zfPnAe] in parent Actor [19ltEuexBOalw0ss] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created 3 Item documents with ids: [Sya03qfrphCJLVeZ,DJoY345L7jvFJi3Z,BcqcAXG17jBWw3qq] in parent Actor [19ltEuexBOalw0ss] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [bViOzS3onIET5hko] in parent Actor [EiQgxoiuTau11yTn] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created 4 Item documents with ids: [U3CxmsIvv2rdifsq,lHdTiLO0pbJTi6Np,DowNsyUrcVSPlA1y,erYArj13hzDlANzm] in parent Actor [EiQgxoiuTau11yTn] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [2v515Hz1yeAAJHU9] in parent Actor [Afp6Ls34JgfmU0FH] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [0gurcfvHHLaZB3T2] in parent Actor [QDMksftNIpGPQoJk] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created 7 Item documents in parent Actor [QDMksftNIpGPQoJk] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Item with id [kvgvgJ5AR53nT2l6] in parent Actor [rbLTO5uT1sN1Wvzi] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created 3 Item documents with ids: [LqW7aEiizQilCeLb,I17OPyRola0NcdmZ,bGxEACtmAEwf8vFn] in parent Actor [rbLTO5uT1sN1Wvzi] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Setting with id [e8hmWtMopGU5CHiv]","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Created Setting with id [w4CqSq5rOieWfKjj]","timestamp":"2026-09-13 23:57:38"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [I6YYZIDUEWSGpIuw,J1PX1eO7Yknm35Gq,IB3quuSRYrnyezYV] in parent Actor [JAmBcsJsfyRdk160] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Deleted Item with id [T1QPppW6DOQ0Ryfp] in parent Actor [JAmBcsJsfyRdk160] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Created Item with id [TT4zmi08k34GMd7a] in parent Actor [JAmBcsJsfyRdk160] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [nyqMDsQ1dyqTNsPe,L7WMgzd4wVeK9pHK,FeplRQPOtEFt2gCB] in parent Actor [M0E02rTA2GJRUazV] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Deleted Item with id [L0CIAHfdW6OdZiAi] in parent Actor [M0E02rTA2GJRUazV] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Created 3 Item documents with ids: [KsEBnhLIUDH7BApD,rNlIsUVI4QiW0srQ,W35FltBtafeXhAsn] in parent Actor [JAmBcsJsfyRdk160] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Created Item with id [sTPsJuk3N8S85Z4H] in parent Actor [M0E02rTA2GJRUazV] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [O6qSOe1BYXkToYze,32PHCgzhleEdVP87,gINd25qTjPSj0Wpp,v94OoqOapm2KTOr1] in parent Actor [JNDCKbPa7VSDPdpg] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Deleted Item with id [oSLvtpL2714kLExX] in parent Actor [JNDCKbPa7VSDPdpg] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Created 3 Item documents with ids: [5irNgl1vj3XtxWCe,YG073AXKpvLEP8VV,vL2dg3fhsXBiWMoG] in parent Actor [M0E02rTA2GJRUazV] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Created Item with id [aX8Os4QdxcMoHKHU] in parent Actor [JNDCKbPa7VSDPdpg] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:52"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [vXOOPNKlD7RmZyUN,FAWRTNltEigV3lDT,Ftf2CAKc8qThKboM,zoMW0IcJlZGcxVS8] in parent Actor [ol3uY11GVz2yoKCs] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [CKT5bS3B9GAVU8S9] in parent Actor [ol3uY11GVz2yoKCs] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [EOi3aDDqvlj0uZSg,WW7FWjKUUsENorjh,9lPiYFobyBpyC2hU,NPIzutTpczdSpwkY] in parent Actor [JNDCKbPa7VSDPdpg] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [sKg3vwt5brr5yB51] in parent Actor [ol3uY11GVz2yoKCs] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [1dr9wSTYmRdiPcN1,IHLnajjw4RDrEBtW,I1bt67JA6NI6xbMC] in parent Actor [i9xw0ZMYzRwNba0v] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [FZJmNnzRrLTtOAkk] in parent Actor [i9xw0ZMYzRwNba0v] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [VXM49dEWmxCKLPAL,GjflAuDrAzGe9sJj,yzm0hNjV37sFQVTX,lj5EaztzrhW2Xxo3] in parent Actor [ol3uY11GVz2yoKCs] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [n9rQoVjCAIkBAnzn] in parent Actor [i9xw0ZMYzRwNba0v] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [A8YHr78GHn0uLeYS,nt0pL2N07jojAv1K,W6j3JEZ1q7qktKLG,6WpleJdJ9DQoeTV6] in parent Actor [nva6tFFb0ueSVaM0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [70WtvVaywFHFotFs] in parent Actor [nva6tFFb0ueSVaM0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 3 Item documents with ids: [yvN30Z0eoIn398zt,QAnJUHb6fmQHBCEU,LLNMxLlwFLPDiAv0] in parent Actor [i9xw0ZMYzRwNba0v] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [YUzg2NeXQMng2MAR] in parent Actor [nva6tFFb0ueSVaM0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [gfjH3bJEFc9Mw3wO,Ju49h9zQw9k1oxCz,ywogMbPPsXdHu46q,rcht299Ner1fYzv6] in parent Actor [uTO71dbnyVxsfYe9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [FnMr1ZDG6vQFljFM] in parent Actor [uTO71dbnyVxsfYe9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [Fe2Y8xB9Etrynp0j,5f41xjDdqPL8l6Qh,pTvbRcZCwLPHgz1W,pOyX6nWkn4yRoVEN] in parent Actor [nva6tFFb0ueSVaM0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [l71MgY95wPdO1m3q] in parent Actor [uTO71dbnyVxsfYe9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [pYOcSsEuUzNPjlXz,DtnRs9iEoxYNIc0v,SWcfEgKzPfDZpWwT,gZNLToRy6KuZHaEx] in parent Actor [8ChJSflanj54PcjE] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [IcSSHbSWodEfwOP6] in parent Actor [8ChJSflanj54PcjE] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [mSlTZbUhZOZsvQd1,0Ra2Yupr8sZD57dp,jXOijoT0hWAQRPlf,3x8x9DLseAd9uGkU] in parent Actor [uTO71dbnyVxsfYe9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [KgoqVzoHLjTE5oAu] in parent Actor [8ChJSflanj54PcjE] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [aVwBCcgsWkuE9iO0,PFHocse0IgtXNwNf,I9ibChHsufxZxe8u,cnzirULbR28rw7nT] in parent Actor [0MeZUdF7P3DZrQlx] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [pOnhNlDj4ezLGx7R] in parent Actor [0MeZUdF7P3DZrQlx] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [dzee5Yb2CpJpQLKL,fLHWp4ViPWinpYIB,342p37iO3Her1RAK,MDSnZBkQ4WiWRMoT] in parent Actor [8ChJSflanj54PcjE] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [eIvOyvL4mXSiaUb4] in parent Actor [0MeZUdF7P3DZrQlx] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [RRZYe47Qg1k8DQb0,S6EitUn9ogPyebuK,xnjN3TYfHDfqktf4] in parent Actor [R0bzQQVdVqHgov8k] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [yaGDO8fYKs7GHyZ4] in parent Actor [R0bzQQVdVqHgov8k] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [HjASnLFuv0eInSAm,h6B8lxiOIoR4WRCk,fbbelxSoWHPInb40,9l7zZXgkrp5hO92f] in parent Actor [0MeZUdF7P3DZrQlx] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [EdpozFYxvjTYu8TC] in parent Actor [R0bzQQVdVqHgov8k] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [rSKOBHAqMdeVReZ2,7wjMHYi5aEGC9zO3,rQhIYCLJnYoV2QuJ,qiaGpNEjONNobW5I] in parent Actor [NBIGAqg8KvRYCWtO] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [d36TGWmwCSsC1lGt] in parent Actor [NBIGAqg8KvRYCWtO] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 3 Item documents with ids: [8pbVgz0JcPtjWY7N,n62vzu5wUq8zx1BB,7nWrFLBX37xMtgCy] in parent Actor [R0bzQQVdVqHgov8k] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [xA0gDvpLIxGQ8VR8] in parent Actor [NBIGAqg8KvRYCWtO] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [dpmCKtzfVGqisDHT,GDV8Eott845pqTwy,tC9lhhR7YgPhs1MB,OjtdQ8FwfTsgOucu] in parent Actor [uskBw69t4gLRXAh2] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [9o203UkAeveZpgvV] in parent Actor [uskBw69t4gLRXAh2] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [JcIYfge2T8H5q3es,oKm5KDOVCmBpxGgr,tuJ5UYSaNOO3NHGf,iCUwoaf4TprJpqww] in parent Actor [NBIGAqg8KvRYCWtO] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [wo9ITuErmQVYOWXf] in parent Actor [uskBw69t4gLRXAh2] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [ESJeOSAIayYe7hWX,CW0v11II5oyRpdg7,zqLOdupy7N853nfC] in parent Actor [1U7keqvB440Frak9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [psZciSmhS2lkGryw] in parent Actor [1U7keqvB440Frak9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 4 Item documents with ids: [k7R0O9JoBw2MOz6t,DdC0bbfMYnoElpN4,PdTHfDGje3dVrF4U,HxRECKEPXrQ2d9iX] in parent Actor [uskBw69t4gLRXAh2] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [mQpfI4GOp4AkhL0R] in parent Actor [1U7keqvB440Frak9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 5 Item documents with ids: [brkyo9nqIrsU2VPe,t8gB0MVRjPPT1PPY,owCmTc75W2KaGO4V,lnpeeMxTAYgwd0iv,tfoTqJo1LPAPRav0] in parent Actor [KjedYmfbEy3QlBUj] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted Item with id [Jrj9P5V4Qz2BXvXn] in parent Actor [KjedYmfbEy3QlBUj] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created 3 Item documents with ids: [0BU1U9TIlmYM0MGK,LAZ5UosQCFbWe1Yq,YLATRhzdfVhTmnLw] in parent Actor [1U7keqvB440Frak9] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Created Item with id [VgCfVrubhJvD7dAt] in parent Actor [KjedYmfbEy3QlBUj] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:53"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [4PLaJ3wurHdAhucC,8mQsgbzrPmv2mSGe,JOfgBLvqfq8czaMV] in parent Actor [iZE3v3Ml0k0oWvru] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [KaeoxnOvzV3TKrYu] in parent Actor [iZE3v3Ml0k0oWvru] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 5 Item documents with ids: [0FxxJl9iaFlcBSqp,yHck9JTP574rqSls,Ae1Xhcd5q52pZPQ4,WZHAd5gVKLHQqhVb,fAMqjMiMfc3SRMeu] in parent Actor [KjedYmfbEy3QlBUj] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [Fu2LIb2MdH2wARmE] in parent Actor [iZE3v3Ml0k0oWvru] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [6rm60IXIf9BUrW72,A7cQLu9UNxlIXXAX,rAEgPhxtbZMZUFQH,wpyod128bvffoZVm] in parent Actor [Y3QgcFnivR5EqL3O] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [FBWAjvugskUyGJop] in parent Actor [Y3QgcFnivR5EqL3O] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 3 Item documents with ids: [jGNJPp0lTw8FEFEO,zvBVRKH4VepdcHYW,5GNB2qXHKDCzXMSh] in parent Actor [iZE3v3Ml0k0oWvru] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [xTe6lLmKuSNrk3cV] in parent Actor [Y3QgcFnivR5EqL3O] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 5 Item documents with ids: [jogKGai8oC9GbZZ4,PnPmMsm8PPCVdoOD,wDJ11oZMnGaVrXLo,dE4qsmQfBtbId98I,ZT9fGG157jMn8VhF] in parent Actor [EN2w4reDAwSRl4jR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [bXGUTNqaCKVaJJBO] in parent Actor [EN2w4reDAwSRl4jR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 4 Item documents with ids: [ZD6MhzrLHUeg3XX7,4XTfWDW0RsYve6KA,ub7M8AJFBHIVhYVj,xpBO26dHhC2LHI0f] in parent Actor [Y3QgcFnivR5EqL3O] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [dOB3JtOVn3Jp6U9S] in parent Actor [EN2w4reDAwSRl4jR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [xNRQ8dVkOXC1yeyC,WJHofhKqYK07mp79,MyEbNsIy6VNlOA5M,b822471Hgmc874fi] in parent Actor [yZclOvMjgbT6ug4X] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [IZs5RzkdH1cx0ucb] in parent Actor [yZclOvMjgbT6ug4X] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 5 Item documents with ids: [WnXExVE8ghIky0RR,jT707sUCe8qQWJxa,zu7qtVmeVDz6PVmG,tEK9FDXwGy6wFw2Q,fAfuGlolHG03zVJR] in parent Actor [EN2w4reDAwSRl4jR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [M8uFJFtt9cBTY3oN] in parent Actor [yZclOvMjgbT6ug4X] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [nZuNpepLHYwfEa2S,9kPTxu20qYGLX2O1,plvJK0h8fjA18UlS,kam23yNpYtuHrfM2] in parent Actor [Vm10E1ZS1rwp7RKd] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [pesaR8dSIFkH6nyC] in parent Actor [Vm10E1ZS1rwp7RKd] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 4 Item documents with ids: [J4zAYCR9wEygm69s,b5tGz0erar6Qm6hA,1eSwwRU1raHefL4p,L1fChZRW83uD1UnN] in parent Actor [yZclOvMjgbT6ug4X] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [KnNrdglA124tWr75] in parent Actor [Vm10E1ZS1rwp7RKd] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [UuWIOlPAKcCsdTWC,o4mvWfqihe52D2Qn,eWCh4v05fVTJLn0T,6CEdIuu2FT1ijCjL] in parent Actor [P3qHX1HttkUColdw] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [pD4PvSaMxg5ptpBt] in parent Actor [P3qHX1HttkUColdw] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 4 Item documents with ids: [w1Bf49KQUSprqWo0,dn4NlAzexGEj3wkm,cCGFVRLDD0dZ91s5,efSdh07Yhr1qmQib] in parent Actor [Vm10E1ZS1rwp7RKd] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [RvW1WFamnz7hWO1l] in parent Actor [P3qHX1HttkUColdw] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [cmh6f61Hvy9LRT7F,5CAe8o5j9WessXR9,FugorEUiZStudcff] in parent Actor [fnast3favoS1b4po] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [WIsiGbvksT6sYQwU] in parent Actor [fnast3favoS1b4po] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 4 Item documents with ids: [Dkn1YCQMn6ex93qJ,o24h52LtcypXNHrK,jBCWGasbhQtFW96Q,QxmimHWGXzeKEv0X] in parent Actor [P3qHX1HttkUColdw] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [MumEyXfnCqdcXCCN] in parent Actor [fnast3favoS1b4po] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 2 Item documents with ids: [L81vXSHUBFaAHTnm,iFKQXGpBdwFQxA0O] in parent Actor [POmcviyjZ2OkOtJA] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [vWTAJQwoAxZR7Sb0] in parent Actor [POmcviyjZ2OkOtJA] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 3 Item documents with ids: [jDXOi19MG0Wq1gD6,sesW1VLXDpbc0irc,vLktZ0Qxnu21aChN] in parent Actor [fnast3favoS1b4po] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [TlfebQyXq3DkHlv9] in parent Actor [POmcviyjZ2OkOtJA] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [ZuuctrapxI6fqC1i,psC4vlYRit6yyaLS,fUTHDt5ks2Ui2qRx,4r09KWvw8SlB6DQU] in parent Actor [cC1asq9TrNNFRDLT] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [Fjk2taLw47loLlmF] in parent Actor [cC1asq9TrNNFRDLT] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 2 Item documents with ids: [HxR8sD2Vv9lAW4oI,UHZBQy0sDKyoXr7J] in parent Actor [POmcviyjZ2OkOtJA] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [FUjn1sYs56KVONar] in parent Actor [cC1asq9TrNNFRDLT] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [dHe6LnUNqszgT6O3,1z7UXXA0OnjJZkq4,MMGb3mamX4vEa5IL,hIxc7lcPMMMNyKUC] in parent Actor [xLFqe6vlXWKyCL6f] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [A0aaHQcuwVqfOR9k] in parent Actor [xLFqe6vlXWKyCL6f] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 4 Item documents with ids: [C6cTnw7JPlJQeNno,7sdt6ArQHwGCrf5O,a3qCsUHOOlKGGB19,hXWLpB4RaJCUuljA] in parent Actor [cC1asq9TrNNFRDLT] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [cS4ZXup32D2xXSOW] in parent Actor [xLFqe6vlXWKyCL6f] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 2 Item documents with ids: [Xl5yFhF3AqyLeTGP,X6nMTBpSHfuVIJWv] in parent Actor [1jUXqd1UR9MyE6FR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [M9fgTpeHKKUbLtN0] in parent Actor [1jUXqd1UR9MyE6FR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 4 Item documents with ids: [ZaWzmxTewFXqI3dl,2VTqPJOZeWuL7JvN,kQnSOHUFFgXnIFDl,rMZSDvbaxWQUVw1a] in parent Actor [xLFqe6vlXWKyCL6f] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [j5ckcFoT9KO47GSn] in parent Actor [1jUXqd1UR9MyE6FR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [VB7ZLWqiCb9iO1wI,ktG2RZ3R1wjuYDix,kIcyXbtblWkNJuuY,UDMDnwPmpFZJrenk] in parent Actor [CetcpXVPfad0c6Ry] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted Item with id [UFWuOx2hdT6wzgFB] in parent Actor [CetcpXVPfad0c6Ry] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created 2 Item documents with ids: [RDcCglt4Xy6fdGf0,Ho3qLUiw8HCb8E8V] in parent Actor [1jUXqd1UR9MyE6FR] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Created Item with id [bH9mKcEm0vzBRYDl] in parent Actor [CetcpXVPfad0c6Ry] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:54"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [M9E71dpEJnxwSuiT,PMvuQ77Bs1q3IpIY,knj6rTUWPOoDxESL] in parent Actor [eiezHAonErUnNuO0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted Item with id [suXXw7GXlyvvfh0G] in parent Actor [eiezHAonErUnNuO0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created 4 Item documents with ids: [R4N6lU1BI7jLmfMu,j4syGlzIanX09ktK,CRbo0vSLQ0itH6S8,JDh5GL2IrJ1C2P6X] in parent Actor [CetcpXVPfad0c6Ry] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created Item with id [00lG7VYRB1DZ91aU] in parent Actor [eiezHAonErUnNuO0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [CRBR8aD6l4ZJGRgm,y578ZsXqh9kIfxNc,zCQIxKRGibaMilHB,FlmRM66RUPNLpFy7] in parent Actor [cWkwBTNS44qYfi5P] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted Item with id [ncbtaz4JZ7RIDn5u] in parent Actor [cWkwBTNS44qYfi5P] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created 3 Item documents with ids: [Uc4vBKSkk8QOmBBh,v8owniTOkmGjW0vf,Qmj3zuVfPMLuf1Na] in parent Actor [eiezHAonErUnNuO0] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created Item with id [9OL3lEaTAjbwwIdf] in parent Actor [cWkwBTNS44qYfi5P] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [Sya03qfrphCJLVeZ,DJoY345L7jvFJi3Z,BcqcAXG17jBWw3qq] in parent Actor [19ltEuexBOalw0ss] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted Item with id [Ks8UmDimm9zfPnAe] in parent Actor [19ltEuexBOalw0ss] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created 4 Item documents with ids: [iq5e83W4lgZG7XEr,mwa6827vb9vCcLNx,R5OAHAqxKWz8fyzt,MlSV3GhUDzVbTJHZ] in parent Actor [cWkwBTNS44qYfi5P] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created Item with id [rIicTgICxO5mFco6] in parent Actor [19ltEuexBOalw0ss] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted 4 Item documents with ids: [U3CxmsIvv2rdifsq,lHdTiLO0pbJTi6Np,DowNsyUrcVSPlA1y,erYArj13hzDlANzm] in parent Actor [EiQgxoiuTau11yTn] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted Item with id [bViOzS3onIET5hko] in parent Actor [EiQgxoiuTau11yTn] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created 3 Item documents with ids: [LodpBN724H8PVyEE,sN9BE60Fir27e6fA,nmFh0OcEmvKbzlFh] in parent Actor [19ltEuexBOalw0ss] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created Item with id [er9d0PhoXjWp0rIY] in parent Actor [EiQgxoiuTau11yTn] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted Item with id [2v515Hz1yeAAJHU9] in parent Actor [Afp6Ls34JgfmU0FH] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created 4 Item documents with ids: [3SFvgUOZZRFDFhud,TOaPsoCaOX772qzH,w1Cx357uxqaKE55f,80Yw5vvv5QNwChoT] in parent Actor [EiQgxoiuTau11yTn] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created Item with id [aY6i7wrVdd0oAzCg] in parent Actor [Afp6Ls34JgfmU0FH] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted 7 Item documents in parent Actor [QDMksftNIpGPQoJk] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted Item with id [0gurcfvHHLaZB3T2] in parent Actor [QDMksftNIpGPQoJk] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created Item with id [QgD6I7X3xV2sdjLo] in parent Actor [QDMksftNIpGPQoJk] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted 3 Item documents with ids: [LqW7aEiizQilCeLb,I17OPyRola0NcdmZ,bGxEACtmAEwf8vFn] in parent Actor [rbLTO5uT1sN1Wvzi] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Deleted Item with id [kvgvgJ5AR53nT2l6] in parent Actor [rbLTO5uT1sN1Wvzi] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created 7 Item documents in parent Actor [QDMksftNIpGPQoJk] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created Item with id [g1GA7rJZTHK9zsDq] in parent Actor [rbLTO5uT1sN1Wvzi] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created 3 Item documents with ids: [Nu6eaML5xF898ErC,fBhHWmjhj17naLBD,0SlL2cjeKJdjkZB2] in parent Actor [rbLTO5uT1sN1Wvzi] in Compendium world.npc-actors","timestamp":"2026-09-13 23:57:55"}
+{"level":"info","message":"Created User with id [FuZ0K94lcsQliESo]","timestamp":"2026-09-13 23:58:33"}
+{"level":"info","message":"Created User with id [tkr8SrXnj55RRqvN]","timestamp":"2026-09-13 23:59:14"}
+{"level":"info","message":"Created User with id [RiRp3fDafEPkBIjR]","timestamp":"2026-09-13 23:59:16"}
+{"level":"info","message":"Created User with id [zXtq4uAVXVg5N5rM]","timestamp":"2026-09-13 23:59:25"}
+{"level":"info","message":"Created User with id [BfbAdOjfTFpH6B2j]","timestamp":"2026-09-13 23:59:29"}
