@@ -1,13 +1,15 @@
 import { startChoiceCard, deployWeaponToken, knockBackToken } from "../interactive/index.js";
+import { getModuleSetting } from "../tools/settings-utils.js";
 import { getWeaponProfiles_WithBonus } from "../tools/misc-tools.js";
 import { accDiffTargetToken, getMinGridDistance } from "../combat/grid-helpers.js";
 import { injectKnockbackCheckbox } from "../bonuses/genericBonuses.js";
 import { LA_INLINE_ATTACK_FX, playDefaultThrowFX } from "../fx/actionFX.js";
 import { ActiveFlowState } from "./flows.js";
+import { localize } from "../tools/string-utils.js";
 
 export async function throwChoiceStep(state)
 {
-    if (!game.settings.get('lancer-automations', 'enableThrowFlow'))
+    if (!getModuleSetting('enableThrowFlow'))
         return true;
     if (state.la_extraData?.is_throw)
         return true;
@@ -35,7 +37,7 @@ export async function throwChoiceStep(state)
         mode: "or",
         title: item.name,
         icon: "cci cci-melee",
-        description: "This weapon can be thrown.",
+        description: localize('LA.flow.thisWeaponCanBeThrown'),
         choices: [
             { text: `Attack (${weaponRanges})`,
                 icon: "cci cci-melee",
@@ -123,7 +125,7 @@ export async function throwDeployStep(state)
 
 export async function knockbackInjectStep(state)
 {
-    if (!game.settings.get('lancer-automations', 'enableKnockbackFlow'))
+    if (!getModuleSetting('enableKnockbackFlow'))
         return true;
     injectKnockbackCheckbox(state);
     return true;
@@ -131,7 +133,7 @@ export async function knockbackInjectStep(state)
 
 export async function knockbackDamageStep(state)
 {
-    if (!game.settings.get('lancer-automations', 'enableKnockbackFlow'))
+    if (!getModuleSetting('enableKnockbackFlow'))
         return true;
     const knockback = state.data?._csmKnockback;
     if (!knockback?.enabled)
@@ -192,6 +194,36 @@ function _forceNextLwfxFor(actorOrToken)
     setTimeout(() => _lwfxForceActors.delete(id), 3000);
 }
 
+export const _lwfxSourceRedirects = new Map();
+
+/**
+ * One-shot: the next lwfx effect fired by this actor plays from `sourceToken` instead.
+ * Long window: attack HUDs can sit open on user input.
+ * @param {Actor|Token} actorOrToken - Whose next effect gets redirected
+ * @param {Token} sourceToken - Token the FX visually fires from
+ */
+export function redirectNextLwfxSource(actorOrToken, sourceToken)
+{
+    const id = _actorSuppressId(actorOrToken);
+    if (!id || !sourceToken)
+        return;
+    _lwfxSourceRedirects.set(id, sourceToken);
+    setTimeout(() => _lwfxSourceRedirects.delete(id), 60000);
+}
+
+// lwfx resolves FX from state.item; stubbed in after the card so no weapon-fire step sees it.
+// An explicit fxItem wins over an item already carried by the flow.
+export async function applyFxItemStub(state)
+{
+    const uuid = state.la_extraData?.fxItemUuid;
+    if (!uuid)
+        return true;
+    const item = await fromUuid(uuid);
+    if (item)
+        state.item = item;
+    return true;
+}
+
 export async function playInlineAttackFX(state)
 {
     const title = state.data?.title;
@@ -215,14 +247,7 @@ export async function playThrowFXIfNeeded(state)
     if (!state.la_extraData?.is_throw)
         return true;
     _suppressNextLwfxFor(state.actor);
-    try
-    {
-        await playDefaultThrowFX(state);
-    }
-    catch (e)
-    {
-        console.error('lancer-automations | throw FX failed:', e);
-    }
+    playDefaultThrowFX(state).catch(e => console.error('lancer-automations | throw FX failed:', e));
     return true;
 }
 
@@ -283,7 +308,7 @@ async function _playLwfxRangedDefault(actor, context)
 // Item-less basic melee attack vs a target more than 1 grid away: play lwfx's ranged default instead of its melee one.
 export async function playBasicRangedFXIfNeeded(state)
 {
-    if (state.la_extraData?.is_throw)
+    if (state.la_extraData?.is_throw || state.la_extraData?.fxItemUuid)
         return true;
     if (LA_INLINE_ATTACK_FX[state.data?.title])
         return true;

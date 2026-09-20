@@ -1,14 +1,14 @@
-2026/09/16-02:36:32.568374 e6948a7cefc0 Recovering log #647
-2026/09/16-02:36:32.576592 e6948a7cefc0 Delete type=3 #645
-2026/09/16-02:36:32.576617 e6948a7cefc0 Delete type=0 #647
-2026/09/16-03:24:49.364173 e69488f9efc0 Level-0 table #653: started
-2026/09/16-03:24:49.367377 e69488f9efc0 Level-0 table #653: 6903 bytes OK
-2026/09/16-03:24:49.369848 e69488f9efc0 Delete type=0 #651
-2026/09/16-03:24:49.390056 e69488f9efc0 Manual compaction at level-0 from '!settings!04pHkJRpfgL3P4c7' @ 72057594037927935 : 1 .. '!settings!zvVn8uRdh8j1ZTKe' @ 0 : 0; will stop at '!settings!i2VL7LezhwGlnCws' @ 3315 : 1
-2026/09/16-03:24:49.390062 e69488f9efc0 Compacting 1@0 + 1@1 files
-2026/09/16-03:24:49.395927 e69488f9efc0 Generated table #654@0: 552 keys, 106543 bytes
-2026/09/16-03:24:49.395936 e69488f9efc0 Compacted 1@0 + 1@1 files => 106543 bytes
-2026/09/16-03:24:49.398406 e69488f9efc0 compacted to: files[ 0 1 0 0 0 0 0 ]
-2026/09/16-03:24:49.398468 e69488f9efc0 Delete type=2 #649
-2026/09/16-03:24:49.398521 e69488f9efc0 Delete type=2 #653
-2026/09/16-03:24:49.408131 e69488f9efc0 Manual compaction at level-0 from '!settings!i2VL7LezhwGlnCws' @ 3315 : 1 .. '!settings!zvVn8uRdh8j1ZTKe' @ 0 : 0; will stop at (end)
+2026/09/20-02:04:41.420162 e694897aefc0 Recovering log #657
+2026/09/20-02:04:41.427899 e694897aefc0 Delete type=0 #657
+2026/09/20-02:04:41.427917 e694897aefc0 Delete type=3 #655
+2026/09/20-06:40:39.786709 e69488f9efc0 Level-0 table #663: started
+2026/09/20-06:40:39.789672 e69488f9efc0 Level-0 table #663: 11698 bytes OK
+2026/09/20-06:40:39.791712 e69488f9efc0 Delete type=0 #661
+2026/09/20-06:40:39.810334 e69488f9efc0 Manual compaction at level-0 from '!settings!04pHkJRpfgL3P4c7' @ 72057594037927935 : 1 .. '!settings!zvVn8uRdh8j1ZTKe' @ 0 : 0; will stop at '!settings!zakkVekGSGezGorP' @ 3412 : 1
+2026/09/20-06:40:39.810347 e69488f9efc0 Compacting 1@0 + 1@1 files
+2026/09/20-06:40:39.816713 e69488f9efc0 Generated table #664@0: 602 keys, 112156 bytes
+2026/09/20-06:40:39.816722 e69488f9efc0 Compacted 1@0 + 1@1 files => 112156 bytes
+2026/09/20-06:40:39.818995 e69488f9efc0 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/09/20-06:40:39.819056 e69488f9efc0 Delete type=2 #659
+2026/09/20-06:40:39.819151 e69488f9efc0 Delete type=2 #663
+2026/09/20-06:40:39.826475 e69488f9efc0 Manual compaction at level-0 from '!settings!zakkVekGSGezGorP' @ 3412 : 1 .. '!settings!zvVn8uRdh8j1ZTKe' @ 0 : 0; will stop at (end)

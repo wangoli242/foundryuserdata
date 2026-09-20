@@ -4,9 +4,13 @@ import {
     isHexGrid, offsetToCube, cubeToOffset, cubeDistance,
     getHexesInRange, getHexCenter, drawHexAt,
     getOccupiedOffsets, getOccupiedCenters, getMinGridDistance,
-    measureGridDistance
+    measureGridDistance, pixelToOffset, isPositionInRange
 } from "./grid-helpers.js";
 import { hasReactionAvailable, getActorMaxThreat } from "../tools/misc-tools.js";
+import { getModuleSetting } from "../tools/settings-utils.js";
+import { MODULE_ID } from "../tools/constants.js";
+import { hasLineOfSight } from "../vision/lancerDetectionModes.js";
+import { localize, localizeFormat } from "../tools/string-utils.js";
 
 export { getMinGridDistance };
 
@@ -78,6 +82,10 @@ export function checkOverwatchCondition(reactor, mover, startPos)
     if (!hasReactionAvailable(reactor))
         return false;
 
+    const losEnabled = getModuleSetting('lancerLos') === true;
+    if (losEnabled && !hasLineOfSight(reactor, mover))
+        return false;
+
     const auraLayer = canvas.gaaAuraLayer;
     const manager = auraLayer?._auraManager;
 
@@ -98,7 +106,7 @@ export function checkOverwatchCondition(reactor, mover, startPos)
 
 export async function checkOverwatch(token, distance, elevation, startPos, endPos)
 {
-    if (!game.settings.get('lancer-automations', 'overwatchEnabled'))
+    if (!getModuleSetting('overwatchEnabled'))
         return;
 
     const movedToken = token;
@@ -256,15 +264,15 @@ export function displayOverwatch(reactors, target)
     </div>
     `;
 
-    const mode = game.settings.get('lancer-automations', 'reactionReminder');
+    const mode = getModuleSetting('reactionReminder');
 
     if (mode === 'p')
     {
         new Dialog({
-            title: "Overwatch Alert",
+            title: localize('LA.dialogTitle.overwatchAlert'),
             content: html,
             buttons: {
-                ok: { label: "ACKNOWLEDGE" }
+                ok: { label: localize("LA.common.acknowledge") }
             },
             default: "ok",
             render: (html) =>
@@ -303,11 +311,11 @@ export async function drawThreatDebug(token)
 
     const maxThreat = await getActorMaxThreat(token.actor);
 
-    ui.notifications.info(`Debug: Token Size ${token.document.width}x${token.document.height}, Max Threat: ${maxThreat}`);
+    ui.notifications.info(localizeFormat('LA.notify.threatDebugSize', { width: token.document.width, height: token.document.height, threat: maxThreat }));
 
     if (!isHexGrid())
     {
-        ui.notifications.warn("Threat debug visualization currently only supports hex grids");
+        ui.notifications.warn(localize('LA.notify.threatDebugVisualizationCurrentlyOnlySupportsHex'));
         return;
     }
 
@@ -378,7 +386,7 @@ export async function drawDistanceDebug()
 
     if (controlled.length !== 2)
     {
-        ui.notifications.warn("Select exactly 2 tokens to measure distance.");
+        ui.notifications.warn(localize('LA.notify.selectExactly2TokensToMeasureDistance'));
         return;
     }
 
@@ -433,7 +441,7 @@ export async function drawDistanceDebug()
 
     canvas.controls.debug.lineStyle(2, 0x0066FF, 0.5);
     canvas.controls.debug.beginFill(0x0066FF, 0.15);
-    for (const offset of offsets1)
+    for (const offset of token1Offsets)
     {
         if (isHexGrid())
             drawHexAt(canvas.controls.debug, offset.col, offset.row);
@@ -447,7 +455,7 @@ export async function drawDistanceDebug()
 
     canvas.controls.debug.lineStyle(2, 0xFF6600, 0.5);
     canvas.controls.debug.beginFill(0xFF6600, 0.15);
-    for (const offset of offsets2)
+    for (const offset of token2Offsets)
     {
         if (isHexGrid())
             drawHexAt(canvas.controls.debug, offset.col, offset.row);
@@ -472,7 +480,7 @@ export async function drawDistanceDebug()
         canvas.controls.debug.endFill();
     }
 
-    ui.notifications.info(`Distance: ${distance} spaces (${token1.name} ↔ ${token2.name})`);
+    ui.notifications.info(localizeFormat('LA.notify.distanceBetween', { distance, from: token1.name, to: token2.name }));
 
     return distance;
 }
@@ -486,15 +494,15 @@ export function canProvokeReaction(triggering, reactor, reasonOut = null)
         return true;
     if (triggering.id === reactor.id)
         return true;
-    const api = game.modules.get('lancer-automations')?.api;
+    const api = game.modules.get(MODULE_ID)?.api;
     const hasStatus = (token, statusId) =>
     {
         if (api?.findEffectOnToken && api.findEffectOnToken(token, statusId))
             return true;
         return !!token.actor?.effects?.some(effect => effect.statuses?.has(statusId) && !effect.disabled);
     };
-    const hasProvokeImmunity = (token) =>
-        !!api?.getImmunityBonuses && api.getImmunityBonuses(token.actor, "provoke").length > 0;
+    const hasProvokeImmunity = (token, other) =>
+        !!api?.getGateImmunityBonuses && api.getGateImmunityBonuses(token.actor, "provoke", { ownerToken: token, otherToken: other }).length > 0;
     if (hasStatus(triggering, "hidden"))
     {
         reasonOut?.push('hidden');
@@ -505,7 +513,7 @@ export function canProvokeReaction(triggering, reactor, reasonOut = null)
         reasonOut?.push('disengage');
         return false;
     }
-    if (hasProvokeImmunity(triggering))
+    if (hasProvokeImmunity(triggering, reactor))
     {
         reasonOut?.push('provoke_immunity');
         return false;
@@ -541,7 +549,7 @@ export function canEngage(token1, token2)
     if (token1.actor.system.structure?.value === 0 || token2.actor.system.structure?.value === 0)
         return false;
 
-    const api = game.modules.get('lancer-automations')?.api;
+    const api = game.modules.get(MODULE_ID)?.api;
 
     const checkStatus = (token, statusName) =>
     {
@@ -557,9 +565,9 @@ export function canEngage(token1, token2)
         return token.actor.effects.some(effect => effect.statuses?.has(statusName) && !effect.disabled);
     };
 
-    const hasProvokeImmunity = (token) =>
-        !!api?.getImmunityBonuses && api.getImmunityBonuses(token.actor, "provoke").length > 0;
-    if (hasProvokeImmunity(token1) || hasProvokeImmunity(token2))
+    const hasProvokeImmunity = (token, other) =>
+        !!api?.getGateImmunityBonuses && api.getGateImmunityBonuses(token.actor, "provoke", { ownerToken: token, otherToken: other }).length > 0;
+    if (hasProvokeImmunity(token1, token2) || hasProvokeImmunity(token2, token1))
         return false;
 
     const invalidStatuses = ["hidden", "disengage", "intangible"];
@@ -573,13 +581,134 @@ export function canEngage(token1, token2)
     return true;
 }
 
+function hasEngagedStatus(token)
+{
+    if (!token?.actor)
+        return false;
+    const api = game.modules.get(MODULE_ID)?.api;
+    if (api?.findEffectOnToken && api.findEffectOnToken(token, 'engaged'))
+        return true;
+    return !!token.actor.effects?.some(effect => effect.statuses?.has('engaged') && !effect.disabled);
+}
+
+/**
+ * The tokens `token` is engaged with. Empty unless `token` carries the `engaged` status.
+ * @param {Token} token
+ * @param {Object} [options]
+ * @param {boolean} [options.includeElevation] Overrides the count3DDistance setting
+ * @param {(token: Token) => boolean} [options.filter]
+ * @returns {Token[]}
+ */
+export function getEngagedTokens(token, { filter = null, ...options } = {})
+{
+    if (!hasEngagedStatus(token))
+        return [];
+    return getTokensInRange(token, {
+        ...options,
+        range: 1,
+        engageable: true,
+        filter: (other) => hasEngagedStatus(other) && (!filter || filter(other)),
+    });
+}
+
+const _isPoint = (origin) => !!origin && !origin.document && typeof origin.x === 'number' && typeof origin.y === 'number';
+
+// Point origin: cell-to-footprint, same measure getMinGridDistance uses per grid type.
+function _originDistance(origin, token, includeElevation)
+{
+    if (!_isPoint(origin))
+        return getMinGridDistance(origin, token, null, includeElevation);
+    const originOffset = pixelToOffset(origin.x, origin.y);
+    const originCube = isHexGrid() ? offsetToCube(originOffset.col, originOffset.row) : null;
+    let minDist = Infinity;
+    for (const offset of getOccupiedOffsets(token))
+    {
+        const dist = originCube
+            ? cubeDistance(originCube, offsetToCube(offset.col, offset.row))
+            : Math.max(Math.abs(offset.col - originOffset.col), Math.abs(offset.row - originOffset.row));
+        if (dist < minDist)
+            minDist = dist;
+    }
+    return minDist;
+}
+
+/**
+ * Tokens within `range` spaces of a token or a world position, nearest first. Default is adjacency.
+ * Option names match chooseToken's. A point origin ignores `disposition`, `engageable` and `includeSelf`.
+ * @param {Token|{x: number, y: number, elevation?: number}} origin
+ * @param {Object} [options]
+ * @param {number|'sensors'} [options.range=1] Spaces; 'sensors' reads the actor's sensor range
+ * @param {'friendly'|'hostile'} [options.disposition] Omit for any
+ * @param {boolean} [options.includeSelf=false]
+ * @param {boolean} [options.includeHidden=false]
+ * @param {boolean} [options.includeDefeated=false] Structure or stress at 0
+ * @param {boolean} [options.includeDeployables=true]
+ * @param {boolean} [options.engageable=false] Also require canEngage (hostile, non-deployable, no disengage/hidden/intangible)
+ * @param {boolean} [options.includeElevation] Overrides the count3DDistance setting; a point origin is always elevation-aware
+ * @param {(token: Token) => boolean} [options.filter]
+ * @returns {Token[]}
+ */
+export function getTokensInRange(origin, options = {})
+{
+    if (!origin)
+        return [];
+    const {
+        range = 1,
+        disposition = null,
+        includeSelf = false,
+        includeHidden = false,
+        includeDefeated = false,
+        includeDeployables = true,
+        engageable = false,
+        includeElevation = undefined,
+        filter = null,
+    } = /** @type {any} */ (options);
+
+    const fromPoint = _isPoint(origin);
+    const maxRange = range === 'sensors'
+        ? (/** @type {any} */ (origin).actor?.system?.sensor_range ?? 10)
+        : Number(range);
+
+    return (canvas.tokens?.placeables ?? [])
+        .filter(token =>
+        {
+            if (!token.actor)
+                return false;
+            if (!fromPoint && token.id === /** @type {any} */ (origin).id)
+                return includeSelf;
+            if (!includeHidden && token.document.hidden)
+                return false;
+            if (!includeDeployables && token.actor.type === 'deployable')
+                return false;
+            if (!includeDefeated && (token.actor.system?.structure?.value === 0 || token.actor.system?.stress?.value === 0))
+                return false;
+            if (!fromPoint)
+            {
+                if (disposition === 'friendly' && !isFriendly(origin, token))
+                    return false;
+                if (disposition === 'hostile' && !isHostile(origin, token))
+                    return false;
+                if (engageable && !canEngage(origin, token))
+                    return false;
+            }
+            const inRange = fromPoint
+                ? isPositionInRange(origin, token, maxRange)
+                : getMinGridDistance(origin, token, null, includeElevation) <= maxRange;
+            if (!inRange)
+                return false;
+            return !filter || filter(token);
+        })
+        .sort((tokenA, tokenB) =>
+            _originDistance(origin, tokenA, includeElevation) - _originDistance(origin, tokenB, includeElevation));
+}
+
 /** @returns {Promise<void>} */
 export async function updateAllEngagements(options = {})
 {
     if (!game.user.isGM)
         return;
 
-    const api = game.modules.get('lancer-automations')?.api;
+    const api = game.modules.get(MODULE_ID)?.api;
 
     if (!api)
         return;
@@ -653,5 +782,7 @@ export const OverwatchAPI = {
     getMinGridDistance,
     canEngage,
     canProvokeReaction,
+    getTokensInRange,
+    getEngagedTokens,
     updateAllEngagements
 };

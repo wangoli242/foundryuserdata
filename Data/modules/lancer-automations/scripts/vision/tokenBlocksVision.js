@@ -1,8 +1,18 @@
 /* global Hooks, game, canvas, CONST, foundry, PIXI, $ */
 
-const MODULE_ID = 'lancer-automations';
+import { laLosFlagOnly } from './laWallLos.js';
+import { invalidateLosCaches } from './lancerDetectionModes.js';
+
+import { MODULE_ID } from '../tools/constants.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { laTokenHeight } from '../tools/token-height.js';
+import { getLAFlag, getLAFlags } from '../tools/flag-utils.js';
+import { localize } from '../tools/string-utils.js';
 const FLAG_KEY = 'blocksLineOfSight';
+const LA_ONLY_FLAG_KEY = 'blocksLaLosOnly';
 const EDGE_PREFIX = 'la-block-los';
+// Id segment that keeps LA-only edges out of the vanilla basic-sight veto.
+const LA_ONLY_MARK = 'laonly-';
 const SETTING_BULWARK_BLOCKS = 'bulwarkBlocksLineOfSight';
 
 function shouldTokenBlock(token)
@@ -10,21 +20,23 @@ function shouldTokenBlock(token)
     const doc = token?.document ?? token;
     if (!doc)
         return false;
-    if (doc.getFlag?.(MODULE_ID, FLAG_KEY))
+    if (getLAFlag(doc,FLAG_KEY))
         return true;
     const actor = (doc.actor) ?? token.actor;
     if (actor?.statuses?.has?.('bulwark'))
     {
-        try
-        {
-            return game.settings.get(MODULE_ID, SETTING_BULWARK_BLOCKS) !== false;
-        }
-        catch (e)
-        {
-            return true;
-        }
+        return getModuleSetting(SETTING_BULWARK_BLOCKS) !== false;
     }
     return false;
+}
+
+function shouldTokenBlockLaOnly(token)
+{
+    const doc = token?.document ?? token;
+    if (!getLAFlag(doc,LA_ONLY_FLAG_KEY))
+        return false;
+    // The full blocker covers LA too, no second set of edges needed.
+    return !shouldTokenBlock(token);
 }
 
 function _edgePrefix(token)
@@ -64,21 +76,11 @@ function _removeEdges(token)
 function _getTokenElevationBounds(token)
 {
     const doc = token.document ?? token;
-    const grid = canvas?.grid?.distance ?? 1;
     const elevation = doc.elevation ?? 0;
 
     let losTotal = token.losHeight;
     if (typeof losTotal !== 'number')
-    {
-        const flagHeight = doc.flags?.['wall-height']?.tokenHeight;
-        if (flagHeight && flagHeight > 0)
-            losTotal = elevation + flagHeight;
-        else
-        {
-            const size = token.actor?.system?.size;
-            losTotal = elevation + ((size && size > 0) ? size * grid : grid);
-        }
-    }
+        losTotal = elevation + laTokenHeight(doc);
 
     // Sit 0.1 below LOS height so same-height tokens peek above.
     const top = Math.max(elevation + 0.01, losTotal - 0.1);
@@ -115,7 +117,7 @@ function _getEdgeSegments(token)
     ];
 }
 
-function _addEdges(token)
+function _addEdges(token, laOnly = false)
 {
     if (!canvas?.edges || !token)
         return;
@@ -126,14 +128,14 @@ function _addEdges(token)
     const { top, bottom } = _getTokenElevationBounds(token);
     // Wall Height's _testEdgeInclusion reads edge.object.document.flags['wall-height']; give it a stub.
     const wallStub = { document: { flags: { 'wall-height': { top, bottom } } } };
-    for (let i = 0; i < segments.length; i++)
+    for (let segIdx = 0; segIdx < segments.length; segIdx++)
     {
-        const id = `${prefix}${i}`;
-        const edge = new foundry.canvas.geometry.edges.Edge(segments[i][0], segments[i][1], {
+        const id = laOnly ? `${prefix}${LA_ONLY_MARK}${segIdx}` : `${prefix}${segIdx}`;
+        const edge = new foundry.canvas.geometry.edges.Edge(segments[segIdx][0], segments[segIdx][1], {
             id,
             object: /** @type {any} */(wallStub),
-            type: 'wall',
-            light: CONST.WALL_SENSE_TYPES.LIMITED,
+            type: laOnly ? 'laSight' : 'wall',
+            light: laOnly ? CONST.WALL_SENSE_TYPES.NONE : CONST.WALL_SENSE_TYPES.LIMITED,
             sight: CONST.WALL_SENSE_TYPES.LIMITED,
             sound: CONST.WALL_SENSE_TYPES.NONE,
             move: CONST.WALL_SENSE_TYPES.NONE
@@ -142,14 +144,27 @@ function _addEdges(token)
     }
 }
 
+function _installEdges(token)
+{
+    if (shouldTokenBlock(token))
+    {
+        _addEdges(token);
+        // Flag-only mode drops plain walls from LA sweeps, so full blockers need a laSight twin.
+        if (laLosFlagOnly())
+            _addEdges(token, true);
+    }
+    else if (shouldTokenBlockLaOnly(token))
+        _addEdges(token, true);
+}
+
 function _refreshToken(token)
 {
     if (!token)
         return;
     _removeEdges(token);
-    if (shouldTokenBlock(token))
-        _addEdges(token);
-    canvas.perception?.update?.({ refreshEdges: true, refreshVision: true, refreshLighting: true }, true);
+    _installEdges(token);
+    invalidateLosCaches();
+    canvas.perception?.update?.({ refreshEdges: true, refreshVision: true, refreshLighting: true });
 }
 
 function _refreshAll()
@@ -159,10 +174,16 @@ function _refreshAll()
     for (const token of canvas.tokens.placeables)
     {
         _removeEdges(token);
-        if (shouldTokenBlock(token))
-            _addEdges(token);
+        _installEdges(token);
     }
-    canvas.perception?.update?.({ refreshEdges: true, refreshVision: true, refreshLighting: true }, true);
+    invalidateLosCaches();
+    canvas.perception?.update?.({ refreshEdges: true, refreshVision: true, refreshLighting: true });
+}
+
+/** Rebuild every token's blocker edges, for LA LOS mode changes. */
+export function refreshTokenBlockEdges()
+{
+    _refreshAll();
 }
 
 function _onRenderTokenConfig(app, html)
@@ -172,13 +193,20 @@ function _onRenderTokenConfig(app, html)
     if (!$visionTab.length)
         return;
     const tokenDoc = app.token ?? app.object ?? app.document;
-    const checked = !!tokenDoc?.getFlag?.(MODULE_ID, FLAG_KEY);
+    const checked = !!getLAFlag(tokenDoc,FLAG_KEY);
+    const laOnlyChecked = !!getLAFlag(tokenDoc,LA_ONLY_FLAG_KEY);
     const block = `
         <hr/>
         <div class="form-group">
-            <label data-tooltip="Token blocks line of sight through its bounding box. The Bulwark status enables this automatically while active.">Blocks Line of Sight</label>
+            <label data-tooltip="${localize('LA.vision.blocksLosTip')}">${localize('LA.vision.blocksLos')}</label>
             <div class="form-fields">
                 <input type="checkbox" name="flags.${MODULE_ID}.${FLAG_KEY}" ${checked ? 'checked' : ''}>
+            </div>
+        </div>
+        <div class="form-group">
+            <label data-tooltip="${localize('LA.vision.blocksLaLosOnlyTip')}">${localize('LA.vision.blocksLaLosOnly')}</label>
+            <div class="form-fields">
+                <input type="checkbox" name="flags.${MODULE_ID}.${LA_ONLY_FLAG_KEY}" ${laOnlyChecked ? 'checked' : ''}>
             </div>
         </div>
     `;
@@ -189,8 +217,8 @@ function _onRenderTokenConfig(app, html)
 export function initTokenBlocksVision()
 {
     game.settings.register(MODULE_ID, SETTING_BULWARK_BLOCKS, {
-        name: 'Bulwark blocks line of sight',
-        hint: 'Tokens with the Bulwark status block line of sight.',
+        name: 'LA.settings.bulwarkBlocksLineOfSight.name',
+        hint: 'LA.settings.bulwarkBlocksLineOfSight.hint',
         scope: 'world',
         config: false,
         type: Boolean,
@@ -210,7 +238,8 @@ export function initTokenBlocksVision()
     Hooks.on('deleteToken', (tokenDoc) =>
     {
         _removeEdges({ id: tokenDoc.id });
-        canvas.perception?.update?.({ refreshEdges: true, refreshVision: true, refreshLighting: true }, true);
+        invalidateLosCaches();
+        canvas.perception?.update?.({ refreshEdges: true, refreshVision: true, refreshLighting: true });
     });
 
     Hooks.on('updateToken', (tokenDoc, change) =>
@@ -218,7 +247,8 @@ export function initTokenBlocksVision()
         const token = canvas.tokens?.get(tokenDoc.id);
         if (!token)
             return;
-        const flagChanged = change?.flags?.[MODULE_ID]?.[FLAG_KEY] !== undefined;
+        const flagChanged = getLAFlags(change)?.[FLAG_KEY] !== undefined
+            || getLAFlags(change)?.[LA_ONLY_FLAG_KEY] !== undefined;
         const heightFlagChanged = change?.flags?.['wall-height']?.tokenHeight !== undefined;
         const moved = ['x', 'y', 'width', 'height', 'elevation'].some(k => k in change);
         if (flagChanged || heightFlagChanged || moved)
@@ -229,7 +259,7 @@ export function initTokenBlocksVision()
     {
         if (!opts?.refreshPosition && !opts?.refreshSize)
             return;
-        if (!shouldTokenBlock(token) && !_hasEdges(token))
+        if (!shouldTokenBlock(token) && !shouldTokenBlockLaOnly(token) && !_hasEdges(token))
             return;
         _refreshToken(token);
     });

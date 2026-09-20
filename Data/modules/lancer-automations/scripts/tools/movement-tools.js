@@ -1,20 +1,22 @@
 import { removeEffectsByNameFromTokens, applyEffectsToTokens, findEffectOnToken } from "../bonuses/flagged-effects.js";
+import { MODULE_ID } from "./constants.js";
+import { getLAFlag, setLAFlag, unsetLAFlag } from "./flag-utils.js";
 import { getMaxGroundHeightUnderToken } from "../combat/terrain-utils.js";
 import { playStandingUpFX, playTeleportFX } from "../fx/actionFX.js";
 import { executeDamageRoll, executeSimpleActivation } from "./misc-tools.js";
+import { localize, localizeFormat } from "./string-utils.js";
 
 /** Add a virtual LA movement entry for actions that cost movement without physically moving the token. */
 async function addVirtualMovement(token, cost)
 {
     const tokenDoc = token.document;
-    const laHistory = tokenDoc.getFlag('lancer-automations', 'moveHistory') ?? { moves: [] };
+    const laHistory = getLAFlag(tokenDoc,'moveHistory') ?? { moves: [] };
     const moves = laHistory.moves || [];
     moves.push({
         distanceMoved: cost,
         movementCost: cost,
         isDrag: true,
         isFreeMovement: false,
-        boostSet: [],
         startPos: { x: tokenDoc.x, y: tokenDoc.y },
     });
     await tokenDoc.update({ 'flags.lancer-automations.moveHistory': { ...laHistory, moves } });
@@ -41,14 +43,39 @@ export async function executeStandingUp(token)
     const hasProne = !!findEffectOnToken(token, effect => effect.statuses?.has('prone'));
     if (!hasProne)
     {
-        ui.notifications.info(`${token.name} is not Prone.`);
+        ui.notifications.info(localizeFormat('LA.notify.notProne', { name: token.name }));
         return;
     }
     const speed = token.actor.system?.speed ?? 0;
     await executeSimpleActivation(token.actor, {
         title: 'Standing Up',
         action: { name: 'Standing Up', activation: 'Movement' },
-        detail: `Stands up, using their standard move (+${speed} speed). Removes Prone.`
+        detail: localizeFormat('LA.movement.standingUpDetail', { speed })
+    });
+}
+
+/**
+ * Activates the general Boost action, then opens a ruler move of the token's speed
+ * using its current movement action.
+ * @param {Token} token
+ * @param {Object} [options] Passed to moveTokenRuler (title, description, urgent, ...)
+ * @returns {Promise<TokenDocument|null>} The moved doc, or null if the move was cancelled
+ */
+export async function boostMove(token, options = {})
+{
+    if (!token?.actor)
+        return null;
+    const api = game.modules.get(MODULE_ID)?.api;
+    if (!api)
+        return null;
+    const activation = await api.activateGeneralAction(token, "Boost");
+    if (!activation?.completed)
+        return null;
+    return api.moveTokenRuler(token, {
+        range: token.actor.system.speed,
+        title: localize('LA.dialogTitle.boostCaps'),
+        description: localize('LA.movement.moveUpToYourSpeed'),
+        ...options
     });
 }
 
@@ -57,7 +84,7 @@ export async function executeTeleport(token, cost)
 {
     if (!token?.actor)
         return;
-    const api = game.modules.get('lancer-automations')?.api;
+    const api = game.modules.get(MODULE_ID)?.api;
     if (!api)
         return;
     const speed = token.actor.system?.speed ?? 0;
@@ -66,8 +93,8 @@ export async function executeTeleport(token, cost)
         teleport: true,
         range: speed,
         cost: moveCost,
-        title: "TELEPORT",
-        description: `Select destination within Range ${speed}. Costs ${moveCost} movement.`
+        title: localize('LA.dialogTitle.teleportCaps'),
+        description: localizeFormat('LA.movement.teleportPrompt', { range: speed, cost: moveCost })
     });
     if (result)
     {
@@ -110,7 +137,7 @@ export async function executeFall(targetToken)
     {
         if (hasFallingEffect)
         {
-            ui.notifications.warn('Token is already on the ground');
+            ui.notifications.warn(localize('LA.notify.tokenIsAlreadyOnTheGround'));
             await removeEffectsByNameFromTokens({
                 tokens: [targetToken],
                 effectNames: ["Falling"]
@@ -119,14 +146,14 @@ export async function executeFall(targetToken)
         return;
     }
 
-    let fallStartElevation = Math.max(tokenElevation, tokenDoc.getFlag('lancer-automations', 'fallStartElevation') || 0);
+    let fallStartElevation = Math.max(tokenElevation, getLAFlag(tokenDoc,'fallStartElevation') || 0);
     const fallDistance = tokenElevation - maxGroundHeight;
     const fallAmount = Math.min(10, fallDistance);
     const newElevation = tokenElevation - fallAmount;
     const totalFallAmount = fallStartElevation - newElevation;
 
     await tokenDoc.update({ elevation: newElevation });
-    ui.notifications.info(`Token has fallen ${fallAmount} space${fallAmount !== totalFallAmount ? ` (for a total of ${totalFallAmount})` : ''}`);
+    ui.notifications.info(localizeFormat('LA.notify.tokenHasFallen', { amount: fallAmount, total: fallAmount !== totalFallAmount ? ` (for a total of ${totalFallAmount})` : '' }));
 
     if (newElevation <= maxGroundHeight)
     {
@@ -147,7 +174,7 @@ export async function executeFall(targetToken)
         if (newElevation < maxGroundHeight)
             await tokenDoc.update({ elevation: maxGroundHeight });
 
-        await tokenDoc.unsetFlag('lancer-automations', 'fallStartElevation');
+        await unsetLAFlag(tokenDoc,'fallStartElevation');
 
     }
     else if (!hasFallingEffect)
@@ -157,8 +184,8 @@ export async function executeFall(targetToken)
             effectNames: ["Falling"],
             duration: { label: "indefinite" }
         });
-        await tokenDoc.setFlag('lancer-automations', 'fallStartElevation', fallStartElevation);
+        await setLAFlag(tokenDoc,'fallStartElevation', fallStartElevation);
     }
     else
-        await tokenDoc.setFlag('lancer-automations', 'fallStartElevation', fallStartElevation);
+        await setLAFlag(tokenDoc,'fallStartElevation', fallStartElevation);
 }

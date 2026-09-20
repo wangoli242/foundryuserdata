@@ -1,10 +1,14 @@
 /* global Sequence, Sequencer, canvas, game, ui, Hooks, Dialog, ChatMessage, CONST */
 
+import { getLAFlag, setLAFlag } from "../tools/flag-utils.js";
+import { localize, localizeFormat } from "../tools/string-utils.js";
+import { isExecutorGM } from "../tools/misc-tools.js";
+
 export async function delayedTokenAppearance()
 {
     if (!game.combat)
     {
-        ui.notifications.warn("You must be in combat to use this reinforcement system!");
+        ui.notifications.warn(localize('LA.notify.youMustBeInCombatToUse'));
         return;
     }
 
@@ -12,7 +16,7 @@ export async function delayedTokenAppearance()
 
     if (selectedTokens.length === 0)
     {
-        ui.notifications.warn("Please select at least one token!");
+        ui.notifications.warn(localize('LA.notify.pleaseSelectAtLeastOneToken'));
         return;
     }
 
@@ -26,11 +30,11 @@ export async function delayedTokenAppearance()
     const rounds = await new Promise((resolve) =>
     {
         new Dialog({
-            title: "Delayed Appearance",
+            title: localize('LA.dialogTitle.delayedAppearance'),
             content: `
         <form>
           <div class="form-group">
-            <label>How many rounds until tokens appear?</label>
+            <label>${localize('LA.reinforcement.howManyRounds')}</label>
             <input type="number" name="rounds" min="1" value="1" autofocus />
           </div>
         </form>
@@ -38,7 +42,7 @@ export async function delayedTokenAppearance()
             buttons: {
                 ok: {
                     icon: '<i class="fas fa-check"></i>',
-                    label: "Confirm",
+                    label: localize("LA.common.confirm"),
                     callback: (html) =>
                     {
                         const roundsRaw = html.find('[name="rounds"]').val();
@@ -48,7 +52,7 @@ export async function delayedTokenAppearance()
                 },
                 cancel: {
                     icon: '<i class="fas fa-times"></i>',
-                    label: "Cancel",
+                    label: localize("LA.common.cancel"),
                     callback: () => resolve(null)
                 }
             },
@@ -98,10 +102,9 @@ export async function delayedTokenAppearance()
         });
     }
 
-    const currentFlags = (game.combat.getFlag("lancer-automations", "delayedAppearances")) || [];
-    await game.combat.setFlag("lancer-automations", "delayedAppearances", [...(Array.isArray(currentFlags) ? currentFlags : []), ...placeholderData]);
+    const currentFlags = (getLAFlag(game.combat,"delayedAppearances")) || [];
+    await setLAFlag(game.combat,"delayedAppearances", [...(Array.isArray(currentFlags) ? currentFlags : []), ...placeholderData]);
 
-    // Synchronize video playback for all clients
     if (placeholderData.length > 0)
     {
         game.socket.emit("module.lancer-automations", {
@@ -132,7 +135,7 @@ export async function delayedTokenAppearance()
         }, 200);
     }
 
-    ui.notifications.info(`${placeholderData.length} token(s) will appear at round ${targetRound}`);
+    ui.notifications.info(localizeFormat('LA.notify.tokensWillAppear', { count: placeholderData.length, round: targetRound }));
 }
 
 export function initDelayedAppearanceHook()
@@ -140,12 +143,12 @@ export function initDelayedAppearanceHook()
     Hooks.on("updateCombat", async (combat, changed, _options, _userId) =>
     {
         // Only for GM and when round changes
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         if (!changed.round)
             return;
 
-        let delayedAppearances = (combat.getFlag("lancer-automations", "delayedAppearances")) || [];
+        let delayedAppearances = (getLAFlag(combat,"delayedAppearances")) || [];
         const currentRound = combat.round;
 
         const validAppearances = (Array.isArray(delayedAppearances) ? delayedAppearances : []).filter(appearance =>
@@ -166,7 +169,7 @@ export function initDelayedAppearanceHook()
 
         if (validAppearances.length !== (Array.isArray(delayedAppearances) ? delayedAppearances.length : 0))
         {
-            await combat.setFlag("lancer-automations", "delayedAppearances", validAppearances);
+            await setLAFlag(combat,"delayedAppearances", validAppearances);
             delayedAppearances = validAppearances;
         }
 
@@ -186,7 +189,6 @@ export function initDelayedAppearanceHook()
         if (appearing.length === 0)
             return;
 
-        // Show grouped selection dialog
         const selectedToAppear = await new Promise((resolve) =>
         {
             const checkboxes = appearing.map((appearance, index) => `
@@ -199,17 +201,17 @@ export function initDelayedAppearanceHook()
       `).join('');
 
             new Dialog({
-                title: "NPCs Arriving",
+                title: localize('LA.dialogTitle.npcsArriving'),
                 content: `
           <form>
-            <p>Select which NPCs will appear:</p>
+            <p>${localize('LA.reinforcement.selectWhichNpcs')}</p>
             ${checkboxes}
           </form>
         `,
                 buttons: {
                     confirm: {
                         icon: '<i class="fas fa-check"></i>',
-                        label: "Confirm",
+                        label: localize("LA.common.confirm"),
                         callback: (html) =>
                         {
                             const selected = [];
@@ -223,7 +225,7 @@ export function initDelayedAppearanceHook()
                     },
                     cancel: {
                         icon: '<i class="fas fa-times"></i>',
-                        label: "Cancel All",
+                        label: localize("LA.reinforcement.cancelAll"),
                         callback: () => resolve([])
                     }
                 },
@@ -269,7 +271,6 @@ export function initDelayedAppearanceHook()
         const notSelected = appearing.filter(appearance => !(Array.isArray(selectedToAppear) ? selectedToAppear : []).includes(appearance));
         for (let appearance of notSelected)
         {
-            // Delete placeholder if it exists
             if (appearance.placeholderId)
             {
                 const placeholder = canvas.scene.tokens.get(appearance.placeholderId);
@@ -285,14 +286,14 @@ export function initDelayedAppearanceHook()
         if (Array.isArray(selectedToAppear) && selectedToAppear.length > 0)
         {
             ChatMessage.create({
-                content: `<h3>🎭 ${selectedToAppear.length} NEW NPC${selectedToAppear.length > 1 ? 'S' : ''} HAS ARRIVED</h3>`,
+                content: `<h3>🎭 ${localizeFormat('LA.reinforcement.npcsArrived', { count: selectedToAppear.length, plural: selectedToAppear.length > 1 ? 'S' : '' })}</h3>`,
                 speaker: { alias: "Combat System" }
             });
         }
 
         // Clean up ALL processed appearances (both confirmed and cancelled)
         const remaining = (Array.isArray(delayedAppearances) ? delayedAppearances : []).filter(appearance => appearance.targetRound !== currentRound);
-        await combat.setFlag("lancer-automations", "delayedAppearances", remaining);
+        await setLAFlag(combat,"delayedAppearances", remaining);
     });
 }
 

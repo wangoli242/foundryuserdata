@@ -1,12 +1,15 @@
 /* global $ */
 import { playUiSound } from './sound.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { getLAFlag, setLAFlag } from '../tools/flag-utils.js';
 // HUD item helpers: status badges, icons, col4 action/profile lists, and detail-popup pips.
 
 import { getItemActions } from '../interactive/deployables.js';
 import { laDetailPopup, laRenderActionDetail, laRenderWeaponProfile } from '../interactive/detail-renderers.js';
-import { getActivationIcon } from '../tools/misc-tools.js';
-import { getPerRoundLimit, getPerTurnLimit, getPerSceneLimit, getPerRoundLimitFromSub, getPerTurnLimitFromSub, getPerSceneLimitFromSub, getSubUses, getSubUsed, patchSubUses, itemAllTags } from '../combat/per-frequency-tags.js';
+import { getActivationIcon, executeProfileSwitch, executeSimpleActivation } from '../tools/misc-tools.js';
+import { getPerRoundLimit, getPerTurnLimit, getPerSceneLimit, getPerRoundLimitFromSub, getPerTurnLimitFromSub, getPerSceneLimitFromSub, getSubUses, getSubUsed, patchSubUses, itemAllTags, actionSubKey, subHasLimits } from '../combat/per-frequency-tags.js';
 import { openExtraConfigDialog } from '../interactive/extra-config-dialog.js';
+import { localize, localizeFormat } from '../tools/string-utils.js';
 export { getActivationIcon } from '../tools/misc-tools.js';
 
 const ICON_PROFILE = 'systems/lancer/assets/icons/weapon_profile.svg';
@@ -14,6 +17,18 @@ const ICON_MOD     = 'systems/lancer/assets/icons/weapon_mod.svg';
 
 // Row icon size (px). Drives both svg images and mdi font glyphs so they match.
 export const HUD_ICON_SIZE = 20;
+export const HUD_WEAPON_ICON_SIZE = 30;
+
+const GENERIC_ACTION_NAMES = new Set(['action', 'new action']);
+
+/** Placeholder action names ("Action") display as the item's name. */
+export function actionDisplayName(item, action)
+{
+    const name = String(action?.name ?? '').trim();
+    if (!name || GENERIC_ACTION_NAMES.has(name.toLowerCase()))
+        return item?.name ?? name;
+    return name;
+}
 
 export const rechargeIcon = (/** @type {boolean} */ charged) =>
     `<span class="mdi ${charged ? 'mdi-square-circle' : 'mdi-square-outline'}"></span>`;
@@ -34,6 +49,21 @@ export function activationTheme(/** @type {string|null|undefined} */ activation)
     if (normalized === 'quick' || normalized === 'quick_action' || normalized === 'full' || normalized === 'full_action')
         return 'action';
     return 'weapon';
+}
+
+// Counter an action row reads: the action's own sub counter if it carries a frequency, else the item's.
+function resolveActionScope(item, action, subKey = null)
+{
+    if (!action)
+        return { sub: null, key: null };
+    if (subKey)
+        return { sub: action, key: subKey };
+    const key = actionSubKey(item, action);
+    if (key)
+        return { sub: action, key };
+    if (subHasLimits(action) || action._addedViaExtrasUI || item?.type === 'frame')
+        return { sub: action, key: null };
+    return { sub: null, key: null };
 }
 
 /**
@@ -94,14 +124,7 @@ export function getItemStatus(itemOrAction, extraAction = null, { subKey = null 
 
     const perFreqOn = (() =>
     {
-        try
-        {
-            return !!game.settings.get('lancer-automations', 'enablePerRoundTurnTags');
-        }
-        catch
-        {
-            return false;
-        }
+        return !!getModuleSetting('enablePerRoundTurnTags');
     })();
     const pushPerFreq = (max, used, iconReady, iconConsumed) =>
     {
@@ -129,7 +152,9 @@ export function getItemStatus(itemOrAction, extraAction = null, { subKey = null 
         pushUses(sys.uses);
     if (perFreqOn)
     {
-        const freqSub = extraAction ?? (isItem ? null : sys);
+        const scoped = isItem ? resolveActionScope(itemOrAction, extraAction, subKey) : { sub: extraAction ?? sys, key: null };
+        const freqSub = scoped.sub;
+        const freqKey = scoped.key;
         const perRound = Math.max(Number(itemTags.find(tag => tag.lid === 'tg_round')?.val ?? 0), freqSub ? getPerRoundLimitFromSub(freqSub) : getPerRoundLimit(itemOrAction));
         const perTurn = Math.max(Number(itemTags.find(tag => tag.lid === 'tg_turn')?.val ?? 0), freqSub ? getPerTurnLimitFromSub(freqSub) : getPerTurnLimit(itemOrAction));
         let perScene = 0;
@@ -137,8 +162,8 @@ export function getItemStatus(itemOrAction, extraAction = null, { subKey = null 
             perScene = getPerSceneLimitFromSub(freqSub);
         else if (isItem && itemOrAction.type !== 'frame')
             perScene = getPerSceneLimit(itemOrAction);
-        const freqUsed = (field) => subKey && isItem
-            ? getSubUsed(itemOrAction, subKey, field)
+        const freqUsed = (field) => freqKey && isItem
+            ? getSubUsed(itemOrAction, freqKey, field)
             : Number(sys[field]?.value ?? 0);
         if (perRound > 0)
             pushPerFreq(perRound, freqUsed('uses_per_round'), 'mdi-restart', 'mdi-restart-off');
@@ -172,17 +197,10 @@ export function isWhiteIcon(icon)
 
 export function tahScale()
 {
-    try
-    {
-        return Number(game.settings.get('lancer-automations', 'tah.uiScale')) || 1;
-    }
-    catch
-    {
-        return 1;
-    }
+    return Number(getModuleSetting('tah.uiScale')) || 1;
 }
 
-export function laHudRenderIcon(icon)
+export function laHudRenderIcon(icon, size = HUD_ICON_SIZE)
 {
     if (!icon)
         return '';
@@ -192,10 +210,123 @@ export function laHudRenderIcon(icon)
         const filter = isWhite ? 'invert(1)' : 'none';
         const cls = isWhite ? 'la-hud-icon la-hud-icon--white' : 'la-hud-icon la-hud-icon--dark';
         // LA icons fill their viewBox edge-to-edge; system icons ship with whitespace. Pad to match.
-        const pad = icon.includes('modules/lancer-automations/') ? 'padding:2px;box-sizing:border-box;' : '';
-        return `<img class="${cls}" src="${icon}" style="width:${HUD_ICON_SIZE}px;height:${HUD_ICON_SIZE}px;${pad}filter:${filter};margin-right:5px;vertical-align:middle;flex-shrink:0;border:none;outline:none;">`;
+        const pad = icon.includes('modules/lancer-automations/') ? 'padding:0.8px;box-sizing:border-box;' : '';
+        return `<img class="${cls}" src="${icon}" style="width:${size}px;height:${size}px;${pad}filter:${filter};margin-right:5px;vertical-align:middle;flex-shrink:0;border:none;outline:none;">`;
     }
-    return `<i class="${icon} la-hud-icon" style="font-size:${HUD_ICON_SIZE}px;margin-right:5px;vertical-align:middle;flex-shrink:0;"></i>`;
+    return `<i class="${icon} la-hud-icon" style="font-size:${size}px;margin-right:5px;vertical-align:middle;flex-shrink:0;"></i>`;
+}
+
+/** Stripe palette for blocked / destroyed / unavailable rows. */
+export function laHudStripeStyle(item)
+{
+    if (item.stripeStyle)
+        return item.stripeStyle;
+    if (item.softDisabled)
+    {
+        return document.documentElement.classList.contains('la-dark')
+            ? {
+                bg: 'repeating-linear-gradient(45deg, #707070 0 6px, #5c5c5c 6px 12px)',
+                hoverBg: 'repeating-linear-gradient(45deg, #858585 0 6px, #6e6e6e 6px 12px)',
+                border: '#8f8f8f',
+                color: '#eee',
+                hoverColor: '#fff'
+            }
+            : {
+                bg: 'repeating-linear-gradient(45deg, #3a3a3a 0 6px, #2f2f2f 6px 12px)',
+                hoverBg: 'repeating-linear-gradient(45deg, #555 0 6px, #444 6px 12px)',
+                border: '#666',
+                color: '#bbb',
+                hoverColor: '#ddd'
+            };
+    }
+    if (item.statusKind === 'destroyed')
+    {
+        return {
+            bg: 'repeating-linear-gradient(45deg, #5a2222 0 6px, #4a1c1c 6px 12px)',
+            hoverBg: 'repeating-linear-gradient(45deg, #7a3535 0 6px, #6a2828 6px 12px)',
+            border: '#a04444',
+            color: '#e0b0b0',
+            hoverColor: '#f0c8c8'
+        };
+    }
+    if (item.statusKind === 'unavailable')
+    {
+        return {
+            bg: 'repeating-linear-gradient(45deg, #5a4422 0 6px, #4a3818 6px 12px)',
+            hoverBg: 'repeating-linear-gradient(45deg, #7a5c30 0 6px, #6a4c25 6px 12px)',
+            border: '#a07744',
+            color: '#e0c8a0',
+            hoverColor: '#f0d8b8'
+        };
+    }
+    return null;
+}
+
+const WEAPON_SIZE_LEVEL = { aux: 0, auxiliary: 0, main: 1, heavy: 2, superheavy: 3 };
+
+/** 0-3 for Aux / Main / Heavy / Superheavy, else null. NPC features carry it in weapon_type. */
+export function weaponSizeLevel(weapon)
+{
+    const sys = weapon?.system;
+    if (!sys)
+        return null;
+    const direct = String(sys.size ?? sys.type ?? '').toLowerCase().trim();
+    if (direct in WEAPON_SIZE_LEVEL)
+        return WEAPON_SIZE_LEVEL[direct];
+    const npcType = String(sys.weapon_type ?? '').toLowerCase().trim();
+    for (const key of ['superheavy', 'heavy', 'main', 'auxiliary', 'aux'])
+    {
+        if (npcType.startsWith(key))
+            return WEAPON_SIZE_LEVEL[key];
+    }
+    return null;
+}
+
+const LA_WEAPON_ICONS = 'modules/lancer-automations/icons/weapon';
+const WEAPON_TYPE_ICON = {
+    cqb: `${LA_WEAPON_ICONS}/CQB_White.svg`,
+    cannon: `${LA_WEAPON_ICONS}/Canon_V2_White.svg`,
+    launcher: `${LA_WEAPON_ICONS}/Launcher_V2_White.svg`,
+    melee: 'systems/lancer/assets/icons/white/melee.svg',
+    nexus: `${LA_WEAPON_ICONS}/Nexus_White.svg`,
+    rifle: `${LA_WEAPON_ICONS}/Rifle_White.svg`,
+};
+
+const WEAPON_TYPE_ICON_FALLBACK = 'systems/lancer/assets/icons/white/mech_weapon.svg';
+
+/** Weapon-type icon path. Mech weapons type per profile, NPC features fold it into weapon_type ("Main Cannon"). */
+export function weaponTypeIcon(weapon)
+{
+    const sys = weapon?.system;
+    if (!sys)
+        return WEAPON_TYPE_ICON_FALLBACK;
+    const profile = sys.active_profile ?? sys.profiles?.[sys.selected_profile_index ?? 0];
+    const words = `${profile?.type ?? ''} ${sys.weapon_type ?? ''}`.toLowerCase().split(/[^a-z]+/);
+    for (const word of words)
+    {
+        if (Object.hasOwn(WEAPON_TYPE_ICON, word))
+            return WEAPON_TYPE_ICON[word];
+    }
+    return WEAPON_TYPE_ICON_FALLBACK;
+}
+
+/** Four-segment size rule drawn left of the weapon icon, filling upward; inherits currentColor. */
+export function laHudSizeMark(level)
+{
+    if (level == null)
+        return '';
+    const length = 3.4;
+    const gap = 2;
+    const thickness = 2;
+    const total = length * 4 + gap * 3;
+    let bars = '';
+    for (let step = 0; step < 4; step++)
+    {
+        const dim = step <= level ? '' : ' opacity="0.25"';
+        const offset = total - (step + 1) * length - step * gap;
+        bars += `<rect x="0" y="${offset.toFixed(2)}" width="${thickness}" height="${length}" fill="currentColor"${dim}/>`;
+    }
+    return `<svg class="la-hud-size-mark" width="${thickness}" height="${total.toFixed(2)}" viewBox="0 0 ${thickness} ${total.toFixed(2)}" fill="none" aria-hidden="true">${bars}</svg>`;
 }
 
 export function getDeployableIcon(depInfo)
@@ -218,11 +349,12 @@ export function getDeployableIcon(depInfo)
  * @param {Item}    [opts.modItem=null]        Weapon mod item
  * @param {Function} [opts.showPopup=null]     (popup, rowEl) => void - if provided, actions get right-click detail popups
  * @param {Function} [opts.onActivate=null]   (action) => void - if provided, actions get an onClick handler
+ * @param {Function} [opts.actionPopup=null]  (action, source) => (rowEl) => void - replaces the default action right-click popup
  * @returns {Array}
  */
 export function laHudItemChildren(item, opts = {})
 {
-    const { defaultActions = [], modItem = null, showPopup = null, onActivate = null } = opts;
+    const { defaultActions = [], modItem = null, showPopup = null, onActivate = null, actionPopup = null } = opts;
     const sys = item.system;
     const profiles = sys.profiles ?? [];
     const activeIdx = sys.selected_profile_index ?? 0;
@@ -247,10 +379,37 @@ export function laHudItemChildren(item, opts = {})
     taggedActions.push(..._dedupedActions);
     const items = [...defaultActions];
 
+    // Actions
+    if (taggedActions.length)
+    {
+        taggedActions.forEach(({ action, source }) =>
+        {
+            const status = getItemStatus(source, action);
+            const entry = {
+                label: action.name,
+                action,
+                icon: getActivationIcon(action),
+                badge: status.badge,
+                badgeColor: status.badgeColor,
+                statusKind: status.destroyed ? 'destroyed' : status.unavailable ? 'unavailable' : null,
+                onClick: onActivate ? () => onActivate(action, source) : null,
+            };
+            entry.onRightClick = actionPopup ? actionPopup(action, source) : (row) =>
+            {
+                const bodyHtml = laRenderActionDetail(action, { sourceName: source?.name });
+                const subtitle = action.activation ?? '';
+                const popup = laDetailPopup('la-hud-popup la-hud-action-popup', action.name, subtitle, bodyHtml, activationTheme(action.activation));
+                if (showPopup)
+                    showPopup(popup, row);
+            };
+            items.push(entry);
+        });
+    }
+
     // Profiles
     if (profiles.length > 1)
     {
-        items.push({ label: 'PROFILES', isSectionLabel: true });
+        items.push({ label: localize('LA.tokenHud.profiles'), isSectionLabel: true });
         profiles.forEach((profile, idx) =>
         {
             const isActive = idx === activeIdx;
@@ -266,13 +425,17 @@ export function laHudItemChildren(item, opts = {})
                     hoverColor: '#ecf5fd'
                 } : null,
                 keepOpen: true,
+                clickSound: 'toggle',
                 _profile: profile,
-                onClick: isActive ? null : async () => item.update({ 'system.selected_profile_index': idx }),
+                favKey: `${item.uuid ?? item.id}|profile-${idx}`,
+                onClick: isActive
+                    ? () => ui.notifications.info(localizeFormat('LA.notify.alreadyActiveProfile', { name: profileName }))
+                    : () => executeProfileSwitch(item, idx),
                 refreshCol4: () => laHudItemChildren(item, opts),
                 onRightClick: showPopup ? (row) =>
                 {
                     const bodyHtml = laRenderWeaponProfile(profile, false);
-                    const subtitle = [profile.type, isActive ? 'Active' : null].filter(Boolean).join(' · ');
+                    const subtitle = [profile.type, item.name, isActive ? 'Active' : null].filter(Boolean).join(' · ');
                     const popup = laDetailPopup('la-hud-popup la-hud-profile-popup', profileName, subtitle, bodyHtml, 'weapon');
                     showPopup(popup, row);
                 } : null,
@@ -280,34 +443,20 @@ export function laHudItemChildren(item, opts = {})
         });
     }
 
-    // Actions
-    if (taggedActions.length)
-    {
-        items.push({ label: 'ACTIONS', isSectionLabel: true });
-        taggedActions.forEach(({ action, source }) =>
-        {
-            const entry = {
-                label: action.name,
-                icon: getActivationIcon(action),
-                onClick: onActivate ? () => onActivate(action, source) : null,
-            };
-            entry.onRightClick = (row) =>
-            {
-                const bodyHtml = laRenderActionDetail(action, { sourceName: source?.name });
-                const subtitle = action.activation ?? '';
-                const popup = laDetailPopup('la-hud-popup la-hud-action-popup', action.name, subtitle, bodyHtml, activationTheme(action.activation));
-                if (showPopup)
-                    showPopup(popup, row);
-            };
-            items.push(entry);
-        });
-    }
-
     // Mod
     if (modItem)
     {
-        items.push({ label: 'MOD', isSectionLabel: true });
-        items.push({ label: modItem.name, icon: ICON_MOD });
+        items.push({ label: localize('LA.tokenHud.mod'), isSectionLabel: true });
+        items.push({
+            label: modItem.name,
+            icon: ICON_MOD,
+            favKey: `${modItem.uuid ?? modItem.id}|mod`,
+            onClick: () => executeSimpleActivation(item.actor, {
+                title: modItem.name,
+                action: { name: modItem.name, activation: 'Mod' },
+                detail: modItem.system?.effect ?? ''
+            }, { item: modItem, hostWeapon: item }),
+        });
     }
 
     return items;
@@ -325,8 +474,11 @@ export function appendItemPips(item, popup, depthCallbacks)
 {
     const action = depthCallbacks?.action;
     const subData = depthCallbacks?.subData;
-    const subKey = depthCallbacks?.subKey ?? null;
     const isActorExtra = item?.documentName === 'Actor' && action?._addedViaExtrasUI === true;
+    const scoped = subData || isActorExtra || item?.documentName !== 'Item'
+        ? { sub: subData ?? action ?? null, key: depthCallbacks?.subKey ?? null }
+        : resolveActionScope(item, action, depthCallbacks?.subKey ?? null);
+    const subKey = scoped.key;
     const sys = item?.system;
     const allTags = isActorExtra
         ? (action?.tags ?? [])
@@ -336,16 +488,9 @@ export function appendItemPips(item, popup, depthCallbacks)
     const hasLimited  = allTags.some(tag => tag.lid === 'tg_limited');
     const perFreqOn = (() =>
     {
-        try
-        {
-            return !!game.settings.get('lancer-automations', 'enablePerRoundTurnTags');
-        }
-        catch
-        {
-            return false;
-        }
+        return !!getModuleSetting('enablePerRoundTurnTags');
     })();
-    const subEntry = subData ?? action;
+    const subEntry = scoped.sub;
     const perRoundMax = perFreqOn ? Math.max(Number(allTags.find(tag => tag.lid === 'tg_round')?.val ?? 0), subEntry ? getPerRoundLimitFromSub(subEntry) : getPerRoundLimit(item)) : 0;
     const perTurnMax = perFreqOn ? Math.max(Number(allTags.find(tag => tag.lid === 'tg_turn')?.val ?? 0), subEntry ? getPerTurnLimitFromSub(subEntry) : getPerTurnLimit(item)) : 0;
     const perSceneMax = !perFreqOn || isActorExtra ? 0
@@ -377,7 +522,7 @@ export function appendItemPips(item, popup, depthCallbacks)
             return getSubUses(item, subKey);
         if (isActorExtra)
         {
-            const list = item.getFlag?.('lancer-automations', 'extraActions') || [];
+            const list = getLAFlag(item,'extraActions') || [];
             return list.find(entry => entry.name === action.name) ?? action;
         }
         return item.system;
@@ -391,13 +536,13 @@ export function appendItemPips(item, popup, depthCallbacks)
         }
         if (isActorExtra)
         {
-            const list = item.getFlag?.('lancer-automations', 'extraActions') || [];
+            const list = getLAFlag(item,'extraActions') || [];
             const idx = list.findIndex(entry => entry.name === action.name);
             if (idx < 0)
                 return;
             const next = list.slice();
             next[idx] = { ...next[idx], ...patch };
-            await item.setFlag('lancer-automations', 'extraActions', next);
+            await setLAFlag(item,'extraActions', next);
         }
         else
         {
@@ -506,27 +651,26 @@ export function appendItemPips(item, popup, depthCallbacks)
     };
     rebuild();
 
-    // Item-attached extras-UI action: render a second pip row whose tags are disjoint from the
-    // item's (dedup guaranteed at add-time). State reads/writes go to the flag entry by name.
+    // Item-attached extras-UI action: a second pip row whose tags are disjoint from the item's (deduped at add-time), state living on the flag entry by name.
     const isItemDoc = item?.documentName === 'Item';
     if (isItemDoc && action?._addedViaExtrasUI && Array.isArray(action.tags) && action.tags.length)
     {
-        const actionHasLoading  = action.tags.some(t => t.lid === 'tg_loading');
-        const actionHasRecharge = action.tags.some(t => t.lid === 'tg_recharge');
-        const actionHasLimited  = action.tags.some(t => t.lid === 'tg_limited');
+        const actionHasLoading  = action.tags.some(tag => tag.lid === 'tg_loading');
+        const actionHasRecharge = action.tags.some(tag => tag.lid === 'tg_recharge');
+        const actionHasLimited  = action.tags.some(tag => tag.lid === 'tg_limited');
         if (actionHasLoading || actionHasRecharge || actionHasLimited)
         {
-            const readActionState = () => (item.getFlag?.('lancer-automations', 'extraActions') || [])
+            const readActionState = () => (getLAFlag(item,'extraActions') || [])
                 .find(entry => entry.name === action.name) ?? action;
             const patchActionState = async (patch) =>
             {
-                const list = item.getFlag?.('lancer-automations', 'extraActions') || [];
+                const list = getLAFlag(item,'extraActions') || [];
                 const idx = list.findIndex(entry => entry.name === action.name);
                 if (idx < 0)
                     return;
                 const next = list.slice();
                 next[idx] = { ...next[idx], ...patch };
-                await item.setFlag('lancer-automations', 'extraActions', next);
+                await setLAFlag(item,'extraActions', next);
             };
             const actionWrap = $(`<div class="la-ea-pips" style="display:flex;flex-direction:column;gap:5px;margin-bottom:8px;padding-bottom:8px;border-bottom:1px solid #2a2a2a;"></div>`);
             popup.children().last().prepend(actionWrap);
@@ -583,8 +727,7 @@ export function appendItemPips(item, popup, depthCallbacks)
         }
     }
 
-    // Extra-action recharge pip (action-level, not item-level).
-    // Uses the same "Charged" label + ▣/□ pip style as native tg_recharge items.
+    // Extra-action recharge pip (action-level, not item-level), same "Charged" label and ▣/□ style as native tg_recharge items.
     const extraAction = depthCallbacks?.action;
     if (extraAction?.recharge && item && !extraAction._addedViaExtrasUI)
     {
@@ -593,7 +736,7 @@ export function appendItemPips(item, popup, depthCallbacks)
             popup.children().last().prepend(extraActionWrap);
         const rebuildExtraAction = () =>
         {
-            const extraActionEntry = (item.getFlag?.('lancer-automations', 'extraActions') || []).find(entry => entry.name === extraAction.name);
+            const extraActionEntry = (getLAFlag(item,'extraActions') || []).find(entry => entry.name === extraAction.name);
             const charged = extraActionEntry ? extraActionEntry.charged !== false : extraAction.charged !== false;
             extraActionWrap.find('.la-ea-recharge-row').remove();
             const row = $(`<div class="la-ea-recharge-row" style="display:flex;align-items:center;gap:6px;"></div>`);
@@ -602,12 +745,12 @@ export function appendItemPips(item, popup, depthCallbacks)
             pip.on('click', async () =>
             {
                 playUiSound('toggle');
-                const actions = item.getFlag?.('lancer-automations', 'extraActions') || [];
+                const actions = getLAFlag(item,'extraActions') || [];
                 const match = actions.find(entry => entry.name === extraAction.name);
                 if (match)
                 {
                     match.charged = !match.charged;
-                    await item.setFlag('lancer-automations', 'extraActions', actions);
+                    await setLAFlag(item,'extraActions', actions);
                     extraAction.charged = match.charged;
                 }
                 rebuildExtraAction();

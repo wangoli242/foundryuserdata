@@ -1,6 +1,6 @@
 // Config constants for the token stat-bar system.
 
-export const MODULE_ID = 'lancer-automations';
+export { MODULE_ID } from '../../tools/constants.js';
 
 export const SETTING_ENABLED = 'tokenStatBar';
 export const SETTING_DEFAULT_HIDDEN = 'statBarDefaultHidden';
@@ -40,6 +40,7 @@ export const ISO_SETTING_RETICLE = 'iso.targetReticle';
 export const ISO_SETTING_HITZONE = 'iso.clickZone';
 
 export const FLAG_HIDDEN = 'statBarHidden';
+export const FLAG_DISABLED = 'statBarDisabled';
 export const FLAG_COMBAT_ONLY = 'statBarCombatOnly';
 export const FLAG_ROW_HEIGHT = 'statBarRowHeight';
 export const FLAG_VIS_OUT_OF_COMBAT = 'statBarVisibilityOutOfCombat';

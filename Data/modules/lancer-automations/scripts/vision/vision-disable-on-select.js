@@ -1,20 +1,14 @@
 /* global game, Hooks, libWrapper, canvas */
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from '../tools/constants.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 const SETTING_MAX = 'disableVisionAboveControlled';
 
 let active = false;
 
 function _max()
 {
-    try
-    {
-        return Number(game.settings.get(MODULE_ID, SETTING_MAX)) || 0;
-    }
-    catch
-    {
-        return 0;
-    }
+    return Number(getModuleSetting(SETTING_MAX)) || 0;
 }
 
 function _shouldDisable()
@@ -37,8 +31,8 @@ function _applyState()
 export function initVisionDisableOnSelect()
 {
     game.settings.register(MODULE_ID, SETTING_MAX, {
-        name: 'Disable Vision Above N Controlled Tokens',
-        hint: 'Turn token vision off while more than N tokens are controlled (0 = never).',
+        name: 'LA.settings.disableVisionAboveControlled.name',
+        hint: 'LA.settings.disableVisionAboveControlled.hint',
         scope: 'world',
         type: Number,
         default: 5,

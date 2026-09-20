@@ -1,8 +1,9 @@
 /* global canvas, game, Hooks, libWrapper */
 
 import { showOverlapStackPicker } from './canvas.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from '../tools/constants.js';
 
 function overlappingTokens(token)
 {
@@ -34,15 +35,7 @@ Hooks.once('init', () =>
     {
         if (game.activeTool === 'target')
             return wrapped(event);
-        let enabled = false;
-        try
-        {
-            enabled = !!game.settings.get(MODULE_ID, 'overlapTokenPicker');
-        }
-        catch
-        {
-            enabled = false;
-        }
+        const enabled = !!getModuleSetting('overlapTokenPicker');
         if (!enabled)
             return wrapped(event);
         const stack = overlappingTokens(this);

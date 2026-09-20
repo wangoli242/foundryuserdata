@@ -1,5 +1,7 @@
-import { TG } from '../interactive/canvas-helpers.js';
+import { TG, createTokenTether } from '../interactive/canvas-helpers.js';
+import { MODULE_ID } from '../tools/constants.js';
 import { createTokenMark } from '../interactive/target-shapes.js';
+import { localize } from '../tools/string-utils.js';
 
 export function durationOptionsHtml()
 {
@@ -55,7 +57,7 @@ export function setupDurationUI($root, prefix, { onChange, onPickStart } = {})
     {
         e.preventDefault();
         e.stopPropagation();
-        const api = game.modules.get('lancer-automations').api;
+        const api = game.modules.get(MODULE_ID).api;
         const currentVal = String($root.find(`#${prefix}-origin`).val());
         const caster = canvas.tokens.get(currentVal) || canvas.tokens.controlled[0];
         onPickStart?.();
@@ -64,8 +66,8 @@ export function setupDurationUI($root, prefix, { onChange, onPickStart } = {})
             includeSelf: true,
             urgent: true,
             autoConfirm: true,
-            title: 'Pick Token',
-            description: 'Select a token on the map to update the field.',
+            title: localize('LA.dialogTitle.pickToken'),
+            description: localize('LA.duration.selectATokenOnTheMap'),
             icon: 'fas fa-crosshairs'
         });
         if (selected && selected.length > 0)
@@ -88,6 +90,41 @@ export function buildDuration(durationLabel, originID, turnsInput)
     return { label: durationLabel, turns, rounds: 0, _preAdjusted: true };
 }
 
+/**
+ * Duration ending at the end of a token's own turn, N turns out. Handles the +1 when it is
+ * already that token's turn, and stamps the token as the turn origin.
+ * @param {any} token
+ * @param {number} [turns=1]
+ * @returns {object}
+ */
+export function untilEndOfTurn(token, turns = 1)
+{
+    const id = token?.id ?? token;
+    return { ...buildDuration('end', id, turns), overrideTurnOriginId: id };
+}
+
+/**
+ * Same, ending at the start of the token's turn.
+ * @param {any} token
+ * @param {number} [turns=1]
+ * @returns {object}
+ */
+export function untilStartOfTurn(token, turns = 1)
+{
+    const id = token?.id ?? token;
+    return { ...buildDuration('start', id, turns), overrideTurnOriginId: id };
+}
+
+/**
+ * Stable key for the current combat turn ("round:turn"), null out of combat.
+ * Use it to tell "the turn this happened on" from any later turn.
+ * @returns {string|null}
+ */
+export function currentTurnKey()
+{
+    return game.combat ? `${game.combat.round}:${game.combat.turn}` : null;
+}
+
 // Same read/adjust logic as the Effect Manager apply (effectManager.js standard tab).
 export function getDurationConfig($root, prefix)
 {
@@ -98,29 +135,45 @@ export function getDurationConfig($root, prefix)
     return { duration: buildDuration(durationLabel, originID, turnsInput), originID };
 }
 
-// White mark on the effect target, yellow on the duration origin, single yellow when same token.
+// White mark on the effect target, yellow on every reference token (duration origin, trigger origin),
+// single yellow when same token. Each reference is tethered to the targets it applies to.
 export function createDurationMarks()
 {
     let marks = [];
+    let tether = null;
     const clear = () =>
     {
         for (const mark of marks)
             mark.destroy();
         marks = [];
+        tether?.destroy();
+        tether = null;
     };
     return {
-        update({ targetToken = null, targetTokens = null, originToken = null } = {})
+        update({ targetToken = null, targetTokens = null, originToken = null, originTokens = null } = {})
         {
             clear();
             const targets = (targetTokens ?? [targetToken]).filter(Boolean);
+            const origins = (originTokens ?? [originToken]).filter(Boolean);
+            const originIds = new Set(origins.map(token => token.id));
             for (const token of targets)
             {
-                if (originToken && token.id === originToken.id)
+                if (originIds.has(token.id))
                     continue;
                 marks.push(createTokenMark(token, TG.reference));
             }
-            if (originToken)
-                marks.push(createTokenMark(originToken, TG.placed));
+            for (const token of origins)
+                marks.push(createTokenMark(token, TG.placed));
+            if (!origins.length || !targets.length)
+                return;
+            const pairs = [];
+            for (const target of targets)
+            {
+                for (const origin of origins)
+                    pairs.push([target, origin]);
+            }
+            tether = createTokenTether();
+            tether.setPairs(pairs);
         },
         destroy()
         {

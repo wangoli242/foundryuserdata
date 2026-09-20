@@ -1,5 +1,7 @@
 /* global Hooks, CONFIG, game */
 
+import { getLAFlags } from '../tools/flag-utils.js';
+
 const FLYING_STATUS_IDS = ['flying', 'hover'];
 
 export const FREE_PREFIX = 'free_';
@@ -54,7 +56,7 @@ Hooks.on('createActiveEffect', (effect, _options, userId) =>
 {
     if (userId !== game.userId)
         return;
-    if (effect.flags?.['lancer-automations']?.isActorTemplate === true)
+    if (getLAFlags(effect)?.isActorTemplate === true)
         return;
     if (!effectHasFlyingStatus(effect))
         return;
@@ -67,14 +69,14 @@ Hooks.on('deleteActiveEffect', (effect, _options, userId) =>
 {
     if (userId !== game.userId)
         return;
-    if (effect.flags?.['lancer-automations']?.isActorTemplate === true)
+    if (getLAFlags(effect)?.isActorTemplate === true)
         return;
     if (!effectHasFlyingStatus(effect))
         return;
     if (effect.parent?.documentName !== 'Actor')
         return;
     const actor = effect.parent;
-    const stillFlying = actor?.effects?.some?.(otherEffect => otherEffect.id !== effect.id && effectHasFlyingStatus(otherEffect) && otherEffect.flags?.['lancer-automations']?.isActorTemplate !== true);
+    const stillFlying = actor?.effects?.some?.(otherEffect => otherEffect.id !== effect.id && effectHasFlyingStatus(otherEffect) && getLAFlags(otherEffect)?.isActorTemplate !== true);
     syncMovementActionForActor(actor, stillFlying ? 'fly' : 'walk');
 });
 
@@ -108,6 +110,9 @@ Hooks.once('init', () =>
 
     if (actions.teleport)
         actions.teleport.canSelect = () => false;
+    // Climb is only ever assigned by the elevation pass, never picked by hand.
+    if (actions.climb)
+        actions.climb.canSelect = () => false;
     if (actions.blink)
     {
         actions.blink.label = 'Teleport';
@@ -124,6 +129,8 @@ Hooks.once('init', () =>
             ...cfg,
             canSelect: () => false,
             getCostFunction: () => () => 0,
+            // Derived actions stay out of the Modify Movement Cost sheet.
+            deriveTerrainDifficulty: cfg.deriveTerrainDifficulty ?? (() => 1),
         };
     }
 });

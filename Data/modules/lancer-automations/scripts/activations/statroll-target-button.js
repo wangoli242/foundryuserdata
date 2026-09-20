@@ -4,7 +4,11 @@ import {
     pickSingleTargetToggle, isSingleTargetPickerActive, cancelSingleTargetPicker,
     clearSingleTargetShape, beginTargetSession, isTargetSessionActive, createTokenMark, createChanceLabel,
 } from '../interactive/canvas.js';
-import { targetInfoAllowed, haseSuccessChance, contestWinChance, pollForForm, chanceLabelsOn } from './targeting-ui.js';
+import { createTokenTether } from '../interactive/canvas-helpers.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { deriveSaveDc } from '../tools/misc-tools.js';
+import { hoverSightlines, clearHoverSightlines } from '../vision/sightlines.js';
+import { targetInfoAllowed, targetInfoAllowedFor, UNKNOWN_CHANCE, haseSuccessChance, contestWinChance, injectWhenReady, chanceLabelsOn } from './targeting-ui.js';
 
 function rollerLiveChance(state)
 {
@@ -20,6 +24,8 @@ function rollerLiveChance(state)
         {
             const opponent = contest.actorUuid ? fromUuidSync(contest.actorUuid) : null;
             const oppActor = opponent?.actor ?? opponent;
+            if (oppActor && !targetInfoAllowedFor(oppActor))
+                return UNKNOWN_CHANCE;
             return oppActor ? contestWinChance(state.actor, skill, oppActor, contest.stat, { netAcc }) : null;
         }
         const preId = state.la_extraData?.targetTokenId;
@@ -27,6 +33,8 @@ function rollerLiveChance(state)
         if (hovered && hovered.actor === state.actor)
             hovered = null;
         const chosen = hovered ?? Array.from(game.user.targets ?? [])[0] ?? null;
+        if (chosen && !targetInfoAllowedFor(chosen.actor))
+            return UNKNOWN_CHANCE;
         let dc = 10;
         if (chosen)
             dc = (!hovered && preId && chosen.id === preId) ? (Number(state.la_extraData?.targetVal) || deriveTargetVal(chosen)) : deriveTargetVal(chosen);
@@ -39,7 +47,7 @@ function rollerLiveChance(state)
 // A Save is always rolled against the target's SAVE value.
 function deriveTargetVal(targetToken)
 {
-    return targetToken?.actor?.system?.save || 10;
+    return deriveSaveDc(targetToken?.actor);
 }
 
 // "HULL" / "HULL Save (>= 8)" -> "HULL Save (>= N)"; targetVal null strips the save/threshold back to the base stat.
@@ -64,11 +72,6 @@ function statRollForm()
     if (!$form.length || !$form.find('#hase-accdiff-dialog').length)
         return null;
     return $form;
-}
-
-function injectWhenReady(state)
-{
-    pollForForm(statRollForm, $form => injectButton(state, $form));
 }
 
 function injectButton(state, $form)
@@ -112,6 +115,14 @@ function injectButton(state, $form)
             $btn.removeClass('la-targeting-active');
         }
     });
+    $btn.on('mouseenter', () =>
+    {
+        const contest = state.la_extraData?.contest;
+        const contestToken = contest?.actorUuid ? fromUuidSync(contest.actorUuid)?.object : null;
+        const pickedToken = state.la_extraData?.targetTokenId ? canvas.tokens.get(state.la_extraData.targetTokenId) : null;
+        hoverSightlines(caster(), pickedToken ?? contestToken);
+    });
+    $btn.on('mouseleave', () => clearHoverSightlines());
     $row.append($btn);
 }
 
@@ -145,27 +156,30 @@ export function registerStatRollTargetButton()
                 || state?.data?.path === 'system.__generic_skill_trigger';
             const active = isStatOrSkillRoll && !isTargetSessionActive() && (() =>
             {
-                try
-                {
-                    return game.settings.get('lancer-automations', 'statRollTargeting') || !!state.la_extraData?.forceTargeting;
-                }
-                catch
-                {
-                    return false;
-                }
+                return getModuleSetting('statRollTargeting') || !!state.la_extraData?.forceTargeting;
             })();
             const preId = active ? state.la_extraData?.targetTokenId : null;
             let rollerMark = null;
             let rollerChance = null;
+            let saveTether = null;
+            let tetherHookId = null;
             if (active)
             {
                 try
                 {
                     seedSingleTarget(state);
                     state.data?.acc_diff?.replaceTargets?.([...(game.user.targets ?? [])].map((target) => target.document.uuid));
-                    injectWhenReady(state);
-                    beginTargetSession();
-                    rollerMark = createTokenMark(state.actor?.getActiveTokens?.()[0] ?? null);
+                    injectWhenReady(state, statRollForm, injectButton, 'stat roll targeting');
+                    const roller = state.actor?.getActiveTokens?.()[0] ?? null;
+                    beginTargetSession(null, roller);
+                    rollerMark = createTokenMark(roller);
+                    // Tether the roller to whatever it is currently saving against.
+                    saveTether = createTokenTether();
+                    const refreshTether = () => saveTether.setPairs(roller
+                        ? [...(game.user.targets ?? [])].map(target => [roller, target])
+                        : []);
+                    refreshTether();
+                    tetherHookId = Hooks.on('targetToken', refreshTether);
                 }
                 catch
                 { /* */ }
@@ -218,6 +232,9 @@ export function registerStatRollTargetButton()
                         try
                         {
                             rollerMark?.destroy();
+                            saveTether?.destroy();
+                            if (tetherHookId)
+                                Hooks.off('targetToken', tetherHookId);
                             if (isSingleTargetPickerActive())
                                 cancelSingleTargetPicker();
                             clearSingleTargetShape();

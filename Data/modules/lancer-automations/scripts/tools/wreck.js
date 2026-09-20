@@ -1,6 +1,11 @@
 /* global CONST, Hooks, console, game, canvas, loadTexture, FilePicker, TokenMagic, Sequence, foundry */
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from './constants.js';
+import { getModuleSetting } from './settings-utils.js';
+import { laTokenGameplayHeight } from './token-height.js';
+import { getLAFlag, setLAFlag, unsetLAFlag, getLAFlags } from './flag-utils.js';
+import { escapeHtml as _escapeText, localize, localizeFormat } from './string-utils.js';
+import { FLAG_PORTRAIT_MODE, FLAG_PORTRAIT_IMG, FLAG_PORTRAIT_MECH_PILOT, PORTRAIT_MODES, PORTRAIT_PILOT } from '../tah/portrait.js';
 
 function log(...args)
 {
@@ -53,7 +58,7 @@ let _lwfxStructWrapped = false;
 
 function _shouldSuppressLwfxStructure(flow)
 {
-    if (!game.settings.get(MODULE_ID, 'enableWrecks'))
+    if (!getModuleSetting('enableWrecks'))
         return false;
     return flow?.state?.data?.remStruct === 0;
 }
@@ -94,7 +99,7 @@ function _wrapLwfxStructureHook()
 
 Hooks.once('ready', () =>
 {
-    if (!game.settings.get(MODULE_ID, 'enableWrecks'))
+    if (!getModuleSetting('enableWrecks'))
         return;
     if (!game.modules.get('lancer-weapon-fx')?.active)
         return;
@@ -142,6 +147,8 @@ export function getTokenCategory(token)
         return 'pilot';
     const items = actor.items ?? [];
     const hasLid = (lid) => items.some(item => item.system?.lid === lid);
+    if (items.some(item => item.type === 'npc_template' && /vehicle/i.test(item.system?.lid ?? '')))
+        return 'vehicle';
     if (hasLid('npcc_squad'))
         return 'squad';
     if (hasLid('npcc_monstrosity'))
@@ -166,7 +173,7 @@ function getWreckMode(category)
     const settingCat = (category === 'squad' || category === 'pilot') ? 'human' : category;
     try
     {
-        return game.settings.get(MODULE_ID, `wreckMode_${settingCat}`) || 'token';
+        return getModuleSetting(`wreckMode_${settingCat}`) || 'token';
     }
     catch
     {
@@ -181,7 +188,7 @@ function getWreckTerrainMode(category)
     let raw;
     try
     {
-        raw = game.settings.get(MODULE_ID, `wreckTerrain_${settingCat}`);
+        raw = getModuleSetting(`wreckTerrain_${settingCat}`);
     }
     catch
     {
@@ -194,7 +201,7 @@ function getWreckTerrainMode(category)
         return 'none';
     if (raw === 'terrain' || raw === 'aura' || raw === 'none')
         return raw;
-    return (category === 'mech' || category === 'monstrosity') ? 'aura' : 'none';
+    return (category === 'mech' || category === 'vehicle' || category === 'monstrosity') ? 'aura' : 'none';
 }
 
 function buildWreckAuraFlag()
@@ -203,8 +210,8 @@ function buildWreckAuraFlag()
     let fillOpacity = 0.2;
     try
     {
-        color = game.settings.get(MODULE_ID, 'wreckAuraColor') || color;
-        const raw = Number(game.settings.get(MODULE_ID, 'wreckAuraOpacity'));
+        color = getModuleSetting('wreckAuraColor') || color;
+        const raw = Number(getModuleSetting('wreckAuraOpacity'));
         if (Number.isFinite(raw))
             fillOpacity = Math.min(1, Math.max(0, raw));
     }
@@ -260,8 +267,12 @@ const CATEGORY_FALLBACKS = {
     pilot: ['human', 'biological'],
     biological: ['biological'],
     monstrosity: ['monstrosity', 'biological'],
+    vehicle: ['vehicle'],
     mech: [],
 };
+
+// these fall back to the bare mech pool when their own folders are empty
+const BARE_FALLBACK_CATEGORIES = new Set(['mech', 'vehicle']);
 
 function isSquad(token)
 {
@@ -294,7 +305,7 @@ function _getWreckBasePath()
 {
     try
     {
-        const custom = game.settings.get(MODULE_ID, 'wreckAssetsPath');
+        const custom = getModuleSetting('wreckAssetsPath');
         if (custom && custom.trim())
             return custom.trim();
     }
@@ -313,12 +324,19 @@ async function _resolveAssetWithFallback(subDir, category)
         if (files.length > 0)
             return _randomFile(files);
     }
-    if (category === 'mech')
+    if (BARE_FALLBACK_CATEGORIES.has(category))
     {
         const fallback = await _browseFiles(`${basePath}/${subDir}`);
         return _randomFile(fallback);
     }
     return null;
+}
+
+async function _resolveMaybeFolder(path)
+{
+    if (!path || /\.[a-z0-9]{2,5}$/i.test(path))
+        return path;
+    return _randomFile(await _browseFiles(path)) || path;
 }
 
 async function getCorpseImage(category, size = 1)
@@ -366,7 +384,7 @@ async function spawnDifficultTerrain(token)
 {
     if (!game.modules.get('terrain-height-tools')?.active)
         return;
-    const terrainTypeId = game.settings.get(MODULE_ID, 'wreckTerrainType');
+    const terrainTypeId = getModuleSetting('wreckTerrainType');
     if (!terrainTypeId)
         return;
     try
@@ -374,8 +392,7 @@ async function spawnDifficultTerrain(token)
         const terrainAPI = globalThis.terrainHeightTools;
         if (!terrainAPI)
             return;
-        const wallHeight = token.actor?.prototypeToken?.flags?.['wall-height']?.tokenHeight;
-        const rawHeight = wallHeight ?? (token.actor?.system?.size ?? 1);
+        const rawHeight = laTokenGameplayHeight(token.document);
         const terrainHeight = Math.floor(rawHeight * 2) / 2;
         const cells = getTokenCells(token);
         if (cells.length === 0)
@@ -435,11 +452,20 @@ export async function preLoadImageForAll(src, push = false)
 {
     if (!src || !src.trim())
         return src;
+    if (!/\.[a-z0-9]{2,5}$/i.test(src))
+        return src;
     if (push)
         game.socket.emit(`module.${MODULE_ID}`, { action: 'preLoadImageForAll', payload: src });
     // v13 namespaced loadTexture under foundry.canvas; the bare global is deprecated.
     const load = /** @type {any} */ (foundry).canvas?.loadTexture ?? /** @type {any} */ (globalThis).loadTexture;
-    await load(src);
+    try
+    {
+        await load(src);
+    }
+    catch (err)
+    {
+        log(`Failed to preload ${src}:`, err);
+    }
     return src;
 }
 
@@ -452,7 +478,7 @@ export async function updateStructure(token)
     if (structure <= 0)
     {
         response = `${token.name} structure is zero or less.`;
-        if (game.combat && token.combatant && game.settings.get(MODULE_ID, 'enableRemoveFromCombat'))
+        if (game.combat && token.combatant && getModuleSetting('enableRemoveFromCombat'))
         {
             log(`${token.name} is dead, removing from combat.`);
             await game.combat.combatants.get(token.combatant._id)?.delete();
@@ -468,7 +494,7 @@ export async function updateStructure(token)
         });
         log(`${token.name} is a wreck!`);
         token = await wreckIt(token);
-        if (isSquad(token) && game.settings.get(MODULE_ID, 'squadLostOnDeath'))
+        if (isSquad(token) && getModuleSetting('squadLostOnDeath'))
             await token.actor.toggleStatusEffect('mia', { active: true, overlay: true });
         if (token)
             await macroEffect('Wreck', token.actor, token, true);
@@ -476,9 +502,9 @@ export async function updateStructure(token)
     else
     {
         response = `${token.name} structure is greater than zero.`;
-        if (isSquad(token) && game.settings.get(MODULE_ID, 'squadLostOnDeath'))
+        if (isSquad(token) && getModuleSetting('squadLostOnDeath'))
             await token.actor.toggleStatusEffect('mia', { active: false, overlay: true });
-        if (game.combat && !token.combatant && game.settings.get(MODULE_ID, 'enableRemoveFromCombat'))
+        if (game.combat && !token.combatant && getModuleSetting('enableRemoveFromCombat'))
             await token.document.toggleCombatant();
         await macroEffect('Wreck', token.actor, token, false);
     }
@@ -487,7 +513,7 @@ export async function updateStructure(token)
 
 function resolveWreckFaction(token)
 {
-    const choice = game.settings.get(MODULE_ID, 'wreckFactionOnDeath') || 'same';
+    const choice = getModuleSetting('wreckFactionOnDeath') || 'same';
     const origDisposition = token.document.disposition;
     const origFlag = token.document.flags?.['token-factions'] ?? null;
 
@@ -512,8 +538,8 @@ function resolveWreckFaction(token)
 
 async function wreckIt(token)
 {
-    const isDead = token.document.getFlag(MODULE_ID, 'isDead')
-        || token.document.getFlag(MODULE_ID, 'isWreck');
+    const isDead = getLAFlag(token.document,'isDead')
+        || getLAFlag(token.document,'isWreck');
     if (isDead)
     {
         log(`${token.name} is already wrecked.`);
@@ -526,10 +552,10 @@ async function wreckIt(token)
     const category = getTokenCategory(token);
     const wreckLabel = isBiological(token) ? 'Corpse' : 'Wreck';
 
-    const spawnWreckImage = token.document.getFlag(MODULE_ID, 'spawnWreckImage') ?? true;
-    const playWreckSound = token.document.getFlag(MODULE_ID, 'playWreckSound') ?? true;
-    const playWreckEffect = token.document.getFlag(MODULE_ID, 'playWreckEffect') ?? true;
-    const terrainOverride = token.document.getFlag(MODULE_ID, 'terrainOverride');
+    const spawnWreckImage = getLAFlag(token.document,'spawnWreckImage') ?? true;
+    const playWreckSound = getLAFlag(token.document,'playWreckSound') ?? true;
+    const playWreckEffect = getLAFlag(token.document,'playWreckEffect') ?? true;
+    const terrainOverride = getLAFlag(token.document,'terrainOverride');
     // Per-token override accepts: 'none'/'terrain'/'aura' (explicit), 'yes'/'no' (legacy boolean).
     const categoryMode = getWreckTerrainMode(category);
     let terrainMode = categoryMode;
@@ -542,12 +568,12 @@ async function wreckIt(token)
     const shouldSpawnTerrain = terrainMode === 'terrain';
     const shouldAttachAura = terrainMode === 'aura';
 
-    const imagePath = token.document.getFlag(MODULE_ID, 'wreckImgPath');
-    const effectPath = token.document.getFlag(MODULE_ID, 'wreckEffectPath');
-    const soundPath = token.document.getFlag(MODULE_ID, 'wreckSoundPath');
-    const wreckScale = token.document.getFlag(MODULE_ID, 'wreckScale') ?? 1;
+    const imagePath = await _resolveMaybeFolder(getLAFlag(token.document,'wreckImgPath'));
+    const effectPath = await _resolveMaybeFolder(getLAFlag(token.document,'wreckEffectPath'));
+    const soundPath = await _resolveMaybeFolder(getLAFlag(token.document,'wreckSoundPath'));
+    const wreckScale = getLAFlag(token.document,'wreckScale') ?? 1;
 
-    const tokenWreckMode = token.document.getFlag(MODULE_ID, 'wreckMode');
+    const tokenWreckMode = getLAFlag(token.document,'wreckMode');
     const wreckMode = (tokenWreckMode && tokenWreckMode !== 'default')
         ? tokenWreckMode
         : getWreckMode(category);
@@ -561,9 +587,9 @@ async function wreckIt(token)
     if (tileWreck)
     {
         new Sequence()
-            .sound().file(soundPath).volume(game.settings.get(MODULE_ID, 'wreckMasterVolume') ?? 1).playIf(!!soundPath && playWreckSound && game.settings.get(MODULE_ID, 'enableWreckAudio') && (game.settings.get(MODULE_ID, 'wreckMasterVolume') ?? 1) > 0)
+            .sound().file(soundPath).volume(getModuleSetting('wreckMasterVolume') ?? 1).playIf(!!soundPath && playWreckSound && getModuleSetting('enableWreckAudio') && (getModuleSetting('wreckMasterVolume') ?? 1) > 0)
             .effect().file(effectPath).scaleToObject(wreckScale * 2.25).atLocation(token).mirrorX(Math.random() > 0.5).waitUntilFinished(-500)
-            .playIf(!!effectPath && playWreckEffect && game.settings.get(MODULE_ID, 'enableWreckAnimation'))
+            .playIf(!!effectPath && playWreckEffect && getModuleSetting('enableWreckAnimation'))
             .thenDo(async () =>
             {
                 const gridSize = canvas.scene.grid.size;
@@ -592,9 +618,9 @@ async function wreckIt(token)
     else
     {
         new Sequence()
-            .sound().file(soundPath).volume(game.settings.get(MODULE_ID, 'wreckMasterVolume') ?? 1).playIf(!!soundPath && playWreckSound && game.settings.get(MODULE_ID, 'enableWreckAudio') && (game.settings.get(MODULE_ID, 'wreckMasterVolume') ?? 1) > 0)
+            .sound().file(soundPath).volume(getModuleSetting('wreckMasterVolume') ?? 1).playIf(!!soundPath && playWreckSound && getModuleSetting('enableWreckAudio') && (getModuleSetting('wreckMasterVolume') ?? 1) > 0)
             .effect().file(effectPath).scaleToObject(2.25).atLocation(token).mirrorX(Math.random() > 0.5).waitUntilFinished(-500)
-            .playIf(!!effectPath && playWreckEffect && game.settings.get(MODULE_ID, 'enableWreckAnimation'))
+            .playIf(!!effectPath && playWreckEffect && getModuleSetting('enableWreckAnimation'))
             .thenDo(async () =>
             {
                 try
@@ -672,14 +698,14 @@ async function wreckIt(token)
 
 export async function resurrect(token)
 {
-    const isWreck = token.document.getFlag(MODULE_ID, 'isWreck');
+    const isWreck = getLAFlag(token.document,'isWreck');
     if (!isWreck)
     {
         log(`${token.name} is not a wreck.`);
         return token;
     }
     log(`Resurrecting ${token.name}!`);
-    const tokenData = token.document.getFlag(MODULE_ID, 'tokenDocument');
+    const tokenData = getLAFlag(token.document,'tokenDocument');
     if (!tokenData)
         return token;
     const actor = game.actors.get(tokenData.actorId);
@@ -720,12 +746,12 @@ export async function resurrect(token)
 export function tileHUDButton(app, html)
 {
     const tile = app?.object?.document;
-    if (!tile || !tile.getFlag(MODULE_ID, 'isWreck'))
+    if (!tile || !getLAFlag(tile,'isWreck'))
         return;
     const button = document.createElement('div');
     button.classList.add('control-icon', MODULE_ID);
     button.title = 'Resurrect';
-    button.dataset.tooltip = 'Resurrect';
+    button.dataset.tooltip = localize('LA.wreck.resurrect');
     const icon = document.createElement('i');
     icon.classList.add('fas', 'fa-person-rays');
     button.appendChild(icon);
@@ -737,10 +763,10 @@ export function tileHUDButton(app, html)
 
 async function unWreckTile(tile)
 {
-    const isWreck = tile.getFlag(MODULE_ID, 'isWreck');
+    const isWreck = getLAFlag(tile,'isWreck');
     if (!isWreck)
         return;
-    const tokenData = tile.getFlag(MODULE_ID, 'tokenDocument');
+    const tokenData = getLAFlag(tile,'tokenDocument');
     const actor = game.actors.get(tokenData?.actorId);
     if (!actor)
     {
@@ -772,9 +798,9 @@ export async function preWreck(document, _change, userId)
     if (!game.users.activeGM?.isSelf)
         return;
     const size = document.actor?.system?.size ?? 1;
-    let wreckImgPath = document.getFlag(MODULE_ID, 'wreckImgPath');
-    let wreckEffectPath = document.getFlag(MODULE_ID, 'wreckEffectPath');
-    let wreckSoundPath = document.getFlag(MODULE_ID, 'wreckSoundPath');
+    let wreckImgPath = getLAFlag(document,'wreckImgPath');
+    let wreckEffectPath = getLAFlag(document,'wreckEffectPath');
+    let wreckSoundPath = getLAFlag(document,'wreckSoundPath');
 
     const noImg = !wreckImgPath || wreckImgPath.trim() === '';
     const noEffect = !wreckEffectPath || wreckEffectPath.trim() === '';
@@ -783,7 +809,7 @@ export async function preWreck(document, _change, userId)
     const category = getTokenCategory(document);
     const useCorpse = category !== 'mech';
     const muteHumanSound = ['human', 'pilot', 'squad'].includes(category)
-        && game.settings.get(MODULE_ID, 'disableHumanDeathSound');
+        && getModuleSetting('disableHumanDeathSound');
     if (useCorpse)
     {
         if (noImg)
@@ -807,15 +833,15 @@ export async function preWreck(document, _change, userId)
     if (wreckEffectPath)
         await preLoadImageForAll(wreckEffectPath, true);
     if (wreckImgPath)
-        await document.setFlag(MODULE_ID, 'wreckImgPath', wreckImgPath);
+        await setLAFlag(document,'wreckImgPath', wreckImgPath);
     if (wreckEffectPath)
-        await document.setFlag(MODULE_ID, 'wreckEffectPath', wreckEffectPath);
+        await setLAFlag(document,'wreckEffectPath', wreckEffectPath);
     if (wreckSoundPath)
-        await document.setFlag(MODULE_ID, 'wreckSoundPath', wreckSoundPath);
+        await setLAFlag(document,'wreckSoundPath', wreckSoundPath);
 
-    const wreckScale = document.getFlag(MODULE_ID, 'wreckScale');
+    const wreckScale = getLAFlag(document,'wreckScale');
     if (wreckScale === undefined || wreckScale === null)
-        await document.setFlag(MODULE_ID, 'wreckScale', 1);
+        await setLAFlag(document,'wreckScale', 1);
     if (userId)
         log(`Preloaded wreck for ${document.name} (${category})`);
 }
@@ -854,18 +880,65 @@ function _renderWreckTab(app, html, data)
     if (rootEl.querySelector('div.tab[data-tab="la"]'))
         return;
 
-    const flags = data.object?.flags?.[MODULE_ID] ?? data.source?.flags?.[MODULE_ID] ?? {};
-    const showWreck = game.settings.get(MODULE_ID, 'enableWrecks') && actorType !== 'deployable';
+    const flags = getLAFlags(data.object) ?? getLAFlags(data.source) ?? {};
+    const showWreck = getModuleSetting('enableWrecks') && actorType !== 'deployable';
 
-    const wreckHtml = showWreck ? _buildWreckSectionHtml(flags) : '';
-    const awarenessHtml = _buildAwarenessSectionHtml(flags);
-    const scanHtml = game.user?.isGM ? _buildScanSectionHtml(tokenDoc) : '';
-    const elevationHtml = _buildElevationSectionHtml(flags);
+    const sections = [];
+    if (showWreck)
+        sections.push({ title: localize('LA.wreck.sectionWreck'), html: _buildWreckSectionHtml(flags) });
+    sections.push({ title: localize('LA.wreck.sectionDetection'), html: _buildAwarenessSectionHtml(flags) });
+    sections.push({ title: localize('LA.wreck.sectionStatHint'), html: _buildStatHintSectionHtml(flags) });
+    if (game.user?.isGM)
+        sections.push({ title: localize('LA.wreck.sectionScan'), cls: 'la-scan-section', html: _buildScanSectionHtml(tokenDoc) });
+    sections.push({ title: localize('LA.wreck.sectionElevation'), html: _buildElevationSectionHtml(flags) });
+    sections.push({ title: localize('LA.wreck.sectionPortrait'), html: _buildPortraitSectionHtml(flags, actorType) });
+    const sectionsHtml = sections.map((section, idx) => _wrapSection(section, idx > 0)).join('');
 
-    const tabHtml = `<div class="tab" data-group="sheet" data-tab="la"><div class="la-compact-config">${wreckHtml}${awarenessHtml}${scanHtml}${elevationHtml}</div></div>`;
+    const tabHtml = `<div class="tab scrollable" data-group="sheet" data-tab="la"><div class="la-compact-config">${sectionsHtml}</div></div>`;
     const resourcesTab = rootEl.querySelector('div.tab[data-tab="resources"]');
     if (resourcesTab)
         resourcesTab.insertAdjacentHTML('afterend', tabHtml);
+
+    const laTab = rootEl.querySelector('div.tab[data-tab="la"]');
+    laTab?.addEventListener('click', (event) =>
+    {
+        const head = event.target?.closest?.('.la-config-section-head');
+        if (!head)
+            return;
+        event.preventDefault();
+        head.parentElement.classList.toggle('collapsed');
+        if (typeof app.setPosition === 'function')
+            app.setPosition({ height: 'auto' });
+    });
+
+    const portraitSelect = laTab?.querySelector('[data-la-portrait-mode]');
+    const portraitImgRow = laTab?.querySelector('[data-la-portrait-img]');
+    if (portraitSelect && portraitImgRow)
+    {
+        portraitSelect.addEventListener('change', () =>
+        {
+            portraitImgRow.hidden = portraitSelect.value !== PORTRAIT_MODES.CUSTOM;
+            if (typeof app.setPosition === 'function')
+                app.setPosition({ height: 'auto' });
+        });
+    }
+
+    for (const btn of rootEl.querySelectorAll('button.la-pick-folder'))
+    {
+        btn.addEventListener('click', (event) =>
+        {
+            event.preventDefault();
+            const picker = rootEl.querySelector(`file-picker[name="${btn.dataset.for}"]`);
+            new FilePicker({
+                type: 'folder',
+                current: picker?.value || '',
+                callback: (path) =>
+                {
+                    picker.value = path;
+                }
+            }).render(true);
+        });
+    }
 
     if (game.user?.isGM)
         _wireScanControls(rootEl, tokenDoc, app);
@@ -888,7 +961,6 @@ function _buildWreckSectionHtml(flags)
     const terrainOverride = flags.terrainOverride ?? 'default';
     const terrainOpt = (val, label) => `<option value="${val}" ${terrainOverride === val ? 'selected' : ''}>${label}</option>`;
     return `
-        <div class="la-config-section">
         <div class="form-group">
             <label>Wreck Mode</label>
             <div class="form-fields">
@@ -915,18 +987,21 @@ function _buildWreckSectionHtml(flags)
             <label>Wreck Image Path</label>
             <div class="form-fields">
                 <file-picker name="flags.${MODULE_ID}.wreckImgPath" value="${imgPath}"></file-picker>
+                <button type="button" class="la-pick-folder" data-for="flags.${MODULE_ID}.wreckImgPath" data-tooltip="${localize('LA.wreck.pickFolderTip')}" style="flex:0 0 auto;"><i class="fas fa-folder-tree" inert></i></button>
             </div>
         </div>
         <div class="form-group">
             <label>Wreck Effect Path</label>
             <div class="form-fields">
                 <file-picker name="flags.${MODULE_ID}.wreckEffectPath" value="${effectPath}"></file-picker>
+                <button type="button" class="la-pick-folder" data-for="flags.${MODULE_ID}.wreckEffectPath" data-tooltip="${localize('LA.wreck.pickFolderTip')}" style="flex:0 0 auto;"><i class="fas fa-folder-tree" inert></i></button>
             </div>
         </div>
         <div class="form-group">
             <label>Wreck Sound Path</label>
             <div class="form-fields">
                 <file-picker name="flags.${MODULE_ID}.wreckSoundPath" value="${soundPath}"></file-picker>
+                <button type="button" class="la-pick-folder" data-for="flags.${MODULE_ID}.wreckSoundPath" data-tooltip="${localize('LA.wreck.pickFolderTip')}" style="flex:0 0 auto;"><i class="fas fa-folder-tree" inert></i></button>
             </div>
         </div>
         <div class="form-group">
@@ -957,7 +1032,6 @@ function _buildWreckSectionHtml(flags)
             </div>
             <p class="notes">Play visual effect when this token is wrecked.</p>
         </div>
-        </div>
     `;
 }
 
@@ -966,7 +1040,6 @@ function _buildAwarenessSectionHtml(flags)
     const mode = flags.awarenessMode ?? 'default';
     const opt = (val, label) => `<option value="${val}" ${mode === val ? 'selected' : ''}>${label}</option>`;
     return `
-        <div class="la-config-section">
         <div class="form-group">
             <label>Detection Visual</label>
             <div class="form-fields">
@@ -979,6 +1052,38 @@ function _buildAwarenessSectionHtml(flags)
             </div>
             <p class="notes">Controls Battle Awareness display. Non-default modes also disable Sensor detection on this token.</p>
         </div>
+    `;
+}
+
+function _buildStatHintSectionHtml(flags)
+{
+    const unknownLabel = flags.statHintUnknownLabel ?? '';
+    const triSelect = (name, current) =>
+    {
+        const opt = (val, label) => `<option value="${val}" ${current === val ? 'selected' : ''}>${label}</option>`;
+        return `<select name="flags.${MODULE_ID}.${name}" data-dtype="String">
+            ${opt('default', 'Default (use global setting)')}
+            ${opt('on', 'On')}
+            ${opt('off', 'Off')}
+        </select>`;
+    };
+    return `
+        <div class="form-group">
+            <label>Unknown Label</label>
+            <div class="form-fields">
+                <input type="text" name="flags.${MODULE_ID}.statHintUnknownLabel" value="${_escapeText(unknownLabel)}" placeholder="${localize('LA.wreck.defaultGlobalSetting')}">
+            </div>
+            <p class="notes">Stat hint header for this token while unscanned.</p>
+        </div>
+        <div class="form-group">
+            <label>Hide class/templates/tier when not scanned</label>
+            <div class="form-fields">${triSelect('statHintHideClass', flags.statHintHideClass ?? 'default')}</div>
+            <p class="notes">Hide the class/frame subtitle and tier badge until scanned.</p>
+        </div>
+        <div class="form-group">
+            <label>Hide current values without owner/observer access</label>
+            <div class="form-fields">${triSelect('statHintHideCurrent', flags.statHintHideCurrent ?? 'default')}</div>
+            <p class="notes">Current HP, heat, and resources show as "?" in the stat hint.</p>
         </div>
     `;
 }
@@ -987,22 +1092,68 @@ function _buildElevationSectionHtml(flags)
 {
     const disableAutoTerrain = !!flags.disableAutoTerrainElevation;
     return `
-        <div class="la-config-section">
         <div class="form-group">
             <label>Disable Auto-elevation from Terrain</label>
             <input type="checkbox" name="flags.${MODULE_ID}.disableAutoTerrainElevation" ${disableAutoTerrain ? 'checked' : ''}/>
             <p class="notes">Skip THT terrain elevation tracking for this token. Q/E offsets still work.</p>
         </div>
-        </div>
     `;
 }
 
-function _escapeText(value)
+function _buildPortraitSectionHtml(flags, actorType)
 {
-    return String(value ?? '')
-        .replaceAll('&', '&amp;')
-        .replaceAll('<', '&lt;')
-        .replaceAll('>', '&gt;');
+    const mode = flags[FLAG_PORTRAIT_MODE] ?? PORTRAIT_MODES.DEFAULT;
+    const img = flags[FLAG_PORTRAIT_IMG] ?? '';
+    const opt = (val, label) => `<option value="${val}" ${mode === val ? 'selected' : ''}>${label}</option>`;
+    const pilot = flags[FLAG_PORTRAIT_MECH_PILOT] ?? PORTRAIT_PILOT.DEFAULT;
+    const pilotOpt = (val, label) => `<option value="${val}" ${pilot === val ? 'selected' : ''}>${label}</option>`;
+    const pilotRow = actorType !== 'mech' ? '' : `
+        <div class="form-group">
+            <label>Use Pilot Portrait</label>
+            <div class="form-fields">
+                <select name="flags.${MODULE_ID}.${FLAG_PORTRAIT_MECH_PILOT}" data-dtype="String">
+                    ${pilotOpt(PORTRAIT_PILOT.DEFAULT, 'Default (use global setting)')}
+                    ${pilotOpt(PORTRAIT_PILOT.YES, 'Yes')}
+                    ${pilotOpt(PORTRAIT_PILOT.NO, 'No')}
+                </select>
+            </div>
+            <p class="notes">Draw the linked pilot's art instead of the mech's.</p>
+        </div>
+    `;
+    return `
+        <div class="form-group">
+            <label>HUD Portrait</label>
+            <div class="form-fields">
+                <select name="flags.${MODULE_ID}.${FLAG_PORTRAIT_MODE}" data-dtype="String" data-la-portrait-mode>
+                    ${opt(PORTRAIT_MODES.DEFAULT, 'Default (use global setting)')}
+                    ${opt(PORTRAIT_MODES.TOKEN, 'Token art')}
+                    ${opt(PORTRAIT_MODES.ACTOR, 'Actor portrait')}
+                    ${opt(PORTRAIT_MODES.CUSTOM, 'Custom image')}
+                    ${opt(PORTRAIT_MODES.OFF, 'Off')}
+                </select>
+            </div>
+            <p class="notes">Artwork shown above the Token Action HUD name band.</p>
+        </div>
+        <div class="form-group" data-la-portrait-img ${mode === PORTRAIT_MODES.CUSTOM ? '' : 'hidden'}>
+            <label>Portrait Image</label>
+            <div class="form-fields">
+                <file-picker name="flags.${MODULE_ID}.${FLAG_PORTRAIT_IMG}" type="imagevideo" value="${_escapeText(img)}"></file-picker>
+            </div>
+            <p class="notes">Used when the portrait is set to Custom image.</p>
+        </div>
+        ${pilotRow}
+    `;
+}
+
+function _sectionHeadHtml(title)
+{
+    return `<button type="button" class="la-config-section-head"><i class="fas fa-chevron-down la-chevron" inert></i>${title}</button>`;
+}
+
+function _wrapSection(section, collapsed)
+{
+    const cls = section.cls ? ` ${section.cls}` : '';
+    return `<div class="la-config-section${cls}${collapsed ? ' collapsed' : ''}">${_sectionHeadHtml(section.title)}${section.html}</div>`;
 }
 
 function _linkedScanDocsFor(actorUuid)
@@ -1012,7 +1163,7 @@ function _linkedScanDocsFor(actorUuid)
         return docs;
     for (const entry of game.journal ?? [])
     {
-        const scan = entry.getFlag?.(MODULE_ID, 'scan');
+        const scan = getLAFlag(entry,'scan');
         if (scan?.actorUuid === actorUuid)
             docs.push(entry);
     }
@@ -1022,7 +1173,7 @@ function _linkedScanDocsFor(actorUuid)
 function _buildScanSectionHtml(tokenDoc)
 {
     const actor = tokenDoc?.actor;
-    const scannedByAll = !!actor?.getFlag?.(MODULE_ID, 'scannedByAll');
+    const scannedByAll = !!getLAFlag(actor,'scannedByAll');
     const linkedDocs = _linkedScanDocsFor(actor?.uuid);
     const hasDoc = linkedDocs.length > 0;
     const docLabel = hasDoc
@@ -1032,7 +1183,6 @@ function _buildScanSectionHtml(tokenDoc)
         ? `<button type="button" class="la-scan-unlink-btn"><i class="fas fa-unlink"></i> Unlink</button>`
         : '';
     return `
-        <div class="la-config-section la-scan-section">
         <div class="form-group">
             <label>Scan Document</label>
             <div class="form-fields">
@@ -1055,7 +1205,6 @@ function _buildScanSectionHtml(tokenDoc)
             </div>
             <p class="notes">Force this token revealed (stats, name, battle log) to every player, ignoring scan journals.</p>
         </div>
-        </div>
     `;
 }
 
@@ -1074,9 +1223,9 @@ function _wireScanControls(rootEl, tokenDoc, app)
                 return;
             const enabled = ev.currentTarget.checked;
             if (enabled)
-                await actor.setFlag(MODULE_ID, 'scannedByAll', true);
+                await setLAFlag(actor,'scannedByAll', true);
             else
-                await actor.unsetFlag(MODULE_ID, 'scannedByAll');
+                await unsetLAFlag(actor,'scannedByAll');
         });
     }
     const linkBtn = laTab.querySelector('.la-scan-link-btn');
@@ -1111,7 +1260,7 @@ function _refreshScanSection(rootEl, tokenDoc, app)
     const section = laTab?.querySelector('.la-scan-section');
     if (!section)
         return;
-    section.outerHTML = _buildScanSectionHtml(tokenDoc);
+    section.innerHTML = _sectionHeadHtml('Scan') + _buildScanSectionHtml(tokenDoc);
     _wireScanControls(rootEl, tokenDoc, app);
     if (typeof app?.setPosition === 'function')
         app.setPosition({ height: 'auto' });
@@ -1153,14 +1302,14 @@ function _promptLinkScanDoc(rootEl, tokenDoc, app)
         </div>
         <div class="form-group" style="flex-direction: column; align-items: stretch;">
             <label>Journal Entry</label>
-            <input type="text" class="la-scan-search" placeholder="Search by name…" autocomplete="off">
+            <input type="text" class="la-scan-search" placeholder="${localize('LA.common.searchByName')}" autocomplete="off">
             <div class="la-scan-list">${rows}<div class="la-scan-empty" style="display:none;">No matches.</div></div>
             <input type="hidden" name="scan-journal" value="${preselectedId}">
             <p class="notes">Stamps the chosen journal as this token's scan document.</p>
         </div>
     `;
     new globalThis.Dialog({
-        title: `Link Scan Document: ${actor.name}`,
+        title: localizeFormat('LA.dialogTitle.linkScanDocument', { name: actor.name }),
         content,
         render: (html) =>
         {
@@ -1202,7 +1351,7 @@ function _promptLinkScanDoc(rootEl, tokenDoc, app)
         },
         buttons: {
             link: {
-                label: '<i class="fas fa-link"></i> Link',
+                label: `<i class="fas fa-link"></i> ${localize('LA.scan.link')}`,
                 callback: async (html) =>
                 {
                     const root = html?.[0] ?? html;
@@ -1213,7 +1362,7 @@ function _promptLinkScanDoc(rootEl, tokenDoc, app)
                         globalThis.ui?.notifications?.warn('Select a journal to link first.');
                         return;
                     }
-                    await entry.setFlag(MODULE_ID, 'scan', {
+                    await setLAFlag(entry,'scan', {
                         actorUuid: actor.uuid,
                         actorName: actor.name,
                         actorImg: actor.img,
@@ -1224,7 +1373,7 @@ function _promptLinkScanDoc(rootEl, tokenDoc, app)
                     _refreshScanSection(rootEl, tokenDoc, app);
                 },
             },
-            cancel: { label: '<i class="fas fa-times"></i> Cancel' },
+            cancel: { label: `<i class="fas fa-times"></i> ${localize('LA.common.cancel')}` },
         },
         default: 'link',
     }, { classes: ['lancer-dialog-base', 'lancer-no-title'], width: 420 }).render(true);
@@ -1239,14 +1388,14 @@ async function _unlinkScanDocs(rootEl, tokenDoc, app)
     if (!docs.length)
         return;
     const confirmed = await globalThis.Dialog.confirm({
-        title: `Unlink Scan Document: ${actor.name}`,
+        title: localizeFormat('LA.dialogTitle.unlinkScanDocument', { name: actor.name }),
         content: `
             <div class="lancer-dialog-header">
-                <h2 class="lancer-dialog-title">Unlink Scan Document</h2>
+                <h2 class="lancer-dialog-title">${localize('LA.wreck.unlinkScanDocument')}</h2>
                 <p class="lancer-dialog-subtitle">${_escapeText(actor.name)}</p>
             </div>
             <div class="form-group">
-                <p>Remove the scan flag from ${docs.length} journal(s) linked to ${_escapeText(actor.name)}? The journals are not deleted.</p>
+                <p>${localizeFormat('LA.wreck.unlinkScanPrompt', { count: docs.length, name: _escapeText(actor.name) })}</p>
             </div>
         `,
         options: { classes: ['lancer-dialog-base', 'lancer-no-title'], width: 420 },
@@ -1254,8 +1403,8 @@ async function _unlinkScanDocs(rootEl, tokenDoc, app)
     if (!confirmed)
         return;
     for (const entry of docs)
-        await entry.unsetFlag(MODULE_ID, 'scan');
-    globalThis.ui?.notifications?.info(`Unlinked scan document(s) from ${actor.name}.`);
+        await unsetLAFlag(entry,'scan');
+    globalThis.ui?.notifications?.info(localizeFormat('LA.notify.unlinkedScanDocuments', { name: actor.name }));
     _refreshScanSection(rootEl, tokenDoc, app);
 }
 
@@ -1265,8 +1414,8 @@ export async function canvasReadyWreck()
 {
     for (const token of canvas.tokens.placeables)
     {
-        const wreckImgPath = token.document.flags[MODULE_ID]?.wreckImgPath;
-        const wreckEffectPath = token.document.flags[MODULE_ID]?.wreckEffectPath;
+        const wreckImgPath = getLAFlags(token.document)?.wreckImgPath;
+        const wreckEffectPath = getLAFlags(token.document)?.wreckEffectPath;
         if (wreckImgPath === undefined || wreckEffectPath === undefined)
             await preWreck(token.document);
         else

@@ -1,3 +1,10 @@
+import { runInOnInitTriggerContext } from '../bonuses/flagged-effects.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { getDesiredWallHeight } from '../tools/token-height.js';
+import { getLAFlag, getLAFlags } from '../tools/flag-utils.js';
+import { MODULE_ID } from '../tools/constants.js';
+import { localize, localizeFormat } from '../tools/string-utils.js';
+
 // Lancer system patches applied at init/ready, without editing the system bundle.
 
 // Schema extension: add `disabled` field to item data models
@@ -72,7 +79,7 @@ async function checkItemDisabled(state)
             state.item.type === 'mech_system' ||
             (state.item.type === 'npc_feature' && state.item.system?.type !== 'Weapon');
         const label = isSystem ? 'System' : 'Weapon';
-        ui.notifications.warn(`${label} ${state.item.name} is disabled!`);
+        ui.notifications.warn(localizeFormat('LA.notify.labelledItemDisabled', { label, name: state.item.name }));
         return false;
     }
     return true;
@@ -96,7 +103,7 @@ export function registerDisabledFlowSteps(flowSteps, flows)
     for (const name of targets)
         flows.get(name)?.insertStepAfter('checkItemDestroyed', 'lancer-automations:checkItemDisabled');
 
-    // Repair: clear disabled flags after the full-repair executes
+    // Repair: clear disabled flags + recharge spent recharge features after the full-repair executes
     flowSteps.set('lancer-automations:clearDisabledOnRepair', clearDisabledOnRepair);
     flows.get('FullRepairFlow')?.insertStepAfter('executeFullRepair', 'lancer-automations:clearDisabledOnRepair');
 }
@@ -108,8 +115,13 @@ async function clearDisabledOnRepair(state)
     const updates = [];
     for (const item of state.actor.items)
     {
+        const update = { _id: item.id };
         if (isDisableable(item) && isItemDisabled(item))
-            updates.push({ _id: item.id, 'system.disabled': false });
+            update['system.disabled'] = false;
+        if (item.system?.charged === false && item.system.tags?.some(tag => tag.lid === 'tg_recharge'))
+            update['system.charged'] = true;
+        if (Object.keys(update).length > 1)
+            updates.push(update);
     }
     if (updates.length)
         await state.actor.updateEmbeddedDocuments('Item', updates);
@@ -132,7 +144,7 @@ async function snapshotPermanentEffects(state)
     if (!state.actor || !state.data)
         return true;
     const perm = state.actor.effects
-        .filter(e => e.getFlag('lancer-automations', 'duration')?.label === 'permanent')
+        .filter(e => getLAFlag(e,'duration')?.label === 'permanent')
         .map(effect =>
         {
             const effectData = effect.toObject();
@@ -315,7 +327,7 @@ function _injectPilotStressBar(jHtml, actor)
         return;
     try
     {
-        if (!game.settings.get('lancer-automations', 'statBarDefaultPilotStress'))
+        if (!getModuleSetting('statBarDefaultPilotStress'))
             return;
     }
     catch
@@ -584,14 +596,14 @@ export function TriggerUseAmmoFlow(itemUuid, ammoIndex)
     const flowDef = game.lancer?.flows?.get('UseAmmoFlow');
     if (!flowDef)
     {
-        ui.notifications?.error('UseAmmoFlow not registered. Is the flow registration enabled?');
+        ui.notifications?.error(localize('LA.notify.useammoflowNotRegisteredIsTheFlowRegistration'));
         return;
     }
 
     const item = fromUuidSync(itemUuid);
     if (!item?.actor)
     {
-        ui.notifications?.error('Could not resolve item or actor for ammo flow.');
+        ui.notifications?.error(localize('LA.notify.couldNotResolveItemOrActorFor'));
         return;
     }
 
@@ -600,7 +612,7 @@ export function TriggerUseAmmoFlow(itemUuid, ammoIndex)
     const FlowBase = typeof StatRollFlow === 'function' ? Object.getPrototypeOf(StatRollFlow) : null;
     if (!FlowBase)
     {
-        ui.notifications?.error('Could not resolve Flow base class.');
+        ui.notifications?.error(localize('LA.notify.couldNotResolveFlowBaseClass'));
         return;
     }
 
@@ -649,7 +661,7 @@ async function checkAmmoItemDestroyed(state)
 {
     if (state.item?.system?.destroyed)
     {
-        ui.notifications.warn(`System ${state.item.name} is destroyed!`);
+        ui.notifications.warn(localizeFormat('LA.notify.systemDestroyed', { name: state.item.name }));
         return false;
     }
     return true;
@@ -659,7 +671,7 @@ async function checkAmmoItemDisabled(state)
 {
     if (state.item?.system?.disabled)
     {
-        ui.notifications.warn(`System ${state.item.name} is disabled!`);
+        ui.notifications.warn(localizeFormat('LA.notify.systemDisabled', { name: state.item.name }));
         return false;
     }
     return true;
@@ -673,7 +685,7 @@ async function checkAmmoItemLimited(state)
     const cost = state.data.ammoCost ?? 1;
     if ((uses?.value ?? 0) < cost)
     {
-        ui.notifications.warn(`${state.item.name} does not have enough charges! (need ${cost}, have ${uses?.value ?? 0})`);
+        ui.notifications.warn(localizeFormat('LA.notify.notEnoughCharges', { name: state.item.name, need: cost, have: uses?.value ?? 0 }));
         return false;
     }
     return true;
@@ -840,14 +852,14 @@ function _buildAmmoEditorHTML(item)
           <div class="flexrow" style="align-items: center; margin-bottom: 5px;">
             <input class="lancer-header" style="flex: 1; background: transparent; border: none; font-weight: bold;"
                    type="text" name="${path}.${i}.name" value="${ammo.name || ''}"
-                   placeholder="Ammo Name" />
+                   placeholder="${localize('LA.lancerModif.ammoName')}" />
             ${ammo.cost != null ? `<span style="margin-left: 10px;">Cost: ${ammo.cost}</span>` : ''}
             <a class="gen-control fas fa-trash" data-action="splice" data-path="${path}.${i}"
                style="margin-left: 10px;"></a>
           </div>
           <textarea name="${path}.${i}.description"
                     style="width: 100%; min-height: 60px; background: rgba(0,0,0,0.3); color: white; border: 1px solid #555; padding: 5px;"
-                    placeholder="Description">${ammo.description || ''}</textarea>
+                    placeholder="${localize('LA.common.description')}">${ammo.description || ''}</textarea>
         </div>`;
     }
 
@@ -959,12 +971,6 @@ export function registerExtraTrackableAttributes()
     _push(trackableAttributes.pilot, 'value', 'action_tracker.move');
 }
 
-/**
- * Intercepts .flow-button clicks for module-registered flows that the system
- * doesn't know about (it only handles hardcoded types). Uses capture phase
- * to fire before the system's handler.
- */
-
 const SYSTEM_FLOW_TYPES = new Set([
     'StatRollFlow', 'WeaponAttackFlow', 'TechAttackFlow', 'BasicAttackFlow',
     'ActivationFlow', 'CoreActiveFlow', 'SystemFlow', 'TalentFlow',
@@ -975,6 +981,11 @@ const SYSTEM_FLOW_TYPES = new Set([
     // Add other system-native flow types here as needed
 ]);
 
+/**
+ * Intercepts .flow-button clicks for module-registered flows that the system
+ * doesn't know about (it only handles hardcoded types). Uses capture phase
+ * to fire before the system's handler.
+ */
 export function initCustomFlowDispatch()
 {
     document.body.addEventListener('click', (ev) =>
@@ -1001,7 +1012,7 @@ export function initCustomFlowDispatch()
         const actorId = button.dataset.actorId;
         if (!actorId)
         {
-            ui.notifications?.error(`No actor ID found on ${flowType} prompt button.`);
+            ui.notifications?.error(localizeFormat('LA.notify.noActorIdOnPrompt', { flow: flowType }));
             return;
         }
 
@@ -1009,7 +1020,7 @@ export function initCustomFlowDispatch()
             ?? fromUuidSync(actorId);
         if (!actor)
         {
-            ui.notifications?.error(`Invalid actor ID on ${flowType} prompt button.`);
+            ui.notifications?.error(localizeFormat('LA.notify.invalidActorIdOnPrompt', { flow: flowType }));
             return;
         }
 
@@ -1020,7 +1031,7 @@ export function initCustomFlowDispatch()
             const Flow = game.lancer?.flows?.get('StatRollFlow')?.__proto__;
             if (!Flow)
             {
-                ui.notifications?.error(`Cannot resolve Flow base class for ${flowType}.`);
+                ui.notifications?.error(localizeFormat('LA.notify.cannotResolveFlowBase', { flow: flowType }));
                 return;
             }
             const GenericFlow = class extends Flow
@@ -1045,24 +1056,24 @@ export function initCustomFlowDispatch()
             new GenericFlow(actor.uuid, initialData).begin();
         }
         else
-            ui.notifications?.error(`Invalid flow structure for ${flowType}.`);
+            ui.notifications?.error(localizeFormat('LA.notify.invalidFlowStructure', { flow: flowType }));
     }, { capture: true });
 }
 
 /**
- * Call via API: game.modules.get('lancer-automations').api.repairLCPData()
+ * Call via API: game.modules.get(MODULE_ID).api.repairLCPData()
  */
 export async function repairLCPData()
 {
     if (!game.user.isGM)
     {
-        ui.notifications.error('Only the GM can run LCP data repair.');
+        ui.notifications.error(localize('LA.notify.onlyTheGmCanRunLcpData'));
         return;
     }
 
     const confirmed = await Dialog.confirm({
-        title: 'Lancer Automations — Apply System Fixes',
-        content: `<p>This will fix known data issues on all compendium and actor-owned items.</p><p>Continue?</p>`,
+        title: localize('LA.dialogTitle.lancerAutomationsApplySystemFixes'),
+        content: localize('LA.lancerModif.content.thisWillFixKnownDataIssues'),
         defaultYes: true
     });
     if (!confirmed)
@@ -1085,7 +1096,7 @@ export async function repairLCPData()
         if (typeof getOfficialData !== 'function')
             throw new Error(`Resolved getOfficialData alias "${aliasMatch[1]}" is not callable`);
 
-        ui.notifications.info('Reading LCP source data...');
+        ui.notifications.info(localize('LA.notify.readingLcpSourceData'));
         const allData = await getOfficialData(null);
 
         const rawAmmoByLid = new Map();
@@ -1184,8 +1195,7 @@ export async function repairLCPData()
         if (lockedPacks.length)
         {
             ui.notifications.warn(
-                `Could not write to ${lockedPacks.join(', ')}. Open the Compendium tab, right-click each pack, ` +
-                `pick "Toggle Edit Lock", and re-run.`,
+                localizeFormat('LA.notify.packsLocked', { packs: lockedPacks.join(', ') }),
                 { permanent: true }
             );
         }
@@ -1207,12 +1217,12 @@ export async function repairLCPData()
                 fixed++;
         }
 
-        ui.notifications.info(`Applied fixes to ${fixed} item(s).${fixed > 0 ? ' Reload recommended.' : ''}`, { permanent: fixed > 0 });
+        ui.notifications.info(localizeFormat('LA.notify.appliedFixes', { count: fixed, hint: fixed > 0 ? ' Reload recommended.' : '' }), { permanent: fixed > 0 });
     }
     catch (e)
     {
         console.error('lancer-automations | repairLCPData failed:', e);
-        ui.notifications.error(`Repair failed: ${e.message}. Check console.`);
+        ui.notifications.error(localizeFormat('LA.notify.repairFailed', { error: e.message }));
     }
 }
 
@@ -1429,36 +1439,64 @@ export function wrapInitAttackData(flowSteps)
     });
 }
 
+/** Let non-Weapon npc features drive a damage flow; the system's setDamageTags only accepts weapon types. */
+export function wrapSetDamageTags(flowSteps)
+{
+    const orig = flowSteps.get('setDamageTags');
+    if (!orig)
+        return;
+    flowSteps.set('setDamageTags', async function (state, options)
+    {
+        const item = state.item;
+        if (item?.is_npc_feature?.() && item.system.type !== 'Weapon')
+        {
+            state.data.tags = item.system.tags ?? [];
+            state.data.ap = !!state.data.tags.find(tag => tag.is_ap);
+            state.data.overkill = !!state.data.tags.find(tag => tag.is_overkill);
+            const reliableTag = state.data.tags.find(tag => tag.is_reliable);
+            if (reliableTag)
+            {
+                state.data.reliable = true;
+                state.data.reliable_val = Number.parseInt(reliableTag.tierVal((state.actor?.is_npc?.() && state.actor.system.tier) || 1) || "0");
+            }
+            return true;
+        }
+        return orig(state, options);
+    });
+}
+
+// the system flags every non-weapon item attack as tech+smart; forceNonTech in la_extraData opts out
+async function forceNonTechAttack(state)
+{
+    if (!state.la_extraData?.forceNonTech)
+        return true;
+    const accDiff = state.data?.acc_diff;
+    if (!accDiff)
+        return true;
+    const weapon = accDiff.weapon;
+    if (weapon)
+    {
+        weapon.tech = false;
+        weapon.smart = false;
+    }
+    // the HUD derives its tech look from lancerItem's type, not weapon.tech
+    accDiff.lancerItem = undefined;
+    if (!accDiff.lancerActor)
+        accDiff.lancerActor = state.actor;
+    return true;
+}
+
+export function registerNonTechAttackStep(flowSteps, flows)
+{
+    flowSteps.set('lancer-automations:forceNonTechAttack', forceNonTechAttack);
+    flows.get('BasicAttackFlow')?.insertStepAfter('initAttackData', 'lancer-automations:forceNonTechAttack');
+}
+
 export const ItemDisabledAPI = {
     isItemDisabled,
     setItemDisabled,
     isDisableable,
 };
-
-function getDesiredWallHeight(actor)
-{
-    const size = Number(actor.system?.size ?? actor.prototypeToken?.width ?? 1) || 1;
-    let vsEnabled = false;
-    try
-    {
-        vsEnabled = !!game.settings.get('lancer-automations', 'autoTokenHeightVehicleSquad');
-    }
-    catch
-    { /* ignore */ }
-    if (vsEnabled)
-    {
-        const items = Array.from(actor.items ?? []);
-        if (items.some(item => item.system?.lid === 'npcc_squad'))
-            return 0.5;
-        if (items.some(item => /vehicle/i.test(item.system?.lid ?? '')))
-        {
-            if (size <= 1)
-                return 0.5;
-            return Math.min(size - 1, 4) + 0.1;
-        }
-    }
-    return size + 0.1;
-}
 
 const _HEIGHT_TARGET_TYPES = new Set(['mech', 'npc', 'pilot', 'deployable']);
 
@@ -1469,7 +1507,7 @@ Hooks.on('preCreateToken', (tokenDoc, _data, _options, userId) =>
         return;
     if (!game.modules.get('wall-height')?.active)
         return;
-    if (!game.settings.get('lancer-automations', 'autoTokenHeight'))
+    if (!getModuleSetting('autoTokenHeight'))
         return;
     const actor = tokenDoc.actor;
     if (!actor || !_HEIGHT_TARGET_TYPES.has(actor.type))
@@ -1483,14 +1521,14 @@ export async function syncAllTokenHeights()
 {
     if (!game.user.isGM)
     {
-        ui.notifications.error('Only the GM can sync token heights.');
+        ui.notifications.error(localize('LA.notify.onlyTheGmCanSyncTokenHeights'));
         return;
     }
     if (!game.modules.get('wall-height')?.active)
-        ui.notifications.warn('Wall Height is not active — values written but unused by the canvas.');
+        ui.notifications.warn(localize('LA.notify.wallHeightIsNotActiveValuesWritten'));
     const confirmed = await Dialog.confirm({
-        title: 'Lancer Automations — Sync Token Heights',
-        content: `<p>Set <b>wall-height.tokenHeight</b> on every world actor (prototype) and every placed token across all scenes.</p><p>Continue?</p>`,
+        title: localize('LA.dialogTitle.lancerAutomationsSyncTokenHeights'),
+        content: localize('LA.lancerModif.content.setWallHeightTokenheightOnEvery'),
         defaultYes: true
     });
     if (!confirmed)
@@ -1527,7 +1565,7 @@ export async function syncAllTokenHeights()
         catch (e)
         {
             console.error('lancer-automations | syncAllTokenHeights (prototype) failed', e);
-            ui.notifications.error('Prototype sync failed; see console.');
+            ui.notifications.error(localize('LA.notify.prototypeSyncFailedSeeConsole'));
             return;
         }
     }
@@ -1571,20 +1609,20 @@ export async function syncAllTokenHeights()
         }
     }
 
-    ui.notifications.info(`Prototypes: ${protoUpdated} updated, ${protoSkipped} skipped. Scene tokens: ${sceneUpdated} updated, ${sceneSkipped} skipped.`);
+    ui.notifications.info(localizeFormat('LA.notify.prototypeSyncDone', { protoUpdated, protoSkipped, sceneUpdated, sceneSkipped }));
 }
 
 export async function syncAllActorImgs()
 {
     if (!game.user.isGM)
     {
-        ui.notifications.error('Only the GM can sync actor portraits.');
+        ui.notifications.error(localize('LA.notify.onlyTheGmCanSyncActorPortraits'));
         return;
     }
 
     const confirmed = await Dialog.confirm({
-        title: 'Lancer Automations — Sync Actors to Prototype Token',
-        content: `<p>For every world actor, set <b>actor.img</b> and <b>actor.name</b> to the prototype token image and name.</p><p>Continue?</p>`,
+        title: localize('LA.dialogTitle.lancerAutomationsSyncActorsToPrototype'),
+        content: localize('LA.lancerModif.content.forEveryWorldActorSetActor'),
         defaultYes: true
     });
     if (!confirmed)
@@ -1624,9 +1662,58 @@ export async function syncAllActorImgs()
         catch (e)
         {
             console.error('lancer-automations | syncAllActorImgs failed', e);
-            ui.notifications.error('Sync failed; see console.');
+            ui.notifications.error(localize('LA.notify.syncFailedSeeConsole'));
             return;
         }
     }
-    ui.notifications.info(`Synced ${imgUpdated} portrait${imgUpdated === 1 ? '' : 's'} and ${nameUpdated} name${nameUpdated === 1 ? '' : 's'}, skipped ${skipped}.`);
+    ui.notifications.info(localizeFormat('LA.notify.syncedPortraits', { images: imgUpdated, imagePlural: imgUpdated === 1 ? '' : 's', names: nameUpdated, namePlural: nameUpdated === 1 ? '' : 's', skipped }));
 }
+
+// Full Repair: silently drop item activations and action locks, then re-run onInit and refresh engagement.
+Hooks.on('lancer.postFlow.FullRepairFlow', async (flow, success) =>
+{
+    if (!success)
+        return;
+    const actor = flow?.state?.actor;
+    const api = game.modules.get(MODULE_ID)?.api;
+    if (!actor || !api)
+        return;
+    for (const item of actor.items)
+    {
+        const flags = getLAFlags(item) ?? {};
+        const stale = {};
+        if (flags.activeStateData)
+            stale.activeStateData = true;
+        if (flags.actionLocks?.length)
+            stale.actionLocks = true;
+        if (flags.actionTypeLocks?.length)
+            stale.actionTypeLocks = true;
+        if (Object.keys(stale).length)
+            await api.removeItemFlags(item, stale);
+    }
+    const actorStale = {};
+    if (getLAFlag(actor,'lockedActions'))
+        actorStale.lockedActions = true;
+    if (getLAFlag(actor,'lockedActionTypes'))
+        actorStale.lockedActionTypes = true;
+    if (Object.keys(actorStale).length)
+        await api.removeActorFlags(actor, actorStale);
+
+    const token = actor.getActiveTokens?.()?.[0] ?? null;
+    if (token)
+    {
+        await api.checkOnInitReactions(token);
+        // The repair wiped the materialized copies. The templates on items/actor survived it.
+        await runInOnInitTriggerContext(async () =>
+        {
+            await api.applyActorTemplatesToTokens(actor, [token]);
+            await api.applyActorBonusTemplatesToTokens(actor, [token]);
+            for (const item of actor.items)
+            {
+                await api.applyItemTemplatesToTokens(item, [token]);
+                await api.applyItemBonusTemplatesToTokens(item, [token]);
+            }
+        });
+    }
+    await api.updateAllEngagements?.();
+});

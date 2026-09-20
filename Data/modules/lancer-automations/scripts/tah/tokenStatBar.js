@@ -12,6 +12,7 @@ import {
 import { setTokenFlag } from '../socket.js';
 import { playStatsSound } from './sound.js';
 import { isActorScannedForUser } from '../tools/scan-lookup.js';
+import { escapeAttr as _escAttr } from '../tools/misc-tools.js';
 import { linkTierGate } from '../interactive/deployables.js';
 import * as altFlags from '../integrations/alt-sheets-flags.js';
 
@@ -26,7 +27,7 @@ import {
     FLASH_HOLD_MS, FLASH_SHRINK_MS, FLASH_TOTAL_MS, FLASH_LINGER_MS,
     MAX_BAR_WIDTH, REF_GRID_SIZE, REF_ROW_HEIGHT,
     ISO_SETTING_STATBAR, ISO_SETTING_RETICLE, ISO_SETTING_HITZONE,
-    FLAG_HIDDEN, FLAG_COMBAT_ONLY, FLAG_ROW_HEIGHT, FLAG_VIS_OUT_OF_COMBAT, FLAG_VIS_IN_COMBAT,
+    FLAG_HIDDEN, FLAG_DISABLED, FLAG_COMBAT_ONLY, FLAG_ROW_HEIGHT, FLAG_VIS_OUT_OF_COMBAT, FLAG_VIS_IN_COMBAT,
     FLAG_PILOT_STRESS, FLAG_EXTRAS, FLAG_AUTO_KEYS, FLAG_TEMPLATES,
     DEFAULT_EXTRA_BAR_ICON,
 } from './statbar/config.js';
@@ -115,6 +116,8 @@ const BAR_DEFS = [
 
 
 import { getModuleSetting } from "../tools/settings-utils.js";
+import { getLAFlag, setLAFlag } from "../tools/flag-utils.js";
+import { localize, localizeFormat } from "../tools/string-utils.js";
 
 function isEnabled()
 {
@@ -123,15 +126,8 @@ function isEnabled()
 
 function _getIsoState(token, settingKey = ISO_SETTING_STATBAR)
 {
-    try
-    {
-        if (!game.settings.get(MODULE_ID, settingKey))
-            return null;
-    }
-    catch
-    {
+    if (!getModuleSetting(settingKey))
         return null;
-    }
     return getIsoStateForToken(token);
 }
 
@@ -169,21 +165,13 @@ async function _resolveTokenDocument(arg)
 
 function getWorldSetting(key, fallback)
 {
-    try
-    {
-        const value = game.settings.get(MODULE_ID, key);
-        return value ?? fallback;
-    }
-    catch
-    {
-        return fallback;
-    }
+    return getModuleSetting(key) ?? fallback;
 }
 
 // Per-token boolean flag; token override wins, else the world setting.
 function tokenBoolFlag(tokenDoc, flag, settingKey)
 {
-    const value = tokenDoc?.getFlag?.(MODULE_ID, flag);
+    const value = getLAFlag(tokenDoc,flag);
     if (value === true || value === false)
         return value;
     return getWorldSetting(settingKey, false) === true;
@@ -192,6 +180,10 @@ function tokenBoolFlag(tokenDoc, flag, settingKey)
 function statBarHidden(tokenDoc)
 {
     return tokenBoolFlag(tokenDoc, FLAG_HIDDEN, SETTING_DEFAULT_HIDDEN);
+}
+function statBarDisabled(tokenDoc)
+{
+    return getLAFlag(tokenDoc,FLAG_DISABLED) === true;
 }
 function statBarCombatOnly(tokenDoc)
 {
@@ -204,7 +196,7 @@ function showsPilotStress(tokenDoc)
 
 function statBarRowHeight(tokenDoc)
 {
-    const flagValue = tokenDoc?.getFlag?.(MODULE_ID, FLAG_ROW_HEIGHT);
+    const flagValue = getLAFlag(tokenDoc,FLAG_ROW_HEIGHT);
     if (Number.isFinite(flagValue) && flagValue > 0)
         return Number(flagValue);
     const fallback = getWorldSetting(SETTING_DEFAULT_ROW_HEIGHT, 0);
@@ -216,7 +208,7 @@ function resolveVisibilityMode(tokenDoc, inCombat)
 {
     const flagKey = inCombat ? FLAG_VIS_IN_COMBAT : FLAG_VIS_OUT_OF_COMBAT;
     const settingKey = inCombat ? SETTING_VIS_IN_COMBAT : SETTING_VIS_OUT_OF_COMBAT;
-    const mode = tokenDoc?.getFlag?.(MODULE_ID, flagKey);
+    const mode = getLAFlag(tokenDoc,flagKey);
     if (mode === VIS_ALL || mode === VIS_OWNER || mode === VIS_NONE || mode === VIS_SCANNED)
         return mode;
     return getWorldSetting(settingKey, VIS_ALL);
@@ -225,6 +217,8 @@ function resolveVisibilityMode(tokenDoc, inCombat)
 function shouldShowBars(token)
 {
     if (!token)
+        return false;
+    if (statBarDisabled(token.document))
         return false;
     if (statBarHidden(token.document))
         return false;
@@ -332,8 +326,8 @@ function _parseHex(hex)
 
 // Path resolver: supports normal actor-rooted paths plus two special prefixes
 // used by auto-injected counter bars:
-//   "items.{id}.{rest}"        â†’ walks actor.items.get(id) (e.g. frame on a mech)
-//   "pilotItems.{id}.{rest}"   â†’ walks actor.system.pilot.value.items.get(id) when
+//   "items.{id}.{rest}"        → walks actor.items.get(id) (e.g. frame on a mech)
+//   "pilotItems.{id}.{rest}"   → walks actor.system.pilot.value.items.get(id) when
 //                                 the actor is a mech, otherwise falls back to actor.items
 //                                 (talents live on the pilot for mechs, on the pilot actor itself otherwise)
 function _readActorPath(actor, path)
@@ -365,7 +359,7 @@ function _isActorScannedByUser(actor, user)
 {
     if (!actor || !user)
         return false;
-    if (actor.getFlag?.(MODULE_ID, 'scannedByAll'))
+    if (getLAFlag(actor,'scannedByAll'))
         return true;
     try
     {
@@ -491,19 +485,19 @@ async function _autoInjectCounters(tokenDoc)
         if (!actor || !['mech', 'pilot', 'npc', 'deployable'].includes(actor.type))
             return;
 
-        const existing = doc.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [];
-        const seen = doc.getFlag(MODULE_ID, FLAG_AUTO_KEYS) ?? {};
+        const existing = getLAFlag(doc,FLAG_EXTRAS) ?? [];
+        const seen = getLAFlag(doc,FLAG_AUTO_KEYS) ?? {};
         const liveKeys = new Set(existing.filter(/** @type {any} */ entry => entry?.autoKey).map(/** @type {any} */ entry => entry.autoKey));
 
         // Talent/frame counters (gated by world setting).
         let toAddCounters = [];
         let counterStyle = null;
-        if (game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENTS))
+        if (getModuleSetting(SETTING_AUTO_INJECT_TALENTS))
         {
             counterStyle = {
-                color: game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_COLOR) || '#196161',
-                widthPct: Math.max(1, Math.min(100, Number(game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_WIDTH)) || 100)),
-                feedback: !!game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_FEEDBACK),
+                color: getModuleSetting(SETTING_AUTO_INJECT_TALENT_COLOR) || '#196161',
+                widthPct: Math.max(1, Math.min(100, Number(getModuleSetting(SETTING_AUTO_INJECT_TALENT_WIDTH)) || 100)),
+                feedback: !!getModuleSetting(SETTING_AUTO_INJECT_TALENT_FEEDBACK),
             };
             const counters = _enumerateAutoCounters(actor);
             toAddCounters = counters.filter(counter => !liveKeys.has(counter.autoKey) && !seen[counter.autoKey]);
@@ -515,7 +509,7 @@ async function _autoInjectCounters(tokenDoc)
 
         // alt-sheets fraction custom flags -> derived path-bound bars.
         let toAddFlags = [];
-        if (altFlags.isActive() && game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_CUSTOM_FLAGS))
+        if (altFlags.isActive() && getModuleSetting(SETTING_AUTO_INJECT_CUSTOM_FLAGS))
         {
             toAddFlags = altFlags.listLinkedFractionFlags(actor)
                 .map(flag => _buildCustomFlagBar(actor, flag))
@@ -524,7 +518,7 @@ async function _autoInjectCounters(tokenDoc)
 
         // Bond XP bar on bonded pilots (gated by world setting).
         let toAddBondXp = [];
-        if (actor.type === 'pilot' && game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_BOND_XP)
+        if (actor.type === 'pilot' && getModuleSetting(SETTING_AUTO_INJECT_BOND_XP)
             && actor.items.some(/** @type {any} */ ownedItem => ownedItem.type === 'bond')
             && !liveKeys.has('bondXp') && !seen['bondXp'])
         {
@@ -657,17 +651,17 @@ async function _resetAutoInjectedExtras(tokenDoc)
         const doc = /** @type {any} */ (tokenDoc)?.document ?? tokenDoc;
         if (!doc)
             return false;
-        const existing = doc.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [];
+        const existing = getLAFlag(doc,FLAG_EXTRAS) ?? [];
         const kept = existing.filter(/** @type {any} */ entry => !entry?.autoKey);
         const fresh = [];
         const nextSeen = {};
         const actor = doc.actor;
         const isLancer = actor && ['mech', 'pilot', 'npc'].includes(actor.type);
-        if (isLancer && game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENTS))
+        if (isLancer && getModuleSetting(SETTING_AUTO_INJECT_TALENTS))
         {
-            const color = game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_COLOR) || '#196161';
-            const widthPct = Math.max(1, Math.min(100, Number(game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_WIDTH)) || 100));
-            const feedback = !!game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_FEEDBACK);
+            const color = getModuleSetting(SETTING_AUTO_INJECT_TALENT_COLOR) || '#196161';
+            const widthPct = Math.max(1, Math.min(100, Number(getModuleSetting(SETTING_AUTO_INJECT_TALENT_WIDTH)) || 100));
+            const feedback = !!getModuleSetting(SETTING_AUTO_INJECT_TALENT_FEEDBACK);
             for (const counter of _enumerateAutoCounters(actor))
             {
                 fresh.push(_buildAutoInjectedEntry(counter, color, widthPct, feedback));
@@ -681,7 +675,7 @@ async function _resetAutoInjectedExtras(tokenDoc)
                 fresh.push(_materializeLinkedTemplate(template));
                 nextSeen[template.autoKey] = true;
             }
-            if (altFlags.isActive() && game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_CUSTOM_FLAGS))
+            if (altFlags.isActive() && getModuleSetting(SETTING_AUTO_INJECT_CUSTOM_FLAGS))
             {
                 for (const flag of altFlags.listLinkedFractionFlags(actor))
                 {
@@ -742,7 +736,7 @@ export function _defaultExtraBar()
     };
 }
 
-// Polymorphic target: Token / Item / Actor / uuid / id â†’ { kind, doc } or null.
+// Polymorphic target: Token / Item / Actor / uuid / id → { kind, doc } or null.
 async function _resolveTarget(target)
 {
     if (!target)
@@ -793,7 +787,7 @@ function _enumerateLinkedTemplates(actor)
     const out = [];
     if (!actor)
         return out;
-    const actorList = /** @type {any} */ (actor).getFlag?.(MODULE_ID, FLAG_TEMPLATES) ?? [];
+    const actorList = getLAFlag(actor,FLAG_TEMPLATES) ?? [];
     const actorSrc = `actor:${actor.id}`;
     for (const record of actorList)
     {
@@ -803,7 +797,7 @@ function _enumerateLinkedTemplates(actor)
     }
     for (const item of actor.items ?? [])
     {
-        const itemList = /** @type {any} */ (item).getFlag?.(MODULE_ID, FLAG_TEMPLATES) ?? [];
+        const itemList = getLAFlag(item,FLAG_TEMPLATES) ?? [];
         for (const record of itemList)
         {
             if (!record?.id || !record.entry || !linkTierGate(record.entry, actor, item))
@@ -819,11 +813,11 @@ function _materializeLinkedTemplate(record)
     const merged = foundry.utils.mergeObject(_defaultExtraBar(), record.entry ?? {}, { inplace: false });
     // Fall back to the auto-inject world settings for fields the template didn't specify.
     if (record.entry?.widthPct === undefined)
-        merged.widthPct = Math.max(1, Math.min(100, Number(game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_WIDTH)) || 100));
+        merged.widthPct = Math.max(1, Math.min(100, Number(getModuleSetting(SETTING_AUTO_INJECT_TALENT_WIDTH)) || 100));
     if (record.entry?.color === undefined)
-        merged.color = { kind: 'solid', stops: [game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_COLOR) || '#196161'] };
+        merged.color = { kind: 'solid', stops: [getModuleSetting(SETTING_AUTO_INJECT_TALENT_COLOR) || '#196161'] };
     if (record.entry?.audioTextFeedback === undefined)
-        merged.audioTextFeedback = !!game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENT_FEEDBACK);
+        merged.audioTextFeedback = !!getModuleSetting(SETTING_AUTO_INJECT_TALENT_FEEDBACK);
     merged.id = foundry.utils.randomID();
     merged.autoKey = record.autoKey;
     merged.linkedItemUuid = merged.linkedItemUuid || record.sourceUuid;
@@ -922,7 +916,7 @@ export async function removeExtraBar(target, entryId)
     return _removeExtraBarFromTemplate(resolved.doc, entryId);
 }
 
-// Token â†’ statBarExtras entries. Item/Actor â†’ template records [{ id, entry }].
+// Token → statBarExtras entries. Item/Actor → template records [{ id, entry }].
 /** @returns {Array<any>} Extra bar entries on the document */
 export function getExtraBars(target)
 {
@@ -930,18 +924,18 @@ export function getExtraBars(target)
         return [];
     const documentName = /** @type {any} */ (target).documentName;
     if (documentName === 'Item' || documentName === 'Actor')
-        return /** @type {any} */ (target).getFlag?.(MODULE_ID, FLAG_TEMPLATES) ?? [];
+        return getLAFlag(target,FLAG_TEMPLATES) ?? [];
     if (documentName === 'Token')
-        return /** @type {any} */ (target).getFlag?.(MODULE_ID, FLAG_EXTRAS) ?? [];
+        return getLAFlag(target,FLAG_EXTRAS) ?? [];
     const inner = /** @type {any} */ (target).document;
     if (inner?.documentName === 'Token')
-        return inner.getFlag?.(MODULE_ID, FLAG_EXTRAS) ?? [];
+        return getLAFlag(inner,FLAG_EXTRAS) ?? [];
     return [];
 }
 
 async function _updateExtraBarValueOnToken(tokenDoc, entryId, value)
 {
-    const extras = foundry.utils.deepClone(/** @type {any} */ (tokenDoc).getFlag(MODULE_ID, FLAG_EXTRAS) ?? []);
+    const extras = foundry.utils.deepClone(getLAFlag(tokenDoc,FLAG_EXTRAS) ?? []);
     const entry = extras.find(/** @type {any} */ item => item.id === entryId);
     if (!entry)
     {
@@ -970,7 +964,7 @@ async function _updateExtraBarValueOnToken(tokenDoc, entryId, value)
     entry.valueSource.value = next;
     try
     {
-        await /** @type {any} */ (tokenDoc).setFlag(MODULE_ID, FLAG_EXTRAS, extras);
+        await setLAFlag(tokenDoc,FLAG_EXTRAS, extras);
     }
     catch (err)
     {
@@ -982,7 +976,7 @@ async function _updateExtraBarValueOnToken(tokenDoc, entryId, value)
 
 async function _updateExtraBarValueOnTemplate(sourceDoc, templateId, value)
 {
-    const list = foundry.utils.deepClone(/** @type {any} */ (sourceDoc).getFlag(MODULE_ID, FLAG_TEMPLATES) ?? []);
+    const list = foundry.utils.deepClone(getLAFlag(sourceDoc,FLAG_TEMPLATES) ?? []);
     const record = list.find(/** @type {any} */ item => item.id === templateId);
     if (!record)
     {
@@ -999,7 +993,7 @@ async function _updateExtraBarValueOnTemplate(sourceDoc, templateId, value)
         record.entry.valueSource = valueSource;
         try
         {
-            await /** @type {any} */ (sourceDoc).setFlag(MODULE_ID, FLAG_TEMPLATES, list);
+            await setLAFlag(sourceDoc,FLAG_TEMPLATES, list);
         }
         catch (err)
         {
@@ -1032,7 +1026,7 @@ async function _updateExtraBarValueOnTemplate(sourceDoc, templateId, value)
 
 async function _addExtraBarToToken(tokenDoc, partial)
 {
-    const extras = foundry.utils.deepClone(/** @type {any} */ (tokenDoc).getFlag(MODULE_ID, FLAG_EXTRAS) ?? []);
+    const extras = foundry.utils.deepClone(getLAFlag(tokenDoc,FLAG_EXTRAS) ?? []);
     const base = { ..._defaultExtraBar(), visibility: 'scanned', audioTextFeedback: true };
     const entry = foundry.utils.mergeObject(base, partial ?? {}, { inplace: false });
     if (!entry.id || extras.some(/** @type {any} */ item => item.id === entry.id))
@@ -1040,7 +1034,7 @@ async function _addExtraBarToToken(tokenDoc, partial)
     extras.push(entry);
     try
     {
-        await /** @type {any} */ (tokenDoc).setFlag(MODULE_ID, FLAG_EXTRAS, extras);
+        await setLAFlag(tokenDoc,FLAG_EXTRAS, extras);
     }
     catch (err)
     {
@@ -1052,7 +1046,7 @@ async function _addExtraBarToToken(tokenDoc, partial)
 
 async function _addExtraBarToTemplate(sourceDoc, partial)
 {
-    const list = foundry.utils.deepClone(/** @type {any} */ (sourceDoc).getFlag(MODULE_ID, FLAG_TEMPLATES) ?? []);
+    const list = foundry.utils.deepClone(getLAFlag(sourceDoc,FLAG_TEMPLATES) ?? []);
     // Templates store ONLY user-authored fields; settings + _defaultExtraBar fill the rest at inject time.
     const entry = { ...(partial ?? {}) };
     if (!entry.valueSource)
@@ -1065,7 +1059,7 @@ async function _addExtraBarToTemplate(sourceDoc, partial)
     list.push({ id: templateId, entry });
     try
     {
-        await /** @type {any} */ (sourceDoc).setFlag(MODULE_ID, FLAG_TEMPLATES, list);
+        await setLAFlag(sourceDoc,FLAG_TEMPLATES, list);
     }
     catch (err)
     {
@@ -1079,14 +1073,14 @@ async function _addExtraBarToTemplate(sourceDoc, partial)
 
 async function _removeExtraBarFromToken(tokenDoc, entryId)
 {
-    const extras = foundry.utils.deepClone(/** @type {any} */ (tokenDoc).getFlag(MODULE_ID, FLAG_EXTRAS) ?? []);
+    const extras = foundry.utils.deepClone(getLAFlag(tokenDoc,FLAG_EXTRAS) ?? []);
     const removed = extras.find(/** @type {any} */ item => item.id === entryId);
     const next = extras.filter(/** @type {any} */ item => item.id !== entryId);
     if (next.length === extras.length)
         return false;
     try
     {
-        await /** @type {any} */ (tokenDoc).setFlag(MODULE_ID, FLAG_EXTRAS, next);
+        await setLAFlag(tokenDoc,FLAG_EXTRAS, next);
     }
     catch (err)
     {
@@ -1113,13 +1107,13 @@ async function _removeExtraBarFromToken(tokenDoc, entryId)
 
 async function _removeExtraBarFromTemplate(sourceDoc, templateId)
 {
-    const list = /** @type {any} */ (sourceDoc).getFlag(MODULE_ID, FLAG_TEMPLATES) ?? [];
+    const list = getLAFlag(sourceDoc,FLAG_TEMPLATES) ?? [];
     const next = list.filter(/** @type {any} */ record => record.id !== templateId);
     if (next.length === list.length)
         return false;
     try
     {
-        await /** @type {any} */ (sourceDoc).setFlag(MODULE_ID, FLAG_TEMPLATES, next);
+        await setLAFlag(sourceDoc,FLAG_TEMPLATES, next);
     }
     catch (err)
     {
@@ -1135,16 +1129,16 @@ async function _removeExtraBarFromTemplate(sourceDoc, templateId)
         {
             if (tokenDoc.actor?.id !== actor?.id)
                 continue;
-            const cur = tokenDoc.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [];
+            const cur = getLAFlag(tokenDoc,FLAG_EXTRAS) ?? [];
             if (!cur.some(/** @type {any} */ entry => entry.autoKey === autoKey))
                 continue;
             const pruned = cur.filter(/** @type {any} */ entry => entry.autoKey !== autoKey);
             try
             {
-                await tokenDoc.setFlag(MODULE_ID, FLAG_EXTRAS, pruned);
-                const seen = { ...(tokenDoc.getFlag(MODULE_ID, FLAG_AUTO_KEYS) ?? {}) };
+                await setLAFlag(tokenDoc,FLAG_EXTRAS, pruned);
+                const seen = { ...(getLAFlag(tokenDoc,FLAG_AUTO_KEYS) ?? {}) };
                 delete seen[autoKey];
-                await tokenDoc.setFlag(MODULE_ID, FLAG_AUTO_KEYS, seen);
+                await setLAFlag(tokenDoc,FLAG_AUTO_KEYS, seen);
             }
             catch (err)
             {
@@ -1157,11 +1151,6 @@ async function _removeExtraBarFromTemplate(sourceDoc, templateId)
 
 export const ExtraBarsAPI = { updateExtraBarValue, addExtraBar, removeExtraBar, getExtraBars };
 
-function _escAttr(str)
-{
-    return String(str ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-}
-
 function _renderExtraBarRowHtml(entry, idx, overflow, collapsed)
 {
     const valueSource = entry.valueSource ?? {};
@@ -1171,11 +1160,11 @@ function _renderExtraBarRowHtml(entry, idx, overflow, collapsed)
     return `
         <div class="la-extra-bar-row${collapsed ? ' collapsed' : ''}" data-idx="${idx}" data-id="${entry.id}">
             <div class="la-extra-bar-header">
-                <span class="la-extra-bar-drag" draggable="true" title="Drag to reorder">â‰¡</span>
+                <span class="la-extra-bar-drag" draggable="true" title="Drag to reorder">≡</span>
                 <button type="button" class="la-extra-bar-toggle" title="${collapsed ? 'Expand' : 'Collapse'}">
                     <i class="fas fa-chevron-${collapsed ? 'right' : 'down'}"></i>
                 </button>
-                <input type="text" class="la-extra-bar-label" data-field="label" value="${_escAttr(entry.label ?? '')}" placeholder="Label" maxlength="14">
+                <input type="text" class="la-extra-bar-label" data-field="label" value="${_escAttr(entry.label ?? '')}" placeholder="${localize('LA.common.label')}" maxlength="14">
                 <span class="la-extra-bar-summary" title="${_escAttr(summary)}">${_escAttr(summary)}</span>
                 <input type="number" data-field="widthPct" value="${entry.widthPct}" min="1" max="100" step="1" title="Width %" class="la-extra-bar-width" style="${overflow ? 'border-color:#c33;color:#c33;' : ''}">
                 <span class="la-extra-bar-pct">%</span>
@@ -1232,7 +1221,7 @@ function _renderExtraBarRowHtml(entry, idx, overflow, collapsed)
                 ${entry.autoKey ? '' : `
                 <div class="la-extra-bar-line">
                     <span class="la-extra-bar-tag" title="Right-click in TAH Resources opens this item's sheet.">Linked Item</span>
-                    <input type="text" data-field="linkedItemUuid" value="${_escAttr(entry.linkedItemUuid ?? '')}" placeholder="Actor.X.Item.Y (UUID)" class="la-extra-bar-grow" readonly>
+                    <input type="text" data-field="linkedItemUuid" value="${_escAttr(entry.linkedItemUuid ?? '')}" placeholder="${localize('LA.extras.uuidPlaceholder')}" class="la-extra-bar-grow" readonly>
                     <button type="button" class="la-extra-bar-item-pick" title="Pick an item from the actor"><i class="fas fa-link"></i></button>
                     <button type="button" class="la-extra-bar-item-clear" title="Clear linked item"><i class="fas fa-times"></i></button>
                 </div>`}
@@ -1304,8 +1293,8 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
 
     // Default reads/writes FLAG_EXTRAS; callers pass storeOverride for prototype config.
     const store = storeOverride ?? {
-        read: () => tokenDoc.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [],
-        write: (working) => tokenDoc.setFlag(MODULE_ID, FLAG_EXTRAS, working),
+        read: () => getLAFlag(tokenDoc,FLAG_EXTRAS) ?? [],
+        write: (working) => setLAFlag(tokenDoc,FLAG_EXTRAS, working),
         onReset: () => _resetAutoInjectedExtras(tokenDoc),
     };
 
@@ -1405,7 +1394,7 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
                 rerender();
             });
 
-            // Icon path â†’ live-update the preview img on input.
+            // Icon path → live-update the preview img on input.
             const iconInput = /** @type {any} */ (rowEl.querySelector('input[data-field="icon"]'));
             const iconPreview = /** @type {any} */ (rowEl.querySelector('.la-extra-bar-icon-preview'));
             iconInput?.addEventListener('input', () =>
@@ -1417,7 +1406,7 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
                 }
             });
 
-            // Icon picker button â†’ open Foundry's FilePicker rooted in modules/lancer-automations/icons.
+            // Icon picker button → open Foundry's FilePicker rooted in modules/lancer-automations/icons.
             rowEl.querySelector('.la-extra-bar-icon-pick')?.addEventListener('click', () =>
             {
                 const current = (entry.icon || DEFAULT_EXTRA_BAR_ICON);
@@ -1439,7 +1428,7 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
                 fp.browse();
             });
 
-            // Item picker â†’ choose an Item from the actor (or any actor) to link.
+            // Item picker → choose an Item from the actor (or any actor) to link.
             rowEl.querySelector('.la-extra-bar-item-pick')?.addEventListener('click', async () =>
             {
                 const actor = tokenDoc?.actor ?? tokenDoc?.parent?.actor;
@@ -1456,9 +1445,9 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
                 ).join('');
                 const content = `<form><div class="form-group"><label>Linked Item</label><select name="uuid" style="width:100%;">${optionGroups || '<option value="">(no items found)</option>'}</select></div></form>`;
                 const picked = await Dialog.prompt({
-                    title: 'Link Item to Extra Bar',
+                    title: localize('LA.dialogTitle.linkItemToExtraBar'),
                     content,
-                    label: 'Link',
+                    label: localize('LA.scan.link'),
                     callback: (/** @type {any} */ html) =>
                     {
                         const sel = (html?.find?.('select[name="uuid"]')?.[0]) ?? html?.querySelector?.('select[name="uuid"]');
@@ -1533,7 +1522,7 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
     const resetBtn = root.querySelector?.('.la-extra-bars-reset');
     resetBtn?.addEventListener('click', async () =>
     {
-        const settingOn = !!game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENTS);
+        const settingOn = !!getModuleSetting(SETTING_AUTO_INJECT_TALENTS);
         // Persist the in-memory edits first so user changes aren't blown away by races.
         try
         {
@@ -1546,7 +1535,7 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
         const ok = await store.onReset();
         if (!ok)
         {
-            ui.notifications.warn('Reset failed, see the console.');
+            ui.notifications.warn(localize('LA.notify.resetFailedSeeTheConsole'));
             return;
         }
         // Pull the fresh array back into the editor and re-render.
@@ -1586,7 +1575,7 @@ function _bindExtraBarsUI(root, tokenDoc, app, storeOverride = null)
 function _makeActorTemplateStore(actor)
 {
     return {
-        read: () => (actor.getFlag(MODULE_ID, FLAG_TEMPLATES) ?? [])
+        read: () => (getLAFlag(actor,FLAG_TEMPLATES) ?? [])
             .map(/** @type {any} */ record => ({ ...(record.entry ?? {}), _tid: record.id })),
         write: async (entries) =>
         {
@@ -1595,7 +1584,7 @@ function _makeActorTemplateStore(actor)
                 const { _tid, ...rest } = entry;
                 return { id: _tid ?? foundry.utils.randomID(), entry: rest };
             });
-            await actor.setFlag(MODULE_ID, FLAG_TEMPLATES, records);
+            await setLAFlag(actor,FLAG_TEMPLATES, records);
             await reinjectAutoBarsForActor(actor);
         },
         onReset: async () =>
@@ -1618,12 +1607,12 @@ function _makeSceneTokenStore(actor, tokenDoc)
             return null;
         return autoKey.split(':')[1] || null;
     };
-    const initialArr = tokenDoc.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [];
+    const initialArr = getLAFlag(tokenDoc,FLAG_EXTRAS) ?? [];
     const initiallyVisibleTids = new Set(
         initialArr.map(/** @type {any} */ entry => linkedActorTid(entry?.autoKey)).filter(Boolean),
     );
     return {
-        read: () => tokenDoc.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [],
+        read: () => getLAFlag(tokenDoc,FLAG_EXTRAS) ?? [],
         write: async (working) =>
         {
             const workingTids = new Set();
@@ -1650,7 +1639,7 @@ function _makeSceneTokenStore(actor, tokenDoc)
                 }
                 tokenRows.push(entry);
             }
-            const existing = actor.getFlag(MODULE_ID, FLAG_TEMPLATES) ?? [];
+            const existing = getLAFlag(actor,FLAG_TEMPLATES) ?? [];
             const merged = [];
             for (const record of existing)
             {
@@ -1665,8 +1654,8 @@ function _makeSceneTokenStore(actor, tokenDoc)
             }
             for (const rest of newManuals)
                 merged.push({ id: foundry.utils.randomID(), entry: rest });
-            await actor.setFlag(MODULE_ID, FLAG_TEMPLATES, merged);
-            await tokenDoc.setFlag(MODULE_ID, FLAG_EXTRAS, tokenRows);
+            await setLAFlag(actor,FLAG_TEMPLATES, merged);
+            await setLAFlag(tokenDoc,FLAG_EXTRAS, tokenRows);
             await reinjectAutoBarsForActor(actor);
         },
         onReset: () => _resetAutoInjectedExtras(tokenDoc),
@@ -1675,7 +1664,7 @@ function _makeSceneTokenStore(actor, tokenDoc)
 
 function snapshotValues(actor, tokenDoc = null)
 {
-    const extras = tokenDoc?.getFlag?.(MODULE_ID, FLAG_EXTRAS) ?? [];
+    const extras = getLAFlag(tokenDoc,FLAG_EXTRAS) ?? [];
     const extrasSnap = {};
     for (const extra of extras)
     {
@@ -2009,7 +1998,7 @@ function fireExtraFeedback(token, entryId, oldVal, newVal)
         return;
     try
     {
-        const extras = /** @type {any} */ (token).document?.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [];
+        const extras = getLAFlag(token.document, FLAG_EXTRAS) ?? [];
         const entry = extras.find(/** @type {any} */ extra => extra?.id === entryId);
         if (!entry?.audioTextFeedback)
             return;
@@ -2094,7 +2083,7 @@ function spawnFlashExtra(token, entryId, oldVal, newVal)
         runFlashAnimation(token, `la-flash-extra-${entryId}`, (gfx, eased) =>
         {
             const remainingW = initialFlashW * (1 - eased);
-            // Damage: pips drain from the right â†’ flash shrinks from the left.
+            // Damage: pips drain from the right → flash shrinks from the left.
             const drawX = isDamage
                 ? flashStartX
                 : flashStartX + (initialFlashW - remainingW);
@@ -2170,7 +2159,7 @@ function bakeGraphicsToTexture(gfx, resolution = BAKE_RESOLUTION)
             region,
             multisample: PIXI.MSAA_QUALITY?.HIGH ?? 4,
         });
-        // Mipmaps: GPU uses pre-filtered downsamples instead of 1-of-N nearest sampling (the moirÃ© source).
+        // Mipmaps: GPU uses pre-filtered downsamples instead of 1-of-N nearest sampling (the moiré source).
         if (tex.baseTexture)
         {
             tex.baseTexture.mipmap = PIXI.MIPMAP_MODES?.ON ?? 1;
@@ -2410,15 +2399,13 @@ function drawStatHub()
     {
         if (visibleIds.has('structure') || visibleIds.has('hp'))
             rows.push([find('structure'), find('hp')]);
-        // Stress is paired with heat: if heat is hidden, drop stress too so
-        // we don't render an orphan row.
+        // Stress pairs with heat; drop both if heat is hidden to avoid an orphan row.
         if (visibleIds.has('heat'))
             rows.push([find('stress'), find('heat')]);
     }
     else
     {
-        // Pilots / deployables: full-width HP row, plus a heat row if heat
-        // somehow ended up on them (e.g. infection ticking on a deployable).
+        // Pilots/deployables: HP only; heat shown only if infection pushed it non-zero.
         if (visibleIds.has('hp'))
             rows.push([null, find('hp')]);
         if (visibleIds.has('pilotStress'))
@@ -2495,7 +2482,7 @@ function drawStatHub()
         wrapper.position.set(token.mesh.position.x, token.mesh.position.y);
         wrapper.rotation = iso.reverseRotation;
         wrapper.skew.set(iso.reverseSkewX, iso.reverseSkewY);
-        // K = 1/sqrt(sqrt(3)) â‰ˆ 0.76 cancels the True Iso aspect change.
+        // K = 1/sqrt(sqrt(3)) ≈ 0.76 cancels the True Iso aspect change.
         const isoScale = 0.76;
         wrapper.scale.set(isoScale, 1 / isoScale);
         container.position.set(-width / 2, (token.h / 2) + 3 - rowHeight);
@@ -2708,7 +2695,7 @@ function drawStatHub()
     }
 
     // Extra bars (user-defined via Resources tab): drawn live post-bake so value redraws don't invalidate the baked chrome.
-    const extras = /** @type {any} */ (token).document?.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [];
+    const extras = getLAFlag(token.document, FLAG_EXTRAS) ?? [];
     const visibleExtras = extras.filter(/** @type {any} */ extra => _resolveExtraBarValues(actor, extra).ownerOk);
     const extraLines = _groupExtrasIntoLines(visibleExtras);
     const extrasGeom = [];
@@ -3008,7 +2995,7 @@ function drawElevationBadge(token)
 
     if (isPositive)
     {
-        // â–² arrow then dark cell
+        // ▲ arrow then dark cell
         gfx.beginFill(arrowColor, 1);
         gfx.moveTo(halfW, 0);
         gfx.lineTo(cellW, arrowH);
@@ -3025,7 +3012,7 @@ function drawElevationBadge(token)
     }
     else
     {
-        // Dark cell then â–¼ arrow
+        // Dark cell then ▼ arrow
         gfx.beginFill(0x111111, 0.9);
         gfx.drawRect(0, 0, cellW, cellH);
         gfx.endFill();
@@ -3129,12 +3116,7 @@ function injectLancerHud(hud, html, actor)
 
     // Top: Overshield, [Infection], Burn. Infection cell hidden when integration is disabled or pilot.
     let infectionOn = false;
-    try
-    {
-        infectionOn = !!game.settings.get(MODULE_ID, 'enableInfectionDamageIntegration');
-    }
-    catch
-    { /* setting not registered */ }
+    infectionOn = !!getModuleSetting('enableInfectionDamageIntegration');
     const topInner =
         cell('system.overshield.value', sys?.overshield?.value ?? 0, COLORS.overshield, 'Overshield') +
         (infectionOn && !isPilot ? cell('system.infection', sys?.infection ?? 0, COLORS.infection, 'Infection') : '') +
@@ -3165,7 +3147,7 @@ function injectLancerHud(hud, html, actor)
             name: 'system.action_tracker.reaction',
             value: reactionVal,
             color: COLORS.reaction,
-            title: 'Reaction (1 = available, 0 = used)',
+            title: localize('LA.tokenStatBar.reactionHint'),
         });
         const reactionBox = `<div class="attribute la-hud-reaction" style="position: absolute; right: 100%; top: 50%; transform: translateY(-50%); width: 50px; display: flex; justify-content: center;">${reactionInput}</div>`;
         $html.find('.col.left').prepend(reactionBox);
@@ -3213,7 +3195,7 @@ function injectLancerHud(hud, html, actor)
 
     // Extras column, mirrored from the reaction box on the left.
     const tokenDoc = hud.object?.document;
-    const extras = tokenDoc?.getFlag(MODULE_ID, FLAG_EXTRAS) ?? [];
+    const extras = getLAFlag(tokenDoc,FLAG_EXTRAS) ?? [];
     const visibleExtras = extras.filter(/** @type {any} */ extra => _resolveExtraBarValues(actor, extra).ownerOk);
     if (visibleExtras.length)
     {
@@ -3241,7 +3223,7 @@ function injectLancerHud(hud, html, actor)
             const num = Number(raw);
             if (!Number.isFinite(num))
                 return;
-            const extras = foundry.utils.deepClone(tokenDoc.getFlag(MODULE_ID, FLAG_EXTRAS) ?? []);
+            const extras = foundry.utils.deepClone(getLAFlag(tokenDoc,FLAG_EXTRAS) ?? []);
             const entry = extras.find(/** @type {any} */ x => x.id === entryId);
             if (!entry || entry.valueSource?.kind !== 'manual')
                 return;
@@ -3249,7 +3231,7 @@ function injectLancerHud(hud, html, actor)
             if (raw.startsWith('+') || raw.startsWith('-'))
                 next = (Number(entry.valueSource.value) || 0) + num;
             entry.valueSource.value = next;
-            await tokenDoc.setFlag(MODULE_ID, FLAG_EXTRAS, extras);
+            await setLAFlag(tokenDoc,FLAG_EXTRAS, extras);
             hud.clear();
         };
 
@@ -3327,14 +3309,14 @@ export function registerTokenStatBarSettings()
         scope: 'world', config: false, type: String, default: VIS_ALL,
     });
     game.settings.register(MODULE_ID, SETTING_EFFECT_ICON_SCALE, {
-        name: 'Effect Icon Scale (with Stat Bar)',
-        hint: 'Multiplier on token effect icon size when the custom stat bar is active. 1 = no shrink (Foundry default), lower values progressively shrink. Only used when stat bar is enabled.',
+        name: 'LA.settings.statBarEffectIconScale.name',
+        hint: 'LA.settings.statBarEffectIconScale.hint',
         scope: 'world',
         config: false,
         type: Number,
-        default: 0.7,
-        range: { min: 0.3, max: 1, step: 0.05 },
-        requiresReload: true,
+        default: 1,
+        range: { min: 0.3, max: 2, step: 0.05 },
+        onChange: () => canvas?.tokens?.placeables.forEach(token => token.renderFlags.set({ redrawEffects: true })),
     });
 
     game.settings.register(MODULE_ID, SETTING_MIN_ZOOM_SCALE, {
@@ -3387,7 +3369,7 @@ export async function reinjectAutoBarsOnAllTokens()
 {
     if (!game.user?.isGM)
     {
-        ui.notifications?.warn('Only the GM can reinject auto bars.');
+        ui.notifications?.warn(localize('LA.notify.onlyTheGmCanReinjectAutoBars'));
         return;
     }
     let sceneTokens = 0, prototypes = 0, failed = 0;
@@ -3415,14 +3397,14 @@ export async function reinjectAutoBarsOnAllTokens()
             prototypes++; else
             failed++;
     }
-    ui.notifications?.info(`Reinjected auto bars on ${sceneTokens} scene token(s) and ${prototypes} prototype(s)${failed ? ` (${failed} failed)` : ''}.`);
+    ui.notifications?.info(localizeFormat('LA.notify.reinjectedAutoBars', { tokens: sceneTokens, prototypes, failed: failed ? ` (${failed} failed)` : '' }));
 }
 
 export async function applyDefaultsToCurrentScene()
 {
     if (!canvas?.scene)
     {
-        ui.notifications?.warn('No active scene.');
+        ui.notifications?.warn(localize('LA.notify.noActiveScene'));
         return;
     }
     const defaultHidden = getWorldSetting(SETTING_DEFAULT_HIDDEN, false);
@@ -3445,18 +3427,18 @@ export async function applyDefaultsToCurrentScene()
     }
     if (updates.length === 0)
     {
-        ui.notifications?.info('No Lancer tokens on this scene.');
+        ui.notifications?.info(localize('LA.notify.noLancerTokensOnThisScene'));
         return;
     }
     try
     {
         await canvas.scene.updateEmbeddedDocuments('Token', updates);
-        ui.notifications?.info(`Applied defaults to ${updates.length} token(s).`);
+        ui.notifications?.info(localizeFormat('LA.notify.appliedDefaults', { count: updates.length }));
     }
     catch (e)
     {
         console.warn(`${MODULE_ID} | apply defaults failed`, e);
-        ui.notifications?.error('Failed to apply defaults, see the console.');
+        ui.notifications?.error(localize('LA.notify.failedToApplyDefaultsSeeTheConsole'));
     }
 }
 
@@ -3465,6 +3447,8 @@ export async function applyDefaultsToCurrentScene()
 // Fade a token's bars back out once the flash-linger window elapses, unless it should still show.
 function scheduleFlashFade(tok)
 {
+    if (statBarDisabled(tok?.document))
+        return;
     _flashingTokens.add(tok.id);
     const fadeTarget = _getFadeTarget(tok);
     if (fadeTarget)
@@ -3502,7 +3486,7 @@ export function initTokenStatBar()
     // Skip if Bar Brawl is active.
     if (game.modules.get('barbrawl')?.active)
     {
-        console.log(`${MODULE_ID} | Bar Brawl detected â€” skipping custom token stat bar registration.`);
+        console.log(`${MODULE_ID} | Bar Brawl detected — skipping custom token stat bar registration.`);
         return;
     }
 
@@ -3619,7 +3603,7 @@ export function initTokenStatBar()
                 }
                 catch
                 { /* ignore */ }
-                const extras = tok.document?.getFlag?.(MODULE_ID, FLAG_EXTRAS) ?? [];
+                const extras = getLAFlag(tok.document,FLAG_EXTRAS) ?? [];
                 const barCoversIt = extras.some(/** @type {any} */ extra => extra?.autoKey === 'bondXp' && extra.audioTextFeedback);
                 if (showScroll && !barCoversIt)
                 {
@@ -3740,14 +3724,15 @@ export function initTokenStatBar()
             }
         }
 
-        // Status effect icons (token.effects container).
-        const effects = token.effects;
-        if (effects && !effects.destroyed)
+        // Status effect icons, plus the badge container that has to ride the same transform.
+        for (const [effects, baseKey] of [[token.effects, '_laBaseEffects'], [token.effectCounters, '_laBaseEffectCounters']])
         {
-            if (token._laBaseEffectsX === undefined)
+            if (!effects || effects.destroyed)
+                continue;
+            if (token[`${baseKey}X`] === undefined)
             {
-                token._laBaseEffectsX = effects.position.x;
-                token._laBaseEffectsY = effects.position.y;
+                token[`${baseKey}X`] = effects.position.x;
+                token[`${baseKey}Y`] = effects.position.y;
             }
             const isoFx = _getIsoState(token);
             if (isoFx && token.mesh)
@@ -3772,7 +3757,7 @@ export function initTokenStatBar()
                 effects.rotation = 0;
                 effects.skew.set(0, 0);
                 effects.scale.set(1, 1);
-                effects.position.set(token._laBaseEffectsX, token._laBaseEffectsY);
+                effects.position.set(token[`${baseKey}X`], token[`${baseKey}Y`]);
             }
         }
 
@@ -3988,8 +3973,8 @@ export function initTokenStatBar()
             return;
         if (!game.users?.activeGM?.isSelf)
             return;
-        const talentsOn = game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_TALENTS);
-        const flagsOn = altFlags.isActive() && game.settings.get(MODULE_ID, SETTING_AUTO_INJECT_CUSTOM_FLAGS);
+        const talentsOn = getModuleSetting(SETTING_AUTO_INJECT_TALENTS);
+        const flagsOn = altFlags.isActive() && getModuleSetting(SETTING_AUTO_INJECT_CUSTOM_FLAGS);
         if (!talentsOn && !flagsOn)
             return;
         for (const token of canvas.tokens?.placeables ?? [])
@@ -4083,10 +4068,11 @@ export function initTokenStatBar()
         if (!tab)
             return;
         const hidden = statBarHidden(tokenDoc);
+        const disabled = statBarDisabled(tokenDoc);
         const combatOnly = statBarCombatOnly(tokenDoc);
         const rowHeight = statBarRowHeight(tokenDoc);
-        const visOut = tokenDoc.getFlag(MODULE_ID, FLAG_VIS_OUT_OF_COMBAT) ?? '';
-        const visIn = tokenDoc.getFlag(MODULE_ID, FLAG_VIS_IN_COMBAT) ?? '';
+        const visOut = getLAFlag(tokenDoc,FLAG_VIS_OUT_OF_COMBAT) ?? '';
+        const visIn = getLAFlag(tokenDoc,FLAG_VIS_IN_COMBAT) ?? '';
         const isPilotActor = tokenDoc?.actor?.type === 'pilot';
         const pilotStress = showsPilotStress(tokenDoc);
         const visOption = (val, label, current) =>
@@ -4111,7 +4097,12 @@ export function initTokenStatBar()
             <div class="form-group">
                 <label>Hide Stat Bar</label>
                 <input type="checkbox" name="flags.${MODULE_ID}.${FLAG_HIDDEN}" ${hidden ? 'checked' : ''}/>
-                <p class="notes">Completely hide the stat bar hub for this token.</p>
+                <p class="notes">Hide the stat bar hub for this token. It still flashes briefly when a value changes.</p>
+            </div>
+            <div class="form-group">
+                <label>Disable Stat Bar</label>
+                <input type="checkbox" name="flags.${MODULE_ID}.${FLAG_DISABLED}" ${disabled ? 'checked' : ''}/>
+                <p class="notes">Never show the hub for this token, not even on value changes.</p>
             </div>
             <div class="form-group">
                 <label>Show Only In Combat</label>
@@ -4210,7 +4201,7 @@ export function initTokenStatBar()
         fadeBars(tok, shouldShowBars(tok) ? 1 : 0);
     });
 
-    // Combat lifecycle â†’ refresh combat-only tokens.
+    // Combat lifecycle → refresh combat-only tokens.
     const refreshAllForCombat = () =>
     {
         if (!isEnabled())

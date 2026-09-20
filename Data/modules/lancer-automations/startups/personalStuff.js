@@ -20,7 +20,10 @@ const ZDA_TEMPLATE = {
     fillOpacity: 0.5,
     fillTexture: "modules/terrain-height-tools/textures/hatching.png",
     fillTextureOffset: { x: 0, y: 0 },
+    fillTextureOffsetAnimation: { x: 0, y: 0 },
     fillTextureScale: { x: 100, y: 100 },
+    lineDashOffsetAnimation: 0,
+    innerRadius: 0,
     ownerVisibility: {
         default: true,
         hovered: true,
@@ -51,17 +54,13 @@ async function ensureZDAAura(tokenDoc)
 {
     if (!game.modules.get('grid-aware-auras')?.active)
         return;
-    const auras = tokenDoc.getFlag('grid-aware-auras', 'auras') ?? [];
-    if (auras.some(existing => existing.name === 'ZDA'))
-        return;
     const actor = tokenDoc.actor;
     if (!actor)
         return;
     const sensors = actor.system?.sensor_range ?? 10;
     const aura = foundry.utils.deepClone(ZDA_TEMPLATE);
-    aura.id = foundry.utils.randomID();
     aura.radius = Math.floor(sensors * 0.75).toString();
-    await tokenDoc.setFlag('grid-aware-auras', 'auras', [...auras, aura]);
+    await api.ensureAura(tokenDoc, aura);
 }
 
 api.registerDefaultGeneralReactions({
@@ -88,7 +87,7 @@ window.toggleLancerZDA = async function ()
     const controlled = canvas.tokens.controlled;
     if (!controlled.length)
     {
-        ui.notifications.warn("No tokens selected");
+        ui.notifications.warn('No tokens selected.');
         return;
     }
     for (const token of controlled)

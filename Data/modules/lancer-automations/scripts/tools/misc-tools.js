@@ -1,11 +1,53 @@
 import { removeEffectsByNameFromTokens, applyEffectsToTokens, findEffectOnToken } from "../bonuses/flagged-effects.js";
+import { MODULE_ID } from "./constants.js";
+import { localize, localizeFormat } from "./string-utils.js";
+import { getLAFlag } from "./flag-utils.js";
 import { getMaxGroundHeightUnderToken } from "../combat/terrain-utils.js";
 import { choseMount, chooseInvade, InteractiveAPI, getTokenOwnerUserId, startWaitCard, chooseToken } from "../interactive/index.js";
 import { flattenBonuses, isBonusApplicable, applyTagBonus, mutateRangeWithBonus } from "../bonuses/genericBonuses.js";
-import { getItemActions, findItemByLid, linkTierGate, isPrimaryActionHidden } from "../interactive/deployables.js";
-import { playSkirmishFX, playBarrageFX, playFightFX, playStandingUpFX, playTeleportFX, playSelfDestructFX, playContestedOutcomeFX, playMineDetonationFX } from "../fx/actionFX.js";
+import { getItemActions, findItemByLid, linkTierGate, isPrimaryActionHidden, gateActions } from "../interactive/deployables.js";
+import { playSkirmishFX, playBarrageFX, playFightFX, playStandingUpFX, playTeleportFX, playSelfDestructFX, playContestedOutcomeFX, playMineDetonationFX, queueActionFx } from "../fx/actionFX.js";
 import { awaitPendingAck } from "../socket.js";
-import { executeStandingUp, executeTeleport, executeFall } from "./movement-tools.js";
+import { afterFx } from "../activations/after-fx.js";
+import { redirectNextLwfxSource } from "../activations/flow-steps-extra.js";
+import { getMinGridDistance } from "../combat/grid-helpers.js";
+import { handleTrigger } from "../activations/reactions-engine.js";
+import { ReactionManager } from "../activations/reaction-manager.js";
+import { executeStandingUp, executeTeleport, executeFall, boostMove } from "./movement-tools.js";
+import { getItemStatus } from "../tah/item-helpers.js";
+import { isActionLocked } from "../interactive/deployables.js";
+
+/**
+ * Whether an item can be used right now, matching the TAH row state: not destroyed or
+ * disabled, loaded, charged, uses and per-round/turn/scene limits left, not lock-blocked.
+ * @param {Item} item
+ * @returns {boolean}
+ */
+export function isItemUsable(item)
+{
+    if (!item?.system)
+        return false;
+    const status = getItemStatus(item);
+    if (status.destroyed || status.unavailable)
+        return false;
+    return !isActionLocked(item, item.name);
+}
+
+// isGM is true for assistants too, so gating shared work on it runs it on every GM client.
+/** @returns {boolean} */
+export function isExecutorGM()
+{
+    return game.users?.activeGM?.isSelf === true;
+}
+
+/**
+ * Whether any GM client is online to service a relayed socket request.
+ * @returns {boolean}
+ */
+export function hasExecutorGM()
+{
+    return !!game.users?.activeGM;
+}
 import { openAddReserveDialog } from "./pilot-reserves.js";
 import {
     getWeaponProfiles_WithBonus, getItemTags_WithBonus,
@@ -13,7 +55,7 @@ import {
     getMaxWeaponReach_WithBonus, getMaxItemRanges_WithBonus,
     getSensorRange_WithBonus
 } from "./weapon-bonus-utils.js";
-export { executeStandingUp, executeTeleport, executeFall } from "./movement-tools.js";
+export { executeStandingUp, executeTeleport, executeFall, boostMove } from "./movement-tools.js";
 export { openAddReserveDialog } from "./pilot-reserves.js";
 export { openItemBrowserDialog } from "./item-browser.js";
 export {
@@ -22,6 +64,27 @@ export {
     getMaxWeaponReach_WithBonus, getMaxItemRanges_WithBonus,
     getSensorRange_WithBonus, weaponPulseRange
 } from "./weapon-bonus-utils.js";
+
+/**
+ * CodeMirror keeps its own height, so a resizable dialog has to push a new one on every resize.
+ * @param {number} [buttonReservedH] default 40 matches the forced CSS height on .dialog-buttons
+ * @returns {ResizeObserver|null} observer to disconnect in the dialog's close handler
+ */
+export function attachEditorResizeObserver(editor, windowEl, buttonReservedH = 40)
+{
+    if (!windowEl)
+        return null;
+    const updateSize = () =>
+    {
+        const headerH = /** @type {HTMLElement|null} */ (windowEl.querySelector('.window-header'))?.offsetHeight ?? 34;
+        editor.setSize(null, windowEl.offsetHeight - headerH - buttonReservedH);
+        editor.refresh();
+    };
+    setTimeout(updateSize, 50);
+    const observer = new ResizeObserver(updateSize);
+    observer.observe(windowEl);
+    return observer;
+}
 
 /** Maps activation type strings to the NPC feature tag LID that signals that activation. */
 export const ACTIVATION_TAG_MAP = {
@@ -43,12 +106,12 @@ export function getTokenDispositionInfo(token)
         return null;
     const disposition = token.document.disposition;
     const dispositionMap = {
-        [CONST.TOKEN_DISPOSITIONS.HOSTILE]:  { color: '#e53935', label: 'Hostile' },
-        [CONST.TOKEN_DISPOSITIONS.NEUTRAL]:  { color: '#f9a825', label: 'Neutral' },
-        [CONST.TOKEN_DISPOSITIONS.FRIENDLY]: { color: '#43a047', label: 'Friendly' },
-        [CONST.TOKEN_DISPOSITIONS.SECRET]:   { color: '#7e57c2', label: 'Secret' },
+        [CONST.TOKEN_DISPOSITIONS.HOSTILE]:  { color: '#e53935', label: localize('LA.disposition.hostile') },
+        [CONST.TOKEN_DISPOSITIONS.NEUTRAL]:  { color: '#f9a825', label: localize('LA.disposition.neutral') },
+        [CONST.TOKEN_DISPOSITIONS.FRIENDLY]: { color: '#43a047', label: localize('LA.disposition.friendly') },
+        [CONST.TOKEN_DISPOSITIONS.SECRET]:   { color: '#7e57c2', label: localize('LA.disposition.secret') },
     };
-    const fallback = dispositionMap[disposition] ?? { color: '#888', label: 'Unknown' };
+    const fallback = dispositionMap[disposition] ?? { color: '#888', label: localize('LA.disposition.unknown') };
     let color = fallback.color;
     let label = fallback.label;
     try
@@ -79,7 +142,9 @@ export function getTokenDispositionInfo(token)
         }
     }
     catch
-    { /* ignore */ }
+    {
+        // ignore
+    }
     return { color, label };
 }
 
@@ -253,11 +318,14 @@ export function getActorActionItems(actor, activationType)
     }
 
     // Actor-level extra actions (stored on actor flag via addExtraActions(actor, ...))
-    const actorExtraActions = actor?.getFlag?.('lancer-automations', 'extraActions') || [];
+    const actorExtraActions = gateActions(
+        (getLAFlag(actor,'extraActions') || []).filter((/** @type {any} */ action) => linkTierGate(action, actor)),
+        actor
+    );
     for (const action of actorExtraActions)
     {
-        if (action.activation === activationType && linkTierGate(action, actor))
-            results.push({ action, sourceItem: null });
+        if (action.activation === activationType)
+            results.push({ action: { ...action, _isExtra: true }, sourceItem: null });
     }
 
     return results;
@@ -270,6 +338,25 @@ const STAT_PATHS = {
     ENG: "system.eng",
     GRIT: "system.grit"
 };
+
+/**
+ * DC of a save forced by `targetActor`. A save is rolled against the aggressor's SAVE stat, which
+ * the system derives for every actor type (10 + GRIT on mechs and pilots, statblock value on NPCs).
+ * @param {any} targetActor
+ * @param {string|null} [statOverride] - Read this HASE stat raw instead, for contest-style checks.
+ * @returns {number}
+ */
+export function deriveSaveDc(targetActor, statOverride = null)
+{
+    if (!targetActor)
+        return 10;
+    if (statOverride)
+    {
+        const lookupStat = String(statOverride).toUpperCase();
+        return foundry.utils.getProperty(targetActor, STAT_PATHS[lookupStat] || lookupStat.toLowerCase()) || 10;
+    }
+    return targetActor.system?.save || 10;
+}
 
 
 export function getItemLID(item)
@@ -395,17 +482,18 @@ export async function gainAction(actorOrToken, kind)
 }
 
 /**
- * Sets a resource value on an item: uses, loaded, charged, or talent counter.
+ * Sets a resource value on an item: uses, loaded, charged, talent counter, or frame core system counter.
  *
  * Detection order:
  *   1. Talent items               → system.counters[counterIndex].value (clamped to counter min/max)
- *   2. Items with uses.max > 0    → system.uses.value (clamped 0..max)
- *   3. Items with a loaded field  → system.loaded (Boolean(value))
- *   4. Items with a charged field → system.charged (Boolean(value))
+ *   2. Frame items                → system.core_system.counters[counterIndex].value (clamped to counter min/max)
+ *   3. Items with uses.max > 0    → system.uses.value (clamped 0..max)
+ *   4. Items with a loaded field  → system.loaded (Boolean(value))
+ *   5. Items with a charged field → system.charged (Boolean(value))
  *
  * @param {Item} item
  * @param {number|boolean} value  Target value. For loaded/charged: truthy/falsy. For uses/counters: number.
- * @param {number} [counterIndex=0]  For talent items: index into system.counters.
+ * @param {number} [counterIndex=0]  For talents: index into system.counters. For frames: index into system.core_system.counters.
  * @returns {Promise<void>}
  */
 export async function setItemResource(item, value, counterIndex = 0)
@@ -421,6 +509,17 @@ export async function setItemResource(item, value, counterIndex = 0)
             return;
         const clamped = Math.max(counter.min ?? 0, Math.min(counter.max ?? Infinity, Math.round(Number(value))));
         await item.update({ [`system.counters.${counterIndex}.value`]: clamped });
+        return;
+    }
+
+    if (item.type === 'frame')
+    {
+        const counters = item.system?.core_system?.counters ?? [];
+        const counter = counters[counterIndex];
+        if (!counter)
+            return;
+        const clamped = Math.max(counter.min ?? 0, Math.min(counter.max ?? Infinity, Math.round(Number(value))));
+        await item.update({ [`system.core_system.counters.${counterIndex}.value`]: clamped });
         return;
     }
 
@@ -479,12 +578,29 @@ export async function removeItemTag(item, tagId)
 }
 
 /**
+ * Danger Zone: heat at or above half the heat cap.
+ * @param {any} tokenOrActor
+ * @returns {boolean}
+ */
+export function inDangerZone(tokenOrActor)
+{
+    const heat = (tokenOrActor?.actor ?? tokenOrActor)?.system?.heat;
+    if (!heat)
+        return false;
+    return (heat.value ?? 0) >= Math.floor((heat.max ?? 0) / 2);
+}
+
+/**
  * Execute a Lancer stat roll (hull, agi, sys, eng, grit) via StatRollFlow.
+ * `extraData.accuracy` / `extraData.difficulty` / `extraData.flatModifier` pre-fill the HASE HUD,
+ * the same way a weapon's tags pre-fill an attack. The player can still change them.
+ * `extraData.sourceItemUuid` / `extraData.sourceAction` attribute the roll, surfacing as
+ * `item` / `actionName` on onInitCheck and onCheck.
  * @param {Actor} actor - The rolling actor.
  * @param {string} stat - Stat key: "hull", "agi", "sys", "eng", or "grit".
  * @param {string} title - Chat card title (defaults to "<STAT> Check" or "<STAT> Save").
- * @param {number|"token"|Token|TokenDocument} [target=10] - Difficulty value, "token" to let the user pick, or a Token/TokenDocument to auto-derive difficulty from.
- * @param {{ targetStat?: string, [key: string]: any }} [extraData={}] - Extra state passed to the flow. `targetStat` overrides which stat is read from a mech target.
+ * @param {number|"token"|Token|TokenDocument} [target=10] - Difficulty value, "token" to let the user pick, or the token forcing the save (its SAVE is the DC).
+ * @param {{ targetStat?: string, sourceItemUuid?: string, sourceAction?: string, [key: string]: any }} [extraData={}] - Extra state passed to the flow. `targetStat` reads that HASE stat off the target as the DC.
  * @returns {Promise<{ completed: boolean, [key: string]: any }>}
  */
 export async function executeStatRoll(actor, stat, title, target = 10, extraData = {})
@@ -512,14 +628,10 @@ export async function executeStatRoll(actor, stat, title, target = 10, extraData
             {
                 const requestId = foundry.utils.randomID();
                 const targetActor = (typeof target === 'object' && target) ? target.actor : null;
+                const targetTokenId = targetActor ? (target.id ?? null) : null;
                 let targetVal = (typeof target === 'number') ? target : 10;
-                if (targetActor?.type === 'npc' || targetActor?.type === 'deployable')
-                    targetVal = targetActor.system?.save || 10;
-                else if (targetActor?.type === 'mech')
-                {
-                    const lookupStat = (targetStat ? targetStat.toUpperCase() : stat.toUpperCase());
-                    targetVal = foundry.utils.getProperty(targetActor, STAT_PATHS[lookupStat] || lookupStat.toLowerCase()) || 10;
-                }
+                if (targetActor)
+                    targetVal = deriveSaveDc(targetActor, targetStat);
 
                 game.socket.emit('module.lancer-automations', {
                     action: 'statRollRequest',
@@ -532,7 +644,11 @@ export async function executeStatRoll(actor, stat, title, target = 10, extraData
                         cardTitle: cardTitle || null,
                         cardDescription: cardDescription || null,
                         targetUserId: firstOwner,
-                        extraData: { ...(restExtraData ?? {}), ...(target === "token" ? { forceTargeting: true } : {}) }
+                        extraData: {
+                            ...(restExtraData ?? {}),
+                            ...(targetTokenId ? { targetTokenId, forceTargeting: true } : {}),
+                            ...(target === "token" ? { forceTargeting: true } : {})
+                        }
                     }
                 });
 
@@ -540,7 +656,7 @@ export async function executeStatRoll(actor, stat, title, target = 10, extraData
                 const waitCard = startWaitCard({
                     title: cardTitle || title || 'STAT ROLL',
                     description: cardDescription || `<b>${actor.name ?? 'Actor'}</b> :: ${stat.toUpperCase()}`,
-                    waitMessage: `Waiting for ${ownerName} to roll…`,
+                    waitMessage: localizeFormat('LA.misc.waitingForRoll', { name: ownerName }),
                     relatedToken: ownerToken
                 });
 
@@ -578,18 +694,8 @@ export async function executeStatRoll(actor, stat, title, target = 10, extraData
 
     if (targetToken?.actor)
     {
-        const targetActor = targetToken.actor;
         rollTitle = rollTitle || `${upperStat} Save`;
-
-        // Dynamic Difficulty
-        if (targetActor.type === "npc" || targetActor.type === "deployable")
-            targetVal = targetActor.system.save || 10;
-        else if (targetActor.type === "mech")
-        {
-            const lookupStat = targetStat ? targetStat.toUpperCase() : upperStat;
-            const path = STAT_PATHS[lookupStat] || lookupStat.toLowerCase();
-            targetVal = foundry.utils.getProperty(targetActor, path) || 10;
-        }
+        targetVal = deriveSaveDc(targetToken.actor, targetStat);
     }
 
     rollTitle = rollTitle || `${upperStat} Check`;
@@ -612,6 +718,10 @@ export async function executeStatRoll(actor, stat, title, target = 10, extraData
     if (restExtraData && typeof restExtraData === 'object')
         flow.state.la_extraData = foundry.utils.mergeObject(flow.state.la_extraData || {}, restExtraData);
 
+    const focusTokenId = flow.state.la_extraData.targetTokenId;
+    if (focusTokenId)
+        setFlowTargets(canvas.tokens?.get(focusTokenId));
+
     const completed = await flow.begin();
     if (!completed)
         return { completed: false };
@@ -627,6 +737,9 @@ export async function executeStatRoll(actor, stat, title, target = 10, extraData
 /**
  * Save-or-effect over a target list: each target rolls a stat save (owner-routed by default),
  * failures get the effects / onFail, passes get onPass. Rolls run in parallel.
+ * @param {number|Function} [options.accuracy=0]     Accuracy pre-set in the HASE HUD, or (target) => number
+ * @param {number|Function} [options.difficulty=0]   Difficulty pre-set in the HASE HUD, or (target) => number
+ * @param {number|Function} [options.flatModifier=0] Flat modifier pre-set on the roll, or (target) => number
  * @param {Token|Token[]} targets
  * @param {Object} options
  * @param {string} options.stat                     "HULL" / "AGI" / "SYS" / "ENG" / "GRIT"
@@ -650,14 +763,22 @@ export async function executeSaveVsEffect(targets, options = /** @type {any} */ 
     const {
         stat, title, origin = 10, effects = null, duration = { label: 'indefinite' }, note = null,
         extraFlags = {}, cardTitle = null, cardDescription = null, sendToOwner = true,
-        onFail = null, onPass = null, halfDamageOnSave = null
+        onFail = null, onPass = null, halfDamageOnSave = null,
+        accuracy = 0, difficulty = 0, flatModifier = 0
     } = /** @type {any} */ (options);
+    const perTarget = (value, target) => Number(typeof value === 'function' ? value(target) : value) || 0;
     const list = (Array.isArray(targets) ? targets : [targets]).filter(target => target?.actor);
     const results = await Promise.all(list.map(async (target) =>
     {
         const description = typeof cardDescription === 'function' ? cardDescription(target) : cardDescription;
-        const result = await executeStatRoll(target.actor, stat, title, origin,
-            { sendToOwner, ...(cardTitle ? { cardTitle } : {}), ...(description ? { cardDescription: description } : {}) });
+        const result = await executeStatRoll(target.actor, stat, title, origin, {
+            sendToOwner,
+            accuracy: perTarget(accuracy, target),
+            difficulty: perTarget(difficulty, target),
+            flatModifier: perTarget(flatModifier, target),
+            ...(cardTitle ? { cardTitle } : {}),
+            ...(description ? { cardDescription: description } : {})
+        });
         return { target, passed: !!(result?.completed && result?.passed), result };
     }));
     for (const entry of results)
@@ -671,9 +792,11 @@ export async function executeSaveVsEffect(targets, options = /** @type {any} */ 
             continue;
         }
         if (effects)
+        {
             await applyEffectsToTokens(
                 { tokens: [entry.target], effectNames: Array.isArray(effects) ? effects : [effects], note: note ?? title, duration },
                 extraFlags);
+        }
         if (onFail)
             await onFail(entry.target, entry.result);
     }
@@ -687,15 +810,23 @@ export async function executeSaveVsEffect(targets, options = /** @type {any} */ 
             subtype: "half_damage",
             applyTo: [entry.target.id]
         }));
-        /** @type {any} */ (canvas.tokens).setTargets(list.map(target => target.id));
         const originToken = (typeof origin === 'object' && origin) ? origin : null;
-        await executeDamageRoll(originToken, list, value, type, damageTitle, {},
-            flowBonuses.length ? { flow_bonus: flowBonuses } : {});
+        if (!originToken)
+        {
+            ui.notifications.warn("lancer-automations | halfDamageOnSave needs a Token origin, damage roll skipped.");
+        }
+        else
+        {
+            /** @type {any} */ (canvas.tokens).setTargets(list.map(target => target.id));
+            await executeDamageRoll(originToken, list, value, type, damageTitle, {},
+                flowBonuses.length ? { flow_bonus: flowBonuses } : {});
+        }
     }
     return results;
 }
 
 /**
+ * `accuracy1`/`difficulty1`/`flatModifier1` (and the `2` variants) pre-fill each side's HASE HUD.
  * Run a contested stat check between two actors/tokens. Each rolls their own stat
  * (with FX suppressed during the rolls); higher total wins. The winner gets the success
  * overlay on its token, the loser gets the failure overlay. On a tie, no FX play and
@@ -708,6 +839,9 @@ export async function executeSaveVsEffect(targets, options = /** @type {any} */ 
  * @param {Object} [options]
  * @param {string} [options.title="Contested Check"] Title shown on each roll
  * @param {boolean} [options.sendToOwner=false]      Route each roll to the actor's owning player
+ * @param {any} [options.sourceItem]                 Item the check belongs to, surfaced as `item` on onCheck
+ * @param {string} [options.sourceAction]            Action the check belongs to, surfaced as `actionName`
+ * @param {Object} [options.extraData]               Extra keys merged into both rolls' la_extraData
  * @returns {Promise<any>}
  */
 export async function executeContestedCheck(input1, stat1, input2, stat2, options = {})
@@ -723,15 +857,25 @@ export async function executeContestedCheck(input1, stat1, input2, stat2, option
     const { actor: actor1, token: token1 } = toActorToken(input1);
     const { actor: actor2, token: token2 } = toActorToken(input2);
 
-    const { title = "Contested Check", sendToOwner = true } = options;
-    const suppressedRollOpts = { suppressStatFX: true, sendToOwner };
+    const {
+        title = "Contested Check", sendToOwner = true,
+        accuracy1 = 0, difficulty1 = 0, flatModifier1 = 0,
+        accuracy2 = 0, difficulty2 = 0, flatModifier2 = 0,
+        sourceItem = null, sourceAction = null, extraData = null
+    } = /** @type {any} */ (options);
+    const attribution = {
+        ...(extraData ?? {}),
+        ...(sourceItem ? { sourceItemUuid: sourceItem.uuid ?? sourceItem } : {}),
+        ...(sourceAction ? { sourceAction } : {})
+    };
+    const suppressedRollOpts = { suppressStatFX: true, sendToOwner, ...attribution };
     const statLabel1 = stat1.toUpperCase();
     const statLabel2 = stat2.toUpperCase();
     const actorName1 = actor1?.name ?? "?";
     const actorName2 = actor2?.name ?? "?";
     const [rollResult1, rollResult2] = await Promise.all([
-        executeStatRoll(actor1, stat1, `${statLabel1} vs ${actorName2} ${statLabel2}`, 0, { ...suppressedRollOpts, cardTitle: title, cardDescription: `${actorName1} :: ${statLabel1}`, contest: { actorUuid: actor2?.uuid ?? null, stat: stat2 } }),
-        executeStatRoll(actor2, stat2, `${statLabel2} vs ${actorName1} ${statLabel1}`, 0, { ...suppressedRollOpts, cardTitle: title, cardDescription: `${actorName2} :: ${statLabel2}`, contest: { actorUuid: actor1?.uuid ?? null, stat: stat1 } })
+        executeStatRoll(actor1, stat1, `${statLabel1} vs ${actorName2} ${statLabel2}`, 0, { ...suppressedRollOpts, cardTitle: title, cardDescription: `${actorName1} :: ${statLabel1}`, accuracy: accuracy1, difficulty: difficulty1, flatModifier: flatModifier1, contest: { actorUuid: actor2?.uuid ?? null, stat: stat2 } }),
+        executeStatRoll(actor2, stat2, `${statLabel2} vs ${actorName1} ${statLabel1}`, 0, { ...suppressedRollOpts, cardTitle: title, cardDescription: `${actorName2} :: ${statLabel2}`, accuracy: accuracy2, difficulty: difficulty2, flatModifier: flatModifier2, contest: { actorUuid: actor1?.uuid ?? null, stat: stat1 } })
     ]);
 
     if (!rollResult1?.completed || !rollResult2?.completed)
@@ -758,7 +902,7 @@ export async function executeContestedCheck(input1, stat1, input2, stat2, option
     const loserToken = tie ? null : (oneWins ? token2 : token1);
 
     if (winner && loser)
-        await playContestedOutcomeFX(winnerToken, loserToken).catch(e => console.error('lancer-automations | contested FX failed:', e));
+        playContestedOutcomeFX(winnerToken, loserToken).catch(e => console.error('lancer-automations | contested FX failed:', e));
 
     const row = (label, name, stat, total, isWin) => `
         <div style="display:flex;justify-content:space-between;align-items:center;padding:4px 6px;${isWin ? 'background:rgba(58,158,110,0.18);border-left:3px solid #3a9e6e;' : isWin === false ? 'background:rgba(204,51,51,0.14);border-left:3px solid #c33;' : ''}">
@@ -806,18 +950,19 @@ export async function executeContestedCheck(input1, stat1, input2, stat2, option
  */
 export async function executeForceCheck(skill, targets = null, options = {})
 {
-    const { saveVs = null, sendToOwner = true, title = '' } = options ?? {};
+    const { saveVs = null, sendToOwner = true, title = '', accuracy = 0, difficulty = 0, flatModifier = 0 } = options ?? {};
+    const perRoller = (value, token) => Number(typeof value === 'function' ? value(token) : value) || 0;
     const rollers = (Array.isArray(targets) && targets.length) ? targets : [...(game.user.targets ?? [])];
     if (!rollers.length)
     {
-        ui.notifications.warn('Force Check: no targets selected.');
+        ui.notifications.warn(localize('LA.notify.forceCheckNoTargetsSelected'));
         return { completed: false, results: [] };
     }
 
     const saveVsToken = saveVs
         ? (saveVs.getActiveTokens ? (saveVs.getActiveTokens()[0] ?? null) : (saveVs.object ?? saveVs))
         : null;
-    const saveDc = saveVsToken ? (saveVsToken.actor?.system?.save || 10) : 10;
+    const saveDc = saveVsToken ? deriveSaveDc(saveVsToken.actor) : 10;
     const upperSkill = String(skill).toUpperCase();
     const saveVsName = saveVsToken?.actor?.name ?? saveVsToken?.name ?? null;
     const cardTitle = saveVsName ? `FORCE CHECK :: ${upperSkill} SAVE` : `FORCE CHECK :: ${upperSkill}`;
@@ -831,6 +976,9 @@ export async function executeForceCheck(skill, targets = null, options = {})
         const rollExtra = {
             sendToOwner,
             cardTitle,
+            accuracy: perRoller(accuracy, rollerToken),
+            difficulty: perRoller(difficulty, rollerToken),
+            flatModifier: perRoller(flatModifier, rollerToken),
             cardDescription: saveVsName
                 ? `<b>${rollerActor.name}</b> must roll a ${upperSkill} save vs <b>${saveVsName}</b> (>= ${saveDc}).`
                 : `<b>${rollerActor.name}</b> must roll a ${upperSkill} check.`
@@ -888,19 +1036,11 @@ export async function executeDamageRoll(attacker, targets, damageValue = null, d
         delete options.targeting;
     }
 
-    const actor = attacker.actor || attacker;
+    const actor = attacker?.actor || attacker;
     if (!actor)
         return { completed: false };
 
-    if (targets && Array.isArray(targets))
-    {
-        targets.forEach((target, i) =>
-        {
-            const token = target.object || target;
-            if (token?.setTarget)
-                token.setTarget(true, { releaseOthers: i === 0, groupSelection: true });
-        });
-    }
+    setFlowTargets(targets);
 
     const typeMap = { kinetic: "Kinetic", energy: "Energy", explosive: "Explosive", burn: "Burn", heat: "Heat", infection: "Infection", variable: "Variable" };
     const resolvedType = damageType ? (typeMap[damageType.toLowerCase()] || "Kinetic") : "Kinetic";
@@ -948,13 +1088,35 @@ async function beginWeaponThrowFlow(weapon, options, extraData = {})
 }
 
 
-/** @returns {Promise<{completed: boolean, flow?: object}>} */
-async function beginWeaponAttackFlow(weapon, options, extraData = {})
+/**
+ * Point the user's targets at the given tokens. Attack flows read `game.user.targets`,
+ * so this is what `options.targets` does for every attack entry point.
+ * @param {any} targets Token or Token[]
+ */
+function setFlowTargets(targets)
+{
+    if (!targets)
+        return;
+    const list = (Array.isArray(targets) ? targets : [targets]).filter(Boolean);
+    /** @type {any} */ (canvas.tokens).setTargets(list.map(target => target.id ?? target.object?.id));
+}
+
+/**
+ * Start a weapon attack flow. `options.targets` sets who is attacked, so callers never
+ * have to touch setTarget themselves.
+ * @param {Item} weapon
+ * @param {Object} [options]  Flow options, plus `targets: Token|Token[]`
+ * @param {Object} [extraData]
+ * @returns {Promise<{completed: boolean, flow?: object}>}
+ */
+async function beginWeaponAttackFlow(weapon, options = {}, extraData = {})
 {
     const WeaponAttackFlow = game.lancer.flows.get("WeaponAttackFlow");
     if (!WeaponAttackFlow)
         return { completed: false };
-    const flow = new WeaponAttackFlow(weapon, options);
+    const { targets = null, ...flowOptions } = /** @type {any} */ (options ?? {});
+    setFlowTargets(targets);
+    const flow = new WeaponAttackFlow(weapon, flowOptions);
     if (extraData && typeof extraData === 'object')
         flow.state.la_extraData = foundry.utils.mergeObject(flow.state.la_extraData || {}, extraData);
     const completed = await flow.begin();
@@ -970,17 +1132,157 @@ async function beginWeaponAttackFlow(weapon, options, extraData = {})
  */
 export async function attackWith(weapon, targets = null, options = {})
 {
-    const { reloadIfEmpty = false, ...flowOptions } = /** @type {any} */ (options);
+    const { reloadIfEmpty = false, fxSourceToken = null, ...flowOptions } = /** @type {any} */ (options);
     if (reloadIfEmpty && weapon?.system?.loaded === false)
     {
         const holder = weapon.parent?.getActiveTokens?.()?.[0] ?? null;
         if (holder)
-            await game.modules.get('lancer-automations')?.api?.reloadOneWeapon?.(holder);
+            await game.modules.get(MODULE_ID)?.api?.reloadOneWeapon?.(holder);
         return { completed: false, reloaded: true };
     }
-    if (targets)
-        /** @type {any} */ (canvas.tokens).setTargets((Array.isArray(targets) ? targets : [targets]).filter(Boolean).map(target => target.id));
-    return beginWeaponAttackFlow(weapon, flowOptions);
+    if (fxSourceToken)
+        redirectNextLwfxSource(weapon?.parent, fxSourceToken);
+    return beginWeaponAttackFlow(weapon, { ...flowOptions, targets });
+}
+
+/**
+ * Backs triggerData.isRangedAttack(). Item-less basic attacks always report Melee;
+ * past 1 hex from every target they count as ranged.
+ * @param {Object} triggerData - Attack/hit/damage trigger data
+ * @returns {boolean}
+ */
+export function isRangedAttack(triggerData)
+{
+    const weaponType = getWeaponType(triggerData.weapon);
+    if (weaponType)
+        return !weaponType.includes('Melee');
+    const attackType = triggerData.flowState?.data?.attack_type || 'Ranged';
+    if (!attackType.includes('Melee'))
+        return true;
+    const attacker = triggerData.triggeringToken;
+    const targets = triggerData.hitTokens ?? [];
+    if (!attacker || !targets.length)
+        return false;
+    return targets.every(target => getMinGridDistance(attacker, target) > 1);
+}
+
+function _buildWeaponDamageFlow(weapon, targets, options)
+{
+    const DamageRollFlow = game.lancer.flows.get("DamageRollFlow");
+    if (!DamageRollFlow || !weapon)
+        return null;
+    setFlowTargets(targets);
+    const stats = weaponRollStats(weapon);
+    const flowData = {
+        title: weapon.name,
+        damage: stats.damage,
+        tags: stats.tags,
+        has_normal_hit: true,
+        ...options
+    };
+    return new DamageRollFlow(weapon.uuid, flowData);
+}
+
+/**
+ * Successful weapon hit: fires `onHit` from the weapon's owner against `targets`
+ * (with the upcoming damage flow as flowState), then rolls the weapon's damage.
+ * The hit and damage stages of `attackWith`, without the attack roll.
+ * @param {Item} weapon
+ * @param {Token|Token[]} targets
+ * @param {Object} [options]  Damage flow overrides
+ * @returns {Promise<{completed: boolean, flow?: any}>}
+ */
+export async function hitWith(weapon, targets, options = {})
+{
+    const owner = weapon?.parent?.getActiveTokens?.()?.[0] ?? null;
+    const list = (Array.isArray(targets) ? targets : [targets]).filter(Boolean);
+    if (!owner || !list.length)
+        return { completed: false };
+    const flow = _buildWeaponDamageFlow(weapon, list, options);
+    if (!flow)
+        return { completed: false };
+    await handleTrigger('onHit', {
+        triggeringToken: owner,
+        weapon,
+        targets: list.map(target => ({ target })),
+        flowState: flow.state
+    });
+    const completed = await flow.begin();
+    return { completed, flow };
+}
+
+/**
+ * Roll the weapon's damage against targets as the weapon's own damage flow, so damage
+ * triggers carry the weapon. Damage defaults to the weapon's (tier-resolved), `options`
+ * override the flow data. The damage stage alone.
+ * @param {Item} weapon
+ * @param {Token|Token[]|null} [targets]
+ * @param {Object} [options]
+ * @returns {Promise<{completed: boolean, flow?: any}>}
+ */
+export async function damageWith(weapon, targets = null, options = {})
+{
+    const flow = _buildWeaponDamageFlow(weapon, targets, options);
+    if (!flow)
+        return { completed: false };
+    const completed = await flow.begin();
+    return { completed, flow };
+}
+
+function _tierTagVal(val, tierIndex)
+{
+    const match = /^\{(.+)\}$/.exec(String(val ?? ''));
+    if (!match)
+        return val;
+    const parts = match[1].split('/');
+    return parts[Math.min(tierIndex, parts.length - 1)];
+}
+
+// Roll stats for any weapon item: npc_feature tier arrays, mech profiles, pilot flat fields.
+function weaponRollStats(weapon)
+{
+    const system = weapon.system ?? {};
+    const plainDamage = (/** @type {any[]} */ list) => (list ?? []).map(entry => ({ type: entry.type, val: String(entry.val ?? '') }));
+    if (weapon.type === 'npc_feature')
+    {
+        const tierIndex = (Number(system.tier_override) || getTier(weapon.parent)) - 1;
+        const pick = (/** @type {any} */ arr) => Array.isArray(arr) ? arr[Math.min(tierIndex, arr.length - 1)] : arr;
+        return {
+            grit: 0,
+            attack_bonus: Number(pick(system.attack_bonus) ?? 0),
+            accuracy: Number(pick(system.accuracy) ?? 0),
+            damage: plainDamage(pick(system.damage)),
+            tags: (system.tags ?? []).map((/** @type {any} */ tag) => ({ lid: tag.lid, val: _tierTagVal(tag.val, tierIndex), name: tag.name, description: tag.description }))
+        };
+    }
+    const profile = system.profiles?.[system.selected_profile_index ?? 0];
+    return {
+        attack_bonus: 0,
+        accuracy: 0,
+        damage: plainDamage(profile?.damage ?? system.damage),
+        tags: [...(profile?.tags ?? []), ...(system.tags ?? [])]
+    };
+}
+
+/**
+ * Repeat a weapon's attack roll as a basic attack: tier-resolved stats, tags and damage
+ * carried, none of the weapon-fire mechanics (loading, self-heat, item updates).
+ * @param {Item} weapon
+ * @param {Token|Token[]|null} [targets]
+ * @param {Object} [options]  `fxSourceToken` plays the weapon's FX from that token; `title` overrides the card title
+ * @returns {Promise<{completed: boolean, flow?: any}>}
+ */
+export async function attackRollWith(weapon, targets = null, options = {})
+{
+    const actor = weapon?.parent;
+    if (!actor)
+        return { completed: false };
+    const { fxSourceToken = null, title = null } = /** @type {any} */ (options);
+    return executeExtraActionCombat(actor, {
+        name: title ?? weapon.name,
+        attack_type: getWeaponType(weapon) === 'Melee' ? 'Melee' : 'Ranged',
+        ...weaponRollStats(weapon)
+    }, weapon, { targets, fxSourceToken, fxItem: weapon });
 }
 
 /**
@@ -1029,6 +1331,129 @@ export function setFlowFlag(triggerData, key, value = true)
 }
 
 /**
+ * Run a callback once the trigger's flow completes or aborts, after its card printed.
+ * One-shot, matched to that exact flow.
+ * @param {Object} triggerData - Trigger data carrying a flowState
+ * @param {(flow: any, success: boolean) => any} callback
+ * @returns {boolean} false when the trigger has no flow state to watch
+ */
+export function afterFlow(triggerData, callback)
+{
+    const flowState = triggerData?.flowState;
+    if (!flowState?.name)
+    {
+        console.error('lancer-automations | afterFlow: triggerData has no flow state; only flow-based triggers can use it.');
+        return false;
+    }
+    const hookName = `lancer.postFlow.${flowState.name}`;
+    const hookId = Hooks.on(hookName, (flow, success) =>
+    {
+        if (flow?.state !== flowState)
+            return;
+        Hooks.off(hookName, hookId);
+        Promise.resolve(callback(flow, success)).catch(err => console.error('lancer-automations | afterFlow callback failed:', err));
+    });
+    return true;
+}
+
+const GATE_FLAG = 'gates';
+
+function _gateActor(owner)
+{
+    return /** @type {any} */ (owner)?.actor ?? owner;
+}
+
+function _gateSubject(subject)
+{
+    return typeof subject === 'string' ? subject : (subject?.id ?? '_self');
+}
+
+// Combatant id rather than turn index, Lancer turn order is not fixed.
+function _turnStamp()
+{
+    const combat = game.combat;
+    if (!combat?.round)
+        return null;
+    return `${combat.round}:${combat.combatant?.id ?? combat.turn ?? 0}`;
+}
+
+// A gate from another combat is dead.
+function _gateBlocked(entry)
+{
+    if (!entry || entry.c !== game.combat?.id)
+        return false;
+    if (entry.t != null)
+        return entry.t === _turnStamp();
+    return entry.r === null || (game.combat?.round ?? 0) <= entry.r;
+}
+
+/**
+ * True when the gate is free and `consumeGate` would succeed. Never writes.
+ * @param {Token|Actor|any} owner
+ * @param {string} key
+ * @param {Token|Actor|string|null} [subject] - String or token. Omit for a single gate on the owner.
+ * @returns {boolean}
+ */
+export function checkGate(owner, key, subject = null)
+{
+    const actor = _gateActor(owner);
+    if (!actor || !key)
+        return true;
+    const api = game.modules.get(MODULE_ID)?.api;
+    const gates = api?.getActorFlags(actor, GATE_FLAG) || {};
+    return !_gateBlocked(gates[key]?.[_gateSubject(subject)]);
+}
+
+/**
+ * Take a gate. Expiry is checked on read, nothing ticks. Out of combat every call succeeds.
+ * @param {Token|Actor|any} owner
+ * @param {string} key - Name of the gate, e.g. `'ring_of_fire'`.
+ * @param {Object} [options]
+ * @param {Token|Actor|string|null} [options.subject] - String or token. Omit for a single gate on the owner.
+ * @param {number|null} [options.rounds=1] - Rounds blocked counting the current one, null lasts the whole combat.
+ * @param {boolean} [options.turn] - Block for the current turn instead of a round count.
+ * @returns {Promise<boolean>} true when the gate was free and is now taken
+ */
+export async function consumeGate(owner, key, options = {})
+{
+    const actor = _gateActor(owner);
+    if (!actor || !key)
+        return true;
+    const api = game.modules.get(MODULE_ID)?.api;
+    const gates = api.getActorFlags(actor, GATE_FLAG) || {};
+    const subjectId = _gateSubject(options.subject);
+    if (_gateBlocked(gates[key]?.[subjectId]))
+        return false;
+
+    const combat = game.combat;
+    if (!combat?.round)
+        return true;
+    const entry = options.turn
+        ? { c: combat.id, t: _turnStamp() }
+        : { c: combat.id, r: options.rounds === null ? null : combat.round + Math.max(1, options.rounds ?? 1) - 1 };
+    await api.addActorFlags(actor, { [GATE_FLAG]: { [key]: { [subjectId]: entry } } });
+    return true;
+}
+
+/**
+ * Release a gate. Omit `subject` to release the whole key.
+ * @param {Token|Actor|any} owner
+ * @param {string} key
+ * @param {Token|Actor|string|null} [subject]
+ * @returns {Promise<void>}
+ */
+export async function clearGate(owner, key, subject = null)
+{
+    const actor = _gateActor(owner);
+    if (!actor || !key)
+        return;
+    const api = game.modules.get(MODULE_ID)?.api;
+    // setFlag merges, so null the entries instead of deleting them
+    const value = subject === null ? null : { [_gateSubject(subject)]: null };
+    await api.addActorFlags(actor, { [GATE_FLAG]: { [key]: value } });
+}
+
+/**
  * Once-per-round gate stored on `owner`, counted separately per `subject`.
  * Out of combat every call is the first one.
  * @param {Token|Actor} owner - Holds the flag, usually the reactor.
@@ -1036,27 +1461,21 @@ export function setFlowFlag(triggerData, key, value = true)
  * @param {Token|Actor|string} [subject] - Who is being gated. Omit for a single gate on the owner.
  * @returns {Promise<boolean>} true the first time this round, false afterwards
  */
-export async function consumeOncePerRound(owner, key, subject = null)
+export function consumeOncePerRound(owner, key, subject = null)
 {
-    const actor = /** @type {any} */ (owner)?.actor ?? owner;
-    if (!actor || !key)
-        return true;
-    const round = game.combat?.round ?? 0;
-    if (!round)
-        return true;
+    return consumeGate(owner, key, { subject, rounds: 1 });
+}
 
-    const api = game.modules.get('lancer-automations')?.api;
-    const subjectId = typeof subject === 'string' ? subject : (subject?.id ?? '_self');
-    const flagKey = `${key}_round_${round}`;
-    const used = api.getActorFlags(actor, flagKey) || [];
-    if (used.includes(subjectId))
-        return false;
-
-    await api.addActorFlags(actor, { [flagKey]: [...used, subjectId] });
-    const previousKey = `${key}_round_${round - 1}`;
-    if (round > 1 && api.getActorFlags(actor, previousKey))
-        await api.removeActorFlags(actor, { [previousKey]: true });
-    return true;
+/**
+ * Once-per-turn gate, free again when the turn changes.
+ * @param {Token|Actor} owner
+ * @param {string} key
+ * @param {Token|Actor|string} [subject]
+ * @returns {Promise<boolean>} true the first time this turn, false afterwards
+ */
+export function consumeOncePerTurn(owner, key, subject = null)
+{
+    return consumeGate(owner, key, { subject, turn: true });
 }
 
 
@@ -1068,8 +1487,23 @@ export async function executeBasicAttack(actor, options = {}, extraData = {})
     const BasicAttackFlow = game.lancer.flows.get("BasicAttackFlow");
     if (!BasicAttackFlow)
         return { completed: false };
-    const { tags, damage, ...flowOptions } = options;
-    const flow = new BasicAttackFlow(actor.uuid, flowOptions);
+    const { tags, damage, targets = null, fxSourceToken = null, fxItem = null, item = null, ...flowOptions } = /** @type {any} */ (options);
+    setFlowTargets(targets);
+    if (fxSourceToken)
+        redirectNextLwfxSource(actor, fxSourceToken);
+    // with `item`, the flow uses the item's stats and every trigger carries it as `weapon`;
+    // a basic attack is never tech, so opt out of the system's non-weapon tech classification
+    const flow = new BasicAttackFlow(item?.uuid ?? actor.uuid, flowOptions);
+    if (item)
+    {
+        flow.state.la_extraData = flow.state.la_extraData || {};
+        flow.state.la_extraData.forceNonTech = true;
+    }
+    if (fxItem?.uuid)
+    {
+        flow.state.la_extraData = flow.state.la_extraData || {};
+        flow.state.la_extraData.fxItemUuid = fxItem.uuid;
+    }
     if (Array.isArray(tags) && tags.length > 0)
     {
         flow.state.data = flow.state.data || {};
@@ -1107,7 +1541,8 @@ export async function executeTechAttack(target, options = {}, extraData = {})
         ui.notifications.error("lancer-automations | executeTechAttack: target (actor or item) is required.");
         return { completed: false };
     }
-    const { damage, ...flowOptions } = options;
+    const { damage, targets = null, ...flowOptions } = /** @type {any} */ (options);
+    setFlowTargets(targets);
     const flow = new TechAttackFlow(target, flowOptions);
     // Carried on the tech attack card; its damage button pre-fills the damage flow with these.
     if (Array.isArray(flowOptions.tags) && flowOptions.tags.length > 0)
@@ -1143,17 +1578,18 @@ function extraDisplayTags(tags)
 }
 
 /** @returns {Promise<{completed: boolean, flow?: any}>} */
-export async function executeExtraActionCombat(actorOrToken, action, sourceItem = null)
+export async function executeExtraActionCombat(actorOrToken, action, sourceItem = null, options = {})
 {
     const actor = /** @type {any} */ (actorOrToken)?.actor ?? actorOrToken;
     if (!actor || !action)
         return { completed: false };
+    const { targets: targetsOverride = null, fxSourceToken = null, fxItem = null } = /** @type {any} */ (options);
     const weaponTags = (action.tags ?? []).filter(/** @type {any} */ (tag) => EXTRA_WEAPON_TAG_LIDS.has(tag.lid));
     const hasTag = (/** @type {string} */ lid) => weaponTags.some(/** @type {any} */ (tag) => tag.lid === lid);
 
     if (action.laCombat === 'damage')
     {
-        const targets = [...(game.user?.targets ?? [])];
+        const targets = targetsOverride ?? [...(game.user?.targets ?? [])];
         return executeDamageRoll(actor, targets, null, null, action.name, { damage: action.damage ?? [], tags: extraDisplayTags(weaponTags) });
     }
 
@@ -1163,14 +1599,15 @@ export async function executeExtraActionCombat(actorOrToken, action, sourceItem 
             title: action.name,
             effect: action.detail ?? '',
             invade: action.activation === 'Invade',
+            targets: targetsOverride,
             tags: extraDisplayTags(weaponTags),
             damage: action.damage ?? []
         });
     }
 
     // Bare attack needs a full acc_diff for tags (smart) to apply + show checked.
-    const targets = Array.from(game.user?.targets ?? []);
-    const grit = actor.system?.grit ?? actor.system?.tier ?? 0;
+    const targets = targetsOverride ?? Array.from(game.user?.targets ?? []);
+    const grit = action.grit ?? actor.system?.grit ?? actor.system?.tier ?? 0;
     const flatBonus = Number(action.attack_bonus ?? 0);
     const accuracy = Number(action.accuracy ?? 0);
     const difficulty = Number(action.difficulty ?? 0);
@@ -1185,6 +1622,9 @@ export async function executeExtraActionCombat(actorOrToken, action, sourceItem 
     return executeBasicAttack(actor, {
         type: 'attack',
         title: action.name,
+        targets,
+        fxSourceToken,
+        fxItem,
         grit,
         flat_bonus: flatBonus,
         action: null,
@@ -1216,7 +1656,7 @@ export async function executeReactorMeltdown(tokenOrActor, turns = null)
         selectedTurns = await new Promise((resolve) =>
         {
             const dialog = new Dialog({
-                title: "Reactor Meltdown",
+                title: localize('LA.dialogTitle.reactorMeltdown'),
                 content: `
                     <div class="lancer-dialog-base">
                         <div class="lancer-dialog-header">
@@ -1256,7 +1696,7 @@ export async function executeReactorMeltdown(tokenOrActor, turns = null)
                 buttons: {
                     cancel: {
                         icon: '<i class="fas fa-times"></i>',
-                        label: "Cancel",
+                        label: localize("LA.common.cancel"),
                         callback: () => resolve(null)
                     }
                 },
@@ -1286,7 +1726,7 @@ export async function executeReactorMeltdown(tokenOrActor, turns = null)
 
     if (selectedTurns === null)
     {
-        ui.notifications.info('Reactor Meltdown cancelled.');
+        ui.notifications.info(localize('LA.notify.reactorMeltdownCancelled'));
         return;
     }
 
@@ -1301,7 +1741,7 @@ export async function executeReactorMeltdown(tokenOrActor, turns = null)
     await executeSimpleActivation(actor, {
         title: "Reactor Meltdown",
         action: { name: "Reactor Meltdown", activation: "Quick" },
-        detail: `Reactor meltdown initiated. Explosion will occur at the end of turn ${selectedTurns}. Your mech will be annihilated, dealing 4d6 Explosive Damage in a Burst 2 radius.`
+        detail: localizeFormat('LA.misc.meltdownDetail', { turn: selectedTurns })
     }, { selectedTurns });
 }
 
@@ -1328,8 +1768,8 @@ export async function executeReactorExplosion(token)
         areaRange: 2,
         includeSelf: true,
         allowEmptyConfirm: true,
-        title: "REACTOR EXPLOSION",
-        description: "Confirm the tokens caught in the Burst 2. Close the card to cancel.",
+        title: localize('LA.dialogTitle.reactorExplosionCaps'),
+        description: localize('LA.misc.confirmTheTokensCaughtInThe'),
         icon: "fas fa-radiation",
     });
     if (!caught)
@@ -1384,7 +1824,7 @@ export async function executeReactorExplosion(token)
         .atLocation(tokenCenter)
         .aboveLighting()
         .xray()
-        .scale(scaleFactor)
+        .preset("la_scaleToBurst", 2, token)
         .zIndex(100)
         .thenDo(async () =>
         {
@@ -1396,7 +1836,7 @@ export async function executeReactorExplosion(token)
         .zIndex(1)
         .randomRotation()
         .atLocation({ x: tokenCenterX, y: tokenCenterY })
-        .scale(scaleFactor)
+        .preset("la_scaleToBurst", 2, token)
         .thenDo(async () =>
         {
             await canvas.scene.createEmbeddedDocuments("AmbientLight", /** @type {any[]} */ ([{
@@ -1412,7 +1852,7 @@ export async function executeReactorExplosion(token)
         })
         .effect("modules/lancer-weapon-fx/sprites/scorch_mark_hires.png")
         .atLocation({ x: tokenCenterX, y: tokenCenterY })
-        .scale(scaleFactor * 1.1)
+        .preset("la_scaleToBurst", 2, token)
         .persist()
         .belowTokens()
         .zIndex(0)
@@ -1431,11 +1871,12 @@ export async function executeReactorExplosion(token)
 }
 
 /** @returns {Promise<{completed: boolean, flow?: object}>} */
-export async function executeSimpleActivation(actor, options = {}, extraData = {})
+export async function executeSimpleActivation(actorOrToken, options = {}, extraData = {})
 {
     const SimpleActivationFlow = game.lancer.flows.get("SimpleActivationFlow");
     if (!SimpleActivationFlow)
         return { completed: false };
+    const actor = /** @type {any} */ (actorOrToken)?.actor ?? actorOrToken;
     const item = extraData?.item;
     const uuid = item?.uuid || actor.uuid;
     const flow = new SimpleActivationFlow(uuid, options);
@@ -1446,10 +1887,58 @@ export async function executeSimpleActivation(actor, options = {}, extraData = {
     return { completed, flow };
 }
 
+/** Switch a weapon profile and run its activation (card, triggers, FX). */
+export async function executeProfileSwitch(weapon, profileIndex)
+{
+    const profile = weapon.system?.profiles?.[profileIndex];
+    if (!profile)
+        return { completed: false };
+    await weapon.update({ 'system.selected_profile_index': profileIndex });
+    const profileName = profile.name || `Profile ${profileIndex + 1}`;
+    return executeSimpleActivation(weapon.actor, {
+        title: profileName,
+        action: { name: profileName, activation: 'Profile' },
+        detail: profile.effect ?? ''
+    }, { item: weapon });
+}
+
+/**
+ * Trigger a general action (Brace, Boost, ...) from its registry definition.
+ * @param {any} actorOrToken
+ * @param {string} name
+ * @returns {Promise<{completed: boolean, flow?: object}>}
+ */
+export async function activateGeneralAction(actorOrToken, name)
+{
+    const actor = actorOrToken?.actor ?? actorOrToken;
+    // general entries are either groups ({ reactions: [...] }) or flat single reactions
+    const entry = ReactionManager.getGeneralReaction(name);
+    const reaction = Array.isArray(entry?.reactions) ? entry.reactions[0] : (entry?.triggers ? entry : null);
+    if (!actor || !reaction)
+    {
+        ui.notifications.error(`lancer-automations | activateGeneralAction: no general action "${name}".`);
+        return { completed: false };
+    }
+    return executeSimpleActivation(actor, {
+        title: name,
+        action: {
+            name,
+            activation: String(reaction.actionType ?? 'Quick').replace(' Action', ''),
+        },
+        detail: reaction.effectDescription ?? ''
+    });
+}
+
+/** `ranks[0].actions.1` / `system.ranks.0.actions.1` -> `ranks.0.actions.1`, so reactionPath and dotpath forms both work. */
+function _subPath(path)
+{
+    return String(path ?? '').replace(/^system\./, '').replace(/\[(\d+)\]/g, '.$1').replace(/^\./, '');
+}
+
 /**
  * Run an item activation flow, matching the dispatch rules of triggerData.startRelatedFlow.
  * @param {any} item      - LancerItem to activate.
- * @param {Object} [options] - { path?: string, flowName?: string }: `path` sets action_path; `flowName` forces a specific flow class.
+ * @param {Object} [options] - { path?: string, flowName?: string }: `path` sets action_path, and also takes `ranks.N` or `ranks.N.actions.M` on a talent and `powers.N` on a bond. `flowName` forces a specific flow class.
  * @param {Object} [extraData] - Merged onto flow.state.la_extraData before begin().
  * @returns {Promise<{completed: boolean, flow?: any}>}
  */
@@ -1478,6 +1967,32 @@ export async function executeItemActivation(item, options = {}, extraData = {})
     }
     else if (item.is_frame?.() && path === "system.core_system")
         flow = new (flows.get("CoreActiveFlow"))(item.uuid ?? item, { action_path: path });
+    else if (item.is_talent?.())
+    {
+        // Talent actions live under ranks.N.actions, never system.actions, so the generic branches never match.
+        const match = _subPath(path).match(/^ranks\.(\d+)(?:\.actions\.(\d+))?$/);
+        const rankIdx = match ? Number(match[1]) : 0;
+        const rank = item.system?.ranks?.[rankIdx];
+        if (!rank)
+        {
+            ui.notifications.error(`lancer-automations | executeItemActivation: "${item.name}" has no rank ${rankIdx + 1}.`);
+            return { completed: false };
+        }
+        if (match?.[2] !== undefined)
+            flow = new (flows.get("ActivationFlow"))(item.uuid ?? item, { action_path: `system.ranks.${rankIdx}.actions.${match[2]}` });
+        else
+            flow = new (flows.get("TalentFlow"))(item.uuid ?? item, { title: item.name, rank, lvl: rankIdx });
+    }
+    else if (item.is_bond?.())
+    {
+        const powerIdx = Number(_subPath(path).match(/^powers\.(\d+)$/)?.[1] ?? 0);
+        if (!item.system?.powers?.[powerIdx])
+        {
+            ui.notifications.error(`lancer-automations | executeItemActivation: "${item.name}" has no power ${powerIdx}.`);
+            return { completed: false };
+        }
+        flow = new (flows.get("BondPowerFlow"))(item.uuid ?? item, { powerIndex: powerIdx });
+    }
     else if (path || item.system?.actions?.length > 0)
         flow = new (flows.get("ActivationFlow"))(item.uuid ?? item, { action_path: path ?? "system.actions.0" });
     else if (item.is_mech_system?.() || item.is_weapon_mod?.() || (item.is_npc_feature?.() && !item.is_weapon?.()))
@@ -1517,6 +2032,34 @@ export async function updateTokenSystem(token, data)
     }
 }
 
+/** Superheavy is stored as size on mech weapons and as type on NPC features. */
+function isSuperheavyWeapon(weapon)
+{
+    const size = weapon?.system?.size || weapon?.system?.type || "";
+    return size.toLowerCase() === 'superheavy';
+}
+
+function weaponActiveProfile(weapon)
+{
+    const sys = weapon?.system;
+    return sys?.active_profile ?? sys?.profiles?.[sys?.selected_profile_index ?? 0] ?? null;
+}
+
+// Superheavies are barrage-only, unless the active profile says otherwise (Leviathan HAC).
+export function weaponSkirmishable(weapon)
+{
+    if (!isSuperheavyWeapon(weapon))
+        return true;
+    return weaponActiveProfile(weapon)?.skirmishable === true;
+}
+
+export function weaponBarrageable(weapon)
+{
+    if (!isSuperheavyWeapon(weapon))
+        return true;
+    return weaponActiveProfile(weapon)?.barrageable !== false;
+}
+
 /**
  * Executes a Skirmish action: target validation, weapon selection, and attack/damage flow.
  * @param {Actor|Token|TokenDocument} actorOrToken - The acting entity.
@@ -1540,7 +2083,7 @@ export async function executeSkirmish(actorOrToken, bypassMount = null, preTarge
             : actor.token?.object || actor.getActiveTokens()[0] || null
     );
     if (sourceToken && !options.noFX)
-        await playSkirmishFX(sourceToken);
+        queueActionFx(() => playSkirmishFX(sourceToken), sourceToken, 'skirmish');
     if (sourceToken)
         Hooks.callAll('lancer-automations.battelog.action', { token: sourceToken, name: 'SKIRMISH', actionType: 'Quick' });
 
@@ -1558,8 +2101,7 @@ export async function executeSkirmish(actorOrToken, bypassMount = null, preTarge
         // one/mount; no superheavy; non-fitting shown disabled
         const filterPredicate = (weapon) =>
         {
-            const size = weapon.system?.size || weapon.system?.type || "";
-            if (size.toLowerCase() === 'superheavy')
+            if (!weaponSkirmishable(weapon))
                 return false;
             if (weaponFilter)
                 return weaponFilter(weapon);
@@ -1615,7 +2157,7 @@ export async function executeSkirmish(actorOrToken, bypassMount = null, preTarge
         }));
 
         await InteractiveAPI.startChoiceCard({
-            title: "SKIRMISH WEAPON ORDER",
+            title: localize('LA.dialogTitle.skirmishWeaponOrder'),
             description: hasNonAux
                 ? "Aux weapons don't deal bonus damage."
                 : "First weapon fired deals bonus damage; others don't.",
@@ -1643,7 +2185,7 @@ export async function executeFight(actorOrToken, bypassWeapon = null)
     );
     if (sourceToken)
     {
-        playFightFX(sourceToken);
+        queueActionFx(() => playFightFX(sourceToken), sourceToken, 'fight');
         Hooks.callAll('lancer-automations.battelog.action', { token: sourceToken, name: 'FIGHT', actionType: 'Quick' });
     }
 
@@ -1686,7 +2228,7 @@ export async function executeBarrage(actorOrToken, bypassMount = null, preTarget
     );
     if (sourceToken)
     {
-        playBarrageFX(sourceToken);
+        queueActionFx(() => playBarrageFX(sourceToken), sourceToken, 'barrage');
         Hooks.callAll('lancer-automations.battelog.action', { token: sourceToken, name: 'BARRAGE', actionType: 'Full' });
     }
 
@@ -1735,7 +2277,7 @@ export async function executeBarrage(actorOrToken, bypassMount = null, preTarget
 
     const choices = bypassMount
         ? [bypassMount]
-        : await choseMount(actor, 2, null, null, "BARRAGE", barrageValidator);
+        : await choseMount(actor, 2, weaponBarrageable, null, "BARRAGE", barrageValidator);
     if (!choices || choices.length === 0)
         return;
 
@@ -1787,7 +2329,7 @@ export async function executeBarrage(actorOrToken, bypassMount = null, preTarget
                 callback: async () => fireWeapon(weapon)
             }));
             await InteractiveAPI.startChoiceCard({
-                title: "WEAPON ORDER",
+                title: localize('LA.dialogTitle.weaponOrder'),
                 description: hasNonAux
                     ? `Firing weapons from ${mount.type || "Mount"}. Aux weapons don't deal bonus damage.`
                     : `Firing weapons from ${mount.type || "Mount"}. First weapon fired deals bonus damage; others don't.`,
@@ -1824,8 +2366,8 @@ export async function executeBarrage(actorOrToken, bypassMount = null, preTarget
         });
 
         await InteractiveAPI.startChoiceCard({
-            title: "BARRAGE MOUNT ORDER",
-            description: "Select which mount to trigger. Aux weapons don't deal bonus damage.",
+            title: localize('LA.dialogTitle.barrageMountOrder'),
+            description: localize('LA.misc.selectWhichMountToTriggerAux'),
             mode: "and",
             choices: mountChoices
         });
@@ -1835,6 +2377,28 @@ export async function executeBarrage(actorOrToken, bypassMount = null, preTarget
 
 
 /**
+ * Token position as a plain point.
+ * @param {any} tokenLike - Token or TokenDocument
+ * @returns {{x: number, y: number, elevation: number}}
+ */
+export function getTokenPosition(tokenLike)
+{
+    const doc = tokenLike?.document ?? tokenLike;
+    return { x: doc?.x ?? 0, y: doc?.y ?? 0, elevation: doc?.elevation ?? 0 };
+}
+
+/**
+ * Same x / y / elevation.
+ * @param {{x: number, y: number, elevation?: number}} a
+ * @param {{x: number, y: number, elevation?: number}} b
+ * @returns {boolean}
+ */
+export function samePosition(a, b)
+{
+    return !!a && !!b && a.x === b.x && a.y === b.y && (a.elevation ?? 0) === (b.elevation ?? 0);
+}
+
+/**
  * Returns the weapon subtype string (e.g. "Superheavy Rifle", "Melee").
  * Synchronous: no bonus application.
  * @param {Item} item
@@ -1842,14 +2406,14 @@ export async function executeBarrage(actorOrToken, bypassMount = null, preTarget
  */
 export function getWeaponType(item)
 {
-    if (!item)
+    const sys = item?.system;
+    if (!sys)
         return "";
-    if (item.type === "mech_weapon")
-    {
-        const profileIdx = item.system?.selected_profile_index ?? 0;
-        return item.system?.profiles?.[profileIdx]?.weapon_type ?? item.system?.weapon_type ?? "";
-    }
-    return item.system?.weapon_type ?? "";
+    // Weapon profiles carry it as `type`; only npc_feature has a `weapon_type` field.
+    return sys.active_profile?.type
+        || sys.profiles?.[sys.selected_profile_index ?? 0]?.type
+        || sys.weapon_type
+        || "";
 }
 
 /**
@@ -1866,7 +2430,13 @@ export function getItemType(item)
     return item.system?.type || item.type || "";
 }
 
-export async function executeInvade(actorOrToken)
+/**
+ * Prompts the user to choose an invade then runs the tech attack.
+ * @param {Actor|Token} actorOrToken
+ * @param {Object|null} [bypassChoice=null] - Preselected invade option, skips the prompt
+ * @returns {Promise<void>}
+ */
+export async function executeInvade(actorOrToken, bypassChoice = null)
 {
     const actor = /** @type {Actor} */ ((/** @type {Token} */ (actorOrToken))?.actor || actorOrToken);
     if (!actor)
@@ -1875,14 +2445,14 @@ export async function executeInvade(actorOrToken)
         return;
     }
 
-    const selected = await chooseInvade(actor);
+    const selected = bypassChoice ?? await chooseInvade(actor);
     if (!selected)
         return;
 
     if (selected.isFragmentSignal)
     {
         await executeTechAttack(actor, {
-            title: "Fragment Signal",
+            title: selected.name,
             invade: true,
             effect: selected.detail,
             grit: actor.system.tech_attack,
@@ -1969,30 +2539,42 @@ export function debugActivation(triggerType, triggerData, token, item, activatio
         helpers,
         fieldKeys: Object.keys(fields)
     };
-    console.group(`[LA debugActivation] ${label ?? activationName ?? triggerType ?? "activation"}`);
-    console.log("triggerType:", triggerType);
-    console.log("activationName:", activationName);
-    console.log("reactorToken:", token);
-    console.log("item:", item);
-    console.log("triggerData:", triggerData);
-    console.log("helpers (functions on triggerData):", helpers);
-    console.log("fields:", fields);
-    console.log("summary:", summary);
+    console.group(`lancer-automations | debugActivation | ${label ?? activationName ?? triggerType ?? "activation"}`);
+    console.log("lancer-automations | triggerType:", triggerType);
+    console.log("lancer-automations | activationName:", activationName);
+    console.log("lancer-automations | reactorToken:", token);
+    console.log("lancer-automations | item:", item);
+    console.log("lancer-automations | triggerData:", triggerData);
+    console.log("lancer-automations | helpers (functions on triggerData):", helpers);
+    console.log("lancer-automations | fields:", fields);
+    console.log("lancer-automations | summary:", summary);
     console.groupEnd();
     return summary;
 }
 
 export const MiscAPI = {
     playMineDetonationFX,
+    afterFx,
+    inDangerZone,
     executeStatRoll,
     executeSaveVsEffect,
     executeContestedCheck,
     attackWith,
+    attackRollWith,
+    hitWith,
+    damageWith,
+    getTokenPosition,
+    samePosition,
     getTier,
     tierValue,
     getFlowFlag,
     setFlowFlag,
+    afterFlow,
     consumeOncePerRound,
+    consumeOncePerTurn,
+    consumeGate,
+    checkGate,
+    clearGate,
     executeForceCheck,
     executeDamageRoll,
     executeBasicAttack,
@@ -2000,9 +2582,15 @@ export const MiscAPI = {
     executeExtraActionCombat,
     executeSimpleActivation,
     executeItemActivation,
+    activateGeneralAction,
+    hasReactionAvailable,
+    isItemUsable,
     executeReactorMeltdown,
     executeReactorExplosion,
     setReaction,
+    consumeAction,
+    gainAction,
+    modifyAction,
     setItemResource,
     addItemTag,
     removeItemTag,
@@ -2028,5 +2616,11 @@ export const MiscAPI = {
     executeFall,
     executeStandingUp,
     executeTeleport,
+    boostMove,
     openAddReserveDialog,
 };
+
+export function escapeAttr(value)
+{
+    return String(value ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}

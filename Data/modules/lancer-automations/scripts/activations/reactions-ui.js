@@ -1,7 +1,9 @@
 /*global console, game, Dialog, canvas, $, foundry */
-import { ReactionManager, stringToAsyncFunction } from "./reaction-manager.js";
+import { ReactionManager, stringToAsyncFunction, ACTIVATION_TRIGGERS } from "./reaction-manager.js";
+import { MODULE_ID } from "../tools/constants.js";
 import { hasReactionAvailable } from "../tools/misc-tools.js";
 import { runInFlowBody } from "./flow-queue.js";
+import { localize, localizeFormat } from "../tools/string-utils.js";
 
 let activeReactionDialog = null;
 let activeDetailPanel = null;
@@ -18,7 +20,7 @@ function runCustomActivation({ activationType, source, triggerType, triggerData,
             if (macro)
                 return macro.execute({ triggerType, triggerData, reactorToken: token, item, activationName });
             else
-                ui.notifications.warn(`Macro "${macroName}" not found`);
+                ui.notifications.warn(localizeFormat('LA.notify.macroNotFound', { name: macroName }));
         }
     }
     else if (activationType === "code")
@@ -26,21 +28,26 @@ function runCustomActivation({ activationType, source, triggerType, triggerData,
         const code = source?.activationCode;
         if (code)
         {
-            const api = game.modules.get('lancer-automations')?.api;
+            const api = game.modules.get(MODULE_ID)?.api;
             const invoke = typeof code === 'function'
                 ? () => code(triggerType, triggerData, token, item, activationName, api)
                 : (typeof code === 'string'
                     ? () =>
                     {
-                        const fn = stringToAsyncFunction(code, ["triggerType", "triggerData", "reactorToken", "item", "activationName", "api"]);
+                        const lid = item?.system?.lid;
+                        const registryReactions = lid ? ReactionManager.getReactions(lid)?.reactions : null;
+                        const sourceName = lid
+                            ? `${lid}/${Math.max(0, registryReactions?.indexOf(source) ?? 0)}/activation`
+                            : `${activationName || 'activation'}/activation`;
+                        const fn = stringToAsyncFunction(code, ["triggerType", "triggerData", "reactorToken", "item", "activationName", "api"], sourceName);
                         return fn(triggerType, triggerData, token, item, activationName, api);
                     }
                     : null);
             if (invoke)
             {
-                return runInFlowBody(invoke).catch(e =>
+                return runInFlowBody(invoke).catch(error =>
                 {
-                    console.error(`lancer-automations | Error executing activation code:`, e);
+                    console.error(`lancer-automations | Error executing activation code:`, error);
                 });
             }
         }
@@ -61,7 +68,6 @@ export function activateReaction(triggerType, triggerData, token, item, activati
         const reactionEntry = reaction || reactionConfig?.reactions?.[0];
 
         const actionType = reactionEntry?.actionType || (reactionEntry?.isReaction !== false ? "Reaction" : "Free Action");
-        const checkReaction = reactionEntry?.checkReaction !== false;
 
         const activationType = reactionEntry?.activationType || "flow";
         const activationMode = reactionEntry?.activationMode || "instead";
@@ -86,7 +92,7 @@ export function activateReaction(triggerType, triggerData, token, item, activati
                 const path = actionIndex >= 0 ? `system.actions.${actionIndex}` : 'system.actions.0';
                 await item.beginActivationFlow(path);
             }
-            else if (item.beginSystemFlow && item.system.type !== "Weapon")
+            else if (item.beginSystemFlow && item.system.type !== "Weapon" && !item.is_mech_weapon?.() && !item.is_pilot_weapon?.())
                 await item.beginSystemFlow();
             else
             {
@@ -104,15 +110,17 @@ export function activateReaction(triggerType, triggerData, token, item, activati
                     }).begin();
                 }
                 else
-                    game.modules.get('lancer-automations').api.executeSimpleActivation(token.actor, { title: item.name, action: { name: item.name } }, { item: item });
+                    game.modules.get(MODULE_ID).api.executeSimpleActivation(token.actor, { title: item.name, action: { name: item.name } }, { item: item });
             }
         };
 
         // Re-activating the same item that triggered us would loop via onActivation/onInitActivation.
-        const wouldRecurse = (triggerType === 'onActivation' || triggerType === 'onInitActivation')
+        const wouldRecurse = ACTIVATION_TRIGGERS.has(triggerType)
             && triggerData?.item?.uuid
             && triggerData.item.uuid === item?.uuid;
-        if (wouldRecurse)
+        const recurseGuardMatters = activationType === "flow"
+            || ((activationType === "macro" || activationType === "code") && activationMode !== "instead");
+        if (wouldRecurse && recurseGuardMatters)
             console.warn(`lancer-automations | Skipping itemActivation for "${item?.name}" to avoid onActivation recursion (reaction on same item). Using macro/code activation only.`);
 
         if (activationType === "none")
@@ -144,7 +152,6 @@ export function activateReaction(triggerType, triggerData, token, item, activati
 
         const isReactionTypeResult = generalReaction?.actionType ? (generalReaction.actionType === "Reaction") : (generalReaction?.isReaction !== false);
         const actionType = generalReaction?.actionType || (isReactionTypeResult ? "Reaction" : "Free Action");
-        const checkReaction = generalReaction?.checkReaction !== false;
 
         const activationType = generalReaction?.activationType || "flow";
         const activationMode = generalReaction?.activationMode || "after";
@@ -155,6 +162,11 @@ export function activateReaction(triggerType, triggerData, token, item, activati
 
         const showChatActivation = async () =>
         {
+            if (!actor)
+            {
+                console.warn(`lancer-automations | "${activationName}": a scene reactor has no actor to post a flow for, use activation type code or none.`);
+                return;
+            }
             let flowData;
             if (generalReaction?.onlyOnSourceMatch && triggerData?.actionData)
             {
@@ -178,11 +190,11 @@ export function activateReaction(triggerType, triggerData, token, item, activati
                         name: activationName,
                         activation: actionType
                     },
-                    detail: `<strong>Trigger:</strong> ${triggerText}<br><strong>Effect:</strong> ${effectText}`
+                    detail: localizeFormat('LA.reaction.triggerEffectDetail', { trigger: triggerText, effect: effectText })
                 };
             }
 
-            await game.modules.get('lancer-automations').api.executeSimpleActivation(actor, flowData);
+            await game.modules.get(MODULE_ID).api.executeSimpleActivation(actor, flowData);
         };
 
         if (activationType === "none")
@@ -262,7 +274,7 @@ function showDetailPanel(token, item, mainDialogEl, popupData, reactionData = nu
     if (isGeneral)
     {
         panelActivationName = reactionData.reactionName;
-        const generalReaction = ReactionManager.getGeneralReaction(reactionData.reactionName);
+        const generalReaction = ReactionManager.getGeneralReaction(reactionData.reactionName) ?? reactionData.reaction ?? null;
 
         if (generalReaction?.onlyOnSourceMatch && triggerData?.actionData)
         {
@@ -293,7 +305,6 @@ function showDetailPanel(token, item, mainDialogEl, popupData, reactionData = nu
         const lid = item.system?.lid;
         const reactionConfig = lid ? ReactionManager.getReactions(lid) : null;
 
-        // prioritizing specific reaction provided in reactionData (from triggeredReactions)
         const specificReaction = reactionData?.reaction;
         const reactionEntry = specificReaction || reactionConfig?.reactions?.[0];
 
@@ -458,7 +469,7 @@ function showDetailPanel(token, item, mainDialogEl, popupData, reactionData = nu
             reaction = specificReaction || reactionConfig?.reactions?.[0];
         }
         else
-            reaction = ReactionManager.getGeneralReaction(panelActivationName);
+            reaction = ReactionManager.getGeneralReaction(panelActivationName) ?? reactionData?.reaction ?? null;
 
         await activateReaction(popupData.triggerType, triggerData, token, item, panelActivationName, reaction, isGeneral);
 
@@ -475,13 +486,18 @@ function showDetailPanel(token, item, mainDialogEl, popupData, reactionData = nu
     });
 }
 
+// Scene stand-ins are not on the canvas, so the popup keeps its own id-to-reactor lookup.
+const reactorsById = new Map();
+
 function renderReactionDialog(popupData)
 {
     const { triggerType, triggeredReactions } = popupData;
 
     const byToken = new Map();
+    reactorsById.clear();
     for (const entry of triggeredReactions)
     {
+        reactorsById.set(entry.token.id, entry.token);
         if (!byToken.has(entry.token.id))
         {
             byToken.set(entry.token.id, {
@@ -619,10 +635,10 @@ function renderReactionDialog(popupData)
         activeReactionDialog.close();
 
     activeReactionDialog = new Dialog({
-        title: `Activation Opportunity: ${triggerDisplay}`,
+        title: localizeFormat('LA.dialogTitle.activationOpportunity', { trigger: triggerDisplay }),
         content: html,
         buttons: {
-            ok: { label: "ACKNOWLEDGE" }
+            ok: { label: localize("LA.common.acknowledge") }
         },
         default: "ok",
         render: (htmlEl) =>
@@ -650,7 +666,7 @@ function renderReactionDialog(popupData)
                 const isGeneral = el.dataset.general === 'true';
                 const reactionName = el.dataset.reactionName;
 
-                const token = canvas.tokens.get(tokenId);
+                const token = canvas.tokens.get(tokenId) ?? reactorsById.get(tokenId);
 
                 let item = null;
                 let reactionData = null;

@@ -7,7 +7,10 @@
  */
 
 import { getActivationIcon } from '../tools/misc-tools.js';
+import { getLAFlag, getLAFlags } from '../tools/flag-utils.js';
+import { damageBonusScope } from '../bonuses/genericBonuses.js';
 import { isWhiteIcon } from '../tah/item-helpers.js';
+import { localize } from '../tools/string-utils.js';
 
 function activationChipContent(action)
 {
@@ -273,7 +276,7 @@ export function laRenderDeployables(deployableActors, opts = {})
 export function laRenderItemStatusTemplates(item)
 {
     const templates = /** @type {any[]} */ (Array.from(item?.effects ?? []))
-        .filter(effect => effect.flags?.['lancer-automations']?.isItemTemplate === true);
+        .filter(effect => getLAFlags(effect)?.isItemTemplate === true);
     if (!templates.length)
         return '';
     const rows = templates.map(effect =>
@@ -313,13 +316,13 @@ function _summarizeBonusData(bonus)
 
 /**
  * Renders LA extra bonuses attached to an item as bonus templates
- * (`item.flags['lancer-automations'].bonusTemplates`).
+ * (`getLAFlags(item).bonusTemplates`).
  * @param {any} item
  * @returns {string}
  */
 export function laRenderItemBonusTemplates(item)
 {
-    const templates = /** @type {any[]} */ (item?.getFlag?.('lancer-automations', 'bonusTemplates') || []);
+    const templates = /** @type {any[]} */ (getLAFlag(item,'bonusTemplates') || []);
     if (!templates.length)
         return '';
     const rows = templates.map(template =>
@@ -353,7 +356,7 @@ export async function laRenderItemExtras(item)
 {
     if (!item)
         return '';
-    const laFlags = item.flags?.['lancer-automations'] ?? {};
+    const laFlags = getLAFlags(item) ?? {};
     let html = '';
 
     // Auto-consume status block (always shown when the item has any consumable resources).
@@ -428,9 +431,9 @@ export async function laRenderItemExtras(item)
                 realMetas.push(resolveDeployRangeCount(item, combined[idx], ownerActor));
             });
             if (real.length)
-                html += laRenderDeployables(real, { label: 'EXTRA DEPLOYABLE', metas: realMetas });
+                html += laRenderDeployables(real, { label: localize('LA.deployables.extraDeployable'), metas: realMetas });
             if (fallbackHtml)
-                html += `<div style="margin-bottom:4px;">${real.length ? '' : laPopupSectionLabel('EXTRA DEPLOYABLE', '#4a1070')}${fallbackHtml}</div>`;
+                html += `<div style="margin-bottom:4px;">${real.length ? '' : laPopupSectionLabel(localize('LA.deployables.extraDeployable'), '#4a1070')}${fallbackHtml}</div>`;
         }
     }
 
@@ -579,7 +582,9 @@ function laRenderBonusList(bonuses)
                     const from = (dmg.from && dmg.from !== 'all') ? dmg.from : 'All';
                     return `${from} → ${dmg.to}`;
                 });
-                return `Change Type: ${parts.join(', ')}`;
+                const scope = damageBonusScope(bonus);
+                const scopeLabel = scope === 'base' ? '' : ` (${scope})`;
+                return `Change Type${scopeLabel}: ${parts.join(', ')}`;
             }
             const body = entries.map(dmg => `${dmg.val} ${dmg.type}`).join(' + ');
             if (mode === 'replace')

@@ -7,10 +7,15 @@ import {
     clearSingleTargetShape, clearAreaTargetShape,
     rangePulse, RANGE_PULSE_PRIORITY, RANGE_GLOW,
 } from '../interactive/canvas.js';
-import { firstKeyFor } from '../interactive/keybindings.js';
+import { firstKeyFor, eventMatchesKeybind } from '../interactive/keybindings.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 import { rollHitCritChance } from '../interactive/canvas-helpers.js';
 import { getMaxItemRanges_WithBonus } from '../tools/misc-tools.js';
+import { isActorScannedForUser } from '../tools/scan-lookup.js';
 import { playUiSound } from '../tah/sound.js';
+import { usesLineOfSight } from '../tah/hover.js';
+import { getSettingEnabled } from '../setup/settings-register.js';
+import { setPickerTargetCursor } from '../interactive/tools/advancedMeasure.js';
 
 const AOE_TYPES = ['Blast', 'Burst', 'Cone', 'Line'];
 
@@ -18,27 +23,30 @@ const AOE_TYPES = ['Blast', 'Burst', 'Cone', 'Line'];
 export function targetInfoAllowed()
 {
     let mode = 'gm';
-    try
-    {
-        mode = game.settings.get('lancer-automations', 'targetInfoDisplay') ?? 'gm';
-    }
-    catch
-    {
-        mode = 'gm';
-    }
+    mode = getModuleSetting('targetInfoDisplay') ?? 'gm';
     return mode === 'all' || (mode === 'gm' && !!game.user?.isGM);
+}
+
+// Shown in place of a stat-derived chance when the viewer hasn't scanned the target.
+export const UNKNOWN_CHANCE = { label: '??%', fill: 0x9e9e9e };
+
+// Stat-derived labels (hit %, save %, contest %) read target defenses, so players only get them on owned or scanned actors.
+export function targetInfoAllowedFor(actor)
+{
+    if (!targetInfoAllowed())
+        return false;
+    if (game.user?.isGM)
+        return true;
+    if (!actor)
+        return false;
+    if (actor.isOwner)
+        return true;
+    return isActorScannedForUser(actor, game.user);
 }
 
 export function chanceLabelsOn()
 {
-    try
-    {
-        return game.settings.get('lancer-automations', 'haseChanceLabels') === true;
-    }
-    catch
-    {
-        return false;
-    }
+    return getModuleSetting('haseChanceLabels') === true;
 }
 
 const HASE_PATHS = { HULL: 'system.hull', AGI: 'system.agi', SYS: 'system.sys', ENG: 'system.eng', GRIT: 'system.grit' };
@@ -71,18 +79,18 @@ export function contestWinChance(actorA, skillA, actorB, skillB, { netAcc = 0 } 
     if (!haseSuccessChance(actorA, skillA, 10, { netAcc, applyStatuses: false })
         || !haseSuccessChance(actorB, skillB, 10, { netAcc: 0, applyStatuses: false }))
         return null;
-    const cdfA = (dc) => haseSuccessChance(actorA, skillA, dc, { netAcc, applyStatuses: false })?.hit ?? 0;
-    const cdfB = (dc) => haseSuccessChance(actorB, skillB, dc, { netAcc: 0, applyStatuses: false })?.hit ?? 0;
+    const successChanceA = (dc) => haseSuccessChance(actorA, skillA, dc, { netAcc, applyStatuses: false })?.hit ?? 0;
+    const successChanceB = (dc) => haseSuccessChance(actorB, skillB, dc, { netAcc: 0, applyStatuses: false })?.hit ?? 0;
     let win = 0;
-    // totals below the CDF floor (difficulty dice can push under 1) collapse into one bucket
-    const pLow = 1 - cdfB(1);
+    // totals below the lowest tracked DC (difficulty dice can push under 1) collapse into one bucket
+    const pLow = 1 - successChanceB(1);
     if (pLow > 0)
-        win += pLow * cdfA(1);
+        win += pLow * successChanceA(1);
     for (let total = 1; total <= 46; total++)
     {
-        const pB = cdfB(total) - cdfB(total + 1);
+        const pB = successChanceB(total) - successChanceB(total + 1);
         if (pB > 0)
-            win += pB * cdfA(total + 1);
+            win += pB * successChanceA(total + 1);
     }
     return { hit: win, crit: 0 };
 }
@@ -164,6 +172,7 @@ function readToggles($form)
         elevationAware: $form.find('.la-tg-elev').prop('checked') !== false,
         autoElevation: $form.find('.la-tg-autoelev').prop('checked') !== false,
         propagation: !!$form.find('.la-tg-prop').prop('checked'),
+        los: $form.find('.la-tg-los').prop('checked') !== false,
     };
 }
 
@@ -171,16 +180,43 @@ function injectToggleRow($form)
 {
     if ($form.find('.la-accdiff-area-toggles').length)
         return;
+    // without flex:0 0 auto, Foundry's `.flexrow > * { flex: 1 }` stretches the labels and the row's centering does nothing
+    const labelStyle = 'flex:0 0 auto;display:flex;align-items:center;gap:4px;cursor:pointer;';
+    const losToggle = getSettingEnabled('rangePulseLos')
+        ? `<label style="${labelStyle}"><input type="checkbox" class="la-tg-los" checked> Line of sight</label>`
+        : '';
     const $toggleRow = $(`<div class="la-accdiff-area-toggles flexrow" style="gap:12px;justify-content:center;padding:4px 0 2px;font-size:11px;color:var(--dark-text, #fff);flex-wrap:wrap;">
-        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" class="la-tg-elev" checked> Elevation aware</label>
-        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" class="la-tg-autoelev" checked> Auto elevation</label>
-        <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" class="la-tg-prop" checked> Propagation</label>
+        <label class="la-tg-area-lbl" style="${labelStyle}"><input type="checkbox" class="la-tg-elev" checked> Elevation aware</label>
+        <label class="la-tg-area-lbl" style="${labelStyle}"><input type="checkbox" class="la-tg-autoelev" checked> Auto elevation</label>
+        <label class="la-tg-area-lbl" style="${labelStyle}"><input type="checkbox" class="la-tg-prop" checked> Propagation</label>
+        ${losToggle}
     </div>`);
     const $section = $form.find('.accdiff-ranges').first().closest('.accdiff-grid__section');
     if ($section.length)
         $section.append($toggleRow);
     else
         $form.find('.accdiff-ranges').first().after($toggleRow);
+}
+
+// Elevation / propagation only bite on areas; a single-target pick keeps the Line of sight toggle alone.
+function syncAreaToggles($form, isArea)
+{
+    const $row = $form.find('.la-accdiff-area-toggles');
+    if (!$row.length)
+        return;
+    $row.find('.la-tg-area-lbl').toggle(!!isArea);
+    $row.toggle(!!isArea || $row.find('.la-tg-los').length > 0);
+}
+
+// The pulse reads state.__laLosPulse and redraws on the hook, so the toggle has to write both.
+function bindLosToggle($form, state, onChange)
+{
+    $form.find('.la-tg-los').prop('checked', state.__laLosPulse !== false).off('change.laLos').on('change.laLos', function ()
+    {
+        state.__laLosPulse = /** @type {HTMLInputElement} */ (this).checked;
+        Hooks.callAll('lancer-automations.attackRangeMode', state);
+        onChange?.();
+    });
 }
 
 // Shortcut hint shown below the buttons only while a picker is active.
@@ -199,17 +235,46 @@ function ensureHint($form)
     return $hint;
 }
 
-// AoE pattern buttons or single-target button, shape strip, Range/Threat switch, pickers, auto-start.
+let _cardToggle = null;
+
+export function toggleCardTargeting()
+{
+    if (!_cardToggle || !document.querySelector('.la-accdiff-target-button'))
+        return false;
+    _cardToggle();
+    return true;
+}
+
+// Own listener: a focused button inside the card form mutes every registered keybinding.
+let _cardKeyBound = false;
+function bindCardTargetingKey()
+{
+    if (_cardKeyBound)
+        return;
+    _cardKeyBound = true;
+    document.addEventListener('keydown', (event) =>
+    {
+        if (event.repeat || !eventMatchesKeybind(event, 'cardTargeting'))
+            return;
+        if (!toggleCardTargeting())
+            return;
+        event.preventDefault();
+        event.stopPropagation();
+    }, true);
+}
+
 export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe = [], hitChanceForFactory = () => null, hudHasTargets = null, autoStart = 'setting', pulseOwner = null } = {})
 {
     // pulseOwner: range pulse shown only while a picker from this HUD is running
+    let lastPickRange = 0;
     const setPickPulse = (rangeVal) =>
     {
         if (!pulseOwner)
             return;
+        lastPickRange = rangeVal;
         const token = state.actor?.getActiveTokens?.()[0] ?? null;
         if (token && rangeVal > 0)
-            rangePulse.setRange(pulseOwner, { token, range: rangeVal, includeSelf: true, priority: RANGE_PULSE_PRIORITY.ATTACK_CARD, glowColor: weapon ? RANGE_GLOW.weapon : RANGE_GLOW.manual });
+            rangePulse.setRange(pulseOwner, { token, range: rangeVal, includeSelf: true, priority: RANGE_PULSE_PRIORITY.ATTACK_CARD, glowColor: weapon ? RANGE_GLOW.weapon : RANGE_GLOW.manual, los: usesLineOfSight(null, weapon, null) && readToggles($form).los });
         else
             rangePulse.clear(pulseOwner);
     };
@@ -217,6 +282,11 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
     {
         if (pulseOwner)
             rangePulse.clear(pulseOwner);
+    };
+    const refreshPickPulse = () =>
+    {
+        if (pulseOwner && rangePulse.has(pulseOwner))
+            setPickPulse(lastPickRange);
     };
 
     if (aoe.length)
@@ -271,6 +341,7 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
             $lastActive = $activeBtn;
             $activeBtn.addClass('la-targeting-active');
             setPickPulse(shapeReach(shape));
+            setPickerTargetCursor(true);
             pickerRun = (async () =>
             {
                 try
@@ -300,15 +371,55 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
                     $hint.stop(true, true).slideUp(120);
                     $activeBtn.removeClass('la-targeting-active');
                     clearPickPulse();
+                    setPickerTargetCursor(false);
                 }
             })();
             return pickerRun;
         };
 
-        for (const aoeRange of aoe)
+        const launchAoePicker = ($aoeBtn, aoeRange, keepExisting = false) =>
         {
             const pattern = aoeRange.type.toLowerCase();
+            const $hint = ensureHint($form);
+            const keyLabel = (id) => (firstKeyFor(id) || '').replace(/^Key/, '');
+            const tiltHint = pattern === 'line' ? ` · ${keyLabel('lineTiltDown')}/${keyLabel('lineTiltUp')}: tilt` : '';
+            $hint.text(`⇧ stack shapes · Ctrl+wheel: rotate · ${keyLabel('elevationDown')}/${keyLabel('elevationUp')}: elevation${tiltHint} · Esc / re-click cancels`).stop(true, true).slideDown(120);
+            $lastActive = $aoeBtn;
+            $aoeBtn.addClass('la-targeting-active');
+            setPickerTargetCursor(true);
+            pickerRun = (async () =>
+            {
+                try
+                {
+                    const castRangeVal = (await resolveWeaponRange(state)).val;
+                    const castRange = (castRangeVal + aoeRange.val) > 0 ? (castRangeVal + aoeRange.val) : -1;
+                    setPickPulse(castRange);
+                    await pickAreaTargetToggle(caster(), {
+                        pattern,
+                        areaRange: aoeRange.val,
+                        size: 1,
+                        keepExisting,
+                        getToggles: () => readToggles($form),
+                        hitChanceFor: hitChanceForFactory(state),
+                        castRange,
+                    });
+                }
+                finally
+                {
+                    $hint.stop(true, true).slideUp(120);
+                    $aoeBtn.removeClass('la-targeting-active');
+                    clearPickPulse();
+                    setPickerTargetCursor(false);
+                }
+            })();
+            return pickerRun;
+        };
+
+        const aoeButtons = [];
+        for (const aoeRange of aoe)
+        {
             const $aoeBtn = $(`<button class="range-button la-accdiff-target-button svelte-13q4b2q" type="button"><i class="fas fa-crosshairs"></i> ${aoeRange.type} ${aoeRange.val}</button>`);
+            aoeButtons.push({ $btn: $aoeBtn, aoeRange });
             $aoeBtn.on('click', async (ev) =>
             {
                 ev.preventDefault();
@@ -328,45 +439,44 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
                     launchStripPicker($aoeBtn, ev.shiftKey);
                     return;
                 }
-                const $hint = ensureHint($form);
-                const keyLabel = (id) => (firstKeyFor(id) || '').replace(/^Key/, '');
-                const tiltHint = pattern === 'line' ? ` · ${keyLabel('lineTiltDown')}/${keyLabel('lineTiltUp')}: tilt` : '';
-                $hint.text(`⇧ stack shapes · Ctrl+wheel: rotate · ${keyLabel('elevationDown')}/${keyLabel('elevationUp')}: elevation${tiltHint} · Esc / re-click cancels`).stop(true, true).slideDown(120);
-                $lastActive = $aoeBtn;
-                $aoeBtn.addClass('la-targeting-active');
-                pickerRun = (async () =>
-                {
-                    try
-                    {
-                        const castRangeVal = (await resolveWeaponRange(state)).val;
-                        const castRange = (castRangeVal + aoeRange.val) > 0 ? (castRangeVal + aoeRange.val) : -1;
-                        setPickPulse(castRange);
-                        await pickAreaTargetToggle(caster(), {
-                            pattern,
-                            areaRange: aoeRange.val,
-                            size: 1,
-                            keepExisting: ev.shiftKey,
-                            getToggles: () => readToggles($form),
-                            hitChanceFor: hitChanceForFactory(state),
-                            castRange,
-                        });
-                    }
-                    finally
-                    {
-                        $hint.stop(true, true).slideUp(120);
-                        $aoeBtn.removeClass('la-targeting-active');
-                        clearPickPulse();
-                    }
-                })();
-                await pickerRun;
+                await launchAoePicker($aoeBtn, aoeRange, ev.shiftKey);
             });
             $row.append($aoeBtn);
         }
         positionShapeToggle();
 
+        // Shortcut mirrors the last used pattern button, falling back to the first.
+        _cardToggle = () =>
+        {
+            playUiSound('toggle');
+            if (isAreaPickerActive())
+            {
+                cancelAreaPicker();
+                return;
+            }
+            if (isSingleTargetPickerActive())
+            {
+                cancelSingleTargetPicker();
+                return;
+            }
+            const entry = aoeButtons.find(candidate => $lastActive && candidate.$btn.is($lastActive)) ?? aoeButtons[0];
+            if (stripDrives())
+                launchStripPicker(entry.$btn);
+            else
+                launchAoePicker(entry.$btn, entry.aoeRange);
+        };
+        bindCardTargetingKey();
+
+        injectToggleRow($form);
+        bindLosToggle($form, state, refreshPickPulse);
+        // strip closed: the pattern buttons always place an area, so the elevation toggles stay relevant
+        const syncToggles = () => syncAreaToggles($form, !stripDrives() || (state.__laAttackShape?.pattern ?? 'target') !== 'target');
+        syncToggles();
+
         let restartTimer = null;
         const onShapeStripChange = () =>
         {
+            syncToggles();
             if (!stripDrives())
                 return;
             if (!isAreaPickerActive() && !isSingleTargetPickerActive())
@@ -399,12 +509,12 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
             ev.stopPropagation();
             const next = !strip.$strip.is(':visible');
             state.__laAttackShapeVisible = next;
+            syncToggles();
             if (next)
                 strip.$strip.stop(true, true).slideDown(120);
             else
                 strip.$strip.stop(true, true).slideUp(120);
         });
-        injectToggleRow($form);
         maybeAutoStart($form, $row, { mode: autoStart, hudHasTargets });
         return;
     }
@@ -476,6 +586,7 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
             $hint.text('⇧ multi-targets · Esc / re-click cancels').stop(true, true).slideDown(120);
         $targetBtn.addClass('la-targeting-active');
         setPickPulse(shapeReach(shape));
+        setPickerTargetCursor(true);
         pickerRun = (async () =>
         {
             try
@@ -504,15 +615,14 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
                 $hint.stop(true, true).slideUp(120);
                 $targetBtn.removeClass('la-targeting-active');
                 clearPickPulse();
+                setPickerTargetCursor(false);
             }
         })();
         return pickerRun;
     };
 
-    $targetBtn.on('click', (ev) =>
+    const toggleTargeting = () =>
     {
-        ev.preventDefault();
-        ev.stopPropagation();
         playUiSound('toggle');
         if (isSingleTargetPickerActive())
             cancelSingleTargetPicker();
@@ -520,6 +630,14 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
             cancelAreaPicker();
         else
             launchPicker();
+    };
+    _cardToggle = toggleTargeting;
+    bindCardTargetingKey();
+    $targetBtn.on('click', (ev) =>
+    {
+        ev.preventDefault();
+        ev.stopPropagation();
+        toggleTargeting();
     });
     // The range pulse (tah/index.js) reads state.__laUseThreat and redraws on the hook; restart an open picker so its check follows.
     $switch.on('click', async (ev) =>
@@ -549,9 +667,15 @@ export async function buildTargetingUI(state, $form, $row, { weapon = null, aoe 
     $row.append($shapeToggle, $targetBtn, $switch);
     positionSideButtons();
 
+    injectToggleRow($form);
+    bindLosToggle($form, state, refreshPickPulse);
+    const syncToggles = () => syncAreaToggles($form, (state.__laAttackShape?.pattern ?? 'target') !== 'target');
+    syncToggles();
+
     let restartTimer = null;
     const onShapeStripChange = () =>
     {
+        syncToggles();
         relabel();
         if (!isAreaPickerActive() && !isSingleTargetPickerActive())
             return;
@@ -718,6 +842,22 @@ export function pollForForm(findForm, onFound)
     };
     tick();
 }
+
+/** @param {any} state @param {() => any} findForm @param {(state: any, $form: any) => any} inject @param {string} label */
+export function injectWhenReady(state, findForm, inject, label)
+{
+    pollForForm(findForm, async ($form) =>
+    {
+        try
+        {
+            await inject(state, $form);
+        }
+        catch (err)
+        {
+            console.warn(`lancer-automations | ${label} inject failed`, err);
+        }
+    });
+}
 function updateAttackShapePreview(casterToken, range)
 {
     if (!casterToken || range <= 0)
@@ -740,15 +880,8 @@ function maybeAutoStart($form, $row, { mode = 'setting', hudHasTargets = null } 
         return;
     if (mode === 'setting')
     {
-        try
-        {
-            if (!game.settings.get('lancer-automations', 'autoStartTargetPicking'))
-                return;
-        }
-        catch
-        {
+        if (!getModuleSetting('autoStartTargetPicking'))
             return;
-        }
     }
     if (mode !== 'force')
     {

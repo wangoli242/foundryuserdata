@@ -1,76 +1,74 @@
-# v4.1.0
+# v4.3.1
 
 ## Features
 
-- Workshop browser: browse, preview, and import community automations, packs, and startup scripts from the workshop GitHub repo. Workshop tab in the reaction manager, cloud badge on imported entries.
-- Action overlays: attach combat data (attack bonus, accuracy, damage, range, tags) to native Lancer actions; survives system re-imports. Managed in the Extras dialog's Action Combat section.
-- Bond panel in the Token Action HUD: bond questions, XP checklists, power activation and unlocking. Bond XP also shows in the stat bar and stat hint popup.
-- New NPC automations: Squad, Miner, Engineer turrets, Baserunner, Terrain Printer, and more. Existing ones gain line-of-sight checks, damage cancellation, and zone auto-expiry.
-- Live success-chance labels on the canvas during stat rolls, skill checks, saves, and HASE contests.
-- Pinned range outlines in Advanced Measure: right-click a range source or weapon to pin a persistent ring. T cycles range source, G clears all.
-- In-editor API function reference popup, searchable and categorized.
-- New automation helpers: save-vs-effect rolls, attackWith, tier utilities, per-flow and once-per-round gates, injected damage on basic/tech attacks.
-- New Effects API helpers: applyMark/findMarkedTokens/clearMarks, findEffectsOnToken, ensureLinkedEffect/ensureLinkedBonus, hasStatus, findEffectFrom.
-- Aura API: ensureAura and getTokensInAura; aura lookup now covers item-owned auras.
-- Phasing and Overheated built-in status effects.
-- Action locks by activation type (quick, full, protocol) via item and actor flags.
-- Action FX badges show the item name. Mine detonation FX. Activation FX for Bond Powers and Talents.
-- Placed zones: auto-expiry on combat turn boundaries, elevation-aware containment.
-- Token stat bars: Bond XP auto-inject, "Owners + scanned" visibility mode.
-- Stat hint popup can hide exact values ("?") on scan-only tokens.
-- Rank badges (pilot level / NPC tier) on token names in the HUD.
-- Core system active synergies in the HUD with per-round/turn/scene frequency pips.
-- Clickable use-tracking pips for bond powers in the HUD.
-- World setting to reveal NPC stats without a scan.
-- confirmCard, askCard, and pickCard choice-card helpers.
+- 17 TokenMagic filters: ChromaRot, Open Seams, Tracking Ghost, SeamBeat, Double Shell, Vent Column, Guiding Light, Ablative Crust, No Drift, ShatterSeams, Thermal Split, SlicePlane, Overflow Wrap, Error Correction, Cold Soak, RicochetLip, Convection Churn
+- Status visuals for Impaired, Vulnerable, Lock On, Aided, Resist All, Phasing, Overheated, Reactor Meltdown, Prone, Bolstered, Shut Down, Disengage. Reworked Danger Zone, Overshield, Exposed, Shredded, Slowed
+- Ground and Hold elevation modes, Z swaps them mid-drag
+- Wall collision in movement, with wall height, one-way walls and doors
+- Ground shadows under elevated tokens
+- Portrait art above the Token Action HUD name band
+- Workshop Browser: likes, install counts, search
+- LoS peek range
+- Battlefield Awareness styles: Translucent, Silhouette, Outline-only
+- Per-cell movement animation
+- Resting-surface and solid-band collision through THT terrain
+- Option to suppress the dragged token's own light and vision during preview
+- Elevation mode badge on waypoint labels
+- Token height utilities
+- `executeItemActivation` reaches talent rank actions and bond powers
+- Extra actions can be granted to another actor, removed when the source is deleted
+- Extra actions take a `condition` gate
+- `consumeAction`, `gainAction`, `modifyAction` on the API
+- Bastion Rotary Grenade Launcher: Quick "Assisted Reload" for adjacent allies
+- Bastion Heavy Assault Shield: Hull save or Prone on hit
+- Aura `function` macros take a `scope`, `api` inside them is always this module's api
+- `api.helpers` tree, `registerUserHelper` accepts constants
+- LaSossis GAA fork stores aura function macros as native inline-code macros
 
 ## Improvements
 
-- Settings menu: dependent fields disable when their prerequisite is off. New settings: wreck aura colors, HASE chance labels, bond XP bars, tactical label position, action badge item names, scan-gated stat visibility.
-- Tactical distance labels: line-of-sight eye indicator (green/red), above/below position setting, zoom-aware scaling, drawn above stat bars.
-- Movement respects Intangible and Phasing: intangible mechs no longer block tangible ones, phasing tokens ignore hostile blocking.
-- Script editor autocomplete: return types, summaries, and doc links for trigger data fields, plus the new v4 payload fields.
-- Token picker: "sensors" range keyword, disposition filters, includeSelf defaults to true.
-- Force Check: area-of-effect range support, success-chance indicators on targets, better handling with no targets selected.
-- Drag movement pathfinds around obstacles; fallback added for installs without the core movement patch.
-- Range-pulse animation costs less and pulses slightly slower.
-- Standing Up posts a proper activation card.
-- HUD hover range previews reflect granted-action range overrides.
-- Automated Limited Handling and Standing Up reactions. Lock On respects granted-action range overrides. Mines ignore tokens at other elevations.
-- Bond powers trigger automations like other activation flows.
-- Attack flows can inject bonus damage into their damage rolls.
-- onPreDamage is cancellable: reactions can prevent damage rolls.
-- The Ignore button on cancelled flows works for all flow types.
-- Activation pack export strips workshop IDs.
-- Obstacle (Phasing) immunity subtype in the Effect Manager.
-- NPC Miner Pulverizer Charge deployables; Engineer turret types and naming fixed.
-- Setup Wizard: stat-privacy and reveal-without-scan questions.
-- Compatibility checker: warning-only advisories (e.g. both JB2A packs active).
-- Advanced Measure tour: Pinned Rings step.
-- Status panel bonus rows show icons.
-- Per-action sound toggle for mine detonation FX.
-- Reaction Editor: unsaved-changes indicator and close protection.
-- Workshop banners in the activation and startup script editors.
-- Duration label "unlimited" renamed to "indefinite" (old value still accepted).
+- Full i18n pass
+- Vision From Edge defers rebuilds during drag and animation
+- LOS raycast optimizations, hex-grid animation stability
+- Effect Manager immunity filters only show fields for the subtype
+- Immunity announcements name their source
+- Elevation tracking runs off resting surfaces
+- Reachability respects walls at the token's elevation
+- Terrain-trigger waypoints route through unreachable waypoints
+- Move-token ruler wall blocking is elevation-aware and respects the movement action
+- Movement-type cycling mid-drag uses core's Tab
+- Occlusion dim deferral during movement, configurable
+- Deferred resistance consumption syncs over socket
+- Waypoint labels carry the elevation mode, pathfinding indicator only with the setting on
+- Settings window: THT shortcuts tab, vision settings, core performance shortcuts
+- Isometric settings are world-scoped
+- Compatibility checks for Isometric Perspective, Grapejuice iso mode and THT LoS measurement
+- Config panel scrolls long setting names on hover
 
 ## Fixes
 
-- Vision no longer leaks through pinched wall corners or along collinear wall faces.
-- Injected damage no longer lost during flow state persistence.
-- Per-frequency limits no longer count core-active subsystems.
-- Pilot stress bar no longer breaks forms on newer alternative sheets.
-- Isometric Perspective tile tab survives Monk's Active Tiles.
-- Phasing tokens no longer blocked by tokens in their path in the move tool.
-- Auto-start targeting no longer clicks the wrong button with multiple weapon rows.
-- Knockback warns when moving an IMMOVABLE token.
+- Immunity and resistance bonuses ignored their condition filters
+- Status tooltips showed raw localization keys
+- Edge-vision sample positions during previews and animation
+- Isometric waypoint label position under Grape Juice
+- Item extra actions on NPC features ignored action locks
+- Same-named extra actions from two sources collided
+- `sendMessageToReactor` typings missing options and return value
+- Stat roll with a token target kept earlier targets
+- Stat roll routed to a player lost its token target
+- Damage flow re-targeted while a save HUD was open
+- Aura function macros lost outer variables after reload
+- Unlinked token with a `burrow` status hung the client on reload
 
 ## Removals
 
-- Removed the Overwatch/Reaction reminder system (threat-range movement alerts and debug visualization).
-- Removed the token stat bar configuration dialog (settings relocated).
+- Range Pulse Grid Line Opacity setting
 
 ## Documentation
 
-- Workshop section in the README.
-- API reference: formal type definitions, new trigger fields, activation/consumption config tables, worked examples.
-- Docs for the new combat, effects, interactive, and HUD functions.
+- Immunity bonus filters per subtype, reversed role semantics
+- Immunity filtering helpers, updated immunity signatures
+- Granted actions and the `condition` gate
+- Action economy helpers in the Items API
+- Dropped unused `mech` and `pilot` from the `ExtraAction` table

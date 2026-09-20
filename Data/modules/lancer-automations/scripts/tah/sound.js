@@ -1,6 +1,7 @@
 /* global game, foundry, Hooks, $, fromUuidSync, FilePicker, canvas */
 
 import { playDamageImpactFX, damageImpactHits, DAMAGE_IMPACT_DELAY_MS } from '../fx/actionFX.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 
 const _lastSoundAt = new Map();
 let _lastTargetingCell = null;
@@ -37,7 +38,7 @@ const SFX = {
     tokenTarget:   { src: 'modules/lancer-automations/FX/audio/target.wav',        scale: 0.5 },
     tokenUntarget: { src: 'modules/lancer-automations/FX/audio/untarget.wav',      scale: 0.4 },
     tokenDrag:     { src: 'modules/lancer-automations/FX/audio/drag.wav',          scale: 0.2 },
-    tokenMove:     { src: 'modules/lancer-automations/FX/audio/move2.wav',          scale: 0.3 },
+    tokenMove:     { src: 'modules/lancer-automations/FX/audio/tokenMove.wav',          scale: 0.3 },
     elevationKey:  { src: 'modules/lancer-automations/FX/audio/elevationKey.mp3',  scale: 0.5 },
     targeting:     { src: 'modules/lancer-automations/FX/audio/targeting_1.mp3', scale: 0.2 },
     targetingConfirm: { src: 'modules/lancer-automations/FX/audio/targeting_2.mp3', scale: 0.2 },
@@ -54,16 +55,9 @@ export function playUiSound(variant = 'open', { force = false } = {})
     const isTokenFeedback = TOKEN_FEEDBACK_VARIANTS.has(variant);
     const settingKey = isTokenFeedback ? 'tah.tokenFeedbackVolume' : 'tah.uiSoundVolume';
     const muteKey = isTokenFeedback ? `tah.tokenSound.${variant}` : `tah.uiSound.${variant}`;
-    try
-    {
-        if (!force && game.settings.get('lancer-automations', muteKey) === false)
-            return;
-        vol = Number(game.settings.get('lancer-automations', settingKey)) || 0;
-    }
-    catch
-    {
-        /* not ready */
-    }
+    if (!force && getModuleSetting(muteKey) === false)
+        return;
+    vol = Number(getModuleSetting(settingKey)) || 0;
     if (vol <= 0)
         return;
     const now = Date.now();
@@ -113,11 +107,14 @@ const BATTLELOG_SOUNDS = {
     resultImpactBad:  { src: `${BATTLELOG_BASE}/resultImpact_bad.wav`,  scale: 1.02 },
     logOpen:          { src: `${BATTLELOG_BASE}/LogOpen.wav`,           scale: 0.85 },
     incomingTrans:    { src: `${BATTLELOG_BASE}/incomingTrans.wav`,     scale: 0.85 },
+    confirm:          { src: `${BATTLELOG_BASE}/confirm.wav`,           scale: 0.55 },
+    denied:           { src: `${BATTLELOG_BASE}/denied.wav`,            scale: 0.55 },
+    fail:             { src: `${BATTLELOG_BASE}/fail.wav`,              scale: 1 },
 };
 
 /**
  * Play a Battle Log sound.
- * @param {'fadeIn'|'fadeOut'|'loopBackground'|'typingLoop'|'displayList'|'longResult'|'shortResult'|'resultImpact'|'resultImpactGood'|'resultImpactBad'|'logOpen'|'incomingTrans'} variant
+ * @param {'fadeIn'|'fadeOut'|'loopBackground'|'typingLoop'|'displayList'|'longResult'|'shortResult'|'resultImpact'|'resultImpactGood'|'resultImpactBad'|'logOpen'|'incomingTrans'|'confirm'|'denied'|'fail'} variant
  * @param {{loop?: boolean, volumeScale?: number}} [opts] `volumeScale` multiplies the base scale (1 = default).
  * @returns {{stop: () => void}} controller. Call `.stop()` for loops or to cut a one-shot early.
  */
@@ -126,16 +123,9 @@ export function playBattleLogSound(variant, { loop = false, volumeScale = 1 } = 
     const noop = { stop: () =>
     {} };
     let vol = 0;
-    try
-    {
-        if (game.settings.get('lancer-automations', `tah.battleLog.${variant}`) === false)
-            return noop;
-        vol = Number(game.settings.get('lancer-automations', 'tah.battleLogVolume')) || 0;
-    }
-    catch
-    {
-        /* not ready */
-    }
+    if (getModuleSetting(`tah.battleLog.${variant}`) === false)
+        return noop;
+    vol = Number(getModuleSetting('tah.battleLogVolume')) || 0;
     if (vol <= 0)
         return noop;
     const entry = BATTLELOG_SOUNDS[variant];
@@ -176,21 +166,19 @@ function _themeSrcForOutcome(outcome)
     const specificKey = map[outcome];
     const get = (settingKey) =>
     {
-        try
-        {
-            return String(game.settings.get('lancer-automations', `tah.battleLog.${settingKey}`) ?? '').trim();
-        }
-        catch
-        {
-            return '';
-        }
+        return String(getModuleSetting(`tah.battleLog.${settingKey}`) ?? '').trim();
     };
     return (specificKey && get(specificKey)) || get('themeDefault') || '';
 }
 
+function _themeLoops()
+{
+    return getModuleSetting('tah.battleLog.themeLoop') !== false;
+}
+
 /**
- * Start the battle-log theme track (looping). Picks the outcome-specific file if
- * one is set; otherwise falls back to the default; otherwise plays nothing.
+ * Start the battle-log theme track. Picks the outcome-specific file if one is set;
+ * otherwise falls back to the default; otherwise plays nothing.
  * @param {'VICTORY'|'DEFEAT'|'PARTIAL'} outcome
  */
 export function playBattleLogTheme(outcome)
@@ -200,19 +188,14 @@ export function playBattleLogTheme(outcome)
     if (!src)
         return;
     let vol = 0;
-    try
-    {
-        vol = Number(game.settings.get('lancer-automations', 'tah.battleLogVolume')) || 0;
-    }
-    catch
-    {
-        /* not ready */
-    }
+    vol = Number(getModuleSetting('tah.battleLogVolume')) || 0;
     if (vol <= 0)
         return;
-    const target = vol * 0.51;
+    const raw = Number(getModuleSetting('tah.battleLog.themeVolume'));
+    const themeVol = Number.isFinite(raw) ? Math.min(2, Math.max(0.5, raw)) : 1;
+    const target = vol * 0.51 * themeVol;
     const promise = Promise.resolve(foundry.audio.AudioHelper.play(
-        /** @type {any} */ ({ src, volume: _battleLogThemeMuted ? 0 : target, autoplay: true, loop: true }),
+        /** @type {any} */ ({ src, volume: _battleLogThemeMuted ? 0 : target, autoplay: true, loop: _themeLoops() }),
         false,
     ));
     _battleLogTheme = { promise, target, src };
@@ -332,7 +315,8 @@ const STAT_SOUNDS = {
 };
 
 const STATUS_SFX_SOUNDS = {
-    bonus: { src: `${STATS_BASE}/bonus.wav`, scale: 0.4 },
+    bonus:  { src: `${STATS_BASE}/bonus.wav`, scale: 0.2 },
+    status: { src: `${STATS_BASE}/bonus.wav`, scale: 0.2 },
 };
 
 /** folder path -> array of full file paths (cached after first browse). */
@@ -347,14 +331,7 @@ const DAMAGE_APPLY_WINDOW_MS = 1500;
 
 function _damageVolume()
 {
-    try
-    {
-        return Number(game.settings.get('lancer-automations', 'tah.damageSoundVolume')) || 0;
-    }
-    catch
-    {
-        return 0;
-    }
+    return Number(getModuleSetting('tah.damageSoundVolume')) || 0;
 }
 
 function _playDamageAudio(src, scale)
@@ -395,13 +372,8 @@ export async function playDamageSound(type, { force = false } = {})
         return;
     if (!force)
     {
-        try
-        {
-            if (game.settings.get('lancer-automations', `tah.damageSound.${key}`) === false)
-                return;
-        }
-        catch
-        { /* not ready */ }
+        if (getModuleSetting(`tah.damageSound.${key}`) === false)
+            return;
     }
     const files = await _listFolderFiles(cfg.folder);
     if (!files.length)
@@ -418,13 +390,8 @@ export async function playStatsSound(key, { force = false } = {})
         return;
     if (!force)
     {
-        try
-        {
-            if (game.settings.get('lancer-automations', `tah.statSound.${key}`) === false)
-                return;
-        }
-        catch
-        { /* not ready */ }
+        if (getModuleSetting(`tah.statSound.${key}`) === false)
+            return;
     }
     if (single)
     {
@@ -444,13 +411,8 @@ export function playStatusSfxSound(key, { force = false } = {})
         return;
     if (!force)
     {
-        try
-        {
-            if (game.settings.get('lancer-automations', `tah.statusSfx.${key}`) === false)
-                return;
-        }
-        catch
-        { /* not ready */ }
+        if (getModuleSetting(`tah.statusSfx.${key}`) === false)
+            return;
     }
     _playDamageAudio(cfg.src, cfg.scale);
 }

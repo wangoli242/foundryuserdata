@@ -6,17 +6,18 @@ import {
 } from "./cards.js";
 
 import { drawMovementTrace } from "./canvas.js";
+import { localize, localizeFormat } from "../tools/string-utils.js";
 import { laDetailPopup, laRenderTextSection, laRenderActions, laRenderTags } from "./detail-renderers.js";
 
 // GM-controlled choice cards
-export const _pendingGMChoices = new Map(); // cardId â†’ { resolve, cardEl, choices, mode }
+export const _pendingGMChoices = new Map(); // cardId → { resolve, cardEl, choices, mode }
 
 /**
  * Inserts a compact item chip into a choice card and binds a detail popup on click.
  * @param {JQuery} cardEl
  * @param {any} item  Foundry Item document
  */
-function _bindItemChip(cardEl, item)
+export function _bindItemChip(cardEl, item)
 {
     if (!item)
         return;
@@ -80,18 +81,18 @@ function _bindItemChip(cardEl, item)
 }
 
 // Broadcast cards (first-to-respond wins); stores cancel() on each target client to force-dismiss.
-export const _pendingBroadcastCards = new Map(); // cardId â†’ cancel()
+export const _pendingBroadcastCards = new Map(); // cardId → cancel()
 
 // Vote cards (creator side)
-export const _pendingVoteCards = new Map(); // cardId â†’ { resolve, cardEl, choices, votes: Map<userId,number>, allVoters: string[], hidden: boolean, refreshCreatorCard: fn }
+export const _pendingVoteCards = new Map(); // cardId → { resolve, cardEl, choices, votes: Map<userId,number>, allVoters: string[], hidden: boolean, refreshCreatorCard: fn }
 
 // Vote cards (voter side)
-export const _pendingVoterCards = new Map(); // cardId â†’ { cardEl, choices, myVote: number|null, dismissed: boolean, cleanup: fn, updateCounts: fn }
+export const _pendingVoterCards = new Map(); // cardId → { cardEl, choices, myVote: number|null, dismissed: boolean, cleanup: fn, updateCounts: fn }
 
-/** Returns the userId of the first active GM, or null if none online. */
+/** Returns the userId of the active GM, or null if none online. */
 export function getActiveGMId()
 {
-    return game.users.find(u => u.isGM && u.active)?.id ?? null;
+    return game.users.activeGM?.id ?? null;
 }
 
 /**
@@ -106,7 +107,7 @@ export function getActiveGMId()
  * @param {Item} [options.item]
  * @returns {{ remove: () => void }}
  */
-export function startWaitCard({ title = 'WAITING', description = '', waitMessage = 'Waiting for responseâ€¦', originToken = null, relatedToken = null, item = null } = {})
+export function startWaitCard({ title = 'WAITING', description = '', waitMessage = 'Waiting for response…', originToken = null, relatedToken = null, item = null } = {})
 {
     const waitDesc = (description ? description + '<br>' : '') +
         `<em style="color:#aaa;"><i class="fas fa-hourglass-half"></i> ${waitMessage}</em>`;
@@ -145,30 +146,30 @@ export function getTokenOwnerUserId(token)
         : [];
     if (playerIds.length > 0)
         return playerIds;
-    const gm = game.users.find(u => u.active && u.isGM);
+    const gm = game.users.activeGM;
     return gm ? [gm.id] : [];
 }
 
 /**
  * Interactive choice card: presents a list of choices with callbacks.
  * @param {Object} options
- * @param {string} [options.mode="or"] - "or" (pick one, done) or "and" (pick all sequentially)
- * @param {Array<Object>} [options.choices=[]] - Array of { text, icon?, callback, data? }
+ * @param {"or"|"and"|"vote"|"vote-hidden"} [options.mode="or"] - "or" picks one, "and" picks all sequentially, vote modes delegate to the vote card
+ * @param {Array<{text: string, icon?: string, callback?: (data: any) => any, data?: any}>} [options.choices=[]]
  * @param {string} [options.title] - Card title
  * @param {string} [options.description=""] - Card description
  * @param {string} [options.icon] - Card icon class
  * @param {string} [options.headerClass=""] - Card header CSS class
  * @param {string|string[]|null} [options.userIdControl=null] - userId or array of userIds who control this card. Array = broadcast, first to respond wins. null = show locally. Offline users are dropped with a warning.
  * @param {Object} [options.traceData=null]
- * @param {Token} [options.relatedToken=null] - Optional token to show in the card header.
- * @param {Token} [options.originToken=null] - Optional origin token to show in the card header (orange border).
+ * @param {Token|null} [options.relatedToken=null] - Optional token to show in the card header.
+ * @param {Token|null} [options.originToken=null] - Optional origin token to show in the card header (orange border).
  * @param {boolean} [options.forceSocket=false] - If true, treats the current user as a remote target (shows delegated card instead of local)
- * @param {Item} [options.item=null] - Item associated with the card
- * @returns {Promise<true|null>} true on completion, null if cancelled
+ * @param {Item|null} [options.item=null] - Item associated with the card
+ * @param {boolean} [options.urgent=false] - Jumps the card queue
+ * @returns {Promise<{choiceIdx: number|null, responderIds: string[]}|null>} the pick, null if cancelled
  */
 export function startChoiceCard(options = {})
 {
-    // Delegate vote mode to the dedicated vote card function
     if (/** @type {any} */ (options).mode === "vote" || /** @type {any} */ (options).mode === "vote-hidden")
         return startVoteCard({ ...options, hidden: /** @type {any} */ (options).mode === "vote-hidden" });
 
@@ -189,7 +190,6 @@ export function startChoiceCard(options = {})
         urgent = false
     } = /** @type {any} */ (options);
 
-    // Normalize userIdControl to an array.
     const rawTargets = Array.isArray(userIdControl)
         ? userIdControl
         : (userIdControl ? [userIdControl] : []);
@@ -211,10 +211,10 @@ export function startChoiceCard(options = {})
             if (gmId)
                 activeTargets.push(gmId);
             const fallbackName = activeTargets.length > 0 ? (game.users.get(activeTargets[0])?.name ?? activeTargets[0]) : 'local user';
-            ui.notifications.warn(`lancer-automations | "${offlineNames}" offline â€” ${fallbackName} will handle the choice instead.`);
+            ui.notifications.warn(`lancer-automations | "${offlineNames}" offline — ${fallbackName} will handle the choice instead.`);
         }
         else
-            ui.notifications.warn(`lancer-automations | "${offlineNames}" offline â€” removed from choice recipients.`);
+            ui.notifications.warn(`lancer-automations | "${offlineNames}" offline — removed from choice recipients.`);
     }
 
     // If targets were specified but all gone, fall back to GM.
@@ -329,8 +329,8 @@ export function startChoiceCard(options = {})
                     if (dismissed)
                         return;
                     const confirm = await Dialog.confirm({
-                        title: "Cancel Choice?",
-                        content: `<p>Are you sure you want to cancel the <b>${title}</b> choice card for all recipients?</p>`,
+                        title: localize('LA.dialogTitle.cancelChoice'),
+                        content: localizeFormat('LA.choiceCard.confirmCancelCard', { title }),
                         yes: () => true,
                         no: () => false,
                         defaultYes: false
@@ -351,6 +351,7 @@ export function startChoiceCard(options = {})
                     description,
                     mode,
                     relatedToken,
+                    originToken,
                     onConfirm: () =>
                     {},
                     onCancel
@@ -407,8 +408,8 @@ export function startChoiceCard(options = {})
                 const onCancel = async () =>
                 {
                     const confirm = await Dialog.confirm({
-                        title: "Cancel Choice?",
-                        content: `<p>Are you sure you want to cancel the <b>${title}</b> choice card for all recipients?</p>`,
+                        title: localize('LA.dialogTitle.cancelChoice'),
+                        content: localizeFormat('LA.choiceCard.confirmCancelCard', { title }),
                         yes: () => true,
                         no: () => false,
                         defaultYes: false
@@ -640,7 +641,7 @@ export async function showUserIdControlledChoiceCard({ cardId, requestingUserId,
 
         const cardEl = _createInfoCard("choiceCard", {
             title,
-            origin: `${requesterName} â†’ You`,
+            origin: `${requesterName} → You`,
             icon,
             headerClass,
             description,
@@ -715,7 +716,7 @@ export async function showUserIdControlledChoiceCard({ cardId, requestingUserId,
         _updateInfoCard(cardEl, "choiceCard", { choices, chosenSet, onChoose: handleChoose });
         _bindItemChip(cardEl, item);
         _updatePendingBadge();
-    }), `[${requesterName}â†’You] ${title}`);
+    }), `[${requesterName}→You] ${title}`);
 }
 
 /**
@@ -760,7 +761,7 @@ export async function resolveGMChoiceCard(cardId, choiceIdx, responderName, resp
             else
             {
                 // Still waiting for others.
-                ui.notifications.info(`${responderName} declined the choice.`);
+                ui.notifications.info(localizeFormat('LA.notify.declinedChoice', { name: responderName }));
             }
         }
         else
@@ -822,9 +823,9 @@ export function cancelBroadcastChoiceCard(cardId, responderName, isCancellation 
     if (cancel)
     {
         if (isCancellation)
-            ui.notifications.info(`${responderName || 'The requester'} cancelled the choice card.`);
+            ui.notifications.info(localizeFormat('LA.notify.cancelledChoiceCard', { name: responderName || localize('LA.choiceCard.theRequester') }));
         else if (responderName)
-            ui.notifications.info(`${responderName} took the choice card.`);
+            ui.notifications.info(localizeFormat('LA.notify.tookChoiceCard', { name: responderName }));
         cancel();
     }
 }
@@ -937,7 +938,7 @@ export function startVoteCard(options = {})
                 return;
             if (votes.size === 0)
             {
-                ui.notifications.warn("No votes cast yet.");
+                ui.notifications.warn(localize('LA.notify.noVotesCastYet'));
                 return;
             }
             const counts = choices.map((_, i) => [...votes.values()].filter(voteIdx => voteIdx === i).length);
@@ -957,11 +958,11 @@ export function startVoteCard(options = {})
                 const tieButtons = /** @type {Record<string,any>} */ ({});
                 for (const i of winners)
                     tieButtons[`choice_${i}`] = { label: choices[i].text, callback: () => i };
-                tieButtons.cancel = { label: "Cancel", callback: () => null };
+                tieButtons.cancel = { label: localize("LA.common.cancel"), callback: () => null };
                 const tiedNames = winners.map(i => `<b>${choices[i].text}</b>`).join(', ');
                 const picked = await Dialog.wait({
-                    title: "Vote Tie",
-                    content: `<p>There is a tie between: ${tiedNames}.</p><p>Pick the winner or cancel.</p>`,
+                    title: localize('LA.dialogTitle.voteTie'),
+                    content: localizeFormat('LA.choiceCard.voteTieBody', { names: tiedNames }),
                     buttons: tieButtons,
                     default: "cancel"
                 });
@@ -999,8 +1000,8 @@ export function startVoteCard(options = {})
             if (dismissed)
                 return;
             const confirm = await Dialog.confirm({
-                title: "Cancel Vote?",
-                content: `<p>Are you sure you want to cancel the <b>${title}</b> vote?</p>`,
+                title: localize('LA.dialogTitle.cancelVote'),
+                content: localizeFormat('LA.choiceCard.confirmCancelVote', { title }),
                 yes: () => true,
                 no: () => false,
                 defaultYes: false
@@ -1221,7 +1222,7 @@ export function confirmVoteCardOnVoter({ cardId, winnerIdx, winnerText })
         return;
     pending.dismissed = true;
     pending.cleanup();
-    ui.notifications.info(`Vote concluded â€” winner: ${winnerText}`);
+    ui.notifications.info(localizeFormat('LA.notify.voteConcluded', { winner: winnerText }));
     pending.resolve({ choiceIdx: winnerIdx, responderIds: [] });
 }
 
@@ -1237,7 +1238,7 @@ export function cancelVoteCardOnVoter({ cardId })
         return;
     pending.dismissed = true;
     pending.cleanup();
-    ui.notifications.info("The vote was cancelled.");
+    ui.notifications.info(localize('LA.notify.theVoteWasCancelled'));
     pending.resolve(null);
 }
 

@@ -1,11 +1,12 @@
 /* global game, canvas, foundry, Hooks, PIXI */
 
 import { getMinGridDistance, getDistanceTokenToPoint } from '../combat/grid-helpers.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 import { ISO_SETTINGS, isIsoFeatureEnabled, getIsoStateForToken } from '../setup/iso-settings.js';
 import { hasLineOfSight } from '../vision/lancerDetectionModes.js';
 import { belowBarsY } from '../tah/tokenStatBar.js';
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from '../tools/constants.js';
 const MODE_KEY = 'enableTacticalDistance'; // values: 'off' | 'combat' | 'always' (legacy boolean migrated below)
 const LABEL_KEY = '_laTacticalLabel';
 const GHOST_KEY = '_laTacticalLabelGhost';
@@ -14,6 +15,18 @@ const EYE_ON = '\u{F06D0}';
 const EYE_OFF = '\u{F06D1}';
 const EYE_SEEN = '#4dd35f';
 const EYE_BLOCKED = '#ff5b52';
+
+// Label metrics are world px, calibrated on a 100px grid.
+function gridScale()
+{
+    return (canvas.grid?.size || 100) / 100;
+}
+
+// Smaller font = smaller bitmap, so raise the density to keep it sharp.
+function labelResolution(scale)
+{
+    return Math.min(8, Math.max(2, 2 / scale));
+}
 
 function _getIsoState(token)
 {
@@ -26,7 +39,7 @@ function getMode()
 {
     try
     {
-        const raw = game.settings.get(MODULE_ID, MODE_KEY);
+        const raw = getModuleSetting(MODE_KEY);
         if (raw === true)
             return 'always'; // legacy bool
         if (raw === false)
@@ -53,16 +66,18 @@ function shouldShow()
 
 function makeLabel()
 {
+    const scale = gridScale();
     const style = foundry.canvas.containers.PreciseText.getTextStyle({
         fontFamily: ['Material Design Icons', 'Signika'],
-        fontSize: 14,
+        fontSize: 14 * scale,
         fill: '#ffffff',
         stroke: '#000000',
-        strokeThickness: 3,
+        strokeThickness: Math.max(1, 3 * scale),
         align: 'center',
         fontWeight: '600'
     });
     const text = new foundry.canvas.containers.PreciseText('', style);
+    text.resolution = labelResolution(scale);
     text.anchor.set(0.5, 0);
     return text;
 }
@@ -237,14 +252,7 @@ function _ensureMdiFont()
 
 function losEyeEnabled()
 {
-    try
-    {
-        return game.settings.get(MODULE_ID, 'lancerLos') === true;
-    }
-    catch
-    {
-        return false;
-    }
+    return getModuleSetting('lancerLos') === true;
 }
 
 // A point origin (e.g. the cursor) takes priority over the token reference while set; null reverts.
@@ -293,7 +301,7 @@ export function snapElevationForDisplay(rawElev)
     const isGridless = canvas.grid?.type === globalThis.CONST.GRID_TYPES.GRIDLESS;
     if (isGridless)
         return Math.round(value * 100) / 100;
-    const step = Number(game.settings.get(MODULE_ID, 'tacticalElevationStep')) || 0.5;
+    const step = Number(getModuleSetting('tacticalElevationStep')) || 0.5;
     return Number((Math.round(value / step) * step).toFixed(3));
 }
 
@@ -327,14 +335,16 @@ function _syncEye(label, seen)
     }
     if (!label._laEye || label._laEye.destroyed)
     {
+        const scale = gridScale();
         const style = foundry.canvas.containers.PreciseText.getTextStyle({
             fontFamily: ['Material Design Icons', 'Signika'],
-            fontSize: 14,
+            fontSize: 14 * scale,
             stroke: '#000000',
-            strokeThickness: 3,
+            strokeThickness: Math.max(1, 3 * scale),
             fontWeight: '600'
         });
         const eye = new foundry.canvas.containers.PreciseText('', style);
+        eye.resolution = labelResolution(scale);
         eye.anchor.set(1, 0.5);
         label.addChild(eye);
         label._laEye = eye;
@@ -350,14 +360,7 @@ function _syncEye(label, seen)
 
 function labelBelow()
 {
-    try
-    {
-        return game.settings.get(MODULE_ID, 'tacticalLabelPosition') === 'below';
-    }
-    catch
-    {
-        return false;
-    }
+    return getModuleSetting('tacticalLabelPosition') === 'below';
 }
 
 // Below mode clears the stat bars and the nameplate, matching where the bars push the name.
@@ -372,15 +375,7 @@ function belowAnchorY(target)
 
 function zoomCounterScale()
 {
-    let minZoom = 0;
-    try
-    {
-        minZoom = Number(game.settings.get(MODULE_ID, 'tacticalMinZoomScale')) || 0;
-    }
-    catch
-    {
-        minZoom = 0;
-    }
+    const minZoom = Number(getModuleSetting('tacticalMinZoomScale')) || 0;
     if (minZoom <= 0)
         return 1;
     const zoom = canvas.stage?.scale?.x || 1;
@@ -393,6 +388,7 @@ function positionLabel(target, label)
     const below = labelBelow();
     const iso = _getIsoState(target);
     const zoomK = zoomCounterScale();
+    const gap = 4 * gridScale();
     if (iso && target.mesh)
     {
         label.anchor.set(0.5, below ? 0 : 1);
@@ -400,12 +396,12 @@ function positionLabel(target, label)
         label.rotation = iso.reverseRotation;
         label.skew.set(iso.reverseSkewX, iso.reverseSkewY);
         label.scale.set(iso.counterScale * zoomK, (1 / iso.counterScale) * zoomK);
-        label.pivot.set(0, (below ? -(belowAnchorY(target) - target.h / 2) : target.h / 2 + 4) / zoomK);
+        label.pivot.set(0, (below ? -(belowAnchorY(target) - target.h / 2) : target.h / 2 + gap) / zoomK);
     }
     else
     {
         label.anchor.set(0.5, below ? 0 : 1);
-        label.position.set(target.x + target.w / 2, below ? target.y + belowAnchorY(target) : target.y - 4);
+        label.position.set(target.x + target.w / 2, below ? target.y + belowAnchorY(target) : target.y - gap);
         label.rotation = 0;
         label.skew.set(0, 0);
         label.scale.set(zoomK, zoomK);
@@ -416,8 +412,10 @@ function positionLabel(target, label)
     {
         const textW = label.texture?.orig?.width ?? 0;
         const textH = label.texture?.orig?.height ?? 0;
-        eye.x = -textW / 2 - 4;
+        eye.x = -textW / 2 - gap;
         eye.y = textH * (0.5 - label.anchor.y);
+        // The eye hangs off the left, so centre the pair instead of the text alone.
+        label.pivot.x = -((eye.width ?? 0) + gap) / 2;
     }
 }
 
@@ -519,7 +517,11 @@ Hooks.once('init', () =>
     game.settings.register(MODULE_ID, MODE_KEY, {
         scope: 'client',
         type: String,
-        choices: { off: 'Disabled', combat: 'Only in Combat', always: 'Always' },
+        choices: {
+            off: 'LA.settings.enableTacticalDistance.choices.off',
+            combat: 'LA.settings.enableTacticalDistance.choices.combat',
+            always: 'LA.settings.enableTacticalDistance.choices.always',
+        },
         default: 'combat',
         config: false
     });
@@ -532,7 +534,10 @@ Hooks.once('init', () =>
     game.settings.register(MODULE_ID, 'tacticalLabelPosition', {
         scope: 'client',
         type: String,
-        choices: { above: 'Above the token', below: 'Below the token' },
+        choices: {
+            above: 'LA.settings.tacticalLabelPosition.choices.above',
+            below: 'LA.settings.tacticalLabelPosition.choices.below',
+        },
         default: 'below',
         config: false
     });

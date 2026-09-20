@@ -6,6 +6,7 @@ import {
     findTelemetryCombatForToken as _findTelemetryCombatForToken,
     resolveEntryTokenId,
 } from "./battelog-utils.js";
+import { isExecutorGM } from '../tools/misc-tools.js';
 
 let _registered = false;
 
@@ -111,6 +112,7 @@ function _emitDamageEvent(targetActor, hpLanded)
     const event = {
         type: 'damage',
         round: combat.round ?? 0,
+        turn: combat.turn ?? null,
         byId: attackerId,
         targetId: targetTokenId,
         damages: stash?.damages ?? [],
@@ -119,7 +121,7 @@ function _emitDamageEvent(targetActor, hpLanded)
         armorAbsorbed,
     };
     const entryId = attackerId ?? targetTokenId;
-    if (game.user?.isGM)
+    if (isExecutorGM())
         appendEvent(combat, entryId, event);
     else
     {
@@ -159,7 +161,7 @@ async function _onDamageUndoClick(ev)
         hpRestored: Number(btn.dataset?.hpDelta ?? 0),
         overshieldRestored: Number(btn.dataset?.overshieldDelta ?? 0),
     };
-    if (game.user?.isGM)
+    if (isExecutorGM())
         appendEvent(combat, event.byId, event);
     else
     {

@@ -1,0 +1,1930 @@
+file	line	surface	text
+scripts/activations/api-reference-popup.js	96	placeholder	Search all functions...
+scripts/activations/flow-steps-extra.js	119	dialog-title	THROW ${item.name}
+scripts/activations/flow-steps-extra.js	165	dialog-title	${itemName} Knockback
+scripts/activations/flow-steps-extra.js	39	prose-field	This weapon can be thrown.
+scripts/activations/flow-steps.js	110	notification	${targetToken.name} is immune to Critical Hits!
+scripts/activations/flow-steps.js	118	notification	${targetToken.name} is immune to miss and hit - these effects cancel each other
+scripts/activations/flow-steps.js	128	notification	${targetToken.name} is immune to miss - attack hits!
+scripts/activations/flow-steps.js	144	notification	${targetToken.name} is immune to Hits: attack misses!
+scripts/activations/flow-steps.js	527	dev-message	lancer-automations | Unknown flow type "${state.name}". Cannot re-launch.
+scripts/activations/flow-steps.js	907	notification	${token.name} has no reaction available!
+scripts/activations/flow-steps.js	225	dialog-title	DAMAGE PREVENTED
+scripts/activations/flow-steps.js	310	dialog-title	STRUCTURE PREVENTED
+scripts/activations/flow-steps.js	331	dialog-title	STRUCTURE OUTCOME OVERRIDDEN
+scripts/activations/flow-steps.js	354	dialog-title	STRESS PREVENTED
+scripts/activations/flow-steps.js	375	dialog-title	STRESS OUTCOME OVERRIDDEN
+scripts/activations/flow-steps.js	732	dialog-title	CHECK CANCELED
+scripts/activations/flow-steps.js	761	dialog-title	ATTACK CANCELED
+scripts/activations/flow-steps.js	791	dialog-title	TECH ATTACK CANCELED
+scripts/activations/flow-steps.js	716	html-content	<div class="lancer-chat-message"><b>${statLabel}</b><br>
+scripts/activations/flow-wraps.js	641	notification	${action.name} has not recharged! (Recharge ${action.recharge}+)
+scripts/activations/flow-wraps.js	145	text-node	Flat Modifier
+scripts/activations/reaction-export-import.js	65	notification	Please select a file to import.
+scripts/activations/reaction-export-import.js	76	notification	Failed to parse file: ${e.message}
+scripts/activations/reaction-export-import.js	481	notification	Nothing selected to export.
+scripts/activations/reaction-export-import.js	495	notification	Exported pack "${name}".
+scripts/activations/reaction-export-import.js	525	notification	Please select a file to import.
+scripts/activations/reaction-export-import.js	533	notification	That file isn't a Lancer Automations pack.
+scripts/activations/reaction-export-import.js	540	notification	Failed to parse file: ${e.message}
+scripts/activations/reaction-export-import.js	694	notification	Imported pack "${packName}"${addedStartups ? 
+scripts/activations/reaction-export-import.js	13	dialog-title	Export Configuration
+scripts/activations/reaction-export-import.js	35	dialog-title	Import Configuration
+scripts/activations/reaction-export-import.js	47	dialog-title	Import Configuration
+scripts/activations/reaction-export-import.js	222	dialog-title	Review Import
+scripts/activations/reaction-export-import.js	469	dialog-title	Export Pack
+scripts/activations/reaction-export-import.js	508	dialog-title	Import Pack
+scripts/activations/reaction-export-import.js	583	dialog-title	Import Pack
+scripts/activations/reaction-export-import.js	623	dialog-title	Folder Already Exists
+scripts/activations/reaction-export-import.js	48	html-content	                 <form>                     <div class="form-group">                         <label>Select JSON File</label>                         <input type="file" name="importFile" accept=".json" style="width: 100%;">                     </div>                 </form>             
+scripts/activations/reaction-export-import.js	509	html-content	             <form>                 <div class="form-group">                     <label>Select pack JSON file</label>                     <input type="file" name="packFile" accept=".json" style="width:100%;">                 </div>             </form>
+scripts/activations/reaction-export-import.js	624	html-content	<p>A folder named <b>${esc(name)}</b> already exists.</p><p>Merge the pack into it, or create a new folder?</p>
+scripts/activations/reaction-manager.js	81	dev-message	lancer-automations | Evaluation for "${reaction?.name || 'Activation'}" is async and ${reason} without "Await Activation Completion". This will likely fail to block movement or timing-sensitive bonuses.
+scripts/activations/reaction-manager.js	510	notification	Configuration exported successfully.
+scripts/activations/reaction-manager.js	639	notification	Import applied.
+scripts/activations/reaction-manager.js	644	notification	Failed to apply import: ${error.message}
+scripts/activations/reaction-manager.js	1187	notification	Copied LID: ${result.lid}
+scripts/activations/reaction-manager.js	2031	notification	Script name is required.
+scripts/activations/reaction-manager.js	2353	notification	Activation copied to clipboard.
+scripts/activations/reaction-manager.js	2357	notification	Failed to copy to clipboard.
+scripts/activations/reaction-manager.js	2395	notification	Compiled ${compiled} function(s) under dynamic/${base}/ - see devtools Sources.
+scripts/activations/reaction-manager.js	2406	notification	Clipboard does not contain a valid activation.
+scripts/activations/reaction-manager.js	2414	notification	Failed to load from clipboard: invalid JSON.
+scripts/activations/reaction-manager.js	3325	notification	Please select an item or deployable first.
+scripts/activations/reaction-manager.js	3362	notification	Item or deployable with LID "${lid}" not found in any compendium.
+scripts/activations/reaction-manager.js	3629	notification	Custom trigger "${customTrigger}": names cannot start with "onInit".
+scripts/activations/reaction-manager.js	3649	notification	Activation Name is required for general activations
+scripts/activations/reaction-manager.js	3720	notification	Item LID is required
+scripts/activations/reaction-manager.js	671	dialog-title	Activation Manager
+scripts/activations/reaction-manager.js	1402	dialog-title	Create Folder
+scripts/activations/reaction-manager.js	1463	dialog-title	Rename Folder
+scripts/activations/reaction-manager.js	1499	dialog-title	Delete Folder
+scripts/activations/reaction-manager.js	1630	dialog-title	Activation Manager Help
+scripts/activations/reaction-manager.js	1865	dialog-title	Delete Startup Script
+scripts/activations/reaction-manager.js	1903	dialog-title	Reload Required
+scripts/activations/reaction-manager.js	1927	dialog-title	Startup Script
+scripts/activations/reaction-manager.js	2073	dialog-title	Edit Activation
+scripts/activations/reaction-manager.js	3124	dialog-title	Unsaved changes
+scripts/activations/reaction-manager.js	3253	dialog-title	Edit ${title}
+scripts/activations/reaction-manager.js	3518	dialog-title	Select Action
+scripts/activations/reaction-manager.js	3824	dialog-title	Find Actor
+scripts/activations/reaction-manager.js	3530	ui-label	<i class="fas fa-minus"></i> ${localize("LA.activationManager.noSpecificAction")}
+scripts/activations/reaction-manager.js	3534	ui-label	<i class="fas fa-times"></i> ${localize("LA.common.cancel")}
+scripts/activations/reaction-manager.js	1406	placeholder	Enter folder name...
+scripts/activations/reaction-manager.js	1403	html-content	                         <div class="form-group">                             <label>Folder Name</label>                             <input type="text" name="folderName" placeholder="Enter folder name..." autofocus>                         </div>                     
+scripts/activations/reaction-manager.js	1464	html-content	                         <div class="form-group">                             <label>New Name</label>                             <input type="text" name="folderName" value="${oldName}" autofocus>                         </div>                     
+scripts/activations/reaction-manager.js	1500	html-content	                         <div class="form-group">                             <p style="margin-bottom: 10px;">Are you sure you want to delete folder "<strong>${folderName}</strong>"?</p>                             <p class="notes">Choose whether to keep the activations inside the folder (unfiled) or delete them entirely.</p>                         </div>                     
+scripts/activations/reaction-manager.js	1866	html-content	<p>Delete script "<strong>${scripts[idx].name}</strong>"?</p>
+scripts/activations/reaction-manager.js	1904	html-content	<p>Changes made to activations or startup scripts require a reload to apply. Reload now?</p>
+scripts/activations/reaction-manager.js	3125	html-content	<p style='padding:4px 2px;'>This activation has unsaved changes.</p>
+scripts/activations/reaction-reset.js	58	notification	Lancer Reaction Checker: Module reset to defaults.
+scripts/activations/reaction-reset.js	64	notification	Error resetting module: 
+scripts/activations/reaction-reset.js	12	dialog-title	Reset Lancer Reaction Checker
+scripts/activations/reaction-reset.js	25	dialog-title	Reset Module Defaults
+scripts/activations/reactions-engine.js	403	notification	${reactionName} (${token?.name ?? '?'}): not triggered, out of combat.
+scripts/activations/reactions-engine.js	550	notification	${reactionName} (${sceneName}): not triggered, out of combat.
+scripts/activations/reactions-engine.js	580	dev-message	lancer-automations | Flow "${flowName}" not found.
+scripts/activations/reactions-engine.js	670	dev-message	lancer-automations | startRelatedFlow: no actor found.
+scripts/activations/reactions-engine.js	675	dev-message	lancer-automations | startRelatedFlow: action type "${actionType}" will be launched but may not behave as expected.
+scripts/activations/reactions-engine.js	756	dev-message	lancer-automations | ${message}
+scripts/activations/reactions-engine.js	952	notification	${item.name} (${token.name}): not triggered, out of combat.
+scripts/activations/reactions-engine.js	1653	dev-message	lancer-automations | dispatchCustomTrigger: "${name}" is not a valid custom trigger name.
+scripts/activations/reactions-engine.js	1690	dev-message	lancer-automations | startRelatedFlow: action type "${actionType}" cannot be re-launched as a flow.
+scripts/activations/reactions-engine.js	1695	dev-message	lancer-automations | startRelatedFlow: no actor found.
+scripts/activations/reactions-engine.js	1706	dev-message	lancer-automations | startRelatedFlow: no item or action data available for this trigger.
+scripts/activations/reactions-engine.js	619	prose-field	Waiting for ${game.users.get(targetUserId)?.name ?? 'remote user'}…
+scripts/activations/reactions-engine.js	714	prose-field	Waiting for ${game.users.get(targetUserId)?.name ?? 'remote user'}…
+scripts/activations/reactions-registry.js	1035	notification	${reactorToken.name} stabilizes as a Quick Action (Aided).
+scripts/activations/reactions-registry.js	1431	notification	Reactor Meltdown: no turn count provided.
+scripts/activations/reactions-registry.js	1445	notification	⚠️ Reactor Meltdown initiated! Explosion in ${selectedTurns} turn${selectedTurns > 1 ? 's' : ''}!
+scripts/activations/reactions-registry.js	1495	notification	Eject: this action must be used by a mech token.
+scripts/activations/reactions-registry.js	1507	notification	Eject: no linked pilot found on ${mechActor.name}.
+scripts/activations/reactions-registry.js	1542	notification	${pilotActor.name} has ejected from ${mechActor.name}!
+scripts/activations/reactions-registry.js	1877	notification	Dismount: this action must be used by a mech token.
+scripts/activations/reactions-registry.js	1887	notification	Dismount: no linked pilot found on ${mechActor.name}.
+scripts/activations/reactions-registry.js	1965	notification	${reactorToken.name} found ${targetToken.name}!
+scripts/activations/reactions-registry.js	2100	notification	${reactorToken.name} failed to Jockey ${mechToken.name}.
+scripts/activations/reactions-registry.js	49	dialog-title	CUSTOM PAINT JOB
+scripts/activations/reactions-registry.js	223	dialog-title	LIMITED HANDLING
+scripts/activations/reactions-registry.js	275	dialog-title	VETERANCY
+scripts/activations/reactions-registry.js	363	dialog-title	Overwatch
+scripts/activations/reactions-registry.js	409	dialog-title	OVERWATCH
+scripts/activations/reactions-registry.js	431	dialog-title	WAITING - ${reactorToken.name.toUpperCase()} OVERWATCH
+scripts/activations/reactions-registry.js	551	dialog-title	Brace
+scripts/activations/reactions-registry.js	728	dialog-title	FLYING - ${statusName}
+scripts/activations/reactions-registry.js	750	dialog-title	FLYING - ${label}
+scripts/activations/reactions-registry.js	789	dialog-title	LOCK ON - Select Target
+scripts/activations/reactions-registry.js	1463	dialog-title	Reactor Explosion
+scripts/activations/reactions-registry.js	1527	dialog-title	Eject - Place Pilot
+scripts/activations/reactions-registry.js	1760	dialog-title	MINE TRIGGER ZONE
+scripts/activations/reactions-registry.js	1904	dialog-title	Dismount - Place Pilot
+scripts/activations/reactions-registry.js	1941	dialog-title	SEARCH
+scripts/activations/reactions-registry.js	2013	dialog-title	MOUNT
+scripts/activations/reactions-registry.js	2054	dialog-title	DISMOUNT
+scripts/activations/reactions-registry.js	2078	dialog-title	JOCKEY
+scripts/activations/reactions-registry.js	2092	dialog-title	JOCKEY - GRIT vs HULL
+scripts/activations/reactions-registry.js	2105	dialog-title	JOCKEY
+scripts/activations/reactions-registry.js	148	prose-field	Treads or Hover
+scripts/activations/reactions-registry.js	224	prose-field	<b>${reactorToken.name}</b> can only clear Prone while adjacent to an allied character. Is an ally adjacent?
+scripts/activations/reactions-registry.js	368	prose-field	Trigger: A hostile character starts any movement (including BOOST and other actions) inside one of your weapons' THREAT.<br>Effect: Trigger OVERWATCH, immediately using that weapon to SKIRMISH against that character as a reaction, before they move.
+scripts/activations/reactions-registry.js	411	prose-field	<b>${mover.name}</b> is moving through <b>${reactorToken.name}</b>'s threat range. Fire?
+scripts/activations/reactions-registry.js	432	prose-field	Waiting for <b>${reactorToken.name}</b> to resolve Overwatch against <b>${mover.name}</b>.
+scripts/activations/reactions-registry.js	556	prose-field	You count as having RESISTANCE to all damage, burn, and heat from the triggering attack, and until the end of your next turn, all other attacks against you are made at +1 difficulty. Due to the stress of bracing, you cannot take reactions until the end of your next turn and on that turn, you can only take one quick action – you cannot OVERCHARGE, move normally, take full actions, or take free actions.
+scripts/activations/reactions-registry.js	729	prose-field	<b>${reactorToken.name}</b> is Flying and received <b>${statusName}</b>. Remove Flying?
+scripts/activations/reactions-registry.js	733	prose-field	Remove Flying
+scripts/activations/reactions-registry.js	751	prose-field	<b>${reactorToken.name}</b> took ${label} while Flying. Roll AGILITY save or lose Flying.
+scripts/activations/reactions-registry.js	755	prose-field	Roll AGI Save
+scripts/activations/reactions-registry.js	799	prose-field	Lock On
+scripts/activations/reactions-registry.js	867	prose-field	Bolster
+scripts/activations/reactions-registry.js	1096	prose-field	Make a melee attack against an adjacent character the same SIZE or smaller than you. On a success, your target is knocked PRONE and you may also choose to knock them back by one space, directly away from you.
+scripts/activations/reactions-registry.js	1119	prose-field	Ram by 
+scripts/activations/reactions-registry.js	1168	prose-field	<b>${reactorToken.name}</b> is hanging in the air. Does it fall?
+scripts/activations/reactions-registry.js	1174	prose-field	Yes, it falls
+scripts/activations/reactions-registry.js	1465	prose-field	Trigger the explosion?
+scripts/activations/reactions-registry.js	1467	prose-field	Trigger Reactor Explosion
+scripts/activations/reactions-registry.js	1528	prose-field	Place ${pilotActor.name} within 6 spaces of ${mechActor.name}.
+scripts/activations/reactions-registry.js	1539	prose-field	Eject
+scripts/activations/reactions-registry.js	1648	prose-field	Mine Stealth
+scripts/activations/reactions-registry.js	1680	prose-field	Mine Armed
+scripts/activations/reactions-registry.js	1768	prose-field	Try disarm (SYS)
+scripts/activations/reactions-registry.js	1905	prose-field	Place ${pilotActor.name} adjacent to ${mechActor.name}.
+scripts/activations/reactions-registry.js	2014	prose-field	${pilotName} is mounting. Choose the mech to board.
+scripts/activations/reactions-registry.js	2055	prose-field	${pilotActor.name} dismounts from ${reactorToken.name}.
+scripts/activations/reactions-registry.js	2079	prose-field	Choose the adjacent mech to JOCKEY.
+scripts/activations/reactions-registry.js	2106	prose-field	${reactorToken.name} climbs onto ${mechToken.name}. Choose one:
+scripts/activations/reactions-registry.js	76	html-content	<b>Custom Paint Job - Success!</b> The hit simply scratched the paint. Back to 1 HP.
+scripts/activations/reactions-registry.js	89	html-content	<b>Custom Paint Job - Failed!</b> Rolled ${roll.total}, needed 6.
+scripts/activations/reactions-ui.js	22	notification	Macro "${macroName}" not found
+scripts/activations/reactions-ui.js	637	dialog-title	Activation Opportunity: ${triggerDisplay}
+scripts/activations/reactions-ui.js	640	ui-label	ACKNOWLEDGE
+scripts/activations/reactions-ui.js	192	prose-field	<strong>Trigger:</strong> ${triggerText}<br><strong>Effect:</strong> ${effectText}
+scripts/activations/reroll.js	426	dialog-title	${upperName} \u2014 USE REROLL?
+scripts/activations/reroll.js	441	dialog-title	${upperName} \u2014 KEEP WHICH?
+scripts/activations/stabilize-flow.js	13	notification	${targetActor?.name ?? 'Actor'} has no conditions to clear.
+scripts/activations/stabilize-flow.js	164	notification	Pick one option from each group.
+scripts/activations/stabilize-flow.js	169	notification	Select a condition to clear first.
+scripts/activations/stabilize-flow.js	90	dialog-title	Stabilize - ${actor.name}
+scripts/activations/stabilize-flow.js	154	dialog-title	Stabilize - ${actor.name}
+scripts/activations/stabilize-flow.js	215	dialog-title	PICK ALLY
+scripts/activations/workshop-browser.js	412	notification	Could not open ${fileNameOf(path)}: ${err.message}
+scripts/activations/workshop-browser.js	451	notification	${fileNameOf(path)} is not a recognized automation, pack, or startup file.
+scripts/activations/workshop-browser.js	622	notification	Workshop refresh failed: ${err.message}
+scripts/activations/workshop-browser.js	774	notification	Nothing selected.
+scripts/activations/workshop-browser.js	791	notification	Imported ${imported} workshop entr${imported === 1 ? 'y' : 'ies'}.
+scripts/activations/workshop-browser.js	793	notification	Import failed: ${message}
+scripts/activations/workshop-browser.js	836	notification	Nothing selected.
+scripts/activations/workshop-browser.js	840	notification	Imported ${picked.length} entr${picked.length === 1 ? 'y' : 'ies'} from ${json.name || fileNameOf(path)}.
+scripts/activations/workshop-browser.js	824	dialog-title	Pack: ${json.name || fileNameOf(path)} (${author})
+scripts/activations/workshop-browser.js	829	ui-label	Import selected
+scripts/activations/workshop-browser.js	843	ui-label	Close
+scripts/alt-struct/index.js	196	notification	Lancer Automations: Alt Structure feature is enabled but the standalone 'lancer-alt-structure' module is also active - integrated version will not load. Disable one of them.
+scripts/alt-struct/index.js	219	notification	Lancer Automations (Alt Structure): flow conflict detected. The other module's changes will be overwritten. ${parts.join(" | ")}. See console.
+scripts/alt-struct/index.js	251	notification	Invalid actor ID on check button.
+scripts/alt-struct/index.js	270	notification	Missing flow type or actor ID on alt-struct button.
+scripts/alt-struct/index.js	283	notification	Alt-struct flow "${flowType}" not registered.
+scripts/alt-struct/index.js	39	dialog-title	Equipment Destruction
+scripts/alt-struct/stress.js	53	notification	Only npcs and mechs can roll stress.
+scripts/alt-struct/stress.js	78	notification	The mech is at full Stress, no stress check to roll.
+scripts/alt-struct/stress.js	126	notification	Only npcs and mechs can roll stress.
+scripts/alt-struct/stress.js	153	notification	Only npcs and mechs can roll stress.
+scripts/alt-struct/stress.js	400	notification	Only npcs and mechs can perform this action.
+scripts/alt-struct/stress.js	416	notification	Only npcs and mechs can roll meltdown.
+scripts/alt-struct/stress.js	477	notification	Only npcs and mechs can have reactor meltdown.
+scripts/alt-struct/stress.js	405	dialog-title	Meltdown
+scripts/alt-struct/stress.js	424	dialog-title	MELTDOWN COUNTDOWN
+scripts/alt-struct/stress.js	436	dialog-title	Reactor Meltdown Countdown
+scripts/alt-struct/stress.js	216	prose-field	Critical Stress Failure
+scripts/alt-struct/stress.js	221	prose-field	Critical Stress Failure
+scripts/alt-struct/stress.js	246	prose-field	Power Fail
+scripts/alt-struct/stress.js	264	prose-field	Emergency Shunt
+scripts/alt-struct/stress.js	283	prose-field	Meltdown
+scripts/alt-struct/stress.js	325	prose-field	Engineering Check Success
+scripts/alt-struct/stress.js	336	prose-field	Engineering Check Failure
+scripts/alt-struct/stress.js	350	prose-field	Engineering Check Success
+scripts/alt-struct/stress.js	361	prose-field	Engineering Check Failure
+scripts/alt-struct/stress.js	375	prose-field	Engineering Check Success
+scripts/alt-struct/stress.js	437	prose-field	Your reactor will melt down in ${countdown} turn${countdown > 1 ? 's' : ''}.
+scripts/alt-struct/stress.js	520	prose-field	NPC Overheat
+scripts/alt-struct/structure.js	109	notification	Only npcs and mechs can perform this action.
+scripts/alt-struct/structure.js	202	notification	The mech is at full Structure, no structure check to roll.
+scripts/alt-struct/structure.js	676	notification	This item cannot be destroyed.
+scripts/alt-struct/structure.js	773	notification	No token selected!
+scripts/alt-struct/structure.js	779	notification	Selected token must be a mech or NPC!
+scripts/alt-struct/structure.js	790	notification	No weapons or systems available to destroy!
+scripts/alt-struct/structure.js	828	notification	System Trauma: ${itemsList} destroyed
+scripts/alt-struct/structure.js	54	dialog-title	Weapons Destroyed
+scripts/alt-struct/structure.js	61	dialog-title	System Destroyed
+scripts/alt-struct/structure.js	76	dialog-title	TEAR OFF
+scripts/alt-struct/structure.js	660	dialog-title	System Trauma
+scripts/alt-struct/structure.js	796	dialog-title	SYSTEM TRAUMA
+scripts/alt-struct/structure.js	894	dialog-title	System Trauma - No Equipment Available
+scripts/alt-struct/structure.js	998	dialog-title	System Trauma  - No Equipment Available
+scripts/alt-struct/structure.js	1085	dialog-title	Direct Hit - No Equipment Available
+scripts/alt-struct/structure.js	62	prose-field	System <strong>${choice.system.name}</strong> has been destroyed.
+scripts/alt-struct/structure.js	77	prose-field	1-3: a weapon mount. 4-6: a system.
+scripts/alt-struct/structure.js	800	prose-field	Weapon Mount
+scripts/alt-struct/structure.js	808	prose-field	System
+scripts/alt-struct/structure.js	1241	prose-field	Crushing Hit - Cannot take reactions, can only take one quick action
+scripts/alt-struct/structure.js	1293	prose-field	Direct Hit
+scripts/alt-struct/structure.js	1311	prose-field	Glancing Blow
+scripts/alt-struct/structure.js	833	html-content	       <div class="card clipped-bot" style="margin: 0px;">         <div class="lancer-header lancer-primary">           <i class="cci cci-structure i--m"></i> SYSTEM TRAUMA         </div>         <div class="effect-text">           <p><strong>Type:</strong> ${traumaType === "weapon" ? "Weapon Destruction" : "System Destruction"}</p>           <p><strong>Destroyed:</strong> ${itemsList}</p>         </div>       </div>     
+scripts/Battelog/awards.js	19	ui-label	EXECUTIONER
+scripts/Battelog/awards.js	29	ui-label	HEAVY HITTER
+scripts/Battelog/awards.js	39	ui-label	OVERCLOCK
+scripts/Battelog/awards.js	49	ui-label	ANCHOR
+scripts/Battelog/awards.js	59	ui-label	HEAT SINK
+scripts/Battelog/awards.js	69	ui-label	SUPPORT
+scripts/Battelog/awards.js	79	ui-label	TURBO
+scripts/Battelog/awards.js	89	ui-label	SHARPSHOOTER
+scripts/Battelog/awards.js	106	ui-label	HACKER
+scripts/Battelog/awards.js	122	ui-label	GHOST
+scripts/Battelog/awards.js	132	ui-label	FIREWALL
+scripts/Battelog/awards.js	142	ui-label	STEADFAST
+scripts/Battelog/awards.js	158	ui-label	BULLSEYE
+scripts/Battelog/awards.js	168	ui-label	BRAWLER
+scripts/Battelog/awards.js	178	ui-label	BLITZ
+scripts/Battelog/awards.js	188	ui-label	FIRST BLOOD
+scripts/Battelog/awards.js	198	ui-label	AVENGER
+scripts/Battelog/awards.js	208	ui-label	OVERKILL
+scripts/Battelog/awards.js	218	ui-label	SURVIVOR
+scripts/Battelog/awards.js	228	ui-label	UNTOUCHABLE
+scripts/Battelog/awards.js	242	ui-label	REDLINE
+scripts/Battelog/awards.js	252	ui-label	DUELIST
+scripts/Battelog/awards.js	262	ui-label	CROWD CONTROL
+scripts/Battelog/awards.js	272	ui-label	LIGHTNING ROD
+scripts/Battelog/awards.js	282	ui-label	REFLEX
+scripts/Battelog/awards.js	292	ui-label	RECON
+scripts/Battelog/awards.js	302	ui-label	ARSONIST
+scripts/Battelog/awards.js	322	ui-label	COOL HEAD
+scripts/Battelog/awards.js	332	ui-label	GREASE MONKEY
+scripts/Battelog/awards.js	21	prose-field	Confirmed three or more enemy chassis destroyed
+scripts/Battelog/awards.js	31	prose-field	Dealt the most physical damage across the engagement
+scripts/Battelog/awards.js	41	prose-field	Overheated enemy reactors more than anyone else
+scripts/Battelog/awards.js	51	prose-field	Absorbed the most physical damage without breaking
+scripts/Battelog/awards.js	61	prose-field	Weathered the most incoming reactor heat
+scripts/Battelog/awards.js	71	prose-field	Enabled the squad’s kills through positioning and tech
+scripts/Battelog/awards.js	81	prose-field	Covered the most ground in a single round
+scripts/Battelog/awards.js	91	prose-field	Highest hit rate on weapon attacks
+scripts/Battelog/awards.js	108	prose-field	Highest hit rate on tech attacks
+scripts/Battelog/awards.js	124	prose-field	Evaded the most incoming attacks
+scripts/Battelog/awards.js	134	prose-field	Blocked the most incoming tech through e-defense
+scripts/Battelog/awards.js	144	prose-field	Highest H.A.S.E success rate
+scripts/Battelog/awards.js	160	prose-field	Landed the most critical hits
+scripts/Battelog/awards.js	170	prose-field	Knocked enemies around more than anyone else
+scripts/Battelog/awards.js	180	prose-field	Most actions taken in a single turn
+scripts/Battelog/awards.js	190	prose-field	Drew first blood of the engagement
+scripts/Battelog/awards.js	200	prose-field	Destroyed the enemies that took squadmates down
+scripts/Battelog/awards.js	210	prose-field	Landed the single biggest hit of the battle
+scripts/Battelog/awards.js	220	prose-field	Walked away closest to death
+scripts/Battelog/awards.js	230	prose-field	Under fire all mission without taking a scratch
+scripts/Battelog/awards.js	244	prose-field	Rode the danger zone without stressing out
+scripts/Battelog/awards.js	254	prose-field	Landed the most melee hits
+scripts/Battelog/awards.js	264	prose-field	Hit the most separate targets in one round
+scripts/Battelog/awards.js	274	prose-field	Drew more enemy fire than anyone else
+scripts/Battelog/awards.js	284	prose-field	Used the most reactions
+scripts/Battelog/awards.js	294	prose-field	Scanned the most enemy signatures
+scripts/Battelog/awards.js	304	prose-field	Spread the most burn and infection
+scripts/Battelog/awards.js	324	prose-field	Vented the most reactor heat
+scripts/Battelog/awards.js	334	prose-field	Recovered the most hit points in the field
+scripts/Battelog/gm-card.js	74	dialog-title	Battle Log · GM
+scripts/Battelog/intro-terminal.js	405	ui-label	> parsing battlefield telemetry ..........
+scripts/Battelog/intro-terminal.js	406	ui-label	> reconstructing engagement timeline .....
+scripts/Battelog/intro-terminal.js	407	ui-label	> hostiles encountered ...................
+scripts/Battelog/intro-terminal.js	409	ui-label	> tallying confirmed kills ...............
+scripts/Battelog/intro-terminal.js	414	ui-label	> squad general efficiency ...............
+scripts/Battelog/intro-terminal.js	419	ui-label	> structural integrity ...................
+scripts/Battelog/intro-terminal.js	426	ui-label	> squad integrity check ..................
+scripts/Battelog/intro-terminal.js	431	ui-label	> designating match MVP ..................
+scripts/Battelog/intro-terminal.js	432	ui-label	> computing engagement result ............
+scripts/Battelog/intro-terminal.js	274	prose-field	LANCER // BATTLE LOG ANALYSIS
+scripts/Battelog/recap.js	139	dialog-title	Battle Log · Recap
+scripts/Battelog/recap.js	1281	dialog-title	Confirmed Kills
+scripts/Battelog/recap.js	1286	dialog-title	Assisted Kills
+scripts/Battelog/recap.js	1298	dialog-title	Actions Used
+scripts/Battelog/recap.js	1309	dialog-title	Movement
+scripts/Battelog/recap.js	1320	dialog-title	Repairs
+scripts/Battelog/recap.js	1341	dialog-title	Damage Dealt
+scripts/Battelog/recap.js	1353	dialog-title	Damage Taken
+scripts/Battelog/recap.js	1366	dialog-title	Attacks & Tech
+scripts/Battelog/recap.js	1378	dialog-title	Attacks Avoided
+scripts/Battelog/recap.js	1387	dialog-title	Accuracy
+scripts/Battelog/recap.js	1443	dialog-title	Weapons Used
+scripts/Battelog/recap.js	1449	dialog-title	Actions Used
+scripts/Battelog/recap.js	1603	dialog-title	DESTROYED BY
+scripts/Battelog/share-image.js	256	notification	Battle Log card copied to clipboard.
+scripts/Battelog/share-image.js	301	notification	Clipboard copy failed: ${err.message}
+scripts/Battelog/share-image.js	308	notification	Saved ${name}.
+scripts/Battelog/share-image.js	314	notification	Could not save the file: ${err.message}
+scripts/Battelog/share-image.js	420	notification	Portrait could not be embedded (remote image); card exported without it.
+scripts/Battelog/share-image.js	425	notification	Battle Log card export failed: ${err.message}
+scripts/Battelog/share-image.js	289	dialog-title	Battle Log · Share Card
+scripts/Battelog/share-image.js	388	text-node	Lancer Automations · Battle Log
+scripts/Battelog/telemetry-debug.js	192	notification	Telemetry JSON copied.
+scripts/Battelog/telemetry-debug.js	155	dialog-title	Battle Log · Telemetry Debug
+scripts/Battelog/telemetry-debug.js	156	html-content	<div class="battelog-debug-body">${_contentHtml()}</div>
+scripts/bonuses/duration-widget.js	68	dialog-title	Pick Token
+scripts/bonuses/duration-widget.js	69	prose-field	Select a token on the map to update the field.
+scripts/bonuses/effectManager.js	762	notification	Please select a target token first.
+scripts/bonuses/effectManager.js	769	notification	${targetToken.name} has no valid items.
+scripts/bonuses/effectManager.js	2214	notification	Name is required to save a status.
+scripts/bonuses/effectManager.js	2216	notification	Icon is required to save a status.
+scripts/bonuses/effectManager.js	2235	notification	Saved "${name}" to custom statuses.
+scripts/bonuses/effectManager.js	2305	notification	Saved preset "${name}".
+scripts/bonuses/effectManager.js	2319	notification	Loaded preset "${name}".
+scripts/bonuses/effectManager.js	2327	notification	Select a preset to delete first.
+scripts/bonuses/effectManager.js	2335	notification	Deleted preset "${name}".
+scripts/bonuses/effectManager.js	2368	notification	That tab is not available.
+scripts/bonuses/effectManager.js	2384	notification	Deleted preset "${name}".
+scripts/bonuses/effectManager.js	2466	notification	Active Effect Changes could not be parsed; left out of the snippet.
+scripts/bonuses/effectManager.js	2496	notification	Copied to clipboard.
+scripts/bonuses/effectManager.js	2549	notification	Extract failed: ${err.message}
+scripts/bonuses/effectManager.js	2617	notification	Applied ${effectName} to ${_emTargetLabel(liveTokens)}.
+scripts/bonuses/effectManager.js	2624	notification	Target not found!
+scripts/bonuses/effectManager.js	2634	notification	Applied ${effectName} to ${doc.name}${doc.documentName === 'Item' ? ' (item)' : ' (prototype)'}.
+scripts/bonuses/effectManager.js	2652	notification	Name is required!
+scripts/bonuses/effectManager.js	2680	notification	Active Effect Changes must be an array.
+scripts/bonuses/effectManager.js	2685	notification	Active Effect Changes parse error: ${err.message}
+scripts/bonuses/effectManager.js	2715	notification	Applied ${name} to ${_emTargetLabel(liveTokens)}.
+scripts/bonuses/effectManager.js	2722	notification	Target not found!
+scripts/bonuses/effectManager.js	2732	notification	Applied ${name} to ${doc.name}${doc.documentName === 'Item' ? ' (item)' : ' (prototype)'}.
+scripts/bonuses/effectManager.js	3149	notification	Please select a target token on the map, or fill in the 'Apply to tokens' field first, to pick an item from them.
+scripts/bonuses/effectManager.js	3156	notification	${targetToken.name} has no valid items.
+scripts/bonuses/effectManager.js	3417	notification	Target not found!
+scripts/bonuses/effectManager.js	3421	notification	${bonusData.name}: no Uses set - consumed on first use.
+scripts/bonuses/effectManager.js	372	dialog-title	Edit ${title}
+scripts/bonuses/effectManager.js	483	dialog-title	Pick Status
+scripts/bonuses/effectManager.js	794	dialog-title	Select Item on ${targetToken.name}
+scripts/bonuses/effectManager.js	1815	dialog-title	Effect Manager
+scripts/bonuses/effectManager.js	2239	dialog-title	Condition
+scripts/bonuses/effectManager.js	2240	dialog-title	Apply-to Condition
+scripts/bonuses/effectManager.js	2241	dialog-title	Consumption Evaluate
+scripts/bonuses/effectManager.js	2242	dialog-title	Consumption Evaluate
+scripts/bonuses/effectManager.js	2243	dialog-title	Active Effect Changes
+scripts/bonuses/effectManager.js	2264	dialog-title	Save Preset
+scripts/bonuses/effectManager.js	2285	dialog-title	Preset Exists
+scripts/bonuses/effectManager.js	2480	dialog-title	Extract Code
+scripts/bonuses/effectManager.js	2556	dialog-title	Code
+scripts/bonuses/effectManager.js	3181	dialog-title	Select Item on ${targetToken.name}
+scripts/bonuses/effectManager.js	102	ui-label	Add Value
+scripts/bonuses/effectManager.js	103	ui-label	Override Value
+scripts/bonuses/effectManager.js	104	ui-label	Change All Ranges
+scripts/bonuses/effectManager.js	107	ui-label	Add Value
+scripts/bonuses/effectManager.js	108	ui-label	Override Value
+scripts/bonuses/effectManager.js	111	ui-label	Bonus
+scripts/bonuses/effectManager.js	113	ui-label	Replace
+scripts/bonuses/effectManager.js	114	ui-label	Change Type
+scripts/bonuses/effectManager.js	117	ui-label	Weapon damage
+scripts/bonuses/effectManager.js	118	ui-label	Bonus damage
+scripts/bonuses/effectManager.js	119	ui-label	Both
+scripts/bonuses/effectManager.js	123	ui-label	Replace
+scripts/bonuses/effectManager.js	383	ui-label	Save
+scripts/bonuses/effectManager.js	393	ui-label	Cancel
+scripts/bonuses/effectManager.js	495	ui-label	<i class="fas fa-check"></i> Confirm
+scripts/bonuses/effectManager.js	506	ui-label	<i class="fas fa-times"></i> Cancel
+scripts/bonuses/effectManager.js	524	ui-label	On Attack
+scripts/bonuses/effectManager.js	525	ui-label	On Hit
+scripts/bonuses/effectManager.js	526	ui-label	On Miss
+scripts/bonuses/effectManager.js	527	ui-label	On Pre Damage
+scripts/bonuses/effectManager.js	528	ui-label	On Damage
+scripts/bonuses/effectManager.js	529	ui-label	On Tech Attack
+scripts/bonuses/effectManager.js	530	ui-label	On Tech Hit
+scripts/bonuses/effectManager.js	531	ui-label	On Move
+scripts/bonuses/effectManager.js	532	ui-label	On Pre Move
+scripts/bonuses/effectManager.js	533	ui-label	On Init Activation
+scripts/bonuses/effectManager.js	534	ui-label	On Activation
+scripts/bonuses/effectManager.js	535	ui-label	On Init End Activation
+scripts/bonuses/effectManager.js	536	ui-label	On End Activation
+scripts/bonuses/effectManager.js	537	ui-label	On Deploy
+scripts/bonuses/effectManager.js	538	ui-label	On Check
+scripts/bonuses/effectManager.js	539	ui-label	On Heat
+scripts/bonuses/effectManager.js	540	ui-label	On HP Loss
+scripts/bonuses/effectManager.js	541	ui-label	On Turn Start
+scripts/bonuses/effectManager.js	542	ui-label	On Turn End
+scripts/bonuses/effectManager.js	543	ui-label	On Round Start
+scripts/bonuses/effectManager.js	544	ui-label	On Enter Combat
+scripts/bonuses/effectManager.js	545	ui-label	On Exit Combat
+scripts/bonuses/effectManager.js	546	ui-label	On Pre Status Applied
+scripts/bonuses/effectManager.js	547	ui-label	On Pre Status Removed
+scripts/bonuses/effectManager.js	548	ui-label	On Status Applied
+scripts/bonuses/effectManager.js	549	ui-label	On Status Removed
+scripts/bonuses/effectManager.js	805	ui-label	<i class="fas fa-times"></i> Cancel
+scripts/bonuses/effectManager.js	2267	ui-label	Save
+scripts/bonuses/effectManager.js	2268	ui-label	Cancel
+scripts/bonuses/effectManager.js	2288	ui-label	Overwrite
+scripts/bonuses/effectManager.js	2289	ui-label	Cancel
+scripts/bonuses/effectManager.js	2491	ui-label	Copy
+scripts/bonuses/effectManager.js	2500	ui-label	Close
+scripts/bonuses/effectManager.js	3192	ui-label	<i class="fas fa-times"></i> Cancel
+scripts/bonuses/effectManager.js	673	placeholder	e.g. mw_assault_rifle
+scripts/bonuses/effectManager.js	680	placeholder	Item ID
+scripts/bonuses/effectManager.js	687	placeholder	e.g. Boost
+scripts/bonuses/effectManager.js	696	placeholder	e.g. lockon, shredded
+scripts/bonuses/effectManager.js	1213	placeholder	Search effects...
+scripts/bonuses/effectManager.js	1242	placeholder	Optional note
+scripts/bonuses/effectManager.js	1277	placeholder	Status Name
+scripts/bonuses/effectManager.js	1293	placeholder	Shown when the status is hovered
+scripts/bonuses/effectManager.js	1311	placeholder	Optional note
+scripts/bonuses/effectManager.js	1370	placeholder	Auto (based on bonus type)
+scripts/bonuses/effectManager.js	1392	placeholder	Infinite
+scripts/bonuses/effectManager.js	1440	placeholder	e.g. mw_assault_rifle
+scripts/bonuses/effectManager.js	1447	placeholder	Item ID
+scripts/bonuses/effectManager.js	1454	placeholder	e.g. Boost
+scripts/bonuses/effectManager.js	1459	placeholder	e.g. lockon, shredded
+scripts/bonuses/effectManager.js	1477	placeholder	e.g. hull
+scripts/bonuses/effectManager.js	1646	placeholder	Search effects...
+scripts/bonuses/effectManager.js	1760	placeholder	e.g. mb_knife, cqb_shotgun
+scripts/bonuses/effectManager.js	1767	placeholder	Item ID
+scripts/bonuses/effectManager.js	1776	placeholder	Token IDs
+scripts/bonuses/effectManager.js	671	tooltip	Only consume a charge when this specific item is used. Leave empty to consume on any item.
+scripts/bonuses/effectManager.js	678	tooltip	Only consume a charge when this specific item (by actor item ID) is used.
+scripts/bonuses/effectManager.js	686	tooltip	Only consume a charge when this specific action is activated, e.g. Boost.
+scripts/bonuses/effectManager.js	694	tooltip	Only consume when one of these statuses is applied or removed (comma-separated).
+scripts/bonuses/effectManager.js	701	tooltip	Consume when the origin did the action, or was targeted by it.
+scripts/bonuses/effectManager.js	1394	tooltip	Burn 1 use only when this bonus actually applies
+scripts/bonuses/effectManager.js	1438	tooltip	Only consume a charge when this specific item is used. Leave empty to consume on any item.
+scripts/bonuses/effectManager.js	1445	tooltip	Only consume a charge when this specific item (by actor item ID) is used.
+scripts/bonuses/effectManager.js	1453	tooltip	Only consume a charge when this specific action is activated.
+scripts/bonuses/effectManager.js	1457	tooltip	Only consume when one of these statuses is applied or removed (comma-separated).
+scripts/bonuses/effectManager.js	1464	tooltip	Consume when the bearer did the action, or was targeted by it.
+scripts/bonuses/effectManager.js	1758	tooltip	Only apply this bonus when using these specific items (by LID). Leave empty to apply to all weapons.
+scripts/bonuses/effectManager.js	1765	tooltip	Apply this bonus selectively to a specific item ID on an actor.
+scripts/bonuses/effectManager.js	1774	tooltip	Apply this bonus to specific token IDs. Use the selector to pick tokens from the map.
+scripts/bonuses/effectManager.js	1781	tooltip	If checked, this bonus is applied by the target to the attacker. Useful for debuffing attackers.
+scripts/bonuses/effectManager.js	2286	html-content	<p style="padding:6px 8px;">A preset named "${name}" already exists. Overwrite?</p>
+scripts/bonuses/flagged-effects.js	189	notification	There must be an active GM for this to work.
+scripts/bonuses/flagged-effects.js	416	notification	Effect ${effectName} not found
+scripts/bonuses/flagged-effects.js	462	notification	Increased stack of ${statusEffect.name} on ${target.name} to ${newStack}.
+scripts/bonuses/flagged-effects.js	599	notification	No effect name(s) specified!
+scripts/bonuses/flagged-effects.js	611	notification	Out of combat: ${names} duration will not tick.
+scripts/bonuses/flagged-effects.js	709	notification	${token.name} already has ${effectNameForLog.split('.').pop()}!
+scripts/bonuses/flagged-effects.js	714	notification	${token.name} already has ${effectNameForLog.split('.').pop()} (Group/Bonus conflict)!
+scripts/bonuses/flagged-effects.js	719	notification	${token.name} already has ${effectNameForLog.split('.').pop()}!
+scripts/bonuses/flagged-effects.js	838	notification	Effect ${effectName} not found
+scripts/bonuses/flagged-effects.js	1325	notification	No effect name(s) specified for removal!
+scripts/bonuses/flagged-effects.js	1719	notification	No tokens provided for effect removal!
+scripts/bonuses/flagged-effects.js	1721	notification	Removing all effects from ${tokens.length} tokens...
+scripts/bonuses/flagged-effects.js	928	prose-field	From ${sourceDoc.name}
+scripts/bonuses/genericBonuses.js	1713	tooltip	Add global accuracy
+scripts/bonuses/genericBonuses.js	1714	tooltip	Add global difficulty
+scripts/bonuses/genericBonuses.js	2196	tooltip	Add a bonus damage type
+scripts/bonuses/genericBonuses.js	2253	tooltip	Add a bonus damage type
+scripts/bonuses/genericBonuses.js	2366	tooltip	Add a bonus damage type
+scripts/bonuses/genericBonuses.js	2615	tooltip	Knockback
+scripts/bonuses/genericBonuses.js	255	prose-field	Granted by bonus: ${bonus.name}
+scripts/bonuses/genericBonuses.js	3038	prose-field	Linked to Global Bonus: ${bonusData.name}
+scripts/bonuses/infection.js	216	notification	Infection flow requires the actor to have a token in the scene
+scripts/bonuses/infection.js	264	notification	Could not find StatRollFlow for infection check.
+scripts/bonuses/infection.js	390	notification	${state.actor.name}: Infection cleared by stabilize.
+scripts/bonuses/infection.js	671	notification	${tokenName} took ${heat} Heat from Infection.
+scripts/bonuses/infection.js	767	notification	No infection to check.
+scripts/bonuses/infection.js	268	dialog-title	INFECTION :: SYS
+scripts/bonuses/infection.js	352	dialog-title	Infection Heat
+scripts/bonuses/infection.js	753	tooltip	Roll an infection check and generate heat damage
+scripts/bonuses/infection.js	695	html-content	             <div class="card clipped-bot" style="margin:0">                 <div class="lancer-header lancer-primary" style="padding:4px 8px;">                     <i class="cci cci-infection i--m"></i> INFECTION                 </div>                 <div class="effect-text" style="padding:4px 8px;">                     ${actor.name} takes <b>${amount} Heat</b> from Infection and marks <b>${amount} Infection</b>.                     (Total: ${currentInfection + amount})                 </div>             </div>
+scripts/combat/actor-change-hooks.js	119	dialog-title	HP MODIFIED
+scripts/combat/actor-change-hooks.js	234	dialog-title	HEAT MODIFIED
+scripts/combat/grapple.js	402	notification	${target.name} is immune to grapple — grapple has no effect.
+scripts/combat/grapple.js	730	notification	${reactorToken.name} is not grappled.
+scripts/combat/grapple.js	776	notification	${reactorToken.name} breaks free from ${chosenGrappler.name}!
+scripts/combat/grapple.js	781	notification	${reactorToken.name} fails to break free from ${chosenGrappler.name}.
+scripts/combat/grapple.js	339	dialog-title	Grapple
+scripts/combat/grapple.js	352	dialog-title	End Grapple
+scripts/combat/grapple.js	366	dialog-title	Break Free
+scripts/combat/grapple.js	376	dialog-title	GRAPPLE
+scripts/combat/grapple.js	461	dialog-title	GRAPPLE — Follow Movement
+scripts/combat/grapple.js	634	dialog-title	GRAPPLE CONTEST
+scripts/combat/grapple.js	654	dialog-title	GRAPPLE CONTEST - HULL vs HULL
+scripts/combat/grapple.js	747	dialog-title	BREAK FREE
+scripts/combat/grapple.js	766	dialog-title	BREAK FREE - HULL vs HULL
+scripts/combat/grapple.js	97	prose-field	Grapple
+scripts/combat/grapple.js	106	prose-field	Grapple
+scripts/combat/grapple.js	145	prose-field	Grappled by ${grappler.name}
+scripts/combat/grapple.js	333	prose-field	Grapple (Melee Attack)
+scripts/combat/grapple.js	345	prose-field	End Grapple (Free Action)
+scripts/combat/grapple.js	354	prose-field	End your grapple as a free action.
+scripts/combat/grapple.js	359	prose-field	Break Free (Quick Action)
+scripts/combat/grapple.js	368	prose-field	Attempt to break free from a grapple with a contested HULL check.
+scripts/combat/grapple.js	377	prose-field	Choose a grapple action:
+scripts/combat/grapple.js	462	prose-field	Place ${tokensToMove.map(t => t.name).join(', ')} to follow ${reactorToken.name}.
+scripts/combat/grapple.js	635	prose-field	${reactorToken.name}: Make a HULL check to determine who controls the grapple. On success your side counts as larger — the other side becomes IMMOBILIZED.
+scripts/combat/grapple.js	638	prose-field	Contest Grapple (HULL Check)
+scripts/combat/grapple.js	679	prose-field	Skip Contest
+scripts/combat/grapple.js	748	prose-field	${reactorToken.name}: choose which grappler to contest.
+scripts/combat/overwatch.js	313	notification	Debug: Token Size ${token.document.width}x${token.document.height}, Max Threat: ${maxThreat}
+scripts/combat/overwatch.js	317	notification	Threat debug visualization currently only supports hex grids
+scripts/combat/overwatch.js	388	notification	Select exactly 2 tokens to measure distance.
+scripts/combat/overwatch.js	482	notification	Distance: ${distance} spaces (${token1.name} ↔ ${token2.name})
+scripts/combat/overwatch.js	271	dialog-title	Overwatch Alert
+scripts/combat/overwatch.js	274	ui-label	ACKNOWLEDGE
+scripts/combat/reinforcement.js	11	notification	You must be in combat to use this reinforcement system!
+scripts/combat/reinforcement.js	19	notification	Please select at least one token!
+scripts/combat/reinforcement.js	139	notification	${placeholderData.length} token(s) will appear at round ${targetRound}
+scripts/combat/reinforcement.js	33	dialog-title	Delayed Appearance
+scripts/combat/reinforcement.js	206	dialog-title	NPCs Arriving
+scripts/combat/reinforcement.js	34	html-content	         <form>           <div class="form-group">             <label>How many rounds until tokens appear?</label>             <input type="number" name="rounds" min="1" value="1" autofocus />           </div>         </form>       
+scripts/combat/reinforcement.js	207	html-content	           <form>             <p>Select which NPCs will appear:</p>             ${checkboxes}           </form>         
+scripts/combat/reinforcement.js	292	html-content	<h3>🎭 ${selectedToAppear.length} NEW NPC${selectedToAppear.length > 1 ? 'S' : ''} HAS ARRIVED</h3>
+scripts/combat/terrain-utils.js	226	notification	${actorName} ignored dangerous terrain.
+scripts/combat/terrain-utils.js	163	dialog-title	Dangerous Terrain :: ENG
+scripts/combat/terrain-utils.js	176	dialog-title	Dangerous Terrain
+scripts/combat/terrain-utils.js	214	dialog-title	TERRAIN IMMUNITY
+scripts/combat/terrain-utils.js	215	prose-field	<b>${actorName}</b> entered dangerous terrain.<hr>Immunity from: <i>${immunitySourceNames.join(", ")}</i>
+scripts/combat/terrain-utils.js	222	prose-field	Activate (Ignore Terrain)
+scripts/combat/terrain-utils.js	232	prose-field	No (Apply Effect)
+scripts/fx/actionFX.js	152	notification	No audio preview for "${action}".
+scripts/fx/statusFX.js	211	notification	StatusFX configuration saved.
+scripts/fx/statusFX.js	214	notification	Some Action FX use JB2A Patreon assets. Without it, those effects are skipped.
+scripts/fx/statusFX.js	1160	notification	Lancer Automations StatusFX is active — csm-lancer-qol\'s 
+scripts/fx/statusFX.js	134	dialog-title	Lancer Automations — Status FX Configuration
+scripts/integrations/alt-sheets-flags.js	224	text-node	Show in Token Bar
+scripts/interactive/action-overlays.js	76	dev-message	setActionOverlay: target and actionName are required.
+scripts/interactive/canvas-helpers.js	2602	notification	${token.name} is IMMOVABLE and is being moved anyway.
+scripts/interactive/cards.js	30	dialog-title	SELECT TARGETS
+scripts/interactive/cards.js	31	dialog-title	KNOCKBACK
+scripts/interactive/cards.js	32	dialog-title	PLACE TOKEN
+scripts/interactive/cards.js	33	dialog-title	PLACE ZONE
+scripts/interactive/cards.js	34	dialog-title	CHOICE
+scripts/interactive/cards.js	35	dialog-title	DEPLOY
+scripts/interactive/cards.js	36	dialog-title	VOTE
+scripts/interactive/cards.js	37	dialog-title	HASE CONTEST
+scripts/interactive/cards.js	38	dialog-title	FORCE CHECK
+scripts/interactive/cards.js	39	dialog-title	ROLL
+scripts/interactive/cards.js	40	dialog-title	MOVE
+scripts/interactive/cards.js	184	dialog-title	INFO
+scripts/interactive/combat.js	25	notification	No actor found. Select a token or provide an actor.
+scripts/interactive/combat.js	53	notification	No throwable weapons found for ${activeActor.name}.
+scripts/interactive/combat.js	69	notification	All throwable weapons for ${activeActor.name} are unavailable.
+scripts/interactive/combat.js	126	notification	You do not own ${token.name} and cannot revert their movement.
+scripts/interactive/combat.js	162	notification	${token.name} has no movement history to revert.
+scripts/interactive/combat.js	197	notification	Movement history cleared for: ${tokenNames}.
+scripts/interactive/combat.js	216	notification	No active users found.
+scripts/interactive/combat.js	359	notification	No recipients selected.
+scripts/interactive/combat.js	364	notification	No options provided.
+scripts/interactive/combat.js	432	notification	Sent card to ${selectedUserIds.length} users.
+scripts/interactive/combat.js	737	notification	No ${isMech ? 'mounts' : 'weapons'} found.
+scripts/interactive/combat.js	991	notification	No systems found.
+scripts/interactive/combat.js	1086	dev-message	choseTrait: only NPC actors are supported.
+scripts/interactive/combat.js	1118	notification	No traits found.
+scripts/interactive/combat.js	1348	notification	TechAttackFlow not found in game.lancer.flows.
+scripts/interactive/combat.js	74	dialog-title	THROW WEAPON
+scripts/interactive/combat.js	346	dialog-title	Choice Configuration
+scripts/interactive/combat.js	1266	dialog-title	Choose Invade
+scripts/interactive/combat.js	263	placeholder	Option Text
+scripts/interactive/combat.js	75	prose-field	Select a throwable weapon to attack with.
+scripts/interactive/combat.js	857	prose-field	Select up to ${numberToChoose} ${isMech ? 'mount(s)' : 'weapon(s)'}.
+scripts/interactive/combat.js	1045	prose-field	Select up to ${numberToChoose} system(s).
+scripts/interactive/combat.js	1160	prose-field	Select up to ${numberToChoose} trait(s).
+scripts/interactive/deployables.js	82	notification	Failed to create Template Throw actor.
+scripts/interactive/deployables.js	196	notification	Failed to create Template Hard Cover actor.
+scripts/interactive/deployables.js	252	notification	No valid token selected.
+scripts/interactive/deployables.js	265	notification	No thrown weapons found for this character.
+scripts/interactive/deployables.js	307	notification	Picked up ${weaponName}.
+scripts/interactive/deployables.js	690	notification	No owner actor specified.
+scripts/interactive/deployables.js	727	notification	Deployable not found: ${input}
+scripts/interactive/deployables.js	754	notification	Failed to create deployable actor for: ${input}
+scripts/interactive/deployables.js	757	notification	Created ${actorData.name}
+scripts/interactive/deployables.js	788	notification	No valid deployables found.
+scripts/interactive/deployables.js	952	dev-message	addItemFlags: item and flags object are required.
+scripts/interactive/deployables.js	970	dev-message	removeItemFlags: item and flags object are required.
+scripts/interactive/deployables.js	988	dev-message	addActorFlags: actor and flags object are required.
+scripts/interactive/deployables.js	1006	dev-message	removeActorFlags: actor and flags object are required.
+scripts/interactive/deployables.js	1024	dev-message	addTokenFlags: token and flags object are required.
+scripts/interactive/deployables.js	1042	dev-message	removeTokenFlags: token and flags object are required.
+scripts/interactive/deployables.js	1060	dev-message	getTokenFlags: token is required.
+scripts/interactive/deployables.js	1084	dev-message	lockActorAction: actionName is required.
+scripts/interactive/deployables.js	1098	dev-message	lockActorAction: actor, actionName and sourceId are required.
+scripts/interactive/deployables.js	1127	dev-message	lockActorActionTypes: at least one activation type is required.
+scripts/interactive/deployables.js	1151	dev-message	lockActorActionTypes: actor, activationTypes and sourceId are required.
+scripts/interactive/deployables.js	1199	dev-message	unlockActorActionTypes: actor, activationTypes and sourceId are required.
+scripts/interactive/deployables.js	1230	dev-message	unlockActorAction: actor, actionName and sourceId are required.
+scripts/interactive/deployables.js	1334	notification	No item provided to setItemAsActivated.
+scripts/interactive/deployables.js	1416	notification	No valid token selected.
+scripts/interactive/deployables.js	1423	notification	No activated items found for ${token.name}.
+scripts/interactive/deployables.js	1497	dev-message	addExtraActions: target is required.
+scripts/interactive/deployables.js	1537	notification	Tag(s) ${dropped.join(', ')} already on ${doc.name}, removed from extra action "${actionAny.name}".
+scripts/interactive/deployables.js	1629	notification	${entry.name} is not loaded.
+scripts/interactive/deployables.js	1639	notification	${entry.name} is uncharged.
+scripts/interactive/deployables.js	1650	notification	${entry.name} has no uses left.
+scripts/interactive/deployables.js	1661	notification	${entry.name}: per-turn limit reached.
+scripts/interactive/deployables.js	1672	notification	${entry.name}: per-round limit reached.
+scripts/interactive/deployables.js	1812	dev-message	setHidePrimaryAction: an Item (or its uuid) is required.
+scripts/interactive/deployables.js	1923	dev-message	addExtraDeploymentLids: target is required.
+scripts/interactive/deployables.js	1930	dev-message	addExtraDeploymentLids: each entry must be a LID string or { lid, ... } object.
+scripts/interactive/deployables.js	1988	dev-message	addExtraDeploymentActor: target is required.
+scripts/interactive/deployables.js	1994	dev-message	addExtraDeploymentActor: actors must be an Actor, UUID, or array of them.
+scripts/interactive/deployables.js	2023	dev-message	addExtraDeploymentActor: skipping non-actor input: ${typeof input === 'string' ? input : input?.name}
+scripts/interactive/deployables.js	2166	notification	Copied LID: ${lid}
+scripts/interactive/deployables.js	2314	notification	Copied UUID: ${uuid}
+scripts/interactive/deployables.js	2399	dev-message	promptLinkOrUnlinkActor: token has no actor.
+scripts/interactive/deployables.js	2422	notification	Unlinked ${target.actor?.name ?? target.name} from ${owner.name}.
+scripts/interactive/deployables.js	2428	notification	Linked ${target.actor?.name ?? target.name} to ${owner.name}.
+scripts/interactive/deployables.js	2563	dev-message	getItemFlags: item is required.
+scripts/interactive/deployables.js	2581	dev-message	getActorFlags: actor is required.
+scripts/interactive/deployables.js	2608	notification	Actor and item are required.
+scripts/interactive/deployables.js	2616	notification	No deployables found on ${item.name}.
+scripts/interactive/deployables.js	2631	notification	${item.name} has no uses remaining.
+scripts/interactive/deployables.js	2639	notification	${item.name} is uncharged. You must reload or recharge it before deploying.
+scripts/interactive/deployables.js	2685	notification	No actor specified.
+scripts/interactive/deployables.js	2696	notification	No deployables found for ${actor.name}.
+scripts/interactive/deployables.js	2829	notification	No deployables available for ${actor.name}.
+scripts/interactive/deployables.js	3067	notification	Created ${actorData.name}
+scripts/interactive/deployables.js	3099	notification	No valid token selected.
+scripts/interactive/deployables.js	3112	notification	No deployed items found for this character.
+scripts/interactive/deployables.js	3182	notification	Recalled ${deployableName}.
+scripts/interactive/deployables.js	3203	notification	No items available to pick.
+scripts/interactive/deployables.js	3291	notification	No valid actor provided for reloading.
+scripts/interactive/deployables.js	3304	notification	${name} has no unloaded weapons to reload!
+scripts/interactive/deployables.js	3318	notification	${name}'s ${chosenWeapon.name} reloaded!
+scripts/interactive/deployables.js	3342	notification	No valid actor provided for recharging.
+scripts/interactive/deployables.js	3369	notification	${name} has no depleted systems to recharge!
+scripts/interactive/deployables.js	3400	notification	${name}'s ${chosen.name} recharged!
+scripts/interactive/deployables.js	273	dialog-title	PICK UP WEAPON
+scripts/interactive/deployables.js	1428	dialog-title	END ITEM ACTIVATION
+scripts/interactive/deployables.js	2409	dialog-title	LINK / UNLINK ACTOR
+scripts/interactive/deployables.js	2980	dialog-title	Deploy Actors
+scripts/interactive/deployables.js	3006	dialog-title	DEPLOY ${item.deployableName}
+scripts/interactive/deployables.js	3151	dialog-title	RECALL DEPLOYABLE
+scripts/interactive/deployables.js	3309	dialog-title	CHOOSE WEAPON TO RELOAD
+scripts/interactive/deployables.js	3374	dialog-title	CHOOSE SYSTEM TO RECHARGE
+scripts/interactive/deployables.js	3469	dialog-title	LINK DEPLOYABLE
+scripts/interactive/deployables.js	3491	dialog-title	LINK DEPLOYABLE
+scripts/interactive/deployables.js	2121	ui-label	<i class="fas fa-times"></i> Close
+scripts/interactive/deployables.js	2269	ui-label	<i class="fas fa-times"></i> Close
+scripts/interactive/deployables.js	2985	ui-label	Deploy
+scripts/interactive/deployables.js	3013	ui-label	Cancel
+scripts/interactive/deployables.js	2109	placeholder	Search by name or LID...
+scripts/interactive/deployables.js	2261	placeholder	Search by name or UUID...
+scripts/interactive/deployables.js	274	prose-field	${thrownTokens.length} thrown weapon(s) available.
+scripts/interactive/deployables.js	1429	prose-field	Select an activated item to end for ${token.name}:
+scripts/interactive/deployables.js	2410	prose-field	Pick a token to link. Already-linked tokens will be unlinked.
+scripts/interactive/deployables.js	3152	prose-field	${deployedTokens.length} deployed item(s) available. Red highlights indicate deployables with Recall.
+scripts/interactive/deployables.js	3310	prose-field	Select which of ${name}'s weapons to reload:
+scripts/interactive/deployables.js	3375	prose-field	Select which of ${name}'s systems to recharge:
+scripts/interactive/deployables.js	3470	prose-field	Which token owns the deployed ${deployableActor.name}?
+scripts/interactive/deployables.js	3492	prose-field	Which item deployed ${deployableActor.name}?
+scripts/interactive/detail-renderers.js	433	ui-label	EXTRA DEPLOYABLE
+scripts/interactive/extra-config-dialog.js	39	dev-message	openExtraConfigDialog: not a valid Item
+scripts/interactive/extra-config-dialog.js	151	dialog-title	Extra Config
+scripts/interactive/extra-config-dialog.js	154	ui-label	Close
+scripts/interactive/extra-config-dialog.js	152	html-content	<div class="la-ec-body">${renderContent()}</div>
+scripts/interactive/extras-dialog.js	162	dev-message	openExtrasDialog: no target (actor or item).
+scripts/interactive/extras-dialog.js	711	notification	Action needs a name.
+scripts/interactive/extras-dialog.js	989	notification	Could not add extra bar.
+scripts/interactive/extras-dialog.js	90	dialog-title	Add Deployable Actor
+scripts/interactive/extras-dialog.js	453	dialog-title	Extras
+scripts/interactive/extras-dialog.js	92	ui-label	Close
+scripts/interactive/extras-dialog.js	457	ui-label	Save
+scripts/interactive/extras-dialog.js	87	placeholder	Search actors...
+scripts/interactive/extras-dialog.js	350	placeholder	Name
+scripts/interactive/extras-dialog.js	353	placeholder	Detail (optional)
+scripts/interactive/extras-dialog.js	397	placeholder	Search actors...
+scripts/interactive/extras-dialog.js	403	placeholder	Label
+scripts/interactive/extras-dialog.js	407	placeholder	Value
+scripts/interactive/network.js	216	dev-message	lancer-automations | "${offlineNames}" offline — ${fallbackName} will handle the choice instead.
+scripts/interactive/network.js	219	dev-message	lancer-automations | "${offlineNames}" offline — removed from choice recipients.
+scripts/interactive/network.js	766	notification	${responderName} declined the choice.
+scripts/interactive/network.js	828	notification	${responderName || 'The requester'} cancelled the choice card.
+scripts/interactive/network.js	830	notification	${responderName} took the choice card.
+scripts/interactive/network.js	943	notification	No votes cast yet.
+scripts/interactive/network.js	1227	notification	Vote concluded — winner: ${winnerText}
+scripts/interactive/network.js	1243	notification	The vote was cancelled.
+scripts/interactive/network.js	334	dialog-title	Cancel Choice?
+scripts/interactive/network.js	413	dialog-title	Cancel Choice?
+scripts/interactive/network.js	966	dialog-title	Vote Tie
+scripts/interactive/network.js	1005	dialog-title	Cancel Vote?
+scripts/interactive/network.js	335	html-content	<p>Are you sure you want to cancel the <b>${title}</b> choice card for all recipients?</p>
+scripts/interactive/network.js	414	html-content	<p>Are you sure you want to cancel the <b>${title}</b> choice card for all recipients?</p>
+scripts/interactive/network.js	967	html-content	<p>There is a tie between: ${tiedNames}.</p><p>Pick the winner or cancel.</p>
+scripts/interactive/network.js	1006	html-content	<p>Are you sure you want to cancel the <b>${title}</b> vote?</p>
+scripts/interactive/tools/advancedMeasure.js	2986	dialog-title	Advanced Measure Tool
+scripts/interactive/tools/advancedMeasure.js	1963	text-node	no token
+scripts/interactive/tools/advancedMeasure.js	2204	text-node	(no weapons)
+scripts/interactive/tools/advancedMeasure.js	2993	prose-field	Advanced Measure Tool
+scripts/interactive/tools/chooseToken.js	880	notification	Blast center out of range.
+scripts/interactive/tools/chooseToken.js	921	notification	Burst target out of range.
+scripts/interactive/tools/chooseToken.js	961	notification	Area center out of range.
+scripts/interactive/tools/chooseToken.js	1065	notification	Maximum of ${count} target(s) already selected.
+scripts/interactive/tools/chooseToken.js	1541	notification	Maximum of ${count} targets already selected.
+scripts/interactive/tools/chooseToken.js	1688	dev-message	chooseToken: ${preSelected.length} pre-selected tokens but count is ${count}; only the first ${count} will be used.
+scripts/interactive/tools/chooseToken.js	1102	ui-label	Area ${idx + 1}
+scripts/interactive/tools/forceCheck.js	46	dialog-title	Force Check
+scripts/interactive/tools/forceCheck.js	139	dialog-title	FORCE CHECK
+scripts/interactive/tools/haseContest.js	176	dialog-title	HASE CONTEST
+scripts/interactive/tools/moveToken.js	94	notification	Movement blocked by ${blocked.name}.
+scripts/interactive/tools/moveTokenRuler.js	426	notification	Pick a destination first.
+scripts/interactive/tools/moveTokenRuler.js	461	notification	Destination is out of range.
+scripts/interactive/tools/placeZone.js	116	dev-message	placeZone: template preset "${_opts.preset}" not found.
+scripts/interactive/tools/placeZone.js	483	notification	Target is out of range!
+scripts/main.js	594	notification	Please select a token first.
+scripts/main.js	813	notification	Lancer Automations: the Status Icon Halo setting duplicates the Status Halo module. Disable one of them.
+scripts/main.js	511	dialog-title	Movement History: ${token.name}
+scripts/main.js	1637	dialog-title	Lancer Automations
+scripts/main.js	2049	dialog-title	ACTIVATE IMMUNITY?
+scripts/main.js	1784	tooltip	Resistance to ${capitalizedType}
+scripts/main.js	1857	tooltip	Lancer EffectManager
+scripts/main.js	2342	text-node	Lancer Automations
+scripts/main.js	1171	prose-field	LaSossis's item activations
+scripts/main.js	1179	prose-field	Personal tweaks
+scripts/main.js	2050	prose-field	<b>${actor.name}</b> affected by <b>${statusId}</b>.<hr>Immunity from: <i>${immunitySources.join(", ")}</i>. Activate?
+scripts/main.js	2055	prose-field	Yes (Resist Effect)
+scripts/main.js	2064	prose-field	No (Allow Effect)
+scripts/main.js	512	html-content	             <div class="lancer-dialog-header">                 <h2 class="lancer-dialog-title">Movement History</h2>                 <p class="lancer-dialog-subtitle">${token.name}</p>             </div>             <div class="form-group">                 <p>What would you like to do with the movement history?</p>             </div>         
+scripts/movement/cost-rules.js	182	notification	Lancer Automations: Region "${regionName ?? "?"}" has a non-integer difficulty (${value}). Use whole numbers (2 = +1 penalty, 3 = +2, ...).
+scripts/movement/move-tracking.js	649	dialog-title	Boost
+scripts/movement/move-tracking.js	667	dialog-title	Overcharge (NPC)
+scripts/movement/move-tracking.js	709	dialog-title	BOOST & MOVE
+scripts/movement/move-tracking.js	771	dialog-title	OVERCHARGE & BOOST & MOVE
+scripts/movement/move-tracking.js	711	prose-field	Movement exceeds cap (${need}/${cap}). Boost adds +${boostSize}.
+scripts/movement/move-tracking.js	773	prose-field	Movement exceeds cap+boost (${need}/${boostReach}). Overcharge grants an extra Boost (+${overBoostSize}).
+scripts/movement/token-move-hooks.js	230	dialog-title	MOVEMENT REROUTED
+scripts/seasonal/annual.js	301	notification	Could not send your message. Thanks anyway.
+scripts/seasonal/annual.js	175	ui-label	Hello user. It is ${dateStr}.
+scripts/seasonal/annual.js	188	ui-label	Many thanks to you.
+scripts/seasonal/annual.js	189	ui-label	But now it is time to say something nice TO ME !!!!
+scripts/seasonal/annual.js	190	ui-label	or else .....
+scripts/seasonal/annual.js	286	ui-label	VERDICT >>
+scripts/seasonal/annual.js	203	placeholder	say something nice, or else .....
+scripts/seasonal/annual.js	334	prose-field	LANCER // PERSONAL TRANSMISSION
+scripts/setup/checkCompatibility.js	469	notification	Migration complete. Reloading in 1 second...
+scripts/setup/checkCompatibility.js	395	dialog-title	Lancer Automations: about Lancer QoL
+scripts/setup/deprecations.js	99	notification	${total} saved activation(s) use a deprecated pattern. See the console for details.
+scripts/setup/deprecations.js	19	ui-label	item ${lid} / ${reaction?.name || 'unnamed'}
+scripts/setup/deprecations.js	37	prose-field	triggerData.endActivation is deprecated and these activations no longer receive the end of an 
+scripts/setup/lancer-modif.js	80	notification	${label} ${state.item.name} is disabled!
+scripts/setup/lancer-modif.js	597	notification	UseAmmoFlow not registered. Is the flow registration enabled?
+scripts/setup/lancer-modif.js	604	notification	Could not resolve item or actor for ammo flow.
+scripts/setup/lancer-modif.js	613	notification	Could not resolve Flow base class.
+scripts/setup/lancer-modif.js	662	notification	System ${state.item.name} is destroyed!
+scripts/setup/lancer-modif.js	672	notification	System ${state.item.name} is disabled!
+scripts/setup/lancer-modif.js	686	notification	${state.item.name} does not have enough charges! (need ${cost}, have ${uses?.value ?? 0})
+scripts/setup/lancer-modif.js	1014	notification	No actor ID found on ${flowType} prompt button.
+scripts/setup/lancer-modif.js	1022	notification	Invalid actor ID on ${flowType} prompt button.
+scripts/setup/lancer-modif.js	1033	notification	Cannot resolve Flow base class for ${flowType}.
+scripts/setup/lancer-modif.js	1058	notification	Invalid flow structure for ${flowType}.
+scripts/setup/lancer-modif.js	1069	notification	Only the GM can run LCP data repair.
+scripts/setup/lancer-modif.js	1098	notification	Reading LCP source data...
+scripts/setup/lancer-modif.js	1196	notification	Could not write to ${lockedPacks.join(', ')}. Open the Compendium tab, right-click each pack, 
+scripts/setup/lancer-modif.js	1220	notification	Applied fixes to ${fixed} item(s).${fixed > 0 ? ' Reload recommended.' : ''}
+scripts/setup/lancer-modif.js	1225	notification	Repair failed: ${e.message}. Check console.
+scripts/setup/lancer-modif.js	1543	notification	Only the GM can sync token heights.
+scripts/setup/lancer-modif.js	1547	notification	Wall Height is not active — values written but unused by the canvas.
+scripts/setup/lancer-modif.js	1587	notification	Prototype sync failed; see console.
+scripts/setup/lancer-modif.js	1631	notification	Prototypes: ${protoUpdated} updated, ${protoSkipped} skipped. Scene tokens: ${sceneUpdated} updated, ${sceneSkipped} skipped.
+scripts/setup/lancer-modif.js	1638	notification	Only the GM can sync actor portraits.
+scripts/setup/lancer-modif.js	1684	notification	Sync failed; see console.
+scripts/setup/lancer-modif.js	1688	notification	Synced ${imgUpdated} portrait${imgUpdated === 1 ? '' : 's'} and ${nameUpdated} name${nameUpdated === 1 ? '' : 's'}, skipped ${skipped}.
+scripts/setup/lancer-modif.js	1074	dialog-title	Lancer Automations — Apply System Fixes
+scripts/setup/lancer-modif.js	1549	dialog-title	Lancer Automations — Sync Token Heights
+scripts/setup/lancer-modif.js	1643	dialog-title	Lancer Automations — Sync Actors to Prototype Token
+scripts/setup/lancer-modif.js	853	placeholder	Ammo Name
+scripts/setup/lancer-modif.js	860	placeholder	Description
+scripts/setup/lancer-modif.js	1075	html-content	<p>This will fix known data issues on all compendium and actor-owned items.</p><p>Continue?</p>
+scripts/setup/lancer-modif.js	1550	html-content	<p>Set <b>wall-height.tokenHeight</b> on every world actor (prototype) and every placed token across all scenes.</p><p>Continue?</p>
+scripts/setup/lancer-modif.js	1644	html-content	<p>For every world actor, set <b>actor.img</b> and <b>actor.name</b> to the prototype token image and name.</p><p>Continue?</p>
+scripts/setup/news.js	563	dialog-title	Lancer Automations - News & Releases
+scripts/setup/news.js	313	text-node	Could not submit. Try again later.
+scripts/setup/scene-dim-from-image.js	41	notification	No background image set on this scene.
+scripts/setup/scene-dim-from-image.js	52	notification	Couldn't load image: ${src}
+scripts/setup/scene-dim-from-image.js	64	notification	Scene dimensions set to ${img.naturalWidth} × ${img.naturalHeight}.
+scripts/setup/scene-dim-from-image.js	83	notification	Current scene dimensions are empty. Set Width and Height first.
+scripts/setup/scene-dim-from-image.js	100	notification	Scene dimensions scaled to ${newW} × ${newH}.
+scripts/setup/scene-dim-from-image.js	171	text-node	Scale W/H %
+scripts/setup/settings-onboarding.js	1323	notification	Lancer Automations setup applied.
+scripts/setup/settings-onboarding.js	978	dialog-title	Lancer Automations Setup
+scripts/setup/settings-onboarding.js	1333	dialog-title	Reload Required
+scripts/setup/settings-onboarding.js	1334	html-content	<p>Some of your answers need a reload to take effect. Reload now? The tour will start once Foundry is back.</p>
+scripts/setup/settingsMenus.js	333	notification	Floating Numbers: ${!before ? 'ON' : 'OFF'}
+scripts/setup/settingsMenus.js	403	notification	reinjectAutoBarsOnAllTokens is not exported.
+scripts/setup/settingsMenus.js	420	notification	applyDefaultsToCurrentScene is not exported.
+scripts/setup/settingsMenus.js	488	notification	TAH position reset to default. Re-select a token to see the change.
+scripts/setup/settingsMenus.js	506	notification	TAH Macros cleared.
+scripts/setup/settingsMenus.js	525	notification	TAH Favorites cleared.
+scripts/setup/settingsMenus.js	2125	notification	"${ev.code}" is reserved by Foundry and cannot be bound.
+scripts/setup/settingsMenus.js	2287	notification	"${matchedField.label}" failed, see the console.
+scripts/setup/settingsMenus.js	499	dialog-title	Clear TAH Macros
+scripts/setup/settingsMenus.js	517	dialog-title	Clear TAH Favorites
+scripts/setup/settingsMenus.js	1961	dialog-title	Lancer Automations Configuration
+scripts/setup/settingsMenus.js	2792	dialog-title	Reload Required
+scripts/setup/settingsMenus.js	2170	text-node	Press a key… (Esc to cancel)
+scripts/setup/settingsMenus.js	2219	text-node	Press a key… (Esc to cancel)
+scripts/setup/settingsMenus.js	500	html-content	<p>Remove every macro from the TAH Macros category? This cannot be undone.</p>
+scripts/setup/settingsMenus.js	518	html-content	<p>Remove every favorite marker? This cannot be undone.</p>
+scripts/setup/settingsMenus.js	2793	html-content	<p>One or more changes require a reload to take effect. Reload now?</p>
+scripts/setup/status-effects.js	52	prose-field	Like Burn, but applies Heat instead of damage. Characters immediately take Heat equal to the Infection received, and the value stacks if Infection is already present. At the end of their turn, they roll a Systems check: on success they clear all Infection, otherwise they take Heat equal to the current Infection. Anything that clears Burn (e.g. Stabilize) also clears Infection.
+scripts/setup/status-effects.js	64	prose-field	Allied characters adjacent to this character can use them as hard cover.
+scripts/setup/status-effects.js	74	prose-field	This character is treated as hard cover and blocks line of sight.
+scripts/setup/status-effects.js	84	prose-field	This character can move through other characters, but still cannot end its movement on them.
+scripts/setup/status-effects.js	140	prose-field	You count as having RESISTANCE to all damage, burn, and heat: take half, rounded up.
+scripts/setup/status-effects.js	153	prose-field	Cannot be moved
+scripts/setup/status-effects.js	158	prose-field	You ignore engagement and your movement does not provoke reactions
+scripts/setup/status-effects.js	163	prose-field	You are destroyed
+scripts/setup/status-effects.js	168	prose-field	You are grappling in a grapple contest
+scripts/setup/status-effects.js	177	prose-field	You are grappled in a grapple contest
+scripts/setup/status-effects.js	186	prose-field	Characters take damage when they fall 3 or more spaces and cannot recover before hitting the ground. Characters fall 10 spaces per round in normal gravity, but can't fall in zero-G or very low-G environments. They take 3 Kinetic AP (armour piercing) damage for every three spaces fallen, to a maximum of 9 Kinetic AP. Falling is a type of involuntary movement.
+scripts/setup/status-effects.js	191	prose-field	Deals Half damage, heat, and burn on attacks
+scripts/setup/status-effects.js	196	prose-field	Light of sight reduced to 1
+scripts/setup/status-effects.js	201	prose-field	You ignore effect of climbing terrain
+scripts/setup/status-effects.js	206	prose-field	You hover above the ground: same movement rules as Flying.
+scripts/setup/status-effects.js	211	prose-field	You ignore difficult and dangerous terrain
+scripts/setup/status-effects.js	216	prose-field	You ignore difficult terrain. Dangerous terrain still applies.
+scripts/setup/status-effects.js	221	prose-field	You are in a reactor meltdown
+scripts/setup/status-effects.js	227	prose-field	You can Stabilize as a quick action
+scripts/setup/status-effects.js	233	prose-field	You resist the triggering attack, all other attacks against you are made at +1 difficulty. Due to the stress of bracing, you cannot take reactions, you can only take one quick action – you cannot OVERCHARGE, move normally, take full actions, or take free actions.
+scripts/setup/status-effects.js	239	prose-field	Your core is active
+scripts/setup/status-effects.js	249	prose-field	DAZED mechs can only take one quick action – they cannot OVERCHARGE, move normally, nor take full actions, reactions, or free actions.
+scripts/setup/status-effects.js	255	prose-field	An OVERHEATED mech cannot take any actions or activate abilities that would inflict Heat upon themselves, including OVERCHARGE and systems with the HEAT X (SELF) tag. Weapons with OVERKILL lose the tag while OVERHEATED. Cleared by STABILIZE.
+scripts/setup/telemetry.js	190	notification	Now counted as ${role}. Thank you!
+scripts/setup/telemetry.js	205	notification	Opted out. No more data will be sent.
+scripts/setup/telemetry.js	86	dialog-title	Lancer Automations
+scripts/setup/telemetry.js	194	dialog-title	Change Data Consent
+scripts/setup/telemetry.js	195	html-content	<p>You are <strong>${label}</strong>.</p><p>What would you like?</p>
+scripts/setup/tmac-presets.js	86	notification	Template Macro is not active.
+scripts/setup/tmac-presets.js	107	notification	LaSossis template presets: ${added} added, ${updated} updated.
+scripts/setup/tour.js	1397	notification	The Add Extra tour needs a mech on the scene.
+scripts/setup/tour.js	35	dialog-title	Effect Manager
+scripts/setup/tour.js	41	dialog-title	Standard
+scripts/setup/tour.js	48	dialog-title	Standard - Effect
+scripts/setup/tour.js	54	dialog-title	Standard - Duration
+scripts/setup/tour.js	60	dialog-title	Standard - Consume on
+scripts/setup/tour.js	66	dialog-title	Presets
+scripts/setup/tour.js	72	dialog-title	Custom
+scripts/setup/tour.js	79	dialog-title	Custom - Build
+scripts/setup/tour.js	85	dialog-title	Custom - Saved
+scripts/setup/tour.js	91	dialog-title	Bonus
+scripts/setup/tour.js	98	dialog-title	Bonus - Type
+scripts/setup/tour.js	104	dialog-title	Bonus - Consume
+scripts/setup/tour.js	110	dialog-title	Bonus - Add
+scripts/setup/tour.js	116	dialog-title	Manage
+scripts/setup/tour.js	126	dialog-title	On a Sheet
+scripts/setup/tour.js	144	dialog-title	L.A Menu
+scripts/setup/tour.js	165	dialog-title	Add Extra
+scripts/setup/tour.js	191	dialog-title	Extra Actions
+scripts/setup/tour.js	197	dialog-title	Extra Deployables
+scripts/setup/tour.js	203	dialog-title	Extra Bars
+scripts/setup/tour.js	209	dialog-title	Editor
+scripts/setup/tour.js	238	dialog-title	Where to find this
+scripts/setup/tour.js	248	dialog-title	Configuration
+scripts/setup/tour.js	254	dialog-title	Pages
+scripts/setup/tour.js	261	dialog-title	Activations
+scripts/setup/tour.js	268	dialog-title	Combat & Movement
+scripts/setup/tour.js	275	dialog-title	Wrecks
+scripts/setup/tour.js	282	dialog-title	Tokens & Display
+scripts/setup/tour.js	289	dialog-title	Isometric
+scripts/setup/tour.js	297	dialog-title	Token Action HUD
+scripts/setup/tour.js	304	dialog-title	Sounds
+scripts/setup/tour.js	311	dialog-title	Statuses & FX
+scripts/setup/tour.js	318	dialog-title	Debug
+scripts/setup/tour.js	325	dialog-title	Tools & Extras
+scripts/setup/tour.js	332	dialog-title	Vision
+scripts/setup/tour.js	339	dialog-title	Tutorials & Help
+scripts/setup/tour.js	345	dialog-title	Save
+scripts/setup/tour.js	354	dialog-title	Where to find this
+scripts/setup/tour.js	364	dialog-title	Activation Manager
+scripts/setup/tour.js	370	dialog-title	Tabs
+scripts/setup/tour.js	377	dialog-title	Custom
+scripts/setup/tour.js	390	dialog-title	Editor
+scripts/setup/tour.js	397	dialog-title	Item-bound or General
+scripts/setup/tour.js	404	dialog-title	Item LID
+scripts/setup/tour.js	411	dialog-title	Triggers
+scripts/setup/tour.js	418	dialog-title	Filters
+scripts/setup/tour.js	425	dialog-title	Code Blocks
+scripts/setup/tour.js	432	dialog-title	Autocomplete
+scripts/setup/tour.js	441	dialog-title	Folders
+scripts/setup/tour.js	448	dialog-title	Search & Filter
+scripts/setup/tour.js	455	dialog-title	Defaults
+scripts/setup/tour.js	462	dialog-title	Startup
+scripts/setup/tour.js	571	dialog-title	Token Action HUD
+scripts/setup/tour.js	577	dialog-title	Token Name
+scripts/setup/tour.js	583	dialog-title	Move the HUD
+scripts/setup/tour.js	589	dialog-title	Combat Toggle
+scripts/setup/tour.js	595	dialog-title	Stats Bar
+scripts/setup/tour.js	601	dialog-title	More Stats
+scripts/setup/tour.js	607	dialog-title	Movement Cap
+scripts/setup/tour.js	613	dialog-title	Action Tracker
+scripts/setup/tour.js	619	dialog-title	Movement History
+scripts/setup/tour.js	625	dialog-title	Keyboard Navigation
+scripts/setup/tour.js	631	dialog-title	Categories
+scripts/setup/tour.js	637	dialog-title	Item Rows
+scripts/setup/tour.js	676	dialog-title	Automation Hint
+scripts/setup/tour.js	717	dialog-title	Right-click Details
+scripts/setup/tour.js	763	dialog-title	Search
+scripts/setup/tour.js	769	dialog-title	Favorites
+scripts/setup/tour.js	775	dialog-title	Action Wheel
+scripts/setup/tour.js	798	dialog-title	Status Wheel
+scripts/setup/tour.js	834	dialog-title	Utility
+scripts/setup/tour.js	857	dialog-title	And more
+scripts/setup/tour.js	866	dialog-title	Advanced TAH Tools
+scripts/setup/tour.js	884	dialog-title	And more
+scripts/setup/tour.js	893	dialog-title	Lancer Ruler
+scripts/setup/tour.js	900	dialog-title	Movement Wheel
+scripts/setup/tour.js	928	dialog-title	Cycle While Dragging
+scripts/setup/tour.js	935	dialog-title	Free & Debug
+scripts/setup/tour.js	942	dialog-title	Force Movement
+scripts/setup/tour.js	954	dialog-title	Advanced Measure
+scripts/setup/tour.js	960	dialog-title	Shortcuts
+scripts/setup/tour.js	966	dialog-title	Shapes
+scripts/setup/tour.js	972	dialog-title	Range Pulse
+scripts/setup/tour.js	978	dialog-title	Pinned Rings
+scripts/setup/tour.js	984	dialog-title	Markers & Ruler
+scripts/setup/tour.js	1001	dialog-title	Lancer Automations
+scripts/setup/tour.js	1108	dialog-title	Token Action HUD
+scripts/setup/tour.js	1454	dialog-title	Lancer Automations: Configuration
+scripts/setup/tour.js	1465	dialog-title	Lancer Automations: Activation Manager
+scripts/setup/tour.js	1476	dialog-title	Lancer Automations: Token Action HUD
+scripts/setup/tour.js	1488	dialog-title	Lancer Automations: TAH Advanced Tools
+scripts/setup/tour.js	1500	dialog-title	Lancer Automations: Effect Manager
+scripts/setup/tour.js	1512	dialog-title	Lancer Automations: Lancer Ruler
+scripts/setup/tour.js	1521	dialog-title	Lancer Automations: Advanced Measure
+scripts/setup/tour.js	1533	dialog-title	Lancer Automations: Add Extra
+scripts/setup/tour.js	1618	dialog-title	Lancer Automations
+scripts/setup/tour.js	1647	dialog-title	Lancer Automations - Movement
+scripts/setup/tour.js	1455	prose-field	Guided walkthrough of every tab in the Lancer Automations configuration window.
+scripts/setup/tour.js	1466	prose-field	Walks through the Activation Manager dialog (custom activations, defaults, startup scripts).
+scripts/setup/tour.js	1477	prose-field	Walks through the Token Action HUD on a controlled token.
+scripts/setup/tour.js	1489	prose-field	The gameplay tools inside the Token Action HUD: skirmish/barrage, boost, deploy, contest, scan, link, reinforcement, downtime, reserve, vote.
+scripts/setup/tour.js	1501	prose-field	Walks through the Effect Manager dialog (standard, custom, bonus, manage).
+scripts/setup/tour.js	1513	prose-field	The movement wheel, movement types, and the free/debug keys.
+scripts/setup/tour.js	1522	prose-field	The Advanced Measure tool: shapes, ranges, markers, and shortcuts.
+scripts/setup/tour.js	1534	prose-field	Add Extra, Add Effect and Extra Config from an actor or item sheet.
+scripts/setup/tour.js	36	html-content	Coding and automation can feel rough, and mid-game you need stuff fast. Here's a UI on top of the Lancer Automations systems, no code.
+scripts/setup/tour.js	42	html-content	The standard effect page. Pick a status, a duration, optionally an auto-consume trigger.
+scripts/setup/tour.js	49	html-content	Pick a status and a stack count. Target is up top.
+scripts/setup/tour.js	55	html-content	How long it sticks: end/start of turn, indefinite, etc.
+scripts/setup/tour.js	61	html-content	Optional auto-consume trigger (on hit, on damage, on turn end...). Picking some triggers reveals extra filters: item LID, action name, status, check type.
+scripts/setup/tour.js	67	html-content	Save a filled-in effect as a preset and reload it later - handy for ones you apply often.
+scripts/setup/tour.js	73	html-content	Registering every possible status from NPC stuff is tedious and noisy on the status list. This tab lets you create temporary statuses on the fly. With my <b>temporary-custom-statuses</b> module some can be saved and reused.
+scripts/setup/tour.js	80	html-content	Name, icon, duration, note. Same shape as Standard but for ad-hoc statuses.
+scripts/setup/tour.js	86	html-content	Statuses saved through temporary-custom-statuses show up here for reuse, and on a separate Statuses tab in TAH.
+scripts/setup/tour.js	92	html-content	The advanced stuff, and one of the core features of the Lancer Automations engine. Many many things go through here: accuracy, damage on next attack, immunities, rerolls, target modifiers. They inject into the regular Lancer system cards seamlessly. Read <code>doc/API_EFFECTS.md</code> for the full menu.
+scripts/setup/tour.js	99	html-content	The bonus type. Each one reveals its own fields below.
+scripts/setup/tour.js	105	html-content	Same trigger picker as Standard. Combined with Uses, this is how you build things like <i>3 stacks of +1d6 damage on next attack, consumed on damage roll</i>.
+scripts/setup/tour.js	111	html-content	Adds the bonus to the target.
+scripts/setup/tour.js	117	html-content	Everything currently on a token, including passive bonuses you can't see otherwise (Veterancy adding a passive on a HASE check, etc.).
+scripts/setup/tour.js	127	html-content	Add extras and effects to any actor or item right from its sheet. The <b>L.A</b> button in its header is the entry point; the number shows how much is already attached.
+scripts/setup/tour.js	145	html-content	The L.A button opens this menu. <b>Add Effect</b> opens the Effect Manager for this sheet, <b>Add Extra</b> attaches actions/deployables/bars, and <b>Extra Config</b> (items only) tunes auto-consume and deployable range/count.
+scripts/setup/tour.js	166	html-content	Add Extra opens this: tie extra actions, deployables, and resource bars onto the actor or item.
+scripts/setup/tour.js	192	html-content	Custom actions bolted onto the actor or item - name, activation, icon, optional resource limits. They show up in the TAH.
+scripts/setup/tour.js	198	html-content	Attach deployables by actor or LID, or drag one in - this is how an NPC feature gets its deployable in the TAH. The T1/T2/T3 pills gate an entry to that NPC tier; none lit = every tier.
+scripts/setup/tour.js	204	html-content	Quick-add a manual token stat bar to track anything you like.
+scripts/setup/tour.js	210	html-content	Actions can also be an attack or damage roll.
+scripts/setup/tour.js	239	html-content	Re-open this any time from the <b>Lancer Automations</b> button in the Game Settings sidebar, under the LANCER section.
+scripts/setup/tour.js	249	html-content	Pretty simple, here's the configuration menu where all the Lancer Automations options live. Note: some settings are <b>client-side</b> (per user) and not shared world-wide (Token Action HUD, custom stat bars, vision debug overlays, etc.). Each player must enable them on their own client.
+scripts/setup/tour.js	255	html-content	Every page groups related stuff, sorted by family on the left. The search box up top looks through all of them at once.
+scripts/setup/tour.js	262	html-content	How activation popups feel during play: who sees them, whether the reaction is auto-spent, and a couple of niche toggles.
+scripts/setup/tour.js	269	html-content	All the combat-flavor toggles: knockback, throw, movement-cap, boost detection, alt structure/stress rules, infection damage. The big stuff.
+scripts/setup/tour.js	276	html-content	What happens when something dies. Spawn a wreck token, play the explosion, optionally drop terrain. Per-category if you want monstrosity wrecks to look different from mech wrecks.
+scripts/setup/tour.js	283	html-content	Half-size tokens, auto wall-height for tokens, my own token stat bars (a Bar Brawl alternative). Mostly QoL display tweaks.
+scripts/setup/tour.js	290	html-content	Fixes for isometric modules (Isometric Perspective, Grape Juice). Only shows when one is active.
+scripts/setup/tour.js	298	html-content	Here you can enable the TAH, my own Token Action HUD. It offers a bunch of tools, with UI and sound, and a few options to tune it. Still work in progress but fairly usable.
+scripts/setup/tour.js	305	html-content	All the sound feedback options, including the UI sounds for the TAH.
+scripts/setup/tour.js	312	html-content	The FX section: status visual effects (glows, shaders) plus the extra statuses I added. A bit like Lancer QoL, so pick one or the other if both are on.
+scripts/setup/tour.js	319	html-content	Flip these on if something feels off and you want to see what the module is doing under the hood.
+scripts/setup/tour.js	326	html-content	My optional content packs (personal stuff), the News & Releases history, and one-shot maintenance buttons: LCP repair, reset, export, import.
+scripts/setup/tour.js	333	html-content	Vision-from-edge for big tokens, the Lancer Sensors and Battlefield Awareness detection modes (auto-add, combat-only, range source), basic-sight overrides, and drag-vision behavior all live here.
+scripts/setup/tour.js	340	html-content	Re-run the <b>Setup Wizard</b>, or launch any tour: Token Action HUD, ruler &amp; movement, advanced measure, effect manager, automation. They can run long - start one now or come back whenever.
+scripts/setup/tour.js	346	html-content	One Save commits every tab at once. Some changes need a reload, you'll be prompted on close.
+scripts/setup/tour.js	355	html-content	Re-open this any time from the <b>Activation Manager</b> button in the Game Settings sidebar, under the LANCER section.
+scripts/setup/tour.js	365	html-content	Where you build automations. Item-bound (per LID) or general, code-driven, fired on triggers like onMove, onHit, onActivation, and so on.
+scripts/setup/tour.js	371	html-content	Custom is your own stuff. Defaults are the activations bundled with the module. Startup is JS that runs once on Foundry ready.
+scripts/setup/tour.js	378	html-content	Your activations, grouped into folders. Each row binds to one or more triggers and runs your code.
+scripts/setup/tour.js	385	html-content	Create a new one. You'll pick item-bound (LID) or general, the triggers, and the code blocks that run on evaluate / activate / init.
+scripts/setup/tour.js	391	html-content	Add opens this editor. Triggers, filters, and code all live here; Save commits, closing discards.
+scripts/setup/tour.js	398	html-content	Bind it to an item (by LID) or make it <b>general</b> - checked on every token.
+scripts/setup/tour.js	405	html-content	For item-bound activations, the item's Lancer ID. The finder button beside it searches your items and compendiums, so you don't type it by hand.
+scripts/setup/tour.js	412	html-content	Tick the triggers that fire it: onMove, onHit, onActivation, onStructure, and many more.
+scripts/setup/tour.js	419	html-content	Narrow when it fires: react to self or others, disposition, in or out of combat, auto-activate.
+scripts/setup/tour.js	426	html-content	Your logic: <b>evaluate</b> (should it fire?), <b>activation</b> (what happens), plus onInit and onMessage.
+scripts/setup/tour.js	433	html-content	The editor suggests API names as you type. Press <b>Alt-Enter</b> to open the list, then arrow through to see what each does.
+scripts/setup/tour.js	442	html-content	Make folders to keep things tidy. Drag rows in to file them.
+scripts/setup/tour.js	449	html-content	Filter by name, LID, or trigger type. Handy when the list gets long.
+scripts/setup/tour.js	456	html-content	The activations bundled with the module: Overwatch, Brace, Flight, Fall, plus a bunch of NPC-feature automations. Toggle them on or off.
+scripts/setup/tour.js	463	html-content	JS that runs once on Foundry ready. Good for helper functions you want your activations to reuse.
+scripts/setup/tour.js	572	html-content	The Lancer Automations Token Action HUD - your token's action menu.
+scripts/setup/tour.js	578	html-content	Click the name to open the actor sheet.
+scripts/setup/tour.js	584	html-content	Unlock with the lock icon, then drag the HUD anywhere. The reset icon restores its position.
+scripts/setup/tour.js	590	html-content	Click the swords icon to add or remove the token from the combat tracker without leaving the HUD.
+scripts/setup/tour.js	596	html-content	Live vitals: HP, heat, structure and stress pips, overshield, burn.
+scripts/setup/tour.js	602	html-content	Click to expand armor, evasion, e-defense, tech attack, save, sensors, and core.
+scripts/setup/tour.js	608	html-content	The right number is the max move this turn (speed); the left is what the token has used so far. Boost (or anything granting extra move) extends the cap.
+scripts/setup/tour.js	614	html-content	Quick / Full / Reaction / Protocol / Move pips. Click to spend, right-click to restore; on your turn the spent slot becomes End Turn. It mirrors Lancer\'s own action tracker, so you can disable that one in the Lancer system settings.
+scripts/setup/tour.js	620	html-content	Revert the last move, or clear this token\'s recorded history.
+scripts/setup/tour.js	626	html-content	Drive the HUD by keyboard: <b>Shift+WASD</b> moves, <b>Shift+E</b> left-clicks, <b>Shift+Q</b> right-clicks, <b>Shift+F</b> searches.
+scripts/setup/tour.js	632	html-content	The Menu column lists categories (Actions, Weapons, Systems, Frame, Talents, Utility, Statuses). Hovering or clicking a row cascades extra columns out to the right.
+scripts/setup/tour.js	638	html-content	Any row that is not a sub-category is an item. Left-click usually activates it; right-click (or Shift+Q) opens a detail popup with its full text.
+scripts/setup/tour.js	677	html-content	A coloured triangle on a row's left edge marks it <b>automated</b> - using it runs its built-in effects.
+scripts/setup/tour.js	718	html-content	Right-click any item (or <b>Shift+Q</b>) to open a detail popup: full text, tags, and any Disable / Destroy toggles.
+scripts/setup/tour.js	764	html-content	Click the magnifier or press <b>Shift+F</b> to live-filter every action.
+scripts/setup/tour.js	770	html-content	Ctrl+Right-click any action to pick which wheel it goes on. The mark on a row says where it lives. Hover the star tab to open the list.
+scripts/setup/tour.js	776	html-content	Press <b>F</b> on a selected token: your favorites form a wheel around it. Click an icon to use it, right-click for its details, hover for the range preview. <b>Tab</b> switches to the second wheel once you have one.
+scripts/setup/tour.js	799	html-content	Press <b>G</b> for the statuses on the token plus the ones starred in the status panel. Click to apply or add a stack, right-click to remove one. Removing a permanent effect asks first.
+scripts/setup/tour.js	835	html-content	Sub-categories of tools: Gameplay actions, Movement helpers, Measures (the Advanced Measure tool), Log, Glossary, and a Misc grab-bag.
+scripts/setup/tour.js	858	html-content	There is a lot more under the hood, but the tour would get long. Drop by Discord if you have questions.
+scripts/setup/tour.js	867	html-content	A pass through the tools tucked into the HUD, past just firing weapons.
+scripts/setup/tour.js	885	html-content	That's the toolbox. Dig through Utility for the rest.
+scripts/setup/tour.js	894	html-content	Drag a token to measure. The ruler follows Lancer rules: speed cap, terrain cost, climb, flight ceiling.
+scripts/setup/tour.js	901	html-content	Press <b>M</b> on a selected token to open this wheel and set its <b>base</b> movement type - walk, fly, drift, each with its own cost rules.
+scripts/setup/tour.js	929	html-content	During a drag, press <b>M</b> to cycle the type for that drag only - the token's base type stays put.
+scripts/setup/tour.js	936	html-content	Hold <b>V</b> for free movement (no cost, ignores terrain). Hold <b>B</b> for debug movement (skips automation hooks). <b>Ctrl+drag</b> from empty space gives the vanilla ruler.
+scripts/setup/tour.js	943	html-content	<b>Force</b> is unintentional movement (knockback, drag): it doesn't trigger move automations like Overwatch.
+scripts/setup/tour.js	955	html-content	A measuring toolset reusing LA's targeting visuals - toggle it with <b>Shift+R</b>. Everything lives on this floating toolbar.
+scripts/setup/tour.js	961	html-content	Hover here for the full cheat-sheet. Quick ones: <b>Ctrl+wheel</b> rotate, <b>Shift+wheel</b> size, <b>Q/E</b> elevation, <b>W/S</b> tilt a line, <b>Z</b> reset.
+scripts/setup/tour.js	967	html-content	Pick a shape - Blast, Burst, Cone, Line - or a single Target mark. Options make it 3D (elevation), auto-follow terrain, and propagate cell to cell.
+scripts/setup/tour.js	973	html-content	Pulse a range around the shape: a manual radius, threat, sensor, max reach, or a weapon's range. <b>T</b> cycles sources, re-clicking the active one turns it off. A movement-reach toggle is here too.
+scripts/setup/tour.js	979	html-content	<b>Right-click</b> a range source (or a weapon in its list) to pin it: a steady ring that stays while the tool is open, on as many tokens as you want. Pinned entries show a ★; the TAH range toggles pin the same way.
+scripts/setup/tour.js	985	html-content	<b>Shift+click</b> in free mode marks a token (shows its range and reach) or the ground (manual-range only). Hold <b>Ctrl</b> for the vanilla Measure Distance ruler.
+scripts/setup/tour.js	1002	html-content	                 <div class="lancer-dialog-header">                     <div class="lancer-dialog-title">PLACE A TOKEN</div>                     <div class="lancer-dialog-subtitle">The TAH tour needs a mech token.</div>                 </div>                 <p style="padding: 4px 6px;">Drop a player mech onto the scene and select it, then click Continue. Talents, Frame and mounts are mech-only, so an NPC won't do, and an unequipped mech leaves the weapon steps with nothing to point at.</p>             
+scripts/setup/tour.js	1109	html-content	<p style="padding:6px 8px;">Token Action HUD is off. Enable it for the tour?</p>
+scripts/setup/version-check.js	123	dialog-title	${module.title} Update
+scripts/socket.js	514	notification	${payload.requestingUserName} requested a system scan of ${payload.targetName}.
+scripts/socket.js	551	notification	Journal entry created for ${payload.targetName}
+scripts/socket.js	557	notification	Journal entry request declined
+scripts/socket.js	526	dialog-title	Journal Entry Request
+scripts/socket.js	546	ui-label	Create Journal Entry
+scripts/socket.js	556	ui-label	Decline
+scripts/socket.js	539	placeholder	Leave empty for auto-generated name
+scripts/tah/action-wheel.js	115	notification	Enable the Token Action HUD to use the action wheel.
+scripts/tah/action-wheel.js	133	notification	No favorite actions yet. Mark actions with Ctrl+Right-click in the Token Action HUD.
+scripts/tah/favorites.js	80	ui-label	Wheel ${wheel}
+scripts/tah/favorites.js	83	ui-label	Remove
+scripts/tah/glossary-panel.js	46	placeholder	Search by name…
+scripts/tah/hud.js	1358	notification	${actionName} is locked on ${this._actor.name}. Firing anyway.
+scripts/tah/hud.js	3513	notification	All copies of this reserve are already used.
+scripts/tah/hud.js	3667	notification	${power.name} has no uses left.
+scripts/tah/hud.js	3713	notification	All powers of this bond are unlocked.
+scripts/tah/hud.js	4655	notification	Linked item not found: ${entry.linkedItemUuid}
+scripts/tah/hud.js	279	dialog-title	Link Narrative HUD
+scripts/tah/hud.js	2177	dialog-title	Basic Tech
+scripts/tah/hud.js	2466	dialog-title	Basic Tech
+scripts/tah/hud.js	2467	dialog-title	Scan
+scripts/tah/hud.js	2468	dialog-title	Lock On
+scripts/tah/hud.js	2469	dialog-title	Bolster
+scripts/tah/hud.js	2699	dialog-title	Other Skill
+scripts/tah/hud.js	2822	dialog-title	FULL REPAIR
+scripts/tah/hud.js	2847	dialog-title	LINK TO TOKEN
+scripts/tah/hud.js	2908	dialog-title	KNOCKBACK
+scripts/tah/hud.js	2972	dialog-title	${rangeType} Breakdown
+scripts/tah/hud.js	3732	dialog-title	Unlock Power
+scripts/tah/hud.js	4938	dialog-title	Add Macro
+scripts/tah/hud.js	284	ui-label	Link
+scripts/tah/hud.js	295	ui-label	Unlink
+scripts/tah/hud.js	303	ui-label	Cancel
+scripts/tah/hud.js	590	ui-label	Unknown
+scripts/tah/hud.js	2005	ui-label	Actions
+scripts/tah/hud.js	2010	ui-label	Basic
+scripts/tah/hud.js	2015	ui-label	Overcharge
+scripts/tah/hud.js	2016	ui-label	Quick
+scripts/tah/hud.js	2019	ui-label	Full
+scripts/tah/hud.js	2023	ui-label	Attacks
+scripts/tah/hud.js	2024	ui-label	Quick Actions
+scripts/tah/hud.js	2025	ui-label	Full Actions
+scripts/tah/hud.js	2026	ui-label	Reaction
+scripts/tah/hud.js	2027	ui-label	Protocol
+scripts/tah/hud.js	2028	ui-label	Free Actions
+scripts/tah/hud.js	2038	ui-label	Deactivate
+scripts/tah/hud.js	2066	ui-label	Resources
+scripts/tah/hud.js	2116	ui-label	Activation
+scripts/tah/hud.js	2128	ui-label	Recall
+scripts/tah/hud.js	2165	ui-label	Tools
+scripts/tah/hud.js	2167	ui-label	Basic Attack
+scripts/tah/hud.js	2174	ui-label	Basic Tech
+scripts/tah/hud.js	2181	ui-label	Damage
+scripts/tah/hud.js	2189	ui-label	Actions
+scripts/tah/hud.js	2207	ui-label	Reload
+scripts/tah/hud.js	2215	ui-label	Actions
+scripts/tah/hud.js	2220	ui-label	Basic
+scripts/tah/hud.js	2225	ui-label	Full
+scripts/tah/hud.js	2229	ui-label	Attacks
+scripts/tah/hud.js	2230	ui-label	Quick Actions
+scripts/tah/hud.js	2231	ui-label	Full Actions
+scripts/tah/hud.js	2232	ui-label	Reaction
+scripts/tah/hud.js	2233	ui-label	Protocol
+scripts/tah/hud.js	2234	ui-label	Free Actions
+scripts/tah/hud.js	2244	ui-label	Deployables
+scripts/tah/hud.js	2251	ui-label	Deploy Item
+scripts/tah/hud.js	2252	ui-label	Recall Item
+scripts/tah/hud.js	2254	ui-label	Link/Unlink Actor
+scripts/tah/hud.js	2258	ui-label	Deployables
+scripts/tah/hud.js	2356	ui-label	Attacks
+scripts/tah/hud.js	2360	ui-label	Skirmish
+scripts/tah/hud.js	2361	ui-label	Barrage
+scripts/tah/hud.js	2364	ui-label	Improvised Attack
+scripts/tah/hud.js	2367	ui-label	Fight
+scripts/tah/hud.js	2369	ui-label	Tools
+scripts/tah/hud.js	2370	ui-label	Basic Attack
+scripts/tah/hud.js	2371	ui-label	Damage
+scripts/tah/hud.js	2372	ui-label	Throw Weapon
+scripts/tah/hud.js	2373	ui-label	Pickup Weapon
+scripts/tah/hud.js	2393	ui-label	Weapons
+scripts/tah/hud.js	2407	ui-label	${mount.type} Mount
+scripts/tah/hud.js	2410	ui-label	<span style="${MUTED}">Locked</span>
+scripts/tah/hud.js	2431	ui-label	<span style="${MUTED}">Empty</span>
+scripts/tah/hud.js	2446	ui-label	Tech
+scripts/tah/hud.js	2457	ui-label	Tech
+scripts/tah/hud.js	2462	ui-label	Basic
+scripts/tah/hud.js	2466	ui-label	Basic Tech
+scripts/tah/hud.js	2467	ui-label	Scan
+scripts/tah/hud.js	2468	ui-label	Lock On
+scripts/tah/hud.js	2469	ui-label	Bolster
+scripts/tah/hud.js	2470	ui-label	Invade
+scripts/tah/hud.js	2473	ui-label	Invades
+scripts/tah/hud.js	2474	ui-label	Quick Tech
+scripts/tah/hud.js	2475	ui-label	Full Tech
+scripts/tah/hud.js	2484	ui-label	Invades
+scripts/tah/hud.js	2516	ui-label	Standing Up
+scripts/tah/hud.js	2519	ui-label	Self Destruct
+scripts/tah/hud.js	2523	ui-label	Quick Actions
+scripts/tah/hud.js	2525	ui-label	Basic
+scripts/tah/hud.js	2541	ui-label	Stabilize
+scripts/tah/hud.js	2545	ui-label	Full Action
+scripts/tah/hud.js	2547	ui-label	Basic
+scripts/tah/hud.js	2555	ui-label	Reactions
+scripts/tah/hud.js	2589	ui-label	Protocols
+scripts/tah/hud.js	2602	ui-label	Free Actions
+scripts/tah/hud.js	2617	ui-label	Hull
+scripts/tah/hud.js	2618	ui-label	Agility
+scripts/tah/hud.js	2619	ui-label	Systems
+scripts/tah/hud.js	2620	ui-label	Engineering
+scripts/tah/hud.js	2621	ui-label	Grit
+scripts/tah/hud.js	2622	ui-label	Tier
+scripts/tah/hud.js	2637	ui-label	Contest
+scripts/tah/hud.js	2644	ui-label	Force Check
+scripts/tah/hud.js	2689	ui-label	Other Skill
+scripts/tah/hud.js	2713	ui-label	Skills
+scripts/tah/hud.js	2723	ui-label	Attributes
+scripts/tah/hud.js	2727	ui-label	Skills
+scripts/tah/hud.js	2728	ui-label	Triggers
+scripts/tah/hud.js	2737	ui-label	Glossary
+scripts/tah/hud.js	2738	ui-label	Effect Manager
+scripts/tah/hud.js	2750	ui-label	Vote
+scripts/tah/hud.js	2762	ui-label	Contest
+scripts/tah/hud.js	2767	ui-label	Force Check
+scripts/tah/hud.js	2773	ui-label	Downtime
+scripts/tah/hud.js	2784	ui-label	Reserve
+scripts/tah/hud.js	2795	ui-label	Utility
+scripts/tah/hud.js	2810	ui-label	Full Repair
+scripts/tah/hud.js	2842	ui-label	Link to Token
+scripts/tah/hud.js	2857	ui-label	Structure
+scripts/tah/hud.js	2867	ui-label	Overheat
+scripts/tah/hud.js	2877	ui-label	Suicide
+scripts/tah/hud.js	2878	ui-label	Reactor Explosion
+scripts/tah/hud.js	2881	ui-label	Resurrect
+scripts/tah/hud.js	2884	ui-label	Recharge
+scripts/tah/hud.js	2885	ui-label	Reload Weapon
+scripts/tah/hud.js	2887	ui-label	Generate Scan
+scripts/tah/hud.js	2888	ui-label	Effect Manager
+scripts/tah/hud.js	2899	ui-label	Reinforcement
+scripts/tah/hud.js	2908	ui-label	Knockback
+scripts/tah/hud.js	2909	ui-label	Teleport
+scripts/tah/hud.js	2910	ui-label	Fall
+scripts/tah/hud.js	2911	ui-label	Reset History
+scripts/tah/hud.js	2912	ui-label	Revert Last Movement
+scripts/tah/hud.js	2913	ui-label	Revert All Movements
+scripts/tah/hud.js	3038	ui-label	Custom
+scripts/tah/hud.js	3075	ui-label	Utility
+scripts/tah/hud.js	3079	ui-label	Gameplay
+scripts/tah/hud.js	3080	ui-label	Movement
+scripts/tah/hud.js	3081	ui-label	Measures
+scripts/tah/hud.js	3083	ui-label	Glossary
+scripts/tah/hud.js	3084	ui-label	Misc
+scripts/tah/hud.js	3088	ui-label	Vote
+scripts/tah/hud.js	3097	ui-label	Downtime
+scripts/tah/hud.js	3104	ui-label	Reserve
+scripts/tah/hud.js	3111	ui-label	Rest
+scripts/tah/hud.js	3118	ui-label	Add Extra
+scripts/tah/hud.js	3131	ui-label	Systems
+scripts/tah/hud.js	3254	ui-label	Deployables
+scripts/tah/hud.js	3283	ui-label	Ammo
+scripts/tah/hud.js	3339	ui-label	Frame
+scripts/tah/hud.js	3373	ui-label	Core Power
+scripts/tah/hud.js	3374	ui-label	Traits
+scripts/tah/hud.js	3375	ui-label	Core Bonus
+scripts/tah/hud.js	3383	ui-label	Integrated
+scripts/tah/hud.js	3384	ui-label	Reserves
+scripts/tah/hud.js	3525	ui-label	Pilot
+scripts/tah/hud.js	3586	ui-label	RESERVES
+scripts/tah/hud.js	3601	ui-label	BOND
+scripts/tah/hud.js	3633	ui-label	Powers
+scripts/tah/hud.js	3699	ui-label	Unlock power
+scripts/tah/hud.js	3740	ui-label	<i class="fas fa-times"></i> Cancel
+scripts/tah/hud.js	3763	ui-label	Gear
+scripts/tah/hud.js	3830	ui-label	Class
+scripts/tah/hud.js	3906	ui-label	Templates
+scripts/tah/hud.js	3907	ui-label	Traits
+scripts/tah/hud.js	3994	ui-label	Systems
+scripts/tah/hud.js	4062	ui-label	Deployables
+scripts/tah/hud.js	4160	ui-label	ACTIVE
+scripts/tah/hud.js	4195	ui-label	CHARGE
+scripts/tah/hud.js	4214	ui-label	PASSIVE
+scripts/tah/hud.js	4234	ui-label	RESOURCES
+scripts/tah/hud.js	4415	ui-label	Talents
+scripts/tah/hud.js	4552	ui-label	RESOURCES
+scripts/tah/hud.js	4796	ui-label	Ammo
+scripts/tah/hud.js	4806	ui-label	Statuses
+scripts/tah/hud.js	4814	ui-label	Macros
+scripts/tah/hud.js	4877	ui-label	Add macro...
+scripts/tah/hud.js	4942	ui-label	Cancel
+scripts/tah/hud.js	5226	ui-label	RANGE
+scripts/tah/hud.js	5256	ui-label	FIGHT
+scripts/tah/hud.js	4910	placeholder	(select a macro)
+scripts/tah/hud.js	2672	prose-field	Trigger · +${bonus}
+scripts/tah/hud.js	2700	prose-field	Untrained Trigger · +0
+scripts/tah/hud.js	3931	prose-field	Template
+scripts/tah/hud.js	2823	html-content	<p>Fully repair these ${actors.length} units?</p><p style="opacity:0.75;">${actors.map(a => a.name).join(', ')}</p>
+scripts/tah/item-helpers.js	431	notification	${profileName} is already the active profile.
+scripts/tah/item-helpers.js	411	ui-label	PROFILES
+scripts/tah/status-panel.js	46	ui-label	Remove
+scripts/tah/status-panel.js	47	ui-label	Keep
+scripts/tah/status-panel.js	301	placeholder	Search statuses…
+scripts/tah/status-panel.js	314	tooltip	Click: apply or add a stack<br>Right-click: remove or reduce<br>Ctrl+click: favorite<br>Hover: description
+scripts/tah/status-wheel.js	358	notification	Enable the Token Action HUD to use the status wheel.
+scripts/tah/status-wheel.js	367	notification	No active or starred statuses. Star some in the Token Action HUD status panel.
+scripts/tah/tokenStatBar.js	1537	notification	Reset failed, see the console.
+scripts/tah/tokenStatBar.js	3371	notification	Only the GM can reinject auto bars.
+scripts/tah/tokenStatBar.js	3399	notification	Reinjected auto bars on ${sceneTokens} scene token(s) and ${prototypes} prototype(s)${failed ? 
+scripts/tah/tokenStatBar.js	3406	notification	No active scene.
+scripts/tah/tokenStatBar.js	3429	notification	No Lancer tokens on this scene.
+scripts/tah/tokenStatBar.js	3435	notification	Applied defaults to ${updates.length} token(s).
+scripts/tah/tokenStatBar.js	3440	notification	Failed to apply defaults, see the console.
+scripts/tah/tokenStatBar.js	1447	dialog-title	Link Item to Extra Bar
+scripts/tah/tokenStatBar.js	3149	dialog-title	Reaction (1 = available, 0 = used)
+scripts/tah/tokenStatBar.js	57	ui-label	Heat
+scripts/tah/tokenStatBar.js	72	ui-label	Stress
+scripts/tah/tokenStatBar.js	88	ui-label	Burn
+scripts/tah/tokenStatBar.js	107	ui-label	Stress
+scripts/tah/tokenStatBar.js	1449	ui-label	Link
+scripts/tah/tokenStatBar.js	1166	placeholder	Label
+scripts/tah/tokenStatBar.js	1223	placeholder	Actor.X.Item.Y (UUID)
+scripts/tools/compendium-tools.js	12	notification	lancer-automations macro pack not found
+scripts/tools/compendium-tools.js	16	notification	Macro "${macroName}" not found in lancer-automations pack
+scripts/tools/compendium-tools.js	27	notification	Only the GM can pack macros.
+scripts/tools/compendium-tools.js	33	notification	Compendium '${packKey}' not found. Ensure you updated module.json and RESTARTED Foundry.
+scripts/tools/compendium-tools.js	43	notification	No .json files found in ${sourcePath}
+scripts/tools/compendium-tools.js	45	notification	Synchronizing ${jsonFiles.length} macros into ${pack.label}...
+scripts/tools/compendium-tools.js	82	notification	Macro compendium synchronization complete!
+scripts/tools/compendium-tools.js	87	notification	An error occurred while packing macros. Check the console for details.
+scripts/tools/downtime-item.js	120	notification	Downtime import: invalid JSON.
+scripts/tools/downtime-item.js	127	notification	Downtime import: no downtime actions in this file.
+scripts/tools/downtime-item.js	166	notification	Downtime import: ${entries.length} activities in "${pack.title ?? 'Downtime Activities'}".
+scripts/tools/downtime-item.js	232	notification	Downtime import: no file selected.
+scripts/tools/downtime-item.js	240	notification	Downtime import: no actions.json in this LCP.
+scripts/tools/downtime-item.js	222	dialog-title	Import Downtime Actions
+scripts/tools/downtime-item.js	89	ui-label	Downtime Activity
+scripts/tools/downtime-item.js	99	ui-label	LA - Downtime Activities
+scripts/tools/downtime-item.js	226	ui-label	Import
+scripts/tools/downtime-item.js	245	ui-label	Cancel
+scripts/tools/downtime-item.js	223	html-content	<p>Select an <code>.lcp</code> file. Actions with activation "Downtime" become items in the "Downtime Activities" compendium.</p><input type="file" accept=".lcp,.json,application/json,application/zip" style="margin-bottom:6px;">
+scripts/tools/downtime.js	416	notification	Downtime: no pilot available.
+scripts/tools/downtime.js	598	notification	Manual Roll Mode is enabled but no value was entered. Please enter a dice result or disable Manual Roll Mode.
+scripts/tools/downtime.js	839	notification	Could not create "${journalFolderName}" folder. ${error}
+scripts/tools/downtime.js	854	notification	Error creating Downtime Journal: ${error}
+scripts/tools/downtime.js	438	dialog-title	Downtime: Pilot Selection
+scripts/tools/downtime.js	575	dialog-title	Downtime: Objective and Activity
+scripts/tools/downtime.js	790	dialog-title	Downtime Submitted
+scripts/tools/downtime.js	810	dialog-title	Downtime: Summary
+scripts/tools/downtime.js	886	dialog-title	Downtime Filed
+scripts/tools/downtime.js	442	ui-label	Proceed
+scripts/tools/downtime.js	579	ui-label	Submit Downtime Request
+scripts/tools/downtime.js	814	ui-label	Submit and Close
+scripts/tools/downtime.js	888	ui-label	Close
+scripts/tools/downtime.js	480	placeholder	Awaiting operation name...
+scripts/tools/downtime.js	482	placeholder	Quadrant, Line, Sector, Planet...
+scripts/tools/downtime.js	492	placeholder	Brief description of aim or goal of downtime activity
+scripts/tools/downtime.js	513	placeholder	Any Int
+scripts/tools/downtime.js	514	placeholder	Precision circumstantial modification coefficients. Add notes for ingestion by Evaluatory COMP/CON.
+scripts/tools/downtime.js	519	placeholder	Precision circumstantial modification coefficients, adjusted for causal free radicals. Add notes for ingestion by Evaluatory COMP/CON.
+scripts/tools/downtime.js	522	placeholder	Full override, bypasses Probability matrices. Precognitive bandwidth may exceed administrative NHP allotment. Use sparingly. Add notes for ingestion by Evaluatory COMP/CON.
+scripts/tools/downtime.js	727	placeholder	A brief summary of results, general analysis of success or failure, and potential next steps to continue on trajectory towards any goals or project completions
+scripts/tools/downtime.js	731	placeholder	Full override, bypasses Probability matrices. Precognitive bandwidth may exceed administrative NHP allotment. Use sparingly. Add notes for ingestion by Evaluatory COMP/CON.
+scripts/tools/downtime.js	791	html-content	<div class="lancer-dialog-header"><div class="lancer-dialog-title">DOWNTIME SUBMITTED</div><div class="lancer-dialog-subtitle">${pilotData.name}</div></div><p style="padding:0.5rem 0.25rem;">Your downtime request has been sent to the GM for review. You'll receive a link to the log once it's filed.</p>
+scripts/tools/downtime.js	868	html-content	<p><b>Downtime Report Filed</b></p><p>@UUID[${page.uuid}]{${pageName}}</p>
+scripts/tools/item-browser.js	202	notification	Copied LID: ${lid}
+scripts/tools/item-browser.js	94	dialog-title	Find Item
+scripts/tools/item-browser.js	120	ui-label	<i class="fas fa-times"></i> Cancel
+scripts/tools/item-browser.js	103	placeholder	Search by name or LID...
+scripts/tools/misc-tools.js	792	dev-message	lancer-automations | halfDamageOnSave needs a Token origin, damage roll skipped.
+scripts/tools/misc-tools.js	934	notification	Force Check: no targets selected.
+scripts/tools/misc-tools.js	1517	dev-message	lancer-automations | executeTechAttack: target (actor or item) is required.
+scripts/tools/misc-tools.js	1623	dev-message	lancer-automations | executeReactorMeltdown requires a token or actor.
+scripts/tools/misc-tools.js	1705	notification	Reactor Meltdown cancelled.
+scripts/tools/misc-tools.js	1729	dev-message	lancer-automations | executeReactorExplosion requires a token.
+scripts/tools/misc-tools.js	1895	dev-message	lancer-automations | activateGeneralAction: no general action "${name}".
+scripts/tools/misc-tools.js	1919	dev-message	lancer-automations | executeActivation requires an item.
+scripts/tools/misc-tools.js	1933	dev-message	lancer-automations | flow "${flowName}" not found.
+scripts/tools/misc-tools.js	1948	dev-message	lancer-automations | executeActivation: cannot determine flow for item.
+scripts/tools/misc-tools.js	2020	dev-message	lancer-automations | skirmish requires a token.
+scripts/tools/misc-tools.js	2164	dev-message	lancer-automations | barrage requires a token.
+scripts/tools/misc-tools.js	2388	dev-message	lancer-automations | executeInvade requires a token or actor.
+scripts/tools/misc-tools.js	1635	dialog-title	Reactor Meltdown
+scripts/tools/misc-tools.js	1718	dialog-title	Reactor Meltdown
+scripts/tools/misc-tools.js	1747	dialog-title	REACTOR EXPLOSION
+scripts/tools/misc-tools.js	2104	dialog-title	SKIRMISH WEAPON ORDER
+scripts/tools/misc-tools.js	2276	dialog-title	WEAPON ORDER
+scripts/tools/misc-tools.js	2313	dialog-title	BARRAGE MOUNT ORDER
+scripts/tools/misc-tools.js	639	prose-field	Waiting for ${ownerName} to roll…
+scripts/tools/misc-tools.js	1720	prose-field	Reactor meltdown initiated. Explosion will occur at the end of turn ${selectedTurns}. Your mech will be annihilated, dealing 4d6 Explosive Damage in a Burst 2 radius.
+scripts/tools/misc-tools.js	1748	prose-field	Confirm the tokens caught in the Burst 2. Close the card to cancel.
+scripts/tools/misc-tools.js	2314	prose-field	Select which mount to trigger. Aux weapons don't deal bonus damage.
+scripts/tools/movement-tools.js	45	notification	${token.name} is not Prone.
+scripts/tools/movement-tools.js	113	dev-message	lancer-automations | executeFall requires a target token.
+scripts/tools/movement-tools.js	139	notification	Token is already on the ground
+scripts/tools/movement-tools.js	155	notification	Token has fallen ${fallAmount} space${fallAmount !== totalFallAmount ? 
+scripts/tools/movement-tools.js	50	dialog-title	Standing Up
+scripts/tools/movement-tools.js	75	dialog-title	BOOST
+scripts/tools/movement-tools.js	95	dialog-title	TELEPORT
+scripts/tools/movement-tools.js	52	prose-field	Stands up, using their standard move (+${speed} speed). Removes Prone.
+scripts/tools/movement-tools.js	76	prose-field	Move up to your speed.
+scripts/tools/movement-tools.js	96	prose-field	Select destination within Range ${speed}. Costs ${moveCost} movement.
+scripts/tools/pilot-reserves.js	61	notification	Select a pilot or mech token.
+scripts/tools/pilot-reserves.js	171	notification	Added "${doc.name}" to ${pilot.name}.
+scripts/tools/pilot-reserves.js	178	notification	Enter a name.
+scripts/tools/pilot-reserves.js	184	notification	Added "${name}" to ${pilot.name}.
+scripts/tools/pilot-reserves.js	191	notification	Enter a name.
+scripts/tools/pilot-reserves.js	209	notification	Added project "${name}" to ${pilot.name}.
+scripts/tools/pilot-reserves.js	216	notification	Enter a name.
+scripts/tools/pilot-reserves.js	223	notification	Added "${name}" to ${pilot.name}.
+scripts/tools/pilot-reserves.js	138	dialog-title	Reserves — ${pilot.name}
+scripts/tools/pilot-reserves.js	208	ui-label	Project
+scripts/tools/pilot-reserves.js	108	placeholder	Name
+scripts/tools/pilot-reserves.js	109	placeholder	Details
+scripts/tools/pilot-reserves.js	113	placeholder	Name
+scripts/tools/pilot-reserves.js	114	placeholder	Details
+scripts/tools/pilot-reserves.js	120	placeholder	Custom requirement
+scripts/tools/pilot-reserves.js	124	placeholder	Organization Name
+scripts/tools/pilot-reserves.js	126	placeholder	Purpose / Goal
+scripts/tools/rest.js	321	notification	Not enough repairs available.
+scripts/tools/rest.js	415	notification	Total cost exceeds available repairs.
+scripts/tools/rest.js	601	notification	No mech for this token. Pick a mech token, or a pilot with an active mech.
+scripts/tools/rest.js	310	dialog-title	Emergency Recovery
+scripts/tools/rest.js	404	dialog-title	Rest
+scripts/tools/scan.js	571	dev-message	lancer-automations: ScanFlow not registered.
+scripts/tools/scan.js	588	notification	${game.user.name} attempted to run SCAN to Journal but lacks proper permissions. Please correct and try again.
+scripts/tools/scan.js	597	dev-message	lancer-automations: ScanFlow not registered.
+scripts/tools/scan.js	705	notification	${game.user.name} attempted to run SCAN to Journal but lacks proper permissions. Please correct and try again.
+scripts/tools/scan.js	717	notification	${FOLDER_NAME} does not exist and must be created manually.
+scripts/tools/scan.js	952	notification	Scan request sent to GM for ${targetArray.length} target${targetArray.length > 1 ? 's' : ''}.
+scripts/tools/scan.js	999	notification	Journal creation request sent to GM for ${targetArray.length} target${targetArray.length > 1 ? 's' : ''}
+scripts/tools/scan.js	1117	notification	No targets selected for Scan!
+scripts/tools/scan.js	1169	notification	Scan request sent to GM for ${targets.length} target${targets.length > 1 ? 's' : ''}
+scripts/tools/scan.js	1257	notification	No targets selected for Generate Scan.
+scripts/tools/scan.js	1428	notification	Regenerated ${results.updated.length}, missing ${results.missing.length}, skipped ${results.skipped.length}.
+scripts/tools/scan.js	969	dialog-title	System Scan Options
+scripts/tools/scan.js	1107	dialog-title	SCAN — Select Target
+scripts/tools/scan.js	1136	dialog-title	SCAN Action
+scripts/tools/scan.js	1270	dialog-title	Generate Scan
+scripts/tools/scan.js	514	ui-label	Hull
+scripts/tools/scan.js	1108	prose-field	Choose a target within Sensors (${sensorRange})
+scripts/tools/wreck.js	887	dialog-title	Wreck
+scripts/tools/wreck.js	888	dialog-title	Detection
+scripts/tools/wreck.js	889	dialog-title	Stat Hint
+scripts/tools/wreck.js	891	dialog-title	Scan
+scripts/tools/wreck.js	892	dialog-title	Elevation
+scripts/tools/wreck.js	1253	dialog-title	Link Scan Document: ${actor.name}
+scripts/tools/wreck.js	1332	dialog-title	Unlink Scan Document: ${actor.name}
+scripts/tools/wreck.js	1295	ui-label	<i class="fas fa-link"></i> Link
+scripts/tools/wreck.js	1317	ui-label	<i class="fas fa-times"></i> Cancel
+scripts/tools/wreck.js	1060	placeholder	Default (use global setting)
+scripts/tools/wreck.js	1246	placeholder	Search by name…
+scripts/tools/wreck.js	753	tooltip	Resurrect
+scripts/tools/wreck.js	976	tooltip	Pick a folder: a random file is used on each death
+scripts/tools/wreck.js	983	tooltip	Pick a folder: a random file is used on each death
+scripts/tools/wreck.js	990	tooltip	Pick a folder: a random file is used on each death
+scripts/tools/wreck.js	1333	html-content	             <div class="lancer-dialog-header">                 <h2 class="lancer-dialog-title">Unlink Scan Document</h2>                 <p class="lancer-dialog-subtitle">${_escapeText(actor.name)}</p>             </div>             <div class="form-group">                 <p>Remove the scan flag from ${docs.length} journal(s) linked to ${_escapeText(actor.name)}? The journals are not deleted.</p>             </div>         
+scripts/vision/lancerDetectionModes.js	1822	notification	Updating prototype token vision...
+scripts/vision/lancerDetectionModes.js	1837	notification	Updating placed token vision...
+scripts/vision/lancerDetectionModes.js	1874	notification	Token vision updated.
+scripts/vision/lancerDetectionModes.js	1884	ui-label	Lancer: Battlefield Awareness
+scripts/vision/lancerDetectionModes.js	1892	ui-label	Lancer: Sensors
+scripts/vision/lancerDetectionModes.js	1900	ui-label	Lancer: Line of Sight
+scripts/vision/lancerDetectionModes.js	1908	ui-label	Lancer: Line of Sight (shadow)
+scripts/vision/tokenBlocksVision.js	209	tooltip	Token blocks line of sight through its bounding box. The Bulwark status enables this automatically while active.
+scripts/vision/tokenBlocksVision.js	215	tooltip	Blocks Lancer line of sight, not Foundry vision.
+scripts/vision/visionFromEdge.js	548	tooltip	Vision computed from the token's perimeter (Lancer LOS-style) so larger tokens can peek around corners. 'Default' follows the world setting.
+startups/itemActivations.js	224	notification	Moving Target: Anti-materiel Rifle not found on ${reactorToken.name}.
+startups/itemActivations.js	1062	notification	Sniper's Mark: ${target.name} is now marked.
+startups/itemActivations.js	1065	notification	Sniper's Mark: removed from ${target.name}.
+startups/itemActivations.js	2358	notification	${token.name} takes 3 AP Kinetic damage from Sandblast.
+startups/itemActivations.js	3066	notification	Predatory Logic: ${target.name} has no non-Superheavy weapon.
+startups/itemActivations.js	3142	notification	Petrify is already affecting a character.
+startups/itemActivations.js	3150	notification	Petrify: ${target.name} was already petrified this scene.
+startups/itemActivations.js	3293	notification	Battlefield Diagnostics: Multiple targets hit. Only applying to the first target.
+startups/itemActivations.js	3342	notification	${target.name}'s ${chosenWeapon.name} loses Ordnance until the end of their next turn!
+startups/itemActivations.js	3386	notification	${target.name}'s ${chosenWeapon.name} gains ${tagDisplayName} until the end of their next turn!
+startups/itemActivations.js	3395	notification	${target.name} has no valid weapons to calibrate.
+startups/itemActivations.js	3442	notification	${target.name} has no conditions to clear.
+startups/itemActivations.js	3457	notification	Cleared ${chosenCondition.name} from ${target.name}.
+startups/itemActivations.js	5606	notification	${target.name}: ${statusId} cleared.
+startups/itemActivations.js	5962	notification	${reactorToken.name} has no Sealant Blend immobilization to break free from.
+startups/itemActivations.js	5967	notification	${reactorToken.name} breaks free from the Sealant Blend!
+startups/itemActivations.js	89	dialog-title	SUPPRESS
+startups/itemActivations.js	180	dialog-title	INTERRUPT MOVEMENT?
+startups/itemActivations.js	228	dialog-title	MOVING TARGET
+startups/itemActivations.js	284	dialog-title	INTERRUPT MOVEMENT?
+startups/itemActivations.js	364	dialog-title	SEALANT GUN
+startups/itemActivations.js	391	dialog-title	Sealant Gun Save
+startups/itemActivations.js	403	dialog-title	Sealant
+startups/itemActivations.js	436	dialog-title	ENGINEER'S MARK
+startups/itemActivations.js	627	dialog-title	RESTOCK DRONE
+startups/itemActivations.js	767	dialog-title	DEFENSE NET - FORCED OFFLINE
+startups/itemActivations.js	1041	dialog-title	SNIPER'S MARK
+startups/itemActivations.js	1139	dialog-title	SNIPER'S MARK - EXPOSED
+startups/itemActivations.js	1278	dialog-title	REBOUND
+startups/itemActivations.js	1291	dialog-title	REBOUND
+startups/itemActivations.js	1316	dialog-title	REBOUND
+startups/itemActivations.js	1327	dialog-title	REBOUND
+startups/itemActivations.js	1396	dialog-title	INSTINCT MODE
+startups/itemActivations.js	1407	dialog-title	Instinct Mode
+startups/itemActivations.js	1415	dialog-title	INSTINCT MODE
+startups/itemActivations.js	1462	dialog-title	COUNTER-BALLISTIC SUITE
+startups/itemActivations.js	1511	dialog-title	COUNTER-BALLISTIC SUITE
+startups/itemActivations.js	1618	dialog-title	MAG FIELD
+startups/itemActivations.js	1632	dialog-title	MAG FIELD
+startups/itemActivations.js	1850	dialog-title	MELT
+startups/itemActivations.js	2051	dialog-title	STORMFALL
+startups/itemActivations.js	2073	dialog-title	Stormfall
+startups/itemActivations.js	2150	dialog-title	SMOKE CHARGES
+startups/itemActivations.js	2179	dialog-title	HARPY TURBOJETS
+startups/itemActivations.js	2285	dialog-title	TERRAIN PRINTER
+startups/itemActivations.js	2539	dialog-title	PRIMARY WEAPON
+startups/itemActivations.js	2772	dialog-title	PULVERIZER CHARGE
+startups/itemActivations.js	2795	dialog-title	Pulverizer Charge - Hull Save
+startups/itemActivations.js	2965	dialog-title	TEAR DOWN
+startups/itemActivations.js	2972	dialog-title	TEAR DOWN
+startups/itemActivations.js	3009	dialog-title	Blind
+startups/itemActivations.js	3048	dialog-title	PREDATORY LOGIC
+startups/itemActivations.js	3069	dialog-title	PREDATORY LOGIC
+startups/itemActivations.js	3328	dialog-title	CHOOSE WEAPON
+startups/itemActivations.js	3364	dialog-title	CHOOSE WEAPON
+startups/itemActivations.js	3400	dialog-title	BATTLEFIELD DIAGNOSTICS
+startups/itemActivations.js	3430	dialog-title	SPLINT TRIAGE
+startups/itemActivations.js	3450	dialog-title	CLEAR CONDITION
+startups/itemActivations.js	3555	dialog-title	SMOKE GRENADE
+startups/itemActivations.js	3585	dialog-title	SCORCHER MISSILE
+startups/itemActivations.js	3671	dialog-title	Remote Machine Gun
+startups/itemActivations.js	3705	dialog-title	DISPERSAL SHIELD
+startups/itemActivations.js	3762	dialog-title	SMOKE LAUNCHERS
+startups/itemActivations.js	3862	dialog-title	REMOTE CLOUD
+startups/itemActivations.js	3907	dialog-title	SQUAD LEADER
+startups/itemActivations.js	3988	dialog-title	ASSAULT CARBINE
+startups/itemActivations.js	3999	dialog-title	ASSAULT CARBINE - MOVE
+startups/itemActivations.js	4026	dialog-title	ASSAULT CARBINE
+startups/itemActivations.js	4037	dialog-title	ASSAULT CARBINE - MOVE
+startups/itemActivations.js	4078	dialog-title	VOICE OF AUTHORITY
+startups/itemActivations.js	4128	dialog-title	TRUE GRIT
+startups/itemActivations.js	4229	dialog-title	COORDINATED MANEUVERS
+startups/itemActivations.js	4239	dialog-title	COORDINATED MANEUVERS - ${ally.name}
+startups/itemActivations.js	4297	dialog-title	Triangulation Ping Save
+startups/itemActivations.js	4505	dialog-title	DUCK STRIDER
+startups/itemActivations.js	4624	dialog-title	LIGHTNING REFLEXES
+startups/itemActivations.js	4670	dialog-title	FEIGN DEATH
+startups/itemActivations.js	4796	dialog-title	SLURRY CANNON
+startups/itemActivations.js	4812	dialog-title	SLURRY CANNON
+startups/itemActivations.js	4842	dialog-title	Sealant Blend - Hull Save
+startups/itemActivations.js	4994	dialog-title	CITADEL COMBAT TERRAFORMER
+startups/itemActivations.js	5016	dialog-title	PRINT
+startups/itemActivations.js	5028	dialog-title	PRINT
+startups/itemActivations.js	5042	dialog-title	PRINT
+startups/itemActivations.js	5070	dialog-title	RIFT
+startups/itemActivations.js	5111	dialog-title	SHARPEN
+startups/itemActivations.js	5167	dialog-title	TREMOR
+startups/itemActivations.js	5182	dialog-title	Tremor - Hull Save
+startups/itemActivations.js	5237	dialog-title	Rift Collapse - Agility Save
+startups/itemActivations.js	5320	dialog-title	THROW ALLY
+startups/itemActivations.js	5328	dialog-title	INSERTION CATAPULT
+startups/itemActivations.js	5350	dialog-title	Insertion Catapult - Hull Save
+startups/itemActivations.js	5364	dialog-title	INSERTION CATAPULT - COLLISION
+startups/itemActivations.js	5432	dialog-title	TERRAIN PRINTER - WAYPOINT 1
+startups/itemActivations.js	5451	dialog-title	TERRAIN PRINTER - WAYPOINT 2
+startups/itemActivations.js	5513	dialog-title	SANDBLAST
+startups/itemActivations.js	5554	dialog-title	QUICK MARCH
+startups/itemActivations.js	5589	dialog-title	PRESS ON
+startups/itemActivations.js	5621	dialog-title	PRESS ON
+startups/itemActivations.js	5655	dialog-title	POUR IT ON
+startups/itemActivations.js	5718	dialog-title	PRESS THE ATTACK
+startups/itemActivations.js	5761	dialog-title	PRESS THE ATTACK - Choose Weapon
+startups/itemActivations.js	5806	dialog-title	VOLLEY - RAINMAKER
+startups/itemActivations.js	5866	dialog-title	Rainmaker - Agility Save
+startups/itemActivations.js	5870	dialog-title	${item.name} - Rainmaker Volley
+startups/itemActivations.js	90	prose-field	Select a target within Range 10 to suppress.
+startups/itemActivations.js	105	prose-field	Impaired. Moving lets the Archer interrupt with an attack.
+startups/itemActivations.js	109	prose-field	Suppressed by Archer
+startups/itemActivations.js	181	prose-field	<b>${mover.name}</b> is moving into <b>${reactorToken.name}</b> sights. It movement can be interrupted
+startups/itemActivations.js	229	prose-field	<b>${mover?.name ?? 'Target'}</b> is pushing through your sights. Fire!
+startups/itemActivations.js	286	prose-field	<b>${mover.name}</b> is suppressed by <b>${reactorToken.name}</b>. Its movement can be interrupted.
+startups/itemActivations.js	365	prose-field	Select a character within Range 5.
+startups/itemActivations.js	382	prose-field	Sealant Gun (Allied)
+startups/itemActivations.js	395	prose-field	Sealant Gun (Hostile)
+startups/itemActivations.js	437	prose-field	Choose the target the turrets will fire on.
+startups/itemActivations.js	446	prose-field	The engineer's turrets fire on this character.
+startups/itemActivations.js	448	prose-field	Turrets target this character
+startups/itemActivations.js	531	prose-field	Fire as a free action?
+startups/itemActivations.js	599	prose-field	Regain ${healAmount} HP
+startups/itemActivations.js	615	prose-field	Reload a Loading Weapon
+startups/itemActivations.js	628	prose-field	${token.name} entered the Restock Drone's zone. Choose an interaction:
+startups/itemActivations.js	768	prose-field	<b>${reactorToken.name}</b>'s Defense Net has been forcibly shut down.
+startups/itemActivations.js	1042	prose-field	Choose a target to mark. Same target removes the mark.
+startups/itemActivations.js	1058	prose-field	Free action to fall prone. While marked with no cover and not prone, the Anti-Materiel Rifle can trade its damage for 1 structure.
+startups/itemActivations.js	1093	prose-field	Fall prone as required by Sniper's Mark.
+startups/itemActivations.js	1140	prose-field	<b>${target.name}</b> is marked and exposed. Replace the rifle's damage with 1 structure?
+startups/itemActivations.js	1279	prose-field	Use <b>Rebound</b> against <b>${attacker?.name ?? 'the attacker'}</b>'s attack?
+startups/itemActivations.js	1317	prose-field	Boost towards <b>${attacker?.name ?? 'the attacker'}</b>?
+startups/itemActivations.js	1328	prose-field	Boost towards the attacker.
+startups/itemActivations.js	1357	prose-field	Once per turn, a ranged attack in line of sight lets the Ronin boost to the attacker and strike.
+startups/itemActivations.js	1397	prose-field	Boost towards <b>${attacker?.name ?? 'the attacker'}</b> and strike with the Carbon Fiber Sword?
+startups/itemActivations.js	1409	prose-field	Boost towards the attacker, then strike with the Carbon Fiber Sword.
+startups/itemActivations.js	1416	prose-field	Boost towards the attacker.
+startups/itemActivations.js	1463	prose-field	Give <b>${attacker?.name ?? 'the attacker'}</b> a Ronin's Mark?
+startups/itemActivations.js	1478	prose-field	Carbon Fiber Sword hits consume this for +1d6 bonus damage.
+startups/itemActivations.js	1480	prose-field	Carbon Fiber Sword hits can consume this for +1d6 bonus damage
+startups/itemActivations.js	1512	prose-field	Consume the Ronin's Mark on <b>${target.name}</b> for <b>+1d6 bonus damage</b>?
+startups/itemActivations.js	1585	prose-field	Chaff Launchers
+startups/itemActivations.js	1619	prose-field	Use <b>Mag Field</b>?
+startups/itemActivations.js	1633	prose-field	Choose a character to also take the damage.
+startups/itemActivations.js	1658	prose-field	Hit by the Thermal Lance. Another Thermal Lance hit this turn adds Focus Down burn.
+startups/itemActivations.js	1660	prose-field	Hit by the Thermal Lance
+startups/itemActivations.js	1783	prose-field	Emergency Vent
+startups/itemActivations.js	1851	prose-field	Choose an object, deployable or Drone within Range 10.
+startups/itemActivations.js	2020	prose-field	Thunderbolt Jumpjets
+startups/itemActivations.js	2052	prose-field	Burst 2 pulse of disrupting electricity.
+startups/itemActivations.js	2117	prose-field	Cannot take reactions.
+startups/itemActivations.js	2119	prose-field	Full-Spectrum Overload
+startups/itemActivations.js	2151	prose-field	Place a Blast 2 smoke zone within Range 5.
+startups/itemActivations.js	2180	prose-field	Use <b>Harpy Turbojets</b>?
+startups/itemActivations.js	2320	prose-field	Sandblast
+startups/itemActivations.js	2540	prose-field	<b>${reactorToken.name}</b> can attack twice. Fire the extra attack first?
+startups/itemActivations.js	2661	prose-field	Tunneller
+startups/itemActivations.js	2680	prose-field	Tunnelling
+startups/itemActivations.js	2800	prose-field	Pulverizer Charge
+startups/itemActivations.js	2857	prose-field	Rock Grinder
+startups/itemActivations.js	2905	prose-field	4 Heat at the Witch's turn start. Someone adjacent can Stabilize to end it instead of cooling.
+startups/itemActivations.js	2907	prose-field	Tear Down
+startups/itemActivations.js	2966	prose-field	${stabilizer.name} can end Tear Down in place of cooling.
+startups/itemActivations.js	2973	prose-field	End Tear Down on <b>${picked.name}</b> instead of cooling?
+startups/itemActivations.js	3049	prose-field	<b>${target.name}</b> can take the <b>Brace</b> reaction to ignore this.
+startups/itemActivations.js	3070	prose-field	Choose the weapon <b>${target.name}</b> attacks with.
+startups/itemActivations.js	3156	prose-field	Petrify
+startups/itemActivations.js	3164	prose-field	Worsens at the end of each of this character's turns: slowed, then immobilized, then stunned.
+startups/itemActivations.js	3166	prose-field	Petrify
+startups/itemActivations.js	3201	prose-field	Petrify
+startups/itemActivations.js	3209	prose-field	Worsens at the end of each of this character's turns: slowed, then immobilized, then stunned.
+startups/itemActivations.js	3211	prose-field	Petrify
+startups/itemActivations.js	3311	prose-field	Reload a Loading Weapon
+startups/itemActivations.js	3323	prose-field	Remove Ordnance
+startups/itemActivations.js	3329	prose-field	Select which weapon loses Ordnance:
+startups/itemActivations.js	3359	prose-field	Add ${tagDisplayName}
+startups/itemActivations.js	3365	prose-field	Select which weapon gains ${tagDisplayName}:
+startups/itemActivations.js	3401	prose-field	Choose an upgrade for ${target.name}'s weapons:
+startups/itemActivations.js	3431	prose-field	Select an adjacent ally to clear a condition.
+startups/itemActivations.js	3451	prose-field	Select a condition to clear from ${target.name}.
+startups/itemActivations.js	3525	prose-field	Fast Vehicle Boost
+startups/itemActivations.js	3556	prose-field	Place a Blast 1 smoke zone within Range 5.
+startups/itemActivations.js	3586	prose-field	Place a single hex dangerous zone.
+startups/itemActivations.js	3620	prose-field	Remote Machine Gun
+startups/itemActivations.js	3706	prose-field	Select an allied target (or self) within Sensor Range.
+startups/itemActivations.js	3723	prose-field	Dispersal Shield (${charges} charges)
+startups/itemActivations.js	3763	prose-field	Place one or two Blast 2 smoke zones within Range 5.
+startups/itemActivations.js	3863	prose-field	Place a Blast 2 nanite cloud within Range 5.
+startups/itemActivations.js	3908	prose-field	Select an ally
+startups/itemActivations.js	3989	prose-field	${reactorToken.name} may move 2 spaces before attacking - ignores engagement, doesn't provoke reactions.
+startups/itemActivations.js	4000	prose-field	Move 2 spaces. Ignores engagement, no reactions.
+startups/itemActivations.js	4027	prose-field	${reactorToken.name} may move 2 spaces after attacking - ignores engagement, doesn't provoke reactions.
+startups/itemActivations.js	4038	prose-field	Move 2 spaces. Ignores engagement, no reactions.
+startups/itemActivations.js	4079	prose-field	Let <b>${ally?.name ?? 'the ally'}</b> reroll?
+startups/itemActivations.js	4129	prose-field	<b>${ally.name}</b> would fall to 0 HP. Keep at 1 HP?
+startups/itemActivations.js	4181	prose-field	Pick up to 2 unspent allies in Sensors. Sergeant + allies each Skirmish; allies then count as having acted.
+startups/itemActivations.js	4230	prose-field	Pick up to 2 allied characters within Sensors. Each moves up to 3 spaces, ignoring engagement and reactions.
+startups/itemActivations.js	4240	prose-field	Move up to 3 spaces in any direction. Ignores engagement, no reactions.
+startups/itemActivations.js	4301	prose-field	Failed Triangulation Ping Save
+startups/itemActivations.js	4506	prose-field	${triggerData.triggeringToken?.name ?? "An attacker"} hit you from long range! Duck to evade?
+startups/itemActivations.js	4625	prose-field	<b>${reactorToken.name}</b> is hit by a heavy weapon - roll 1d6, on 5+ avoid the hit!
+startups/itemActivations.js	4630	prose-field	Roll 1d6
+startups/itemActivations.js	4671	prose-field	Does <b>${reactorToken.name}</b> feign death?
+startups/itemActivations.js	4676	prose-field	Feign Death
+startups/itemActivations.js	4717	prose-field	Climber
+startups/itemActivations.js	4738	prose-field	Moving Building
+startups/itemActivations.js	4797	prose-field	Place Hard Cover within the attack Range.
+startups/itemActivations.js	4847	prose-field	Sealant Blend
+startups/itemActivations.js	4854	prose-field	Break free from the Sealant Blend immobilization.
+startups/itemActivations.js	4902	prose-field	Architect Protector
+startups/itemActivations.js	4966	prose-field	Recharge 4+: Place up to 3 blocks of size 1 hard cover within Range 3, or one block of Size 2 cover.
+startups/itemActivations.js	4969	prose-field	Choose a Line 5 area in Range 5. At the start of its next turn the area collapses.
+startups/itemActivations.js	4972	prose-field	A Blast 1 area in Sensors becomes difficult terrain until end of scene or next use.
+startups/itemActivations.js	4975	prose-field	All characters in a Blast 1 area in Sensors must pass a Hull save or be knocked Prone.
+startups/itemActivations.js	4995	prose-field	Choose an action:
+startups/itemActivations.js	5017	prose-field	Choose cover configuration:
+startups/itemActivations.js	5021	prose-field	3\u00d7 Size 1 Hard Cover
+startups/itemActivations.js	5029	prose-field	Place Size 1 hard cover within Range 3.
+startups/itemActivations.js	5034	prose-field	1\u00d7 Size 2 Hard Cover
+startups/itemActivations.js	5043	prose-field	Place Size 2 hard cover within Range 3.
+startups/itemActivations.js	5112	prose-field	Blast 1 difficult terrain. Prone characters take ${damage} Kinetic.
+startups/itemActivations.js	5297	prose-field	Throw an adjacent ally (same size or smaller) to any space within Range 10.
+startups/itemActivations.js	5321	prose-field	Choose an adjacent ally (size ${architectSize} or smaller) to throw.
+startups/itemActivations.js	5329	prose-field	Choose destination within Range 10.
+startups/itemActivations.js	5365	prose-field	Did ${ally.name} hit a character?
+startups/itemActivations.js	5433	prose-field	Place first waypoint within Range 3.
+startups/itemActivations.js	5452	prose-field	Place second waypoint within Range 5 of the first.
+startups/itemActivations.js	5514	prose-field	Place a Blast 2 particulate zone within Sensors.
+startups/itemActivations.js	5555	prose-field	Select an ally within line of sight. They may Boost.
+startups/itemActivations.js	5590	prose-field	Select an ally (Stunned or Jammed) within line of sight.
+startups/itemActivations.js	5622	prose-field	Clear which condition from <b>${target.name}</b>?
+startups/itemActivations.js	5656	prose-field	Select an ally within Sensors. Their next ranged or melee attack deals +1d6 bonus damage on hit.
+startups/itemActivations.js	5719	prose-field	<b>${attacker.name}</b> damaged <b>${triggerData.target?.name}</b>. Use Press the Attack? On hit, <b>${reactorToken.name}</b> deals half damage / heat / burn.
+startups/itemActivations.js	5891	prose-field	Move up to your SPEED. Industrial frames Boost as a full action.
+startups/itemActivations.js	243	html-content	<div class="lancer-chat-message"><b>${reactorToken.name} - Moving Target</b><br>The Anti-materiel Rifle wasn't loaded. ${reactorToken.name} reloads.</div>
+startups/itemActivations.js	5248	html-content	<b>${reactorToken.name} - RIFT COLLAPSE</b><br>Objects and terrain in the Rift area are destroyed.
+startups/personalStuff.js	90	notification	No tokens selected
+templates/battelog/gm-card.hbs	4	template	Combat Concluded
+templates/battelog/gm-card.hbs	7	template	GM ONLY
+templates/battelog/gm-card.hbs	16	template	COMBAT ENCOUNTER
+templates/battelog/gm-card.hbs	22	template	Record Outcome
+templates/battelog/gm-card.hbs	26	template	VICTORY
+templates/battelog/gm-card.hbs	30	template	DEFEAT
+templates/battelog/gm-card.hbs	37	template	Award MVP
+templates/battelog/gm-card.hbs	52	template	Dismiss
+templates/battelog/gm-card.hbs	56	template	Broadcast Recap
+templates/battelog/gm-card.hbs	60	template	Visible to all connected pilots.
+templates/downtime-item.hbs	25	template	RESULTS
+templates/downtime-item.hbs	45	template	Add Result
+templates/grouped-settings.html	93	template	Save
+templates/lancer-automations-config.html	44	template	Play
+templates/lancer-automations-config.html	130	template	LANCER AUTOMATIONS
+templates/lancer-automations-config.html	131	template	Module configuration
+templates/lancer-automations-config.html	136	template	Ctrl F
+templates/lancer-automations-config.html	141	template	Contact me
+templates/lancer-automations-config.html	142	template	Patreon
+templates/lancer-automations-config.html	211	template	Changes apply on save. Some settings ask for a reload.
+templates/lancer-automations-config.html	212	template	Save
+templates/reaction-config.html	4	template	Activation Manager
+templates/reaction-config.html	10	template	Manage default and custom activations for checking triggers.
+templates/reaction-config.html	14	template	Activations
+templates/reaction-config.html	15	template	Defaults
+templates/reaction-config.html	16	template	Startup
+templates/reaction-config.html	17	template	Workshop
+templates/reaction-config.html	24	template	Add                     Activation
+templates/reaction-config.html	26	template	Create Folder
+templates/reaction-config.html	28	template	Export Pack
+templates/reaction-config.html	30	template	Import Pack
+templates/reaction-config.html	33	template	Drag items onto folder headers to                 organize.
+templates/reaction-config.html	40	template	All Triggers
+templates/reaction-config.html	52	template	Type
+templates/reaction-config.html	53	template	Name / LID
+templates/reaction-config.html	54	template	Triggers
+templates/reaction-config.html	55	template	Controls
+templates/reaction-config.html	175	template	Unfiled
+templates/reaction-config.html	262	template	No custom activations defined.
+templates/reaction-config.html	271	template	Default activations from the                 registry. Click copy to create an editable override.
+templates/reaction-config.html	278	template	All Triggers
+templates/reaction-config.html	290	template	Type
+templates/reaction-config.html	291	template	Name / LID
+templates/reaction-config.html	292	template	Triggers
+templates/reaction-config.html	346	template	EDITED
+templates/reaction-config.html	372	template	EDITED
+templates/reaction-config.html	376	template	EDITED
+templates/reaction-config.html	401	template	Add                     Script
+templates/reaction-config.html	404	template	Scripts run on module ready. Use                                               to register reusable                 helpers, then access them in activations via                                     .
+templates/reaction-config.html	411	template	Type
+templates/reaction-config.html	412	template	Name / Description
+templates/reaction-config.html	413	template	When
+templates/reaction-config.html	414	template	Controls
+templates/reaction-config.html	435	template	On Ready
+templates/reaction-config.html	444	template	No startup scripts defined.
+templates/reaction-config.html	454	template	Loading the workshop...
+templates/reaction-editor.html	23	template	General Activation
+templates/reaction-editor.html	24	template	(applies to all tokens, no item required)
+templates/reaction-editor.html	28	template	Load for Debug
+templates/reaction-editor.html	29	template	Copy
+templates/reaction-editor.html	30	template	Paste
+templates/reaction-editor.html	37	template	Activation Name
+templates/reaction-editor.html	39	template	A unique name for this activation.
+templates/reaction-editor.html	42	template	Comments
+templates/reaction-editor.html	44	template	Shown in the manager list.
+templates/reaction-editor.html	48	template	Scene Reactor / Scene
+templates/reaction-editor.html	52	template	Add (scene and tokens)
+templates/reaction-editor.html	53	template	Only (scene, no tokens)
+templates/reaction-editor.html	56	template	Any scene
+templates/reaction-editor.html	62	template	Scene Reactor evaluates once as the viewed scene, on the GM client. Add keeps the per-token                 passes, Only replaces them. Scene limits the whole activation to one scene.
+templates/reaction-editor.html	70	template	Item LID / Deployable LID / Actor UUID
+templates/reaction-editor.html	74	template	Item
+templates/reaction-editor.html	75	template	Deploy
+templates/reaction-editor.html	76	template	Actor
+templates/reaction-editor.html	79	template	Item                        , deployable LID, or actor UUID.
+templates/reaction-editor.html	82	template	Comments
+templates/reaction-editor.html	84	template	Shown in the manager list.
+templates/reaction-editor.html	90	template	No item found
+templates/reaction-editor.html	97	template	Action Path
+templates/reaction-editor.html	100	template	Find Action
+templates/reaction-editor.html	102	template	Path within                     to the action data. Leave empty to use the item itself.                 (system)
+templates/reaction-editor.html	110	template	Only On Source Match
+templates/reaction-editor.html	112	template	Matches the action name from             the trigger against the Activation Name above.
+templates/reaction-editor.html	114	template	Matches the triggering item LID,             deployable LID, or actor UUID.
+templates/reaction-editor.html	119	template	Descriptions
+templates/reaction-editor.html	122	template	Trigger Description
+templates/reaction-editor.html	125	template	Overrides trigger text from Action Path. Required for general reactions.
+templates/reaction-editor.html	128	template	Effect Description
+templates/reaction-editor.html	131	template	Overrides effect text from Action Path. Required for general reactions.
+templates/reaction-editor.html	165	template	Custom
+templates/reaction-editor.html	171	template	cancel / change fns
+templates/reaction-editor.html	172	template	carries targets
+templates/reaction-editor.html	173	template	allows source match
+templates/reaction-editor.html	179	template	Who reacts
+templates/reaction-editor.html	183	template	React to Self
+templates/reaction-editor.html	187	template	React to Others
+templates/reaction-editor.html	192	template	React as Target
+templates/reaction-editor.html	196	template	Out of Combat
+templates/reaction-editor.html	200	template	Disposition
+templates/reaction-editor.html	200	template	none picked means no                         filter
+templates/reaction-editor.html	206	template	Friendly
+templates/reaction-editor.html	211	template	Neutral
+templates/reaction-editor.html	216	template	Hostile
+templates/reaction-editor.html	221	template	Secret
+templates/reaction-editor.html	227	template	Preconditions
+templates/reaction-editor.html	232	template	Check Reaction
+templates/reaction-editor.html	237	template	Check Usage
+templates/reaction-editor.html	242	template	Require Provokable
+templates/reaction-editor.html	246	template	Execution
+templates/reaction-editor.html	250	template	Auto Activate
+templates/reaction-editor.html	257	template	Await Activation
+templates/reaction-editor.html	261	template	Declared type
+templates/reaction-editor.html	264	template	Action Type
+templates/reaction-editor.html	274	template	Frequency
+templates/reaction-editor.html	283	template	Display only. See the help icons for the exceptions.
+templates/reaction-editor.html	289	template	Function Reference
+templates/reaction-editor.html	290	template	Trigger Data Reference
+templates/reaction-editor.html	294	template	Evaluate Function
+templates/reaction-editor.html	300	template	Must return                   or                   . An async evaluate is rejected and treated as false.                 Variables:                         ,                         ,                          ,                                  ,                            ,                 .
+templates/reaction-editor.html	309	template	Activation Type
+templates/reaction-editor.html	312	template	None
+templates/reaction-editor.html	313	template	Flow (default)
+templates/reaction-editor.html	314	template	Macro
+templates/reaction-editor.html	315	template	JavaScript
+templates/reaction-editor.html	318	template	Instead of flow (code only)
+templates/reaction-editor.html	320	template	Alongside flow (also posts                     card)
+templates/reaction-editor.html	324	template	None (no activation), Flow (shows chat card), Macro/JS (run custom code). Mode: run Macro/JS             alone, or alongside this reaction's own flow/card.
+templates/reaction-editor.html	327	template	Alongside flow
+templates/reaction-editor.html	327	template	also fires this reaction's own flow / chat card.             It does not delay your code until after the triggering action, both run together. The action you are             reacting to always runs either way.
+templates/reaction-editor.html	332	template	With an activation trigger (                         ,                                          ,                             ,                                 ) and this             setting, re-activating the same item would loop. Lancer Automations will skip the item re-activation             (console warning). Prefer
+templates/reaction-editor.html	335	template	Instead of flow
+templates/reaction-editor.html	335	template	for clearer behavior.
+templates/reaction-editor.html	340	template	Macro Name
+templates/reaction-editor.html	344	template	Variables:                         ,                         ,                          ,                              ,                            ,
+templates/reaction-editor.html	350	template	Activation Code
+templates/reaction-editor.html	356	template	Variables:                         ,                         ,                          ,                                  ,                            ,
+templates/reaction-editor.html	363	template	onInit Code
+templates/reaction-editor.html	369	template	Runs when a token enters the scene, or when the scene loads for a scene reactor. Variables:                                   ,                  ,
+templates/reaction-editor.html	376	template	onMessage Code
+templates/reaction-editor.html	382	template	Runs via                                                            . Variables:                                         ,                  ,                          ,                  ,                                            ,
+templates/reaction-editor.html	391	template	Save Activation
+templates/reaction-editor.html	394	template	Close
+templates/rest-emergency.html	12	template	CATASTROPHIC DAMAGE DETECTED
+templates/rest-emergency.html	13	template	Chassis recovery requires
+templates/rest-emergency.html	13	template	repairs total.
+templates/rest-emergency.html	19	template	From Pilot
+templates/rest-emergency.html	23	template	Allies
+templates/rest-emergency.html	27	template	GM Grant
+templates/rest-emergency.html	31	template	Pool
+templates/rest-emergency.html	35	template	Still Required
+templates/rest-emergency.html	42	template	ALLY REPAIR POOL
+templates/rest-emergency.html	64	template	GM FREE REPAIR
+templates/rest-emergency.html	67	template	Free Repairs
+templates/rest-emergency.html	69	template	added to pool, no source
+templates/rest-menu.html	13	template	REPAIRS
+templates/rest-menu.html	21	template	CONDITIONS &amp; HEAT
+templates/rest-menu.html	26	template	Reset Heat
+templates/rest-menu.html	30	template	FREE
+templates/rest-menu.html	36	template	Clear Status Effects
+templates/rest-menu.html	42	template	FREE
+templates/rest-menu.html	46	template	No conditions to clear.
+templates/rest-menu.html	52	template	CHASSIS HEALTH
+templates/rest-menu.html	57	template	Restore HP to Full
+templates/rest-menu.html	66	template	Structure
+templates/rest-menu.html	76	template	Stress
+templates/rest-menu.html	89	template	DESTROYED EQUIPMENT
+templates/rest-menu.html	113	template	ALLY REPAIR POOL
+templates/rest-menu.html	135	template	GM FREE REPAIR
+templates/rest-menu.html	138	template	Free Repairs
+templates/rest-menu.html	140	template	added to pool, no source
+templates/rest-menu.html	147	template	REPAIR COST
+templates/scan-chat.html	18	template	No information provided.
+templates/scan-chat.html	64	template	TECH
+templates/scan-chat.html	85	template	TECH
+templates/scan-chat.html	92	template	REACT
+templates/scan-chat.html	106	template	TRAIT
+templates/scan-chat.html	114	template	Open Scan Journal
+templates/scan-chooser.html	3	template	SCAN ACTION
+templates/scan-chooser.html	7	template	Choose scan type:
+templates/scan-chooser.html	11	template	FULL SYSTEMS SCAN
+templates/scan-chooser.html	12	template	Stats, weapons, systems, traits.
+templates/scan-chooser.html	16	template	HIDDEN INFO
+templates/scan-chooser.html	17	template	GM-only knowledge whispered to scanner.
+templates/scan-chooser.html	21	template	PUBLIC INFO
+templates/scan-chooser.html	22	template	Common knowledge revealed to all.
+templates/scan-generate.html	3	template	GENERATE SCAN
+templates/scan-generate.html	11	template	CHAT
+templates/scan-generate.html	12	template	Post a chat card only.
+templates/scan-generate.html	16	template	CHAT + JOURNAL
+templates/scan-generate.html	17	template	Post chat and create / update the journal entry.
+templates/scan-generate.html	21	template	JOURNAL
+templates/scan-generate.html	22	template	Create / update the journal entry quietly.
+templates/scan-generate.html	27	template	Custom journal name (optional)
+templates/scan-generate.html	33	template	Custom Ownership
+templates/scan-generate.html	36	template	Ownership
+templates/scan-generate.html	42	template	No Change
+templates/scan-generate.html	43	template	None
+templates/scan-generate.html	44	template	Limited
+templates/scan-generate.html	45	template	Observer
+templates/scan-generate.html	46	template	Owner
+templates/scan-gm-input.html	11	template	Hidden Information
+templates/scan-gm-input.html	13	template	Public Information
+templates/scan-gm-input.html	19	template	Information to share
+templates/scan-overview.html	13	template	HASE
+templates/scan-overview.html	28	template	STATS
+templates/scan-overview.html	44	template	FRAME TRAITS
+templates/scan-overview.html	67	template	CORE BONUSES
+templates/scan-overview.html	79	template	CORE POWER
+templates/scan-overview.html	110	template	TALENTS
+templates/scan-overview.html	143	template	WEAPONS
+templates/scan-overview.html	152	template	UNLOADED
+templates/scan-overview.html	158	template	RANGE
+templates/scan-overview.html	161	template	DAMAGE
+templates/scan-overview.html	168	template	ON HIT
+templates/scan-overview.html	174	template	EFFECT
+templates/scan-overview.html	198	template	TECH
+templates/scan-overview.html	227	template	SYSTEMS
+templates/scan-overview.html	258	template	CLASS / TEMPLATE
+templates/scan-overview.html	264	template	CLASS
+templates/scan-overview.html	271	template	TEMPLATE
+templates/scan-overview.html	278	template	WEAPON
+templates/scan-overview.html	296	template	RANGE
+templates/scan-overview.html	299	template	DAMAGE
+templates/scan-overview.html	306	template	TRIGGER
+templates/scan-overview.html	312	template	ON HIT
+templates/scan-overview.html	318	template	EFFECT
+templates/scan-overview.html	331	template	TECH ATTACKS
+templates/scan-overview.html	358	template	REACTIONS
+templates/scan-overview.html	385	template	SYSTEMS
+templates/scan-overview.html	412	template	TRAIT
+templates/scan-system-options.html	3	template	SYSTEM SCAN OPTIONS
+templates/scan-system-options.html	9	template	The chat card always posts. Toggle below to also create / update a journal entry in the SCAN Database folder.
+templates/scan-system-options.html	14	template	Create journal entry
+templates/scan-system-options.html	16	template	Updates the existing entry if one already exists for this target.
+templates/scan-system-options.html	21	template	Custom journal name (optional)
+templates/scan-system-options.html	27	template	Custom Ownership
+templates/scan-system-options.html	30	template	Ownership
+templates/scan-system-options.html	36	template	No Change
+templates/scan-system-options.html	37	template	None
+templates/scan-system-options.html	38	template	Limited
+templates/scan-system-options.html	39	template	Observer
+templates/scan-system-options.html	40	template	Owner
+templates/settings-onboarding.html	4	template	LANCER AUTOMATIONS SETUP
+templates/settings-onboarding.html	5	template	A few yes/no questions to get you started
+templates/settings-onboarding.html	14	template	This wizard walks you through the module's main features as plain yes/no questions. Your answers flip the matching settings; nothing is saved until you reach the end and press
+templates/settings-onboarding.html	14	template	Apply
+templates/settings-onboarding.html	15	template	You can change any of these later in
+templates/settings-onboarding.html	15	template	Game Settings &rarr; Configure Settings &rarr; Lancer Automations
+templates/settings-onboarding.html	15	template	, or re-run this wizard from there at any time.
+templates/settings-onboarding.html	17	template	Use recommended setup
+templates/settings-onboarding.html	18	template	My recommended answers for everything, then a handful of choices only you can make.
+templates/settings-onboarding.html	21	template	Already set up another world?
+templates/settings-onboarding.html	21	template	Export your config there (
+templates/settings-onboarding.html	21	template	Tools &amp; Extras &rarr; Export to JSON
+templates/settings-onboarding.html	21	template	) and import it here to skip all of this.
+templates/settings-onboarding.html	25	template	some settings are per-player, so your answer only applies to your own screen. Install
+templates/settings-onboarding.html	25	template	Force Client Settings
+templates/settings-onboarding.html	25	template	and this wizard will let you push those onto your players too.
+templates/settings-onboarding.html	68	template	Force
+templates/settings-onboarding.html	82	template	Review your changes
+templates/settings-onboarding.html	83	template	This is what will change when you press
+templates/settings-onboarding.html	83	template	Apply &amp; Continue
+templates/settings-onboarding.html	83	template	. Nothing has been saved yet.
+templates/settings-onboarding.html	85	template	Some options need a page reload; you'll be asked once at the end.
+templates/settings-onboarding.html	94	template	Skip setup
+templates/settings-onboarding.html	97	template	Back
+templates/settings-onboarding.html	98	template	Next
+templates/startup-script-editor.html	20	template	Name
+templates/startup-script-editor.html	22	template	A unique name for this startup script.
+templates/startup-script-editor.html	25	template	Description
+templates/startup-script-editor.html	27	template	Shown in the Startup tab list.
+templates/startup-script-editor.html	36	template	Enabled
+templates/startup-script-editor.html	37	template	(disabled scripts are skipped on startup)
+templates/startup-script-editor.html	41	template	Code
+templates/startup-script-editor.html	52	template	JavaScript code executed on module ready.             Available:                  — use                                               to register reusable             helpers, then access them in activations via                                     .
+templates/startup-script-editor.html	59	template	Close
+templates/startup-script-editor.html	63	template	Save Script
+templates/statusfx-config.html	4	template	Enable StatusFX (Master Toggle)
+templates/statusfx-config.html	7	template	Handles all status visual effects. Overrides csm-lancer-qol if active.
+templates/statusfx-config.html	13	template	Low-quality mode
+templates/statusfx-config.html	19	template	Additional Statuses &amp; Effects
+templates/statusfx-config.html	22	template	Extra statuses (Resist All, Disengage, Grappling, etc.). Infection is always registered.
+templates/statusfx-config.html	25	template	TokenMagic Visual Effects
+templates/statusfx-config.html	26	template	Requires TokenMagic module.
+templates/statusfx-config.html	37	template	Auto-Status Icons
+templates/statusfx-config.html	38	template	Toggle status icons based on actor data.
+templates/statusfx-config.html	47	template	Action Effects
+templates/statusfx-config.html	50	template	Enable Action FX (Boost, Hide, Shut Down, Fall, Overcharge…)
+templates/statusfx-config.html	54	template	Lancer Weapon FX
+templates/statusfx-config.html	54	template	volume setting. Some effects need
+templates/statusfx-config.html	54	template	JB2A Patreon
+templates/statusfx-config.html	54	template	Lancer Weapon FX
+templates/statusfx-config.html	57	template	Death
+templates/statusfx-config.html	60	template	Remove Statuses on Death
+templates/statusfx-config.html	63	template	Clear all status effects when structure reaches zero.
+templates/statusfx-config.html	67	template	Save

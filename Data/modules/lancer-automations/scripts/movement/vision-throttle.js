@@ -1,6 +1,7 @@
 /* global game, Hooks, libWrapper, performance */
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from '../tools/constants.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 const SETTING_FPS = 'visionAnimationThrottleFps';
 const SKIP_FLAG = Symbol('laVisionThrottleSkip');
 
@@ -19,7 +20,7 @@ function _clearTrailing(id)
 
 // The last animation frame is often inside the throttle window and gets skipped, leaving vision
 // frozen at the pre-move state. Schedule a trailing refresh that fires once movement settles.
-function _scheduleTrailing(token, delayMs)
+function _scheduleTrailing(token, delayMs, perception)
 {
     const id = token.document?.id;
     if (!id)
@@ -31,7 +32,7 @@ function _scheduleTrailing(token, delayMs)
         if (token.destroyed)
             return;
         token.initializeSources();
-        globalThis.canvas?.perception?.update({ refreshVision: true, refreshOcclusion: true });
+        globalThis.canvas?.perception?.update(perception);
     }, delayMs);
     trailingTimers.set(id, timer);
 }
@@ -39,8 +40,8 @@ function _scheduleTrailing(token, delayMs)
 Hooks.once('init', () =>
 {
     game.settings.register(MODULE_ID, SETTING_FPS, {
-        name: 'Vision Animation Throttle (FPS)',
-        hint: 'Cap vision/light refresh rate during token movement (0 = vanilla).',
+        name: 'LA.settings.visionAnimationThrottleFps.name',
+        hint: 'LA.settings.visionAnimationThrottleFps.hint',
         scope: 'world',
         type: Number,
         default: 0,
@@ -52,7 +53,7 @@ Hooks.once('ready', () =>
 {
     libWrapper.register(MODULE_ID, 'foundry.canvas.placeables.Token.prototype._onAnimationUpdate', function(wrapped, changed, context)
     {
-        const fps = Number(game.settings.get(MODULE_ID, SETTING_FPS)) || 0;
+        const fps = Number(getModuleSetting(SETTING_FPS)) || 0;
         if (fps <= 0)
             return wrapped.call(this, changed, context);
         if (!game.settings.get('core', 'visionAnimation'))
@@ -73,7 +74,7 @@ Hooks.once('ready', () =>
         try
         {
             const result = wrapped.call(this, changed, context);
-            _scheduleTrailing(this, throttleMs * 1.5);
+            _scheduleTrailing(this, throttleMs * 1.5, { refreshVision: true, refreshOcclusion: true });
             return result;
         }
         finally
@@ -86,6 +87,25 @@ Hooks.once('ready', () =>
     {
         if (this[SKIP_FLAG])
             return;
+        // The drag preview refreshes on every cell change, outside the animation path above.
+        if (this.isPreview && !args[0]?.deleted)
+        {
+            const fps = Number(getModuleSetting(SETTING_FPS)) || 0;
+            if (fps > 0)
+            {
+                const throttleMs = 1000 / fps;
+                const id = this.document.id;
+                const now = performance.now();
+                const elapsed = now - (lastVisionRefresh.get(id) ?? 0);
+                if (elapsed < throttleMs)
+                {
+                    _scheduleTrailing(this, throttleMs - elapsed + 1, { refreshLighting: true, refreshVision: true });
+                    return;
+                }
+                lastVisionRefresh.set(id, now);
+                _clearTrailing(id);
+            }
+        }
         return wrapped.apply(this, args);
     }, 'MIXED');
 });

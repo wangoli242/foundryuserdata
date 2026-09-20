@@ -1,4 +1,17 @@
 import { appendEvent, BUCKETS } from './telemetry-store.js';
+import { getLAFlag } from '../tools/flag-utils.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { isExecutorGM } from '../tools/misc-tools.js';
+
+export function numOr(value, fallback = 0)
+{
+    return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
+}
+
+export function battleLogEnabled()
+{
+    return getModuleSetting('battleLogEnabled');
+}
 
 function _combatantKey(combatant)
 {
@@ -11,12 +24,12 @@ export function findActiveCombatForToken(tokenId)
     if (!game.combats || !tokenId)
         return null;
     const primary = game.combat;
-    if (primary?.getFlag?.('lancer-automations', 'telemetry')
+    if (getLAFlag(primary,'telemetry')
         && primary.combatants?.some(combatant => _combatantKey(combatant) === tokenId))
         return primary;
     for (const combat of game.combats)
     {
-        if (!combat.getFlag?.('lancer-automations', 'telemetry'))
+        if (!getLAFlag(combat,'telemetry'))
             continue;
         if (combat.combatants?.some(combatant => _combatantKey(combatant) === tokenId))
             return combat;
@@ -34,7 +47,7 @@ export function findTelemetryCombatForToken(tokenId)
         return null;
     for (const combat of game.combats)
     {
-        const telemetry = combat.getFlag?.('lancer-automations', 'telemetry');
+        const telemetry = getLAFlag(combat,'telemetry');
         if (!telemetry)
             continue;
         if (BUCKETS.some(bucket => telemetry[bucket]?.some(entry => entry.tokenId === tokenId)))
@@ -53,7 +66,7 @@ export function resolveEntryTokenId(actor)
         return actor.token.id;
     for (const combat of game.combats ?? [])
     {
-        if (!combat.getFlag?.('lancer-automations', 'telemetry'))
+        if (!getLAFlag(combat,'telemetry'))
             continue;
         const combatant = combat.combatants?.find(entry => entry.actorId === actor.id);
         if (combatant)
@@ -65,12 +78,12 @@ export function resolveEntryTokenId(actor)
 // GM-side: append a remote battle-log event to the telemetry-flagged combat.
 export async function handleRemoteBattlelogEvent({ combatId, entryId, event })
 {
-    if (!game.user?.isGM)
+    if (!isExecutorGM())
         return;
     const combat = game.combats?.get(combatId);
     if (!combat)
         return;
-    if (!combat.getFlag?.('lancer-automations', 'telemetry'))
+    if (!getLAFlag(combat,'telemetry'))
         return;
     await appendEvent(combat, entryId ?? event.byId, event);
 }

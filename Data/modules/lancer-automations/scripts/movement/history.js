@@ -1,6 +1,7 @@
 /* global game, Hooks, canvas, libWrapper, foundry */
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from '../tools/constants.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 const SETTING_CLEAR_ON_TURN = 'historyClearOnTurn';
 const SETTING_CLEAR_ON_ROUND = 'historyClearOnRound';
 
@@ -15,14 +16,7 @@ function asTokenDoc(tokenLike)
 
 function laDebug()
 {
-    try
-    {
-        return !!game.settings.get(MODULE_ID, 'debugMovement');
-    }
-    catch
-    {
-        return false;
-    }
+    return !!getModuleSetting('debugMovement');
 }
 
 export function getLastMoveDistance(tokenLike)
@@ -216,16 +210,16 @@ Hooks.on('recordToken', (tokenDoc) =>
 Hooks.once('init', () =>
 {
     game.settings.register(MODULE_ID, SETTING_CLEAR_ON_TURN, {
-        name: 'Clear movement history on turn change',
-        hint: 'When a combatant\'s turn ends, wipe their recorded movement trail.',
+        name: 'LA.settings.historyClearOnTurn.name',
+        hint: 'LA.settings.historyClearOnTurn.hint',
         scope: 'world',
         type: Boolean,
         default: false,
         config: false
     });
     game.settings.register(MODULE_ID, SETTING_CLEAR_ON_ROUND, {
-        name: 'Clear movement history on round change',
-        hint: 'At the start of each new round, wipe every combatant\'s recorded movement trail.',
+        name: 'LA.settings.historyClearOnRound.name',
+        hint: 'LA.settings.historyClearOnRound.hint',
         scope: 'world',
         type: Boolean,
         default: false,
@@ -243,7 +237,7 @@ Hooks.on('combatRound', async (combat, _changed, opts) =>
 {
     if (opts?.direction !== 1)
         return;
-    if (!game.settings.get(MODULE_ID, SETTING_CLEAR_ON_ROUND))
+    if (!getModuleSetting(SETTING_CLEAR_ON_ROUND))
         return;
     await clearCombatantsHistory(combat);
 });
@@ -252,7 +246,7 @@ Hooks.on('combatTurnChange', async (combat, prior, _current) =>
 {
     if (!game.user?.isGM)
         return;
-    if (!game.settings.get(MODULE_ID, SETTING_CLEAR_ON_TURN))
+    if (!getModuleSetting(SETTING_CLEAR_ON_TURN))
         return;
     const priorToken = prior?.tokenId ? canvas.scene?.tokens?.get(prior.tokenId) : null;
     if (priorToken)

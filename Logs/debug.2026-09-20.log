@@ -1,0 +1,730 @@
+{"level":"info","message":"Created client session f11a18ea04a0ec2255053034","timestamp":"2026-09-20 00:35:38"}
+{"level":"info","message":"Created client session 34924495e4b3e7f0cd5f94c2","timestamp":"2026-09-20 01:00:31"}
+{"level":"info","message":"Created client session 9d3e294ea2f85fb41d37b853","timestamp":"2026-09-20 01:31:36"}
+{"level":"info","message":"Created client session d79efec21d4f911b4e8e3fae","timestamp":"2026-09-20 02:03:10"}
+{"ip":"70.160.11.31","level":"warn","message":"Administrator authentication failed for session d79efec21d4f911b4e8e3fae; invalid password","status":403,"timestamp":"2026-09-20 02:03:31"}
+{"level":"info","message":"Administrator authentication successful for session d79efec21d4f911b4e8e3fae","timestamp":"2026-09-20 02:03:37"}
+{"level":"info","message":"Core software stable update 14.368 is available!","timestamp":"2026-09-20 02:03:39"}
+{"level":"info","message":"Connected to database \"actors\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 7%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"cards\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 14%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"messages\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 21%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"combats\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 29%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"fog\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 36%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"folders\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 43%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"items\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 50%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"journal\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 57%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"macros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 64%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"playlists\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 71%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"tables\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 79%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"scenes\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 86%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"settings\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 93%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"users\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading World Data - 100%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 7%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 14%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 21%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 29%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 36%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 43%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 50%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 57%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 64%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 71%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 79%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 86%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 93%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 100%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"world.pilot-items\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 5%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"world.player-actors\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 11%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"world.mech-items\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 16%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"world.npc-actors\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 21%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"world.npc-items\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 26%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"world.status-items\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 32%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"world.pass-the-torch-details\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 37%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"lancer.core_macros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 42%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"lancer.lancer_info\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 47%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"JB2A_DnD5e.jb2a-sequencer\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 53%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"battle-transitions.bt-sample-macros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 58%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"csm-lancer-qol.macro\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 63%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"lancer-automations.macros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 68%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"lancer-weapon-fx.weaponfx\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 74%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"psfx.psfx-macros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 79%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"theatre.theatre-inserts-macros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 84%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"tokenmagic.tmMacros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 89%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"tokenmagic.tmSampleCompendium\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 95%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Connected to database \"wall-height.wall-height-macros\"","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 100%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Created 0 Folder documents with ids: []","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 5%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 11%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 16%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 21%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 26%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 32%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 37%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 42%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 47%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 53%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 58%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 63%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 68%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 74%","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [25k1icw3Ch3eo6VZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [3fAUx2H2A8hSj2fg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [5Su5ERGZKucfkGJ2] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [6ClwtXQy2gQbeXbX] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7NdinQmQ472eZnKh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7fc3VwRBiux8eER4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7s5pLkAwQMos3T0Z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [F43vNkkyrlK1AIO4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [QZhWbDtFroGi7hZW] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [SleaRNST8ONdUBTu] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [TXeffYIICFjrqpbt] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [VT4n0Z0pTt0x19X8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [XuJvJcSIPPQqxYNh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [ZUwLESXi2N0fmLwb] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [aEX3nSX54TsJlrVs] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [fFuEISVrfqmzdTda] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [i3hiEJIWrdvzwj7z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [iU59ZeAqWHhgILUE] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [l1VaZSswhOg5Y8Z5] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [lJDOlXizpTk24FAr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p5HlqVt50xuW73pr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p9Vl1exqK4O21sqY] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [rIrcTKbaoBAt6hV8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [szabKdSxqAmKEotU] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [t7GgAA1jqWyDWC74] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [tGj125Zku5wjux3j] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [uMuY6C8BFMlHxP5s] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [utsu2lBPZmwAHJDZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [zYCX2BmlEYEBELbg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:03:41"}
+{"level":"warn","message":"Database psfx.psfx-macros was not fully migrated due to errors during migration.","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 79%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 84%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 89%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 95%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 100%","timestamp":"2026-09-20 02:03:41"}
+{"level":"info","message":"Launching World | Complete","timestamp":"2026-09-20 02:03:41"}
+{"ip":"70.160.11.31","level":"info","message":"User authentication successful for user Gamemaster","session":"d79efec21d4f911b4e8e3fae","timestamp":"2026-09-20 02:03:47"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-20 02:03:49"}
+{"level":"info","message":"Vended World data to User [kPj3BMrSMsDT2a8C] in 603ms","timestamp":"2026-09-20 02:03:49"}
+{"level":"info","message":"Downloading package - 0%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 1%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 2%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 3%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 4%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 5%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 6%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 7%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 8%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 9%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 10%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 11%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 12%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 13%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 14%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 15%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 16%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 17%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 18%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 19%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 20%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 21%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 22%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 23%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 24%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 25%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 26%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 27%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 28%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 29%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 30%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 31%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 32%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 33%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 34%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 35%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 36%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 37%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 38%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 39%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 40%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 41%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 42%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 43%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 44%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 45%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 46%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 47%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 48%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 49%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 50%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 51%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 52%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 53%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 54%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 55%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 56%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 57%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 58%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 59%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 60%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 61%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 62%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 63%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 64%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 65%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 66%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 67%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 68%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 69%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 70%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 71%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 72%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 73%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 74%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 75%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 76%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 77%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 78%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 79%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 80%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 81%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 82%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 83%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 84%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 85%","timestamp":"2026-09-20 02:04:28"}
+{"level":"info","message":"Downloading package - 86%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 87%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 88%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 89%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 90%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 91%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 92%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 93%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 94%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 95%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 96%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 97%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 98%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 99%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Downloading package - 100%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 0%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 1%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 2%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 3%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 4%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 5%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 6%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 7%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 8%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 9%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 10%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 11%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 12%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 13%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 14%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 15%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 16%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 17%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 18%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 19%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 20%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 21%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 22%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 23%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 24%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 25%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 26%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 27%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 28%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 29%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 30%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 31%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 32%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 33%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 34%","timestamp":"2026-09-20 02:04:29"}
+{"level":"info","message":"Installing package - 35%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 36%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 37%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 38%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 39%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 40%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 41%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 42%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 43%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 44%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 45%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 46%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 47%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 48%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 49%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 50%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 51%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 52%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 53%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 54%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 55%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 56%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 57%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 58%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 59%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 60%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 61%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 62%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 63%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 64%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 65%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 66%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 67%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 68%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 69%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 70%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 71%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 72%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 73%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 74%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 75%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 76%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 77%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 78%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 79%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 80%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 81%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 82%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 83%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 84%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 85%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 86%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 87%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 88%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 89%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 90%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 91%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 92%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 93%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 94%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 95%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 96%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 97%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 98%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 99%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installing package - 100%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Installed module lancer-automations","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"complete - 100%","timestamp":"2026-09-20 02:04:30"}
+{"level":"info","message":"Connected to database \"actors\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 7%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"cards\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 14%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"messages\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 21%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"combats\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 29%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"fog\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 36%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"folders\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 43%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"items\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 50%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"journal\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 57%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"macros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 64%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"playlists\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 71%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"tables\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 79%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"scenes\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 86%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"settings\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 93%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"users\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading World Data - 100%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 7%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 14%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 21%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 29%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 36%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 43%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 50%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 57%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 64%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 71%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 79%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 86%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 93%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating World Data - 100%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"world.pilot-items\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 5%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"world.player-actors\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 11%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"world.mech-items\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 16%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"world.npc-actors\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 21%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"world.npc-items\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 26%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"world.status-items\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 32%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"world.pass-the-torch-details\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 37%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"lancer.core_macros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 42%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"lancer.lancer_info\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 47%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"JB2A_DnD5e.jb2a-sequencer\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 53%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"battle-transitions.bt-sample-macros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 58%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"csm-lancer-qol.macro\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 63%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"lancer-automations.macros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 68%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"lancer-weapon-fx.weaponfx\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 74%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"psfx.psfx-macros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 79%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"theatre.theatre-inserts-macros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 84%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"tokenmagic.tmMacros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 89%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"tokenmagic.tmSampleCompendium\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 95%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Connected to database \"wall-height.wall-height-macros\"","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Loading Package Data - 100%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Created 0 Folder documents with ids: []","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 5%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 11%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 16%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 21%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 26%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 32%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 37%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 42%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 47%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 53%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 58%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 63%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 68%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 74%","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [25k1icw3Ch3eo6VZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [3fAUx2H2A8hSj2fg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [5Su5ERGZKucfkGJ2] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [6ClwtXQy2gQbeXbX] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7NdinQmQ472eZnKh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7fc3VwRBiux8eER4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7s5pLkAwQMos3T0Z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [F43vNkkyrlK1AIO4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [QZhWbDtFroGi7hZW] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [SleaRNST8ONdUBTu] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [TXeffYIICFjrqpbt] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [VT4n0Z0pTt0x19X8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [XuJvJcSIPPQqxYNh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [ZUwLESXi2N0fmLwb] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [aEX3nSX54TsJlrVs] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [fFuEISVrfqmzdTda] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [i3hiEJIWrdvzwj7z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [iU59ZeAqWHhgILUE] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [l1VaZSswhOg5Y8Z5] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [lJDOlXizpTk24FAr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p5HlqVt50xuW73pr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p9Vl1exqK4O21sqY] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [rIrcTKbaoBAt6hV8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [szabKdSxqAmKEotU] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [t7GgAA1jqWyDWC74] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [tGj125Zku5wjux3j] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [uMuY6C8BFMlHxP5s] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [utsu2lBPZmwAHJDZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"error","message":"An error occurred during the migration of Macro record [zYCX2BmlEYEBELbg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:04:41"}
+{"level":"warn","message":"Database psfx.psfx-macros was not fully migrated due to errors during migration.","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 79%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 84%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 89%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 95%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Migrating Package Data - 100%","timestamp":"2026-09-20 02:04:41"}
+{"level":"info","message":"Launching World | Complete","timestamp":"2026-09-20 02:04:41"}
+{"ip":"70.160.11.31","level":"warn","message":"User authentication failed for user Gamemaster; invalid password","session":"d79efec21d4f911b4e8e3fae","status":401,"timestamp":"2026-09-20 02:04:48"}
+{"ip":"70.160.11.31","level":"info","message":"User authentication successful for user Gamemaster","session":"d79efec21d4f911b4e8e3fae","timestamp":"2026-09-20 02:04:50"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-20 02:04:52"}
+{"level":"info","message":"Vended World data to User [kPj3BMrSMsDT2a8C] in 322ms","timestamp":"2026-09-20 02:04:52"}
+{"level":"info","message":"Created Setting with id [2knncXlEOOFesLcy]","timestamp":"2026-09-20 02:04:54"}
+{"level":"info","message":"Deleted 3 Setting documents with ids: [5bMckZBVrQuIyJhi,4ZEArd9Q72fd1SMz,dMEDYfWk1AoUXOdi]","timestamp":"2026-09-20 02:04:54"}
+{"level":"info","message":"Created Setting with id [qQzuwaUcQAPoOfTa]","timestamp":"2026-09-20 02:04:55"}
+{"level":"error","message":"An error occurred during the migration of Macro record [25k1icw3Ch3eo6VZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [3fAUx2H2A8hSj2fg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [5Su5ERGZKucfkGJ2] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [6ClwtXQy2gQbeXbX] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7NdinQmQ472eZnKh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7fc3VwRBiux8eER4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [7s5pLkAwQMos3T0Z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [F43vNkkyrlK1AIO4] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [QZhWbDtFroGi7hZW] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [SleaRNST8ONdUBTu] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [TXeffYIICFjrqpbt] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [VT4n0Z0pTt0x19X8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [XuJvJcSIPPQqxYNh] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [ZUwLESXi2N0fmLwb] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [aEX3nSX54TsJlrVs] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [fFuEISVrfqmzdTda] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [i3hiEJIWrdvzwj7z] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [iU59ZeAqWHhgILUE] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [l1VaZSswhOg5Y8Z5] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [lJDOlXizpTk24FAr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p5HlqVt50xuW73pr] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [p9Vl1exqK4O21sqY] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [rIrcTKbaoBAt6hV8] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [szabKdSxqAmKEotU] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [t7GgAA1jqWyDWC74] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [tGj125Zku5wjux3j] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [uMuY6C8BFMlHxP5s] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [utsu2lBPZmwAHJDZ] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"error","message":"An error occurred during the migration of Macro record [zYCX2BmlEYEBELbg] of database \"psfx.psfx-macros\":\nError: Documents from a core version newer than the running version cannot be migrated\n    at Function._migrateRecord (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:3713)\n    at Function._migrateDocuments (file:///home/ubuntu/foundry/resources/app/dist/database/backend/server-document.mjs:1:2782)","timestamp":"2026-09-20 02:05:22"}
+{"level":"warn","message":"Database psfx.psfx-macros was not fully migrated due to errors during migration.","timestamp":"2026-09-20 02:05:22"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-20 02:05:24"}
+{"level":"info","message":"Vended World data to User [kPj3BMrSMsDT2a8C] in 446ms","timestamp":"2026-09-20 02:05:24"}
+{"level":"info","message":"Toggling game pause status to false","timestamp":"2026-09-20 02:05:32"}
+{"level":"info","message":"Created client session 343858d4bd3594a17ff846e1","timestamp":"2026-09-20 02:05:56"}
+{"level":"info","message":"Created ActiveEffect with id [QoQHMMWbC9qDZAqH] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:07:13"}
+{"level":"info","message":"Created ChatMessage with id [pKYwsdI6QynJxopG]","timestamp":"2026-09-20 02:07:14"}
+{"level":"info","message":"Deleted ActiveEffect with id [QoQHMMWbC9qDZAqH] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:07:29"}
+{"level":"info","message":"Created ActiveEffect with id [LPmLXdfwqSyczPZx] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:07:31"}
+{"level":"info","message":"Created ChatMessage with id [v9qiz6iF3o5BXPtM]","timestamp":"2026-09-20 02:07:31"}
+{"level":"info","message":"Deleted ActiveEffect with id [LPmLXdfwqSyczPZx] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:07:32"}
+{"level":"info","message":"Created ActiveEffect with id [qCe7QRCNv6cagQpF] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:07:32"}
+{"level":"info","message":"Created ChatMessage with id [C5iupAH8ojcOWmn2]","timestamp":"2026-09-20 02:07:33"}
+{"level":"info","message":"Deleted ActiveEffect with id [qCe7QRCNv6cagQpF] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:07:41"}
+{"level":"info","message":"Created ActiveEffect with id [3Nvj4FvXRkQA4hBh] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:07:41"}
+{"level":"info","message":"Created ChatMessage with id [Dx9O4gbyPhPCFS9i]","timestamp":"2026-09-20 02:07:41"}
+{"level":"info","message":"Created ActiveEffect with id [97KeRQ1mOdStS2zj] in parent Actor [JhCXwhrfcQZHaabd]","timestamp":"2026-09-20 02:07:46"}
+{"level":"info","message":"Created ChatMessage with id [23RJrxVPxJ1p4Nrw]","timestamp":"2026-09-20 02:07:46"}
+{"level":"info","message":"Created Folder with id [AFfFbvwlRZoW9yII]","timestamp":"2026-09-20 02:09:46"}
+{"level":"info","message":"Created Folder with id [YcK4iJXUkWcmllRr]","timestamp":"2026-09-20 02:10:36"}
+{"level":"info","message":"Created Folder with id [Jv9k78NPAXuCnmmt]","timestamp":"2026-09-20 02:12:46"}
+{"level":"info","message":"Created Folder with id [KVz5uFHmkLFv21Dt]","timestamp":"2026-09-20 02:13:10"}
+{"level":"info","message":"Created Token with id [uzNulHSv58m24guc] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:18:00"}
+{"level":"info","message":"Deleted Token with id [uzNulHSv58m24guc] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:18:03"}
+{"level":"info","message":"Created Token with id [ZEdl4hQblpFdPUm9] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:19:02"}
+{"level":"info","message":"Deleted Token with id [ZEdl4hQblpFdPUm9] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:19:05"}
+{"level":"info","message":"Created Token with id [U6XBPmwxNKGtpneD] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:19:24"}
+{"level":"info","message":"Deleted Token with id [U6XBPmwxNKGtpneD] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:19:26"}
+{"level":"info","message":"Created Token with id [iKSWyKcqn2JUbgvv] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:19:34"}
+{"level":"info","message":"Deleted Token with id [iKSWyKcqn2JUbgvv] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:19:35"}
+{"level":"info","message":"Created Token with id [qEMyRwPcATVIfwox] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 02:19:40"}
+{"level":"info","message":"Created ChatMessage with id [wQTIYrd3aHL65LHN]","timestamp":"2026-09-20 02:20:03"}
+{"level":"info","message":"Created ChatMessage with id [qD7WW9OvwAUu8BgB]","timestamp":"2026-09-20 02:20:23"}
+{"level":"info","message":"Created Setting with id [HkAwsZqE8tyr7jMd]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [UyGfhHniP1SzgJXv]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [wW68MhnlM4UPRiuU]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [wATl3LdVpacE28lx]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [LcdUADdHqPk5fYty]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [uxD4MHdwuRivzOp6]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [8IW3DXRB0E4Ctax7]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [tTNdx5ys8MRdYRbH]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [SslciRnWbsSSQGoL]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [MoHmnQM49HYh8X89]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [fuMfQNx6cc1zcSf1]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [KikA9LRrT2eiNA8N]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [QU6rREhvfWAZf4MH]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [kVn9TBe8YiBCzGmm]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [lpVINWkpIuUa4Qhn]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [iHCjuqIzCnSyV65X]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [8zfMP3N7IFLZe8Qf]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [zF664jpNZdZMuKKe]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [nuqeQTVan8GIObDN]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [of3YVbW6EFGnZu6O]","timestamp":"2026-09-20 02:21:46"}
+{"level":"info","message":"Created Setting with id [2uYvKWF3PI7AqgBA]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [eV7Awe7doIpBAj2U]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [isxpfKZLMut7CZfI]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [bqFqsX7urSzbbCYD]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [C51USIUWQh0I3pPK]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [LSmrQ91iEZLWVM3v]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [8LY0bduZFUQtpRoB]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [j2Ukp1GzdFenv4KG]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [8sRUygDHBbau1Bop]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [9XcWxk0fTIEgxgZ8]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [3ffAR8fHs53U0YsO]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [h8ayP8ySOq3a8uwS]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [8JKHkrCDxPGnUaPy]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [v1jwwWNQm5t2LKDU]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [MkL30haaqiGrsaFO]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [x4JXs6rpWY2H47Fj]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [F19XO1Hh7eXee9sb]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [xj8kqpa0Cgxp5CrA]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [xi0I2KSOSQImyZf3]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [zakkVekGSGezGorP]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [69ZUTpn5cGTE2ZPe]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [dYGZ4XtI43rvwZD3]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [FTDJcBK6Hkm8PqSh]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [mG2usiUMXtJLTsZ8]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [jZkud062IQ039DqE]","timestamp":"2026-09-20 02:21:47"}
+{"level":"info","message":"Created Setting with id [aT5HOEBJCyDjN0uK]","timestamp":"2026-09-20 02:21:48"}
+{"level":"info","message":"Created Setting with id [42EZKAhG6ETthiG0]","timestamp":"2026-09-20 02:21:48"}
+{"level":"info","message":"Created Setting with id [ghIjZEaNv9scggWb]","timestamp":"2026-09-20 02:21:48"}
+{"level":"info","message":"Created Setting with id [GlyNm6ggf1MSYICr]","timestamp":"2026-09-20 02:21:48"}
+{"level":"info","message":"Created Setting with id [kQSKDUehCHtWdl3c]","timestamp":"2026-09-20 02:21:48"}
+{"level":"info","message":"Created Setting with id [HZWwKRSTzmMn1KE8]","timestamp":"2026-09-20 02:21:48"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-20 02:21:54"}
+{"level":"info","message":"Vended World data to User [kPj3BMrSMsDT2a8C] in 457ms","timestamp":"2026-09-20 02:21:54"}
+{"level":"info","message":"Created client session 15f1f97c22bc807a63ffcca0","timestamp":"2026-09-20 02:26:02"}
+{"level":"info","message":"Created ActiveEffect with id [mR5De03mMNDXQBtw] in parent ActorDelta [2URCKEk8nujraD8q]","timestamp":"2026-09-20 02:26:23"}
+{"level":"info","message":"Deleted ActiveEffect with id [EpWPpVqja4o1FaHo] in parent ActorDelta [NbJTNTYMfm4Y2G4j]","timestamp":"2026-09-20 02:26:24"}
+{"level":"info","message":"Deleted ActiveEffect with id [oCLIfjlG3GbrzBrB] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:26:24"}
+{"level":"info","message":"Deleted ActiveEffect with id [mR5De03mMNDXQBtw] in parent ActorDelta [2URCKEk8nujraD8q]","timestamp":"2026-09-20 02:26:24"}
+{"level":"info","message":"Created ActiveEffect with id [o73CfZYBeZS3PkuL] in parent Actor [rwwgWziIsRuP8jj1]","timestamp":"2026-09-20 02:26:42"}
+{"level":"info","message":"Created ActiveEffect with id [9Aj1LRKCOhTli6Du] in parent ActorDelta [2URCKEk8nujraD8q]","timestamp":"2026-09-20 02:26:42"}
+{"level":"info","message":"Deleted ActiveEffect with id [9Aj1LRKCOhTli6Du] in parent ActorDelta [2URCKEk8nujraD8q]","timestamp":"2026-09-20 02:26:42"}
+{"level":"info","message":"Created ActiveEffect with id [WgUMoBvpXOcAKnrQ] in parent ActorDelta [NbJTNTYMfm4Y2G4j]","timestamp":"2026-09-20 02:26:42"}
+{"level":"info","message":"Created ActiveEffect with id [hOf9k29dwcLpy5xv] in parent Actor [JhCXwhrfcQZHaabd]","timestamp":"2026-09-20 02:29:07"}
+{"level":"info","message":"Created ChatMessage with id [Sw1dmrxEpqYlYaCn]","timestamp":"2026-09-20 02:29:07"}
+{"level":"info","message":"Deleted ActiveEffect with id [hOf9k29dwcLpy5xv] in parent Actor [JhCXwhrfcQZHaabd]","timestamp":"2026-09-20 02:29:10"}
+{"level":"info","message":"Logged user kPj3BMrSMsDT2a8C out of active World","timestamp":"2026-09-20 02:33:47"}
+{"ip":"70.160.11.31","level":"info","message":"User authentication successful for user Gamemaster","session":"d79efec21d4f911b4e8e3fae","timestamp":"2026-09-20 02:33:53"}
+{"level":"info","message":"No system update for LANCER is currently available.","timestamp":"2026-09-20 02:33:55"}
+{"level":"info","message":"Vended World data to User [kPj3BMrSMsDT2a8C] in 587ms","timestamp":"2026-09-20 02:33:55"}
+{"level":"info","message":"Deleted 9 ChatMessage documents","timestamp":"2026-09-20 02:34:35"}
+{"level":"info","message":"Created client session 856f846d4d6985571fb79639","timestamp":"2026-09-20 02:47:34"}
+{"level":"info","message":"Created client session fe293afc93cddd2b5e35a379","timestamp":"2026-09-20 02:51:37"}
+{"level":"info","message":"Created client session 802c3ac85bc576df0b681bd5","timestamp":"2026-09-20 02:53:46"}
+{"level":"info","message":"Created client session 18ff33a4fcbee4e1dc3fe7bd","timestamp":"2026-09-20 02:54:50"}
+{"level":"info","message":"Created client session 48a68227f54d86aadcafb256","timestamp":"2026-09-20 02:54:51"}
+{"level":"info","message":"Created client session acd6bcf6ec01c8d52afb5198","timestamp":"2026-09-20 03:02:19"}
+{"level":"info","message":"Created client session 762f931c72638e523e5f1ba2","timestamp":"2026-09-20 03:08:29"}
+{"level":"info","message":"Created client session 1f1e42648e638fe9281585bb","timestamp":"2026-09-20 03:09:00"}
+{"level":"info","message":"Created client session 1b39814f54aa3a83bf36e217","timestamp":"2026-09-20 03:10:17"}
+{"level":"info","message":"Created client session a1a5d5a0e08d8eb595b6b9dc","timestamp":"2026-09-20 03:12:31"}
+{"level":"info","message":"Created client session ea8243d28d9f87570128cf47","timestamp":"2026-09-20 03:25:17"}
+{"level":"info","message":"Created client session 880701b432b294bf6a748404","timestamp":"2026-09-20 03:28:50"}
+{"level":"info","message":"Created client session db75a4397043c95eb35f0ec2","timestamp":"2026-09-20 03:59:38"}
+{"level":"info","message":"Created client session 68ef6ce77f77d18c64372c2c","timestamp":"2026-09-20 04:36:42"}
+{"level":"info","message":"Created ChatMessage with id [fguX2P1BMMupgnvc]","timestamp":"2026-09-20 04:46:52"}
+{"level":"info","message":"Created client session bff25652807cca196cd77a24","timestamp":"2026-09-20 04:50:03"}
+{"level":"info","message":"Created client session 94f1fea59c49998449013b17","timestamp":"2026-09-20 04:50:03"}
+{"level":"info","message":"Created Token with id [SNBofHwQSL60o4bU] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:52:36"}
+{"level":"info","message":"Created ActiveEffect with id [eosBU808BjJDge3O] in parent ActorDelta [n79cUJGVQskx5P0y]","timestamp":"2026-09-20 04:52:46"}
+{"level":"info","message":"Created ChatMessage with id [VrRjKkx6TZoIh4cb]","timestamp":"2026-09-20 04:52:47"}
+{"level":"info","message":"Created Token with id [zo2DuYRJaC6tNBZ7] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:53:11"}
+{"level":"info","message":"Created Token with id [fPwowKGEFFaih9dw] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:53:18"}
+{"level":"info","message":"Deleted Token with id [fPwowKGEFFaih9dw] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:53:23"}
+{"level":"info","message":"Deleted Token with id [SNBofHwQSL60o4bU] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:53:24"}
+{"level":"info","message":"Created Token with id [feVTztth9CPKvqzg] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:53:30"}
+{"level":"info","message":"Created Token with id [m5qr89VoJgABtQnp] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:53:31"}
+{"level":"info","message":"Created ActiveEffect with id [qR4qLLooQZAsPoQw] in parent ActorDelta [ojbfLk33n9K3CvSo]","timestamp":"2026-09-20 04:53:43"}
+{"level":"info","message":"Created ActiveEffect with id [mn4Ajl331zK0T1wZ] in parent ActorDelta [U4LaHE9c4SYJyfl4]","timestamp":"2026-09-20 04:53:43"}
+{"level":"info","message":"Created ChatMessage with id [ZXlDsgvDr2Y4rWHI]","timestamp":"2026-09-20 04:53:43"}
+{"level":"info","message":"Created ChatMessage with id [JHWLal7hxhKNrflG]","timestamp":"2026-09-20 04:53:43"}
+{"level":"info","message":"Deleted Token with id [qEMyRwPcATVIfwox] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:54:30"}
+{"level":"info","message":"Created client session 67ed55b4119062fb49d76ea6","timestamp":"2026-09-20 04:55:26"}
+{"level":"info","message":"Created Token with id [zHTE5eppFcsu3IRF] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:55:36"}
+{"level":"info","message":"Created Token with id [A5LmgliSiMg3Gslx] in parent Scene [NuhnKvWUqamgWfP3]","timestamp":"2026-09-20 04:55:38"}
+{"level":"info","message":"Created Actor with id [9xeebCb3uviMVtc4]","timestamp":"2026-09-20 05:24:24"}
+{"level":"info","message":"Created client session 6b73b1783468a2108eb6f0d4","timestamp":"2026-09-20 05:28:51"}
+{"level":"info","message":"Created Actor with id [fqV1E1AavpVXOT6b]","timestamp":"2026-09-20 05:30:01"}
+{"level":"info","message":"Mainframe.png saved to assets/Pass_The_Torch/Tokens","timestamp":"2026-09-20 05:39:10"}
+{"level":"info","message":"Mainframe.png saved to assets/Pass_The_Torch/Tokens","timestamp":"2026-09-20 05:40:24"}
+{"level":"info","message":"Undersprawl.ogg saved to assets/Pass_The_Torch/Tokens","timestamp":"2026-09-20 05:41:17"}
+{"level":"info","message":"Created PlaylistSound with id [QcrtXHBhMfOjjXES] in parent Playlist [x9O0y0QCastyy44L]","timestamp":"2026-09-20 05:41:20"}
+{"level":"info","message":"Created Token with id [CbPwlK3ptnOPf6zQ] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:42:13"}
+{"level":"info","message":"Deleted Token with id [CbPwlK3ptnOPf6zQ] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:42:15"}
+{"level":"info","message":"Deleted Actor with id [9xeebCb3uviMVtc4]","timestamp":"2026-09-20 05:42:17"}
+{"level":"info","message":"Created Token with id [ZEfON4paigbzztro] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:42:38"}
+{"level":"info","message":"Created Token with id [ibj6fLWVIQG0mq0e] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:43:01"}
+{"level":"info","message":"Deleted Token with id [ibj6fLWVIQG0mq0e] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:43:04"}
+{"level":"info","message":"Created Actor with id [5D5HZi5OaMbMNdpN]","timestamp":"2026-09-20 05:45:11"}
+{"level":"info","message":"Created client session cb46aa339be8fbf0ed0b7afa","timestamp":"2026-09-20 05:46:31"}
+{"level":"info","message":"Created Token with id [7jmCqfer8urNcGLf] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:47:50"}
+{"level":"info","message":"Created Combatant with id [rbho9Q4pU7kWAwc4] in parent Combat [H3paDvx35Tro10TD]","timestamp":"2026-09-20 05:47:53"}
+{"level":"info","message":"Created ChatMessage with id [X1NR1i7vSRKfmu8A]","timestamp":"2026-09-20 05:47:55"}
+{"level":"info","message":"Created ChatMessage with id [kp9slkH7bmWICoIu]","timestamp":"2026-09-20 05:47:59"}
+{"level":"info","message":"Deleted Combatant with id [rbho9Q4pU7kWAwc4] in parent Combat [H3paDvx35Tro10TD]","timestamp":"2026-09-20 05:48:03"}
+{"level":"info","message":"Deleted Token with id [7jmCqfer8urNcGLf] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:48:05"}
+{"level":"info","message":"Created Item with id [5G0JmqVwtZsoizx7] in parent Actor [okpiIn2y4AtFegnZ]","timestamp":"2026-09-20 05:50:28"}
+{"level":"info","message":"Created Token with id [tKGVrfqiml7ktzkN] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:53:52"}
+{"level":"info","message":"Created ActiveEffect with id [wOlfDDcYWQnkFdyC] in parent ActorDelta [au95PY0yGtOerXoh]","timestamp":"2026-09-20 05:54:05"}
+{"level":"info","message":"Created ChatMessage with id [grqugvjnxkk2Cc0j]","timestamp":"2026-09-20 05:54:05"}
+{"level":"info","message":"Deleted ActiveEffect with id [wOlfDDcYWQnkFdyC] in parent ActorDelta [au95PY0yGtOerXoh]","timestamp":"2026-09-20 05:54:17"}
+{"level":"info","message":"Deleted Token with id [tKGVrfqiml7ktzkN] in parent Scene [K8AVOT0xhnPRN8HI]","timestamp":"2026-09-20 05:54:19"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/e3XcHJRzhPMmd2i5-thumb.webp\"","timestamp":"2026-09-20 05:56:02"}
+{"level":"info","message":"Created Scene with id [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:10:25"}
+{"level":"info","message":"Factory intro.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:12:26"}
+{"level":"info","message":"Conveyer Belts.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:12:32"}
+{"level":"info","message":"FCU.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:12:35"}
+{"level":"info","message":"Pots.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:12:39"}
+{"level":"info","message":"Slow Belt.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:12:42"}
+{"level":"info","message":"Undersprawl - 2,5.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1/Undersprawl","timestamp":"2026-09-20 06:13:53"}
+{"level":"info","message":"Undersprawl - 3,6.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1/Undersprawl","timestamp":"2026-09-20 06:13:56"}
+{"level":"info","message":"Undersprawl - 7.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1/Undersprawl","timestamp":"2026-09-20 06:13:59"}
+{"level":"info","message":"Undersprawl - 8.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1/Undersprawl","timestamp":"2026-09-20 06:14:01"}
+{"level":"info","message":"Undersprawl - 9.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1/Undersprawl","timestamp":"2026-09-20 06:14:05"}
+{"level":"info","message":"Undersprawl - Tunnel 1,10.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1/Undersprawl","timestamp":"2026-09-20 06:14:07"}
+{"level":"info","message":"Undersprawl - Tunnel 4.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1/Undersprawl","timestamp":"2026-09-20 06:14:10"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/hIDKNnKzpmXPak5A-thumb.webp\"","timestamp":"2026-09-20 06:14:45"}
+{"level":"info","message":"Created Scene with id [cHcg6Rf8hXhdIdMl]","timestamp":"2026-09-20 06:15:14"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/cHcg6Rf8hXhdIdMl-thumb.webp\"","timestamp":"2026-09-20 06:15:30"}
+{"level":"info","message":"Created Scene with id [YcDMZGoQ29F26M8k]","timestamp":"2026-09-20 06:15:43"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/YcDMZGoQ29F26M8k-thumb.webp\"","timestamp":"2026-09-20 06:15:56"}
+{"level":"info","message":"FCU.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:17:53"}
+{"level":"info","message":"Created AmbientLight with id [rdhIxkXi5PSVa8IQ] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:07"}
+{"level":"info","message":"Deleted AmbientLight with id [rdhIxkXi5PSVa8IQ] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:11"}
+{"level":"info","message":"Created AmbientLight with id [cU9SOIhX4clBPSzC] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:17"}
+{"level":"info","message":"Deleted AmbientLight with id [cU9SOIhX4clBPSzC] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:17"}
+{"level":"info","message":"Created AmbientLight with id [7QFe9wQy1tKcVd86] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:47"}
+{"level":"info","message":"Created AmbientLight with id [YUq7XZ8lT560zO9b] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:52"}
+{"level":"info","message":"Deleted AmbientLight with id [YUq7XZ8lT560zO9b] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:52"}
+{"level":"info","message":"Deleted AmbientLight with id [7QFe9wQy1tKcVd86] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:19:53"}
+{"level":"info","message":"Created AmbientLight with id [UjHlblHzFl65Pqp5] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:20:07"}
+{"level":"info","message":"Created AmbientLight with id [LrB79CknI4kDJUIX] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:20:56"}
+{"level":"info","message":"Deleted AmbientLight with id [LrB79CknI4kDJUIX] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:20:57"}
+{"level":"info","message":"Created AmbientLight with id [9MSSE49Cu2mVoIip] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:20:58"}
+{"level":"info","message":"Deleted AmbientLight with id [9MSSE49Cu2mVoIip] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:20:59"}
+{"level":"info","message":"Created AmbientLight with id [vU3I66apmtfzImYK] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:21:52"}
+{"level":"info","message":"Created AmbientLight with id [eUqRMrU1ll7sOaSN] in parent Scene [hIDKNnKzpmXPak5A]","timestamp":"2026-09-20 06:21:56"}
+{"level":"info","message":"Created AmbientLight with id [13w5zKndZpXKT4Sg] in parent Scene [cHcg6Rf8hXhdIdMl]","timestamp":"2026-09-20 06:24:01"}
+{"level":"info","message":"Deleted AmbientLight with id [13w5zKndZpXKT4Sg] in parent Scene [cHcg6Rf8hXhdIdMl]","timestamp":"2026-09-20 06:24:07"}
+{"level":"info","message":"Created AmbientLight with id [VNJwEEBNoWNvDrNi] in parent Scene [cHcg6Rf8hXhdIdMl]","timestamp":"2026-09-20 06:24:09"}
+{"level":"info","message":"Created AmbientLight with id [FvBFRcbK1npMlhmw] in parent Scene [cHcg6Rf8hXhdIdMl]","timestamp":"2026-09-20 06:26:13"}
+{"level":"info","message":"Deleted extracted base64 asset: /home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/YcDMZGoQ29F26M8k-thumb.webp","timestamp":"2026-09-20 06:27:04"}
+{"level":"info","message":"Deleted Scene with id [YcDMZGoQ29F26M8k]","timestamp":"2026-09-20 06:27:04"}
+{"level":"info","message":"Created Scene with id [m66YcSKcjQ2dUFHS]","timestamp":"2026-09-20 06:27:09"}
+{"level":"info","message":"FCU.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:27:19"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/m66YcSKcjQ2dUFHS-thumb.webp\"","timestamp":"2026-09-20 06:27:23"}
+{"level":"info","message":"FCU_m.jpg saved to assets/Pass_The_Torch/Scenes/Mission 1","timestamp":"2026-09-20 06:28:44"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/m66YcSKcjQ2dUFHS-thumb.webp\"","timestamp":"2026-09-20 06:29:03"}
+{"level":"info","message":"Created Scene with id [ji4SzGJa1TjvTLkS]","timestamp":"2026-09-20 06:29:18"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/ji4SzGJa1TjvTLkS-thumb.webp\"","timestamp":"2026-09-20 06:29:40"}
+{"level":"info","message":"Created AmbientLight with id [7FibS7OW4lpXeb80] in parent Scene [ji4SzGJa1TjvTLkS]","timestamp":"2026-09-20 06:29:54"}
+{"level":"info","message":"Deleted AmbientLight with id [7FibS7OW4lpXeb80] in parent Scene [ji4SzGJa1TjvTLkS]","timestamp":"2026-09-20 06:30:00"}
+{"level":"info","message":"Created AmbientLight with id [q6mI5Fj356up57LZ] in parent Scene [ji4SzGJa1TjvTLkS]","timestamp":"2026-09-20 06:30:02"}
+{"level":"info","message":"Created Scene with id [TfhbT3M2XvDsr9aP]","timestamp":"2026-09-20 06:31:14"}
+{"level":"info","message":"Extracted base64 asset: \"/home/ubuntu/foundryuserdata/Data/worlds/pass_the_torch/assets/scenes/TfhbT3M2XvDsr9aP-thumb.webp\"","timestamp":"2026-09-20 06:31:31"}
+{"level":"info","message":"Created client session 9da21cd9a4e110f9b13d9316","timestamp":"2026-09-20 06:39:20"}

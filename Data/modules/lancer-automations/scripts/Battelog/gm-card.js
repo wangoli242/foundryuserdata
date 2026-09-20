@@ -1,22 +1,16 @@
 /* global Dialog, ui, game */
 
 import { playTerminalIntro } from './intro-terminal.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
 import { openBattleLogRecap } from './recap.js';
-
-const _escape = s => String(s ?? '').replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;');
+import { escapeHtml as _escape, localize } from '../tools/string-utils.js';
 
 /** Open the GM card for a battle. */
 export function openBattleLogGMCard(battle)
 {
     const players = battle?.players ?? [];
     const mission = battle?.mission ?? {};
-    let awardsDisabled = false;
-    try
-    {
-        awardsDisabled = !!game.settings.get('lancer-automations', 'tah.disableAwards');
-    }
-    catch
-    { /* not ready */ }
+    const awardsDisabled = !!getModuleSetting('tah.disableAwards');
     const state = {
         outcome: mission.outcome ?? 'VICTORY',
         mvpId: null,
@@ -33,6 +27,7 @@ export function openBattleLogGMCard(battle)
         <div class="lancer-list-item ${player.id === state.mvpId ? 'selected' : ''}" data-mvp="${player.id}">
             <div style="flex:1;font-weight:600;text-align:center;">
                 <i class="fas fa-star battelog-mvp-star"></i>${_escape(player.callsign)}
+                ${awardsDisabled ? '' : `<span style="font-weight:400;opacity:0.55;font-size:0.82em;margin-left:6px;">${player.awardPoints ?? 0} PTS</span>`}
             </div>
         </div>`;
 
@@ -76,7 +71,7 @@ export function openBattleLogGMCard(battle)
     `;
 
     const dlg = new Dialog({
-        title: 'Battle Log · GM',
+        title: localize('LA.dialogTitle.battleLogGm'),
         content,
         buttons: {
             // Hidden via CSS; real buttons live in the card body. Dialog requires at least one entry.

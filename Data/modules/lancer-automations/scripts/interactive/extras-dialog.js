@@ -12,7 +12,10 @@ import {
     setExtraDeployableOpts,
     openDeployablePicker,
 } from './deployables.js';
+import { localize } from '../tools/string-utils.js';
 import { getActionOverlays, getActionOverlay, setActionOverlay, removeActionOverlay } from './action-overlays.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { getLAFlag, setLAFlag } from '../tools/flag-utils.js';
 import { addExtraBar, removeExtraBar, getExtraBars } from '../tah/tokenStatBar.js';
 import { isWhiteIcon } from '../tah/item-helpers.js';
 import { tierGateControl, bindTierGate, tierGateApplies, readTierGate } from './tier-gate.js';
@@ -35,6 +38,17 @@ function iconHtml(img, size = 22)
 
 const DAMAGE_TYPES = ['Kinetic', 'Energy', 'Explosive', 'Heat', 'Burn', 'Infection'];
 const RANGE_TYPES = ['Range', 'Threat', 'Line', 'Cone', 'Blast', 'Burst', 'Thrown'];
+const COMBAT_MODES = [['', 'None'], ['attack', 'Attack'], ['damage', 'Damage']];
+// Third entry lists the modes the tag actually reaches, the rest are hidden and cleared.
+const COMBAT_TAGS = [
+    ['tg_smart', 'Smart', 'attack'],
+    ['tg_seeking', 'Seeking', 'attack'],
+    ['tg_ap', 'AP', 'attack damage'],
+    ['tg_reliable', 'Reliable', 'attack damage'],
+    ['tg_overkill', 'Overkill', 'attack damage'],
+    ['tg_accurate', 'Accurate', 'attack'],
+    ['tg_inaccurate', 'Inaccurate', 'attack'],
+];
 
 function dmgRowHtml(dmgAmount = '', type = 'Kinetic')
 {
@@ -71,12 +85,12 @@ function openActorPickerPopup(target, onAdded)
         : '<div style="padding:8px;text-align:center;color:var(--la-ink-dim);font-size:0.82em;font-style:italic;">No actors in world.</div>';
     const content = `
         <div class="lancer-dialog-header"><div class="lancer-dialog-title">ADD DEPLOYABLE ACTOR</div></div>
-        <input type="text" class="la-ap-search" placeholder="Search actors..." style="margin-top:8px;width:100%;height:28px;padding:2px 8px;font-size:0.9em;box-sizing:border-box;">
+        <input type="text" class="la-ap-search" placeholder="${localize('LA.common.searchActors')}" style="margin-top:8px;width:100%;height:28px;padding:2px 8px;font-size:0.9em;box-sizing:border-box;">
         <div class="la-ap-list lancer-scroll" style="margin-top:6px;max-height:360px;overflow-y:auto;display:flex;flex-direction:column;gap:1px;border:1px solid var(--la-edge);background:color-mix(in srgb, var(--la-plate), var(--la-ink) 6%);">${rowsHtml}</div>`;
     const dlg = new Dialog({
-        title: 'Add Deployable Actor',
+        title: localize('LA.dialogTitle.addDeployableActor'),
         content,
-        buttons: { close: { label: 'Close' } },
+        buttons: { close: { label: localize('LA.common.close') } },
         default: 'close',
         render: (/** @type {any} */ html) =>
         {
@@ -98,9 +112,9 @@ function openActorPickerPopup(target, onAdded)
                 if (doc?.documentName !== 'Actor')
                     return;
                 await addExtraDeploymentActor(target, doc);
-                const cur = target.getFlag('lancer-automations', 'extraDeployableActorsViaUI') || [];
+                const cur = getLAFlag(target,'extraDeployableActorsViaUI') || [];
                 if (!cur.includes(uuid))
-                    await target.setFlag('lancer-automations', 'extraDeployableActorsViaUI', [...cur, uuid]);
+                    await setLAFlag(target,'extraDeployableActorsViaUI', [...cur, uuid]);
                 dlg.close();
                 onAdded();
             });
@@ -113,17 +127,7 @@ function openActorPickerPopup(target, onAdded)
 function renderExtraBarsSection(target)
 {
     const bars = getExtraBars(target) || [];
-    const settingOn = (() =>
-    {
-        try
-        {
-            return !!game.settings.get('lancer-automations', 'tokenStatBar');
-        }
-        catch
-        {
-            return false;
-        }
-    })();
+    const settingOn = !!getModuleSetting('tokenStatBar');
     const rows = bars.length
         ? bars.map((record) =>
         {
@@ -169,11 +173,11 @@ export function openExtrasDialog(target)
     {
         const allActions = getActorActions(target) || [];
         const uiActions = allActions.filter((/** @type {any} */ action) => action._addedViaExtrasUI === true);
-        const allDepUuids = new Set(target.getFlag('lancer-automations', 'extraDeployableActors') || []);
-        const uiMarkerUuids = (target.getFlag('lancer-automations', 'extraDeployableActorsViaUI') || [])
+        const allDepUuids = new Set(getLAFlag(target,'extraDeployableActors') || []);
+        const uiMarkerUuids = (getLAFlag(target,'extraDeployableActorsViaUI') || [])
             .filter((/** @type {string} */ uuid) => allDepUuids.has(uuid));
-        const allDepLids = new Set(target.getFlag('lancer-automations', 'extraDeployables') || []);
-        const uiMarkerLids = (target.getFlag('lancer-automations', 'extraDeployableLidsViaUI') || [])
+        const allDepLids = new Set(getLAFlag(target,'extraDeployables') || []);
+        const uiMarkerLids = (getLAFlag(target,'extraDeployableLidsViaUI') || [])
             .map((/** @type {any} */ entry) => (typeof entry === 'string' ? { lid: entry, name: entry, img: null } : entry))
             .filter((/** @type {any} */ lidEntry) => lidEntry?.lid && allDepLids.has(lidEntry.lid));
 
@@ -337,17 +341,17 @@ export function openExtrasDialog(target)
             <div class="la-extras-drawer lancer-dialog-base" style="position:absolute;top:0;left:100%;margin-left:8px;width:300px;height:100%;box-sizing:border-box;padding:12px;overflow:hidden;display:flex;flex-direction:column;background:var(--la-plate);color:var(--la-ink);font-family:var(--font-primary);border:1px solid var(--la-edge);box-shadow:-6px 0 16px rgba(0,0,0,0.45);transform:translateX(-100%);opacity:0;pointer-events:none;transition:transform 0.28s ease, opacity 0.28s ease;z-index:5;">
                 <div style="flex:0 0 auto;display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;">
                     <div class="la-extras-drawer-title" style="font-size:0.82em;text-transform:uppercase;letter-spacing:1px;color:var(--la-ink);font-weight:bold;">New Action</div>
-                    <span class="la-extras-drawer-close" title="Close" style="cursor:pointer;color:var(--la-ink-dim);font-size:1.3em;line-height:1;padding:0 4px;">&times;</span>
+                    <span class="la-extras-drawer-close" title="${localize('LA.common.close')}" style="cursor:pointer;color:var(--la-ink-dim);font-size:1.3em;line-height:1;padding:0 4px;">&times;</span>
                 </div>
                 <div class="la-extras-editor-action" style="flex:1 1 auto;min-height:0;flex-direction:column;">
                     <div class="la-extras-action-fields" style="flex:1 1 auto;min-height:0;overflow-y:auto;padding-right:2px;">
                     <div class="la-extras-act-basics">
                     <div style="display:grid;grid-template-columns:34px 1fr 1fr;gap:6px;align-items:center;">
                         <span class="la-extras-act-icon" title="Click to change icon" style="cursor:pointer;display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;border:1px solid var(--la-edge);background:color-mix(in srgb, var(--la-plate), var(--la-ink) 6%);">${iconHtml(actIcon, 22)}</span>
-                        <input type="text" class="la-extras-act-name" placeholder="Name" style="height:26px;padding:2px 6px;font-size:0.9em;">
+                        <input type="text" class="la-extras-act-name" placeholder="${localize('LA.common.name')}" style="height:26px;padding:2px 6px;font-size:0.9em;">
                         <select class="la-extras-act-act" style="height:26px;padding:2px 6px;font-size:0.9em;">${actOptions}</select>
                     </div>
-                    <textarea class="la-extras-act-detail" placeholder="Detail (optional)" rows="2" style="margin-top:4px;width:100%;font-size:0.85em;padding:4px;box-sizing:border-box;"></textarea>
+                    <textarea class="la-extras-act-detail" placeholder="${localize('LA.extras.detailOptional')}" rows="2" style="margin-top:4px;width:100%;font-size:0.85em;padding:4px;box-sizing:border-box;"></textarea>
                     <div style="margin-top:4px;display:flex;align-items:center;flex-wrap:wrap;gap:8px;">
                         <label style="font-size:0.82em;display:flex;align-items:center;gap:4px;"><input type="checkbox" class="la-extras-act-loading"> Loading</label>
                         <label style="font-size:0.82em;display:flex;align-items:center;gap:4px;">Limited <input type="number" class="la-extras-act-uses" placeholder="—" min="1" max="99" style="width:46px;height:22px;font-size:0.85em;"></label>
@@ -359,28 +363,30 @@ export function openExtrasDialog(target)
                     </div>
                     <div class="la-extras-overlay-note" style="display:none;margin-top:2px;padding:6px;border:1px solid var(--la-edge);background:color-mix(in srgb, var(--la-plate), var(--la-ink) 4%);font-size:0.8em;color:var(--la-ink-dim);">Attack or damage attached to this action. The action itself is untouched.</div>
                     <div class="la-extras-combat" style="margin-top:6px;padding:6px;border:1px solid var(--la-edge);background:color-mix(in srgb, var(--la-plate), var(--la-ink) 4%);font-size:0.8em;">
-                        <div style="display:flex;align-items:center;flex-wrap:wrap;gap:8px;">
+                        <div style="display:flex;align-items:center;gap:6px;">
                             <span style="color:var(--la-ink-dim);text-transform:uppercase;letter-spacing:0.5px;">Combat</span>
-                            <label style="display:flex;align-items:center;gap:3px;"><input type="radio" name="la-extras-combat-mode" value="" checked> None</label>
-                            <label style="display:flex;align-items:center;gap:3px;"><input type="radio" name="la-extras-combat-mode" value="attack"> Attack</label>
-                            <label style="display:flex;align-items:center;gap:3px;"><input type="radio" name="la-extras-combat-mode" value="damage"> Damage</label>
-                            <label style="margin-left:auto;display:flex;align-items:center;gap:3px;"><input type="checkbox" class="la-extras-act-melee"> Melee</label>
+                            <div class="la-extras-combat-seg" style="display:flex;flex:1;border:1px solid var(--la-edge);background:var(--la-plate);">
+                                ${COMBAT_MODES.map(([value, label], idx) => `<label style="position:relative;flex:1;display:flex;align-items:center;justify-content:center;padding:2px 0;cursor:pointer;${idx < COMBAT_MODES.length - 1 ? 'border-right:1px solid var(--la-edge);' : ''}"><input type="radio" name="la-extras-combat-mode" value="${value}"${value ? '' : ' checked'} style="position:absolute;opacity:0;pointer-events:none;">${label}</label>`).join('')}
+                            </div>
                         </div>
-                        <div style="margin-top:5px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;">
-                            <label style="display:flex;align-items:center;gap:3px;">Acc<input type="number" class="la-extras-act-acc" value="0" style="width:38px;height:22px;"></label>
-                            <label style="display:flex;align-items:center;gap:3px;">Diff<input type="number" class="la-extras-act-diff" value="0" style="width:38px;height:22px;"></label>
-                            <label style="display:flex;align-items:center;gap:3px;">Bonus<input type="number" class="la-extras-act-atkbonus" value="0" style="width:38px;height:22px;"></label>
-                        </div>
-                        <div style="margin-top:5px;display:flex;flex-wrap:wrap;gap:4px 10px;">
-                            ${[['tg_smart', 'Smart'], ['tg_seeking', 'Seeking'], ['tg_ap', 'AP'], ['tg_reliable', 'Reliable'], ['tg_overkill', 'Overkill'], ['tg_accurate', 'Accurate'], ['tg_inaccurate', 'Inaccurate']].map(([lid, label]) => `<label style="display:flex;align-items:center;gap:3px;"><input type="checkbox" class="la-extras-wtag" value="${lid}"> ${label}</label>`).join('')}
-                        </div>
-                        <div style="margin-top:5px;">
-                            <div style="display:flex;align-items:center;gap:6px;"><span style="color:var(--la-ink-dim);">Dmg</span><span class="la-extras-dmg-add" title="Add damage" style="cursor:pointer;color:var(--primary-color);"><i class="fas fa-plus"></i></span></div>
-                            <div class="la-extras-dmg-rows" style="margin-top:3px;display:flex;flex-direction:column;gap:3px;">${dmgRowHtml()}</div>
-                        </div>
-                        <div style="margin-top:5px;">
-                            <div style="display:flex;align-items:center;gap:6px;"><span style="color:var(--la-ink-dim);">Range</span><span class="la-extras-range-add" title="Add range" style="cursor:pointer;color:var(--primary-color);"><i class="fas fa-plus"></i></span></div>
-                            <div class="la-extras-range-rows" style="margin-top:3px;display:flex;flex-direction:column;gap:3px;">${rangeRowHtml()}</div>
+                        <div class="la-extras-combat-fields">
+                            <div class="la-extras-combat-attack" style="margin-top:5px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;">
+                                <label style="display:flex;align-items:center;gap:3px;">Acc<input type="number" class="la-extras-act-acc" value="0" style="width:38px;height:22px;"></label>
+                                <label style="display:flex;align-items:center;gap:3px;">Diff<input type="number" class="la-extras-act-diff" value="0" style="width:38px;height:22px;"></label>
+                                <label style="display:flex;align-items:center;gap:3px;">Bonus<input type="number" class="la-extras-act-atkbonus" value="0" style="width:38px;height:22px;"></label>
+                                <label style="margin-left:auto;display:flex;align-items:center;gap:3px;"><input type="checkbox" class="la-extras-act-melee"> Melee</label>
+                            </div>
+                            <div style="margin-top:5px;display:grid;grid-template-columns:repeat(3,1fr);gap:4px 6px;">
+                                ${COMBAT_TAGS.map(([lid, label, modes]) => `<label data-modes="${modes}" style="display:flex;align-items:center;gap:3px;"><input type="checkbox" class="la-extras-wtag" value="${lid}"> ${label}</label>`).join('')}
+                            </div>
+                            <div style="margin-top:5px;">
+                                <div style="display:flex;align-items:center;gap:6px;"><span style="color:var(--la-ink-dim);">Dmg</span><span class="la-extras-dmg-add" title="Add damage" style="cursor:pointer;color:var(--primary-color);"><i class="fas fa-plus"></i></span></div>
+                                <div class="la-extras-dmg-rows" style="margin-top:3px;display:flex;flex-direction:column;gap:3px;">${dmgRowHtml()}</div>
+                            </div>
+                            <div style="margin-top:5px;">
+                                <div style="display:flex;align-items:center;gap:6px;"><span style="color:var(--la-ink-dim);">Range</span><span class="la-extras-range-add" title="Add range" style="cursor:pointer;color:var(--primary-color);"><i class="fas fa-plus"></i></span></div>
+                                <div class="la-extras-range-rows" style="margin-top:3px;display:flex;flex-direction:column;gap:3px;">${rangeRowHtml()}</div>
+                            </div>
                         </div>
                     </div>
                     </div>
@@ -389,17 +395,17 @@ export function openExtrasDialog(target)
                     </div>
                 </div>
                 <div class="la-extras-editor-dep" style="display:none;flex:1 1 auto;min-height:0;flex-direction:column;">
-                    <input type="text" class="la-extras-dep-search" placeholder="Search actors..." style="flex:0 0 auto;width:100%;height:26px;padding:2px 8px;font-size:0.9em;box-sizing:border-box;">
+                    <input type="text" class="la-extras-dep-search" placeholder="${localize('LA.common.searchActors')}" style="flex:0 0 auto;width:100%;height:26px;padding:2px 8px;font-size:0.9em;box-sizing:border-box;">
                     <div class="la-extras-dep-pick-list lancer-scroll" style="flex:1 1 auto;min-height:0;margin-top:6px;overflow-y:auto;display:flex;flex-direction:column;gap:1px;border:1px solid var(--la-edge);background:color-mix(in srgb, var(--la-plate), var(--la-ink) 6%);">${depActorRows}</div>
                     <button class="la-extras-dep-find-lid" type="button" style="flex:0 0 auto;margin-top:8px;width:100%;height:28px;padding:2px 10px;font-size:0.85em;background:var(--primary-color);color:#fff;border:none;cursor:pointer;"><i class="fas fa-rocket"></i> Add by LID</button>
                 </div>
                 <div class="la-extras-editor-bar" style="display:none;flex:0 0 auto;">
                     <div style="display:grid;grid-template-columns:1fr 34px;gap:6px;align-items:center;">
-                        <input type="text" class="la-extras-bar-label" placeholder="Label" maxlength="14" style="height:26px;padding:2px 6px;font-size:0.9em;">
+                        <input type="text" class="la-extras-bar-label" placeholder="${localize('LA.common.label')}" maxlength="14" style="height:26px;padding:2px 6px;font-size:0.9em;">
                         <input type="color" class="la-extras-bar-color" value="#66cc66" style="width:32px;height:26px;padding:0;cursor:pointer;">
                     </div>
                     <div style="margin-top:6px;display:grid;grid-template-columns:1fr 1fr;gap:6px;">
-                        <input type="number" class="la-extras-bar-val" placeholder="Value" value="1" style="height:26px;padding:2px 6px;font-size:0.9em;">
+                        <input type="number" class="la-extras-bar-val" placeholder="${localize('LA.common.value')}" value="1" style="height:26px;padding:2px 6px;font-size:0.9em;">
                         <input type="number" class="la-extras-bar-max" placeholder="Max" value="3" style="height:26px;padding:2px 6px;font-size:0.9em;">
                     </div>
                     <button class="la-extras-bar-add" style="margin-top:8px;width:100%;background:var(--primary-color);color:#fff;border:none;padding:4px 12px;cursor:pointer;font-size:0.85em;font-weight:bold;">Add Bar</button>
@@ -411,7 +417,7 @@ export function openExtrasDialog(target)
     const encodeKey = (key) => String(key).replace(/\./g, '$DOT$');
     const commitAllInputs = async (html) =>
     {
-        const map = { ...(target.getFlag('lancer-automations', 'extraDeployableOpts') || {}) };
+        const map = { ...(getLAFlag(target,'extraDeployableOpts') || {}) };
         const readOne = (sel, prop, dataKey) =>
         {
             html.find(sel).each((_i, el) =>
@@ -437,7 +443,7 @@ export function openExtrasDialog(target)
         readOne('.la-extras-dep-count', 'count', 'uuid');
         readOne('.la-extras-dep-lid-range', 'range', 'lid');
         readOne('.la-extras-dep-lid-count', 'count', 'lid');
-        await target.setFlag('lancer-automations', 'extraDeployableOpts', map);
+        await setLAFlag(target,'extraDeployableOpts', map);
     };
 
     let floatingDrawer = null;
@@ -445,11 +451,11 @@ export function openExtrasDialog(target)
     /** @type {any} */
     const dialogOpts = { width: 480, height: 'auto', top: 450, left: 150, classes: ['lancer-dialog-base', 'lancer-no-title'] };
     const dlg = new Dialog({
-        title: 'Extras',
+        title: localize('LA.dialogTitle.extras'),
         content: `<div class="la-extras-body" style="position:relative;overflow:visible;">${renderContent()}</div>`,
         buttons: {
             save: {
-                label: 'Save',
+                label: localize('LA.common.save'),
                 callback: (html) => commitAllInputs(html),
             },
         },
@@ -472,6 +478,29 @@ export function openExtrasDialog(target)
                         },
                     }).render(true);
                 });
+                const applyCombatMode = () =>
+                {
+                    const mode = String(drawerFind('input[name="la-extras-combat-mode"]:checked').val() ?? '');
+                    drawerFind('.la-extras-combat-seg label').each((/** @type {number} */ _i, /** @type {any} */ el) =>
+                    {
+                        const on = !!el.querySelector('input')?.checked;
+                        el.style.background = on ? 'var(--primary-color)' : '';
+                        el.style.color = on ? '#fff' : '';
+                    });
+                    // Restore the real display value, not '': these rows carry an inline display:flex.
+                    drawerFind('.la-extras-combat-fields').css('display', mode ? 'block' : 'none');
+                    drawerFind('.la-extras-combat-attack').css('display', mode === 'attack' ? 'flex' : 'none');
+                    drawerFind('.la-extras-wtag').each((/** @type {number} */ _i, /** @type {any} */ el) =>
+                    {
+                        const label = el.closest('label');
+                        const on = String(label?.dataset.modes ?? '').split(' ').includes(mode);
+                        if (label)
+                            label.style.display = on ? 'flex' : 'none';
+                        if (!on)
+                            el.checked = false;
+                    });
+                };
+                drawerFind('input[name="la-extras-combat-mode"]').on('change', applyCombatMode);
                 const fillActionForm = (/** @type {any} */ src) =>
                 {
                     drawerFind('.la-extras-act-name').val(src.name ?? '');
@@ -504,7 +533,8 @@ export function openExtrasDialog(target)
                         ? rangeList.map((/** @type {any} */ rangeEntry) => rangeRowHtml(rangeEntry.val, rangeEntry.type)).join('')
                         : rangeRowHtml());
                     editingName = src.name;
-                    drawerFind('.la-extras-act-add').text('Save Changes');
+                    drawerFind('.la-extras-act-add').text(localize('LA.extras.saveChanges'));
+                    applyCombatMode();
                 };
                 const clearActionForm = () =>
                 {
@@ -526,6 +556,7 @@ export function openExtrasDialog(target)
                     drawerFind('.la-extras-dmg-rows').html(dmgRowHtml());
                     drawerFind('.la-extras-range-rows').html(rangeRowHtml());
                     drawerFind('.la-extras-act-add').text('Add Action');
+                    applyCombatMode();
                 };
                 const openDrawer = (/** @type {string} */ type, /** @type {string} */ title) =>
                 {
@@ -584,8 +615,9 @@ export function openExtrasDialog(target)
                 {
                     drawerFind('.la-extras-act-basics').css('display', on ? 'none' : '');
                     drawerFind('.la-extras-overlay-note').css('display', on ? 'block' : 'none');
-                    drawerFind('input[name="la-extras-combat-mode"][value=""]').closest('label').css('display', on ? 'none' : '');
-                    drawerFind('.la-extras-act-add').text(on ? 'Save Combat' : 'Add Action');
+                    drawerFind('input[name="la-extras-combat-mode"][value=""]').closest('label').css('display', on ? 'none' : 'flex');
+                    drawerFind('.la-extras-act-add').text(localize(on ? 'LA.extras.saveCombat' : 'LA.extras.addAction'));
+                    applyCombatMode();
                 };
                 drawerFind('.la-extras-drawer-close').on('click', () => closeDrawer());
                 html.find('.la-extras-act-new').on('click', () =>
@@ -639,9 +671,9 @@ export function openExtrasDialog(target)
                     if (doc?.documentName !== 'Actor')
                         return;
                     await addExtraDeploymentActor(target, doc);
-                    const cur = target.getFlag('lancer-automations', 'extraDeployableActorsViaUI') || [];
+                    const cur = getLAFlag(target,'extraDeployableActorsViaUI') || [];
                     if (!cur.includes(doc.uuid))
-                        await target.setFlag('lancer-automations', 'extraDeployableActorsViaUI', [...cur, doc.uuid]);
+                        await setLAFlag(target,'extraDeployableActorsViaUI', [...cur, doc.uuid]);
                     rerender();
                 });
                 drawerFind('.la-extras-dmg-add').on('click', () => drawerFind('.la-extras-dmg-rows').append(dmgRowHtml()));
@@ -677,7 +709,7 @@ export function openExtrasDialog(target)
                     const name = overlayEditing ? overlayEditing.name : String(drawerFind('.la-extras-act-name').val() ?? '').trim();
                     if (!name)
                     {
-                        ui.notifications.warn('Action needs a name.');
+                        ui.notifications.warn(localize('LA.notify.actionNeedsAName'));
                         return;
                     }
                     const activation = String(drawerFind('.la-extras-act-act').val() ?? 'Quick');
@@ -733,16 +765,20 @@ export function openExtrasDialog(target)
                             if (el.checked)
                                 tags.push({ lid: String($(el).val()), val: '' });
                         });
-                        const acc = Number(drawerFind('.la-extras-act-acc').val() ?? 0);
-                        const diff = Number(drawerFind('.la-extras-act-diff').val() ?? 0);
-                        const atkBonus = Number(drawerFind('.la-extras-act-atkbonus').val() ?? 0);
-                        if (acc)
-                            entry.accuracy = acc;
-                        if (diff)
-                            entry.difficulty = diff;
-                        if (atkBonus)
-                            entry.attack_bonus = atkBonus;
-                        entry.attack_type = /** @type {HTMLInputElement} */ (drawerFind('.la-extras-act-melee')[0])?.checked ? 'Melee' : 'Ranged';
+                        // A damage roll reads none of these, so don't carry them onto the entry.
+                        if (combatMode === 'attack')
+                        {
+                            const acc = Number(drawerFind('.la-extras-act-acc').val() ?? 0);
+                            const diff = Number(drawerFind('.la-extras-act-diff').val() ?? 0);
+                            const atkBonus = Number(drawerFind('.la-extras-act-atkbonus').val() ?? 0);
+                            if (acc)
+                                entry.accuracy = acc;
+                            if (diff)
+                                entry.difficulty = diff;
+                            if (atkBonus)
+                                entry.attack_bonus = atkBonus;
+                            entry.attack_type = /** @type {HTMLInputElement} */ (drawerFind('.la-extras-act-melee')[0])?.checked ? 'Melee' : 'Ranged';
+                        }
                         const damage = [];
                         drawerFind('.la-extras-dmg-row').each((/** @type {number} */ _i, /** @type {any} */ rowEl) =>
                         {
@@ -811,9 +847,9 @@ export function openExtrasDialog(target)
                         onPick: async (entry) =>
                         {
                             await addExtraDeploymentLids(target, entry.lid);
-                            const cur = target.getFlag('lancer-automations', 'extraDeployableLidsViaUI') || [];
+                            const cur = getLAFlag(target,'extraDeployableLidsViaUI') || [];
                             if (!cur.some((/** @type {any} */ e) => (typeof e === 'string' ? e : e?.lid) === entry.lid))
-                                await target.setFlag('lancer-automations', 'extraDeployableLidsViaUI', [...cur, { lid: entry.lid, name: entry.name, img: entry.img }]);
+                                await setLAFlag(target,'extraDeployableLidsViaUI', [...cur, { lid: entry.lid, name: entry.name, img: entry.img }]);
                             rerender();
                         },
                     });
@@ -831,10 +867,10 @@ export function openExtrasDialog(target)
                     const lid = String($(ev.currentTarget).data('lid') ?? '');
                     if (!lid)
                         return;
-                    const cur = target.getFlag('lancer-automations', 'extraDeployables') || [];
-                    await target.setFlag('lancer-automations', 'extraDeployables', cur.filter((/** @type {string} */ existingLid) => existingLid !== lid));
-                    const marker = target.getFlag('lancer-automations', 'extraDeployableLidsViaUI') || [];
-                    await target.setFlag('lancer-automations', 'extraDeployableLidsViaUI', marker.filter((/** @type {any} */ e) => (typeof e === 'string' ? e : e?.lid) !== lid));
+                    const cur = getLAFlag(target,'extraDeployables') || [];
+                    await setLAFlag(target,'extraDeployables', cur.filter((/** @type {string} */ existingLid) => existingLid !== lid));
+                    const marker = getLAFlag(target,'extraDeployableLidsViaUI') || [];
+                    await setLAFlag(target,'extraDeployableLidsViaUI', marker.filter((/** @type {any} */ e) => (typeof e === 'string' ? e : e?.lid) !== lid));
                     rerender();
                 });
                 html.find('.la-extras-dep-range').on('change', async (ev) =>
@@ -880,7 +916,7 @@ export function openExtrasDialog(target)
                     const actionName = gate.getAttribute('data-action-name');
                     if (actionName)
                     {
-                        const list = foundry.utils.deepClone(target.getFlag('lancer-automations', 'extraActions') || []);
+                        const list = foundry.utils.deepClone(getLAFlag(target,'extraActions') || []);
                         const entry = list.find((/** @type {any} */ a) => a.name === actionName && a._addedViaExtrasUI === true);
                         if (entry)
                         {
@@ -888,14 +924,14 @@ export function openExtrasDialog(target)
                                 entry.tier = tier;
                             else
                                 delete entry.tier;
-                            await target.setFlag('lancer-automations', 'extraActions', list);
+                            await setLAFlag(target,'extraActions', list);
                         }
                         return;
                     }
                     const barId = gate.getAttribute('data-bar-id');
                     if (barId)
                     {
-                        const records = foundry.utils.deepClone(target.getFlag('lancer-automations', 'extraBarTemplates') || []);
+                        const records = foundry.utils.deepClone(getLAFlag(target,'extraBarTemplates') || []);
                         const record = records.find((/** @type {any} */ r) => r.id === barId);
                         if (record)
                         {
@@ -904,7 +940,7 @@ export function openExtrasDialog(target)
                                 record.entry.tier = tier;
                             else
                                 delete record.entry.tier;
-                            await target.setFlag('lancer-automations', 'extraBarTemplates', records);
+                            await setLAFlag(target,'extraBarTemplates', records);
                         }
                         return;
                     }
@@ -929,9 +965,9 @@ export function openExtrasDialog(target)
                         if (doc?.documentName === 'Actor')
                         {
                             await addExtraDeploymentActor(target, doc);
-                            const cur = target.getFlag('lancer-automations', 'extraDeployableActorsViaUI') || [];
+                            const cur = getLAFlag(target,'extraDeployableActorsViaUI') || [];
                             if (!cur.includes(doc.uuid))
-                                await target.setFlag('lancer-automations', 'extraDeployableActorsViaUI', [...cur, doc.uuid]);
+                                await setLAFlag(target,'extraDeployableActorsViaUI', [...cur, doc.uuid]);
                             rerender();
                         }
                     }
@@ -951,7 +987,7 @@ export function openExtrasDialog(target)
                         color: { kind: 'solid', stops: [color] },
                     });
                     if (!created)
-                        ui.notifications?.warn('Could not add extra bar.');
+                        ui.notifications?.warn(localize('LA.notify.couldNotAddExtraBar'));
                     rerender();
                 });
                 html.find('.la-extras-remove-bar').on('click', async (ev) =>

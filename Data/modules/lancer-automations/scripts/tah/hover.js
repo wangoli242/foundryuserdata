@@ -2,7 +2,9 @@
 // (Persistent GAA-based range auras were removed; range toggles now proxy the Advanced Measure tool.)
 
 import { getMaxWeaponReach_WithBonus, getActorMaxThreat, getMaxItemRanges_WithBonus, weaponPulseRange } from '../tools/misc-tools.js';
-import { getActorMaxReach_WithBonus } from '../tools/weapon-bonus-utils.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { getLAFlag } from '../tools/flag-utils.js';
+import { getActorMaxReach_WithBonus, getActorReachBands_WithBonus, getWeaponReachRange, weaponIgnoresLineOfSight } from '../tools/weapon-bonus-utils.js';
 import { rangePulse, RANGE_PULSE_PRIORITY, RANGE_GLOW } from '../interactive/canvas.js';
 import { resolveDeployRangeCount } from '../interactive/deployables.js';
 import { resolveGrantedActionRange } from '../interactive/action-overlays.js';
@@ -10,12 +12,12 @@ import { resolveGrantedActionRange } from '../interactive/action-overlays.js';
 const _rangePreviewOwnerByTokenId = new Map();
 const hoverPulseOwner = tokenId => `tah-hover:${tokenId}`;
 
-export async function activateRangePreview(token, range, ownerEl = null, glowColor = RANGE_GLOW.manual)
+export async function activateRangePreview(token, range, ownerEl = null, glowColor = RANGE_GLOW.manual, los = false, freeRange = 0)
 {
     if (!token || range == null)
         return;
     const radius = Math.max(1, range);
-    rangePulse.setRange(hoverPulseOwner(token.id), { token, range: radius, includeSelf: false, priority: RANGE_PULSE_PRIORITY.HOVER, glowColor });
+    rangePulse.setRange(hoverPulseOwner(token.id), { token, range: radius, includeSelf: false, priority: RANGE_PULSE_PRIORITY.HOVER, glowColor, los, freeRange });
     if (ownerEl)
         _rangePreviewOwnerByTokenId.set(token.id, ownerEl);
 }
@@ -106,6 +108,8 @@ export function getRangeGlowForAction(category, actionName, item)
     const name = (actionName ?? '').toLowerCase().trim();
     if (name === 'overwatch')
         return RANGE_GLOW.threat;
+    if (category === 'Deployables')
+        return RANGE_GLOW.deploy;
     if (category === 'Tech')
         return RANGE_GLOW.sensor;
     if (FIXED_MELEE_ACTIONS.has(name) || name === 'thrown' || name === 'throw')
@@ -117,6 +121,38 @@ export function getRangeGlowForAction(category, actionName, item)
     return RANGE_GLOW.manual;
 }
 
+/**
+ * Every range is bound by line of sight; only Arcing and Seeking weapons lift that.
+ * @returns {boolean}
+ */
+export function usesLineOfSight(category, item, profile)
+{
+    const tags = [...(item?.system?.tags ?? []), ...(profile?.tags ?? []), ...(item?.currentProfile?.tags ?? [])];
+    return !tags.some(tag => tag?.lid === 'tg_arcing' || tag?.lid === 'tg_seeking');
+}
+
+/**
+ * A merged reach only needs sight beyond its best Arcing/Seeking weapon.
+ * @returns {{ los: boolean, freeRange: number }}
+ */
+export function getPreviewLosInfo(category, action, actor, item, profile)
+{
+    const name = (action?.name ?? '').toLowerCase().trim();
+    // Bands for this one weapon. The actor-wide call would lend it every other weapon's Arcing.
+    if (isWeaponItem(item) && !action?.activation)
+    {
+        const reach = getWeaponReachRange(item, actor);
+        const freeRange = weaponIgnoresLineOfSight(item) ? reach : 0;
+        return { los: reach > freeRange, freeRange };
+    }
+    if (name === 'skirmish' || name === 'barrage')
+    {
+        const { max, freeMax } = getActorReachBands_WithBonus(item ?? actor);
+        return { los: max > freeMax, freeRange: freeMax };
+    }
+    return { los: usesLineOfSight(category, item, profile), freeRange: 0 };
+}
+
 async function getItemMaxReach(item, actor)
 {
     const ranges = await getMaxItemRanges_WithBonus(item, actor);
@@ -124,30 +160,45 @@ async function getItemMaxReach(item, actor)
     return Math.max(0, ...ALL_TYPES.map(rangeType => ranges[rangeType] ?? 0));
 }
 
-async function computePreviewRange(category, actionName, actor, item, profile, deployLid)
+async function computePreviewRange(category, action, actor, item, profile, deployLid)
 {
-    const base = await computePreviewRangeBase(category, actionName, actor, item, profile, deployLid);
-    return actionName ? resolveGrantedActionRange(actor, actionName, base) : base;
+    const actionName = action?.name;
+    const base = await computePreviewRangeBase(category, action ?? null, actor, item, profile, deployLid);
+    // item rows carry no action; their own activation is named after the item
+    const grantName = actionName ?? item?.name;
+    return grantName ? resolveGrantedActionRange(actor, grantName, base) : base;
 }
 
-async function computePreviewRangeBase(category, actionName, actor, item, profile, deployLid)
+function pulseRangeOf(rangeEntries)
 {
+    const ranges = {};
+    for (const { type, val: value } of rangeEntries)
+        ranges[type] = Math.max(ranges[type] ?? 0, Number(value) || 0);
+    const max = weaponPulseRange(ranges);
+    return max > 0 ? Math.max(1, max) : null;
+}
+
+async function computePreviewRangeBase(category, action, actor, item, profile, deployLid)
+{
+    const actionName = action?.name;
     if (category === 'Deployables')
     {
         if (deployLid)
             return resolveDeployRangeCount(item ?? null, deployLid, actor).range;
-        const deployRange = item?.getFlag?.('lancer-automations', 'deployRange') ?? 1;
+        const deployRange = getLAFlag(item,'deployRange') ?? 1;
         return Math.max(1, deployRange);
     }
-    if (profile?.range?.length)
+    if (action?.range?.length)
     {
-        const ranges = {};
-        for (const { type, val: value } of profile.range)
-            ranges[type] = Math.max(ranges[type] ?? 0, Number(value) || 0);
-        const max = weaponPulseRange(ranges);
-        return max > 0 ? Math.max(1, max) : null;
+        const ownRange = pulseRangeOf(action.range);
+        if (ownRange != null)
+            return ownRange;
     }
-    if (item)
+    if (profile?.range?.length)
+        return pulseRangeOf(profile.range);
+    // A weapon's nested action (real activation, not the attack rows) never inherits the weapon's reach.
+    const nestedWeaponAction = !!action?.activation && isWeaponItem(item);
+    if (item && !nestedWeaponAction)
     {
         const reach = await getItemMaxReach(item, actor);
         if (reach > 0)
@@ -181,20 +232,16 @@ export async function onHudRowHover({ actor, item, action, category, profile, to
 {
     if (!token)
         return;
-    try
-    {
-        if (!game.settings.get('lancer-automations', 'tah.rangePreview'))
-            return;
-    }
-    catch
-    {
+    if (!getModuleSetting('tah.rangePreview'))
         return;
-    }
     if (isEntering)
     {
-        const range = await computePreviewRange(category, action?.name, actor, item ?? null, profile ?? null, deployLid);
+        const range = await computePreviewRange(category, action ?? null, actor, item ?? null, profile ?? null, deployLid);
         if (range != null)
-            await activateRangePreview(token, range, el, getRangeGlowForAction(category, action?.name, item ?? null));
+        {
+            const losInfo = getPreviewLosInfo(category, action ?? null, actor, item ?? null, profile ?? null);
+            await activateRangePreview(token, range, el, getRangeGlowForAction(category, action?.name, item ?? null), losInfo.los, losInfo.freeRange);
+        }
     }
     else
         deactivateRangePreview(token);

@@ -1,8 +1,8 @@
-2026/09/13-03:22:19.722655 ed3f237eefc0 Recovering log #575
-2026/09/13-03:22:19.941035 ed3f237eefc0 Delete type=3 #573
-2026/09/13-03:22:19.941071 ed3f237eefc0 Delete type=0 #575
-2026/09/13-03:22:29.887720 ed3f22f7efc0 Level-0 table #581: started
-2026/09/13-03:22:29.887732 ed3f22f7efc0 Level-0 table #581: 0 bytes OK
-2026/09/13-03:22:29.890133 ed3f22f7efc0 Delete type=0 #579
-2026/09/13-03:22:29.890240 ed3f22f7efc0 Manual compaction at level-0 from '!messages!126WlvxzEcjPzHbC' @ 72057594037927935 : 1 .. '!messages!zG3ZO9ZyMq9xOcUo' @ 0 : 0; will stop at (end)
-2026/09/13-03:22:29.892812 ed3f22f7efc0 Manual compaction at level-1 from '!messages!126WlvxzEcjPzHbC' @ 72057594037927935 : 1 .. '!messages!zG3ZO9ZyMq9xOcUo' @ 0 : 0; will stop at (end)
+2026/09/20-02:03:41.333857 e694897aefc0 Recovering log #584
+2026/09/20-02:03:41.340919 e694897aefc0 Delete type=3 #582
+2026/09/20-02:03:41.340943 e694897aefc0 Delete type=0 #584
+2026/09/20-02:04:14.630871 e69488f9efc0 Level-0 table #590: started
+2026/09/20-02:04:14.630891 e69488f9efc0 Level-0 table #590: 0 bytes OK
+2026/09/20-02:04:14.633592 e69488f9efc0 Delete type=0 #588
+2026/09/20-02:04:14.636761 e69488f9efc0 Manual compaction at level-0 from '!messages!USSua3MbirGbyOAP' @ 72057594037927935 : 1 .. '!messages!USSua3MbirGbyOAP' @ 0 : 0; will stop at (end)
+2026/09/20-02:04:14.642255 e69488f9efc0 Manual compaction at level-1 from '!messages!USSua3MbirGbyOAP' @ 72057594037927935 : 1 .. '!messages!USSua3MbirGbyOAP' @ 0 : 0; will stop at (end)

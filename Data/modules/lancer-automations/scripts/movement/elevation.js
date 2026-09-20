@@ -1,13 +1,15 @@
 /* global game, canvas, Hooks, libWrapper, foundry, CONST */
 
-import { getCurrentMovementType } from './keybindings.js';
+import { getCurrentMovementType, currentElevationMode, elevationModeFor } from './keybindings.js';
 import { playUiSound } from '../tah/sound.js';
 import { initHexDragStabilizer } from './hex-drag-stabilizer.js';
 import { initTerrainTriggerSplits, injectTriggerSilentsAtDrop } from './terrain-trigger-waypoints.js';
 import { getModuleSetting } from "../tools/settings-utils.js";
-import { thtApi } from './movement-utils.js';
+import { getLAFlag } from "../tools/flag-utils.js";
+import { thtApi, canPassObstructions, thtCellShapes, thtShapesAtPoint, solidBands, restingSurface, footprintSurface } from './movement-utils.js';
+import { laTokenGameplayHeight } from '../tools/token-height.js';
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from '../tools/constants.js';
 const RULER_ENABLED = 'enableBuiltinSpeedProvider';
 const CLIMB_WAYPOINTS_ENABLED = 'enableClimbWaypoints';
 const SPLIT_AT_TRIGGER_BOUNDARIES = 'splitMovementAtTriggerBoundaries';
@@ -17,6 +19,9 @@ const THT_IGNORE_FLAG = 'ignoreAutoElevation';
 const LA_DISABLE_AUTO_TERRAIN_FLAG = 'disableAutoTerrainElevation';
 
 const AUTO_MOVEMENT_TYPES = new Set(['walk', 'crawl', 'climb', 'jump', 'fly']);
+const PER_STEP_RENDER = 'rulerPerStepRender';
+// Actions whose animation stays a straight line to the waypoint.
+const STRAIGHT_ANIMATION_ACTIONS = new Set(['forced', 'displace']);
 
 Hooks.once('init', () =>
 {
@@ -95,26 +100,25 @@ function terrainTypeById(tht)
     return _typeByIdCache;
 }
 
-function terrainTopUnder(tokenDoc, position)
+/**
+ * Surface the token rests on at a position, grid units. Null without THT.
+ * @param {TokenDocument} tokenDoc
+ * @param {object} position
+ * @param {'ground'|'hold'} mode
+ * @param {number} height current elevation in grid units
+ * @param {boolean} [landing] the token stops here, so it rests on top of anything it would otherwise step over
+ * @returns {{surface: number, brushed: boolean, landingSurface: number}|null}
+ */
+function surfaceUnder(tokenDoc, position, mode, height, landing = false)
 {
     const tht = thtApi();
     if (!tht)
         return null;
     const typeById = terrainTypeById(tht);
+    const zHeight = laTokenGameplayHeight(tokenDoc);
 
-    let highest = null;
-    const consider = (shapes) =>
-    {
-        for (const shape of shapes)
-        {
-            const terrainType = typeById.get(shape.terrainTypeId);
-            if (!terrainType?.usesHeight || !terrainType?.isSolid)
-                continue;
-            const top = shape.top ?? (shape.elevation + shape.height);
-            if (highest == null || top > highest)
-                highest = top;
-        }
-    };
+    const cellSurfaces = [];
+    const consider = (shapes) => cellSurfaces.push(restingSurface(solidBands(shapes, typeById), zHeight, height, mode));
 
     if (canvas.grid?.type === CONST.GRID_TYPES.GRIDLESS)
     {
@@ -123,7 +127,7 @@ function terrainTopUnder(tokenDoc, position)
         {
             try
             {
-                consider(tht.getShapesAtPoint?.(px, py) ?? []);
+                consider(thtShapesAtPoint(tht, px, py));
             }
             catch
             { /* ignore */ }
@@ -139,40 +143,44 @@ function terrainTopUnder(tokenDoc, position)
         catch
         { /* invalid */ }
         for (const gridOffset of offsets)
-            consider(tht.getCell?.(gridOffset.j, gridOffset.i) ?? []);
+            consider(thtCellShapes(tht, gridOffset.j, gridOffset.i));
     }
-    return highest;
+    if (!cellSurfaces.length)
+        return null;
+    // Stepping over sub-SIZE obstructions is a walker's rule.
+    const moverSize = Number(tokenDoc?.actor?.system?.size) || 0;
+    const standing = !landing && mode === 'ground' && moverSize > 1 && cellSurfaces.length > 1 && canPassObstructions(tokenDoc);
+    return footprintSurface(cellSurfaces, moverSize, standing);
 }
 
 function shouldAutoElevate(tokenDoc, { ruler: _ruler = true } = {})
 {
     if (!isEnabled())
         return false;
-    try
-    {
-        if (game.settings.get(MODULE_ID, DISABLE_AUTO_TERRAIN_ELEVATION))
-            return false;
-    }
-    catch
-    { /* ignore */ }
+    if (getModuleSetting(DISABLE_AUTO_TERRAIN_ELEVATION))
+        return false;
     // getFlag throws on a scope whose module isn't active; gate the THT lookup.
     if (game.modules.get(THT_ID)?.active && tokenDoc.getFlag?.(THT_ID, THT_IGNORE_FLAG))
         return false;
-    if (tokenDoc.getFlag?.(MODULE_ID, LA_DISABLE_AUTO_TERRAIN_FLAG))
+    if (getLAFlag(tokenDoc,LA_DISABLE_AUTO_TERRAIN_FLAG))
         return false;
     return true;
 }
 
-function newElevationFor(tokenDoc, position)
+function newElevationFor(tokenDoc, position, landing = false)
 {
     const sceneDistance = canvas.scene?.dimensions?.distance ?? 1;
+    const current = tokenDoc.elevation ?? 0;
     const userDelta = _dragElevationOffset * sceneDistance;
-    if (getCurrentMovementType() === 'ignore')
-        return (tokenDoc.elevation ?? 0) + userDelta;
-    const originTop = terrainTopUnder(tokenDoc, { x: tokenDoc.x, y: tokenDoc.y }) ?? 0;
-    const destTop = terrainTopUnder(tokenDoc, position) ?? 0;
-    const terrainDelta = (destTop - originTop) * sceneDistance;
-    return (tokenDoc.elevation ?? 0) + terrainDelta + userDelta;
+    const mode = currentElevationMode();
+    if (!mode)
+        return current + userDelta;
+    // Ground snaps to the surface and adds Q/E on top; Hold folds Q/E into its floor.
+    const reference = mode === 'hold' ? current + userDelta : current;
+    const rest = surfaceUnder(tokenDoc, position, mode, reference / sceneDistance, landing);
+    if (!rest)
+        return current + userDelta;
+    return rest.surface * sceneDistance + (mode === 'ground' ? userDelta : 0);
 }
 
 function bumpDragElevation(delta)
@@ -203,7 +211,7 @@ function bumpDragElevation(delta)
     }
 }
 
-function applyAutoElevationToWaypoint(tokenDoc, waypoint)
+function applyAutoElevationToWaypoint(tokenDoc, waypoint, landing = false)
 {
     if (!waypoint || typeof waypoint !== 'object')
         return false;
@@ -214,7 +222,7 @@ function applyAutoElevationToWaypoint(tokenDoc, waypoint)
         y: waypoint.y,
         width: waypoint.width ?? tokenDoc.width,
         height: waypoint.height ?? tokenDoc.height
-    });
+    }, landing);
     if (waypoint.elevation === newElev)
         return false;
     waypoint.elevation = newElev;
@@ -226,17 +234,62 @@ export function bumpDragElevationFromKey(delta)
     bumpDragElevation(delta);
 }
 
+// Foundry animates only through the waypoints it is handed, never the dense cells it fills in
+// between them, so with the per-step ruler path on we hand it every cell of that path.
+function expandPerCell(tokenDoc, waypoints)
+{
+    if (!Array.isArray(waypoints) || !waypoints.length)
+        return waypoints;
+    if (canvas.grid?.type === CONST.GRID_TYPES.GRIDLESS || !getModuleSetting(PER_STEP_RENDER))
+        return waypoints;
+    const actions = CONFIG.Token?.movement?.actions ?? {};
+    const source = tokenDoc._source;
+    let previous = { x: source.x, y: source.y, elevation: source.elevation, width: source.width, height: source.height, shape: source.shape };
+    const expanded = [];
+    for (const waypoint of waypoints)
+    {
+        const width = waypoint.width ?? previous.width;
+        const height = waypoint.height ?? previous.height;
+        const shape = waypoint.shape ?? previous.shape;
+        const elevation = waypoint.elevation ?? previous.elevation;
+        const action = waypoint.action ?? tokenDoc.movementAction;
+        const resized = width !== previous.width || height !== previous.height || shape !== previous.shape;
+        const straight = resized || !!actions[action]?.teleport || STRAIGHT_ANIMATION_ACTIONS.has(action);
+        if (!straight && waypoint.x != null && waypoint.y != null)
+        {
+            try
+            {
+                const dimensions = { width, height, shape };
+                const from = tokenDoc._positionToGridOffset(previous);
+                const to = tokenDoc._positionToGridOffset({ x: waypoint.x, y: waypoint.y, elevation, width, height, shape });
+                const steps = canvas.grid.getDirectPath([from, to]);
+                for (let step = 1; step < steps.length - 1; step++)
+                {
+                    const position = tokenDoc._gridOffsetToPosition(steps[step], dimensions);
+                    expanded.push({ x: Math.round(position.x), y: Math.round(position.y), elevation, width, height, shape, action, snapped: true, explicit: false, checkpoint: false });
+                }
+            }
+            catch
+            { /* keep the straight segment */ }
+        }
+        expanded.push(waypoint);
+        previous = { x: waypoint.x ?? previous.x, y: waypoint.y ?? previous.y, elevation, width, height, shape };
+    }
+    return expanded;
+}
+
 Hooks.on('preCreateToken', (tokenDoc, _data, _options, userId) =>
 {
     if (userId !== game.userId)
         return;
     if (!shouldAutoElevate(tokenDoc, { ruler: false }))
         return;
-    const top = terrainTopUnder(tokenDoc, {});
-    if (top != null && top > 0)
+    // A new token rests on the highest surface under it.
+    const rest = surfaceUnder(tokenDoc, {}, 'ground', Infinity, true);
+    if (rest && rest.surface > 0)
     {
         const sceneDistance = canvas.scene?.dimensions?.distance ?? 1;
-        tokenDoc.updateSource({ elevation: top * sceneDistance });
+        tokenDoc.updateSource({ elevation: rest.surface * sceneDistance });
     }
 });
 
@@ -249,84 +302,7 @@ export function elevationForPreview(tokenDoc, waypoint)
         y: waypoint.y,
         width: waypoint.width ?? tokenDoc.width,
         height: waypoint.height ?? tokenDoc.height
-    });
-}
-
-function _tokenZHeight(tokenDoc)
-{
-    return tokenDoc?.flags?.['wall-height']?.tokenHeight
-        ?? tokenDoc?.flags?.elevatedvision?.tokenHeight
-        ?? 1;
-}
-
-function _terrainTopMost(tokenDoc, position, { terrainFilter, gapSearch } = {})
-{
-    const tht = thtApi();
-    if (!tht)
-        return 0;
-    const typeById = terrainTypeById(tht);
-    const gridType = canvas.grid?.type;
-
-    const ranges = [{ bottom: -Infinity, top: 0 }];
-    let highest = 0;
-
-    const consider = (shapes) =>
-    {
-        for (const shape of shapes ?? [])
-        {
-            const terrainType = typeById.get(shape.terrainTypeId);
-            if (!terrainType?.usesHeight || !terrainType?.isSolid)
-                continue;
-            if (typeof terrainFilter === 'function' && !terrainFilter(shape))
-                continue;
-            const top = shape.top ?? ((shape.elevation ?? 0) + (shape.height ?? 0));
-            const bottom = shape.bottom ?? (shape.elevation ?? 0);
-            if (top > highest)
-                highest = top;
-            ranges.push({ bottom, top });
-        }
-    };
-
-    if (gridType === CONST.GRID_TYPES.GRIDLESS)
-    {
-        for (const [px, py] of gridlessFootprintPoints(tokenDoc, position))
-        {
-            try
-            {
-                consider(tht.getShapesAtPoint?.(px, py));
-            }
-            catch
-            { /* ignore */ }
-        }
-    }
-    else
-    {
-        let offsets = [];
-        try
-        {
-            offsets = tokenDoc.getOccupiedGridSpaceOffsets?.(position ?? {}) ?? [];
-        }
-        catch
-        { /* ignore */ }
-        for (const gridOffset of offsets)
-            consider(tht.getCell?.(gridOffset.j, gridOffset.i));
-    }
-
-    if (!gapSearch)
-        return highest;
-
-    ranges.sort((a, b) => a.bottom - b.bottom || a.top - b.top);
-    const required = gapSearch.currentElevationAboveTerrain + gapSearch.tokenZHeight;
-    for (let i = 0; i < ranges.length - 1; i++)
-    {
-        const gap = ranges[i + 1].bottom - ranges[i].top;
-        if (gap < required)
-            continue;
-        if (ranges[i + 1].bottom < gapSearch.currentTerrainTop + gapSearch.tokenZHeight)
-            continue;
-        return ranges[i].top;
-    }
-    return ranges.at(-1).top;
+    }, true);
 }
 
 function getCompleteMovementPathWrapper(wrapped, waypoints)
@@ -337,62 +313,115 @@ function getCompleteMovementPathWrapper(wrapped, waypoints)
         return movementPath;
     if (!shouldAutoElevate(this))
         return movementPath;
+    const movedHorizontally = movementPath.some(waypoint => waypoint.x !== movementPath[0].x || waypoint.y !== movementPath[0].y);
+    if (!movedHorizontally)
+        return movementPath;
     try
     {
-        if (!game.settings.get(MODULE_ID, CLIMB_WAYPOINTS_ENABLED))
+        if (!getModuleSetting(CLIMB_WAYPOINTS_ENABLED))
             return movementPath;
     }
     catch
     {
         return movementPath;
     }
-    const flying = getCurrentMovementType() === 'fly';
+    const dragType = getCurrentMovementType();
+    const flying = dragType === 'fly';
+    const jumping = dragType === 'jump';
 
     const sceneDistance = canvas.scene?.dimensions?.distance ?? 1;
-    const tokenZHeight = _tokenZHeight(this);
-    const userDelta = _dragElevationOffset * sceneDistance;
-    const originElev = this.elevation ?? 0;
+    const originFeet = (movementPath[0].elevation ?? 0) / sceneDistance;
+    // Ground snaps to the surface and adds Q/E on top; Hold folds Q/E into its floor.
+    const offset = _dragElevationOffset;
+    const floor = originFeet + offset;
 
-    let prevTop = _terrainTopMost(this, movementPath[0], {
-        terrainFilter: shape => (shape.bottom ?? shape.elevation ?? 0) <= (movementPath[0].elevation ?? 0) + tokenZHeight
-    });
-    const originTop = prevTop;
-
-    for (let i = 1; i < movementPath.length; i++)
+    // Pass 1: the surface under each auto-elevating waypoint, Ground chained from the one before.
+    const rests = [];
+    let lastSurface = originFeet;
+    for (let idx = 1; idx < movementPath.length; idx++)
     {
-        if (!AUTO_MOVEMENT_TYPES.has(movementPath[i].action))
+        const action = movementPath[idx].action;
+        if (!AUTO_MOVEMENT_TYPES.has(action))
             continue;
+        const mode = elevationModeFor(action);
+        const reference = mode === 'hold' ? floor : lastSurface;
+        const rest = surfaceUnder(this, movementPath[idx], mode, reference, idx === movementPath.length - 1) ?? { surface: reference, brushed: false };
+        const height = mode === 'hold' ? rest.surface : rest.surface + offset;
+        rests.push({ idx, mode, surface: rest.surface, height, brushed: rest.brushed });
+        lastSurface = rest.surface;
+    }
 
-        const thisTop = _terrainTopMost(this, movementPath[i], {
-            gapSearch: {
-                currentTerrainTop: prevTop,
-                currentElevationAboveTerrain: (movementPath[i].elevation ?? 0) - prevTop,
-                tokenZHeight
-            }
-        });
-
-        if (movementPath[i].intermediate === true && !movementPath[i]._laElevResolved)
-            movementPath[i].elevation = originElev + (thisTop - originTop) * sceneDistance + userDelta;
-
-        if (thisTop !== prevTop)
+    // A legal vertical hop (at most 1 cell over, up to SIZE up) stays a whole jump; any other
+    // jump transition splits into a climb segment exactly like walking.
+    let jumpHop = false;
+    if (jumping && rests.length)
+    {
+        let cellsMoved = 0;
+        for (let step = 1; step < movementPath.length; step++)
         {
-            if (movementPath[i - 1])
+            if (movementPath[step].x !== movementPath[step - 1].x || movementPath[step].y !== movementPath[step - 1].y)
+                cellsMoved++;
+        }
+        const rise = (rests.at(-1)?.surface ?? originFeet) - originFeet;
+        const sizeAllowance = Math.max(1, Number(this.actor?.system?.size) || 1);
+        jumpHop = cellsMoved <= 1 && rise <= sizeAllowance + 1e-9;
+    }
+
+    // Climb stamps follow the terrain surface, so Q/E alone never splits the path.
+    let prevSurface = null;
+    let prevBrushing = false;
+    for (const { idx, mode, surface, height, brushed } of rests)
+    {
+        prevSurface ??= mode === 'hold' ? floor : originFeet;
+        // Corners and silents arrive intermediate:false but follow the profile like dense cells.
+        if (!movementPath[idx].explicit && !movementPath[idx]._laElevResolved)
+            movementPath[idx].elevation = height * sceneDistance;
+        if (brushed)
+            movementPath[idx]._laBrushed = true;
+
+        // Brushed obstructions get a visible ignore-elevation waypoint, like climbs get a ladder.
+        if (brushed && !prevBrushing && !jumping)
+        {
+            if (movementPath[idx - 1])
             {
-                if (!movementPath[i - 1].explicit)
-                    movementPath[i - 1]._laClimbFlip = true;
-                movementPath[i - 1].intermediate = false;
-                movementPath[i - 1].explicit = true;
+                if (!movementPath[idx - 1].explicit)
+                    movementPath[idx - 1]._laClimbFlip = true;
+                movementPath[idx - 1].intermediate = false;
+                movementPath[idx - 1].explicit = true;
+                for (let back = idx - 2; back >= 1 && movementPath[back].intermediate; back--)
+                    movementPath[back].intermediate = false;
             }
-            if (!movementPath[i].explicit)
-                movementPath[i]._laClimbFlip = true;
-            Object.assign(movementPath[i], {
+            if (!movementPath[idx].explicit)
+                movementPath[idx]._laClimbFlip = true;
+            Object.assign(movementPath[idx], {
+                action: 'ignore',
+                intermediate: false,
+                explicit: true
+            });
+        }
+
+        if (surface !== prevSurface && !(jumping && jumpHop))
+        {
+            if (movementPath[idx - 1])
+            {
+                if (!movementPath[idx - 1].explicit)
+                    movementPath[idx - 1]._laClimbFlip = true;
+                movementPath[idx - 1].intermediate = false;
+                movementPath[idx - 1].explicit = true;
+                for (let back = idx - 2; back >= 1 && movementPath[back].intermediate; back--)
+                    movementPath[back].intermediate = false;
+            }
+            if (!movementPath[idx].explicit)
+                movementPath[idx]._laClimbFlip = true;
+            Object.assign(movementPath[idx], {
                 action: flying ? 'fly' : 'climb',
                 intermediate: false,
                 explicit: true
             });
         }
 
-        prevTop = thisTop;
+        prevSurface = surface;
+        prevBrushing = brushed;
     }
 
     return movementPath;
@@ -551,6 +580,13 @@ Hooks.once('ready', () =>
                 };
             }
         }
+        for (const id of Object.keys(options?.movement ?? {}))
+        {
+            const doc = canvas.scene.tokens.get(id);
+            const movement = options.movement[id];
+            if (doc && Array.isArray(movement?.waypoints))
+                movement.waypoints = expandPerCell(doc, movement.waypoints);
+        }
         if (!shouldAutoElevate(this.document))
             return result;
         for (const id of Object.keys(options?.movement ?? {}))
@@ -561,10 +597,10 @@ Hooks.once('ready', () =>
             const waypoints = options.movement[id].waypoints;
             if (!Array.isArray(waypoints))
                 continue;
-            for (const waypoint of waypoints)
+            for (let idx = 0; idx < waypoints.length; idx++)
             {
-                applyAutoElevationToWaypoint(doc, waypoint);
-                waypoint._laElevResolved = true;
+                applyAutoElevationToWaypoint(doc, waypoints[idx], idx === waypoints.length - 1);
+                waypoints[idx]._laElevResolved = true;
             }
         }
         return result;
@@ -575,14 +611,17 @@ Hooks.once('ready', () =>
     {
         if (options.method !== 'dragging')
             return wrapped.call(this, waypoints, options);
-        if (!shouldAutoElevate(this))
-            return wrapped.call(this, waypoints, options);
-        const waypointList = Array.isArray(waypoints) ? waypoints : [waypoints];
         const isContinuation = options?._movementArguments?.movementId != null;
-        for (const waypoint of waypointList)
+        let waypointList = Array.isArray(waypoints) ? waypoints : [waypoints];
+        if (!isContinuation)
+            waypointList = expandPerCell(this, waypointList);
+        if (!shouldAutoElevate(this))
+            return wrapped.call(this, waypointList, options);
+        for (let idx = 0; idx < waypointList.length; idx++)
         {
+            const waypoint = waypointList[idx];
             if (!isContinuation && !waypoint._laElevResolved)
-                applyAutoElevationToWaypoint(this, waypoint);
+                applyAutoElevationToWaypoint(this, waypoint, idx === waypointList.length - 1);
             waypoint._laElevResolved = true;
         }
         return wrapped.call(this, waypointList, options);

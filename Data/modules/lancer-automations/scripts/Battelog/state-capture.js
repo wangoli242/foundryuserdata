@@ -1,6 +1,8 @@
 import { appendEvent, appendEventComputed, getTelemetry, findEntry, pushEvent } from './telemetry-store.js';
-import { findActiveCombatForToken, findTelemetryCombatForToken, resolveEntryTokenId } from './battelog-utils.js';
+import { findActiveCombatForToken, findTelemetryCombatForToken, resolveEntryTokenId, numOr } from './battelog-utils.js';
 import { attributeKill } from './kill-attribution.js';
+import { getLAFlag } from '../tools/flag-utils.js';
+import { isExecutorGM } from '../tools/misc-tools.js';
 
 let _registered = false;
 const _gearEmitted = new Set();
@@ -14,27 +16,22 @@ const GEAR_KIND = {
     npc_system: 'system',
 };
 
-function _num(value)
-{
-    return typeof value === 'number' && Number.isFinite(value) ? value : 0;
-}
-
 function _vitals(sys)
 {
     return {
-        hp: _num(sys?.hp?.value),
-        heat: _num(sys?.heat?.value),
-        structure: _num(sys?.structure?.value),
-        stress: _num(sys?.stress?.value),
-        burn: _num(sys?.burn),
-        infection: _num(sys?.infection),
-        overshield: _num(sys?.overshield?.value),
-        repairs: _num(sys?.repairs?.value),
+        hp: numOr(sys?.hp?.value),
+        heat: numOr(sys?.heat?.value),
+        structure: numOr(sys?.structure?.value),
+        stress: numOr(sys?.stress?.value),
+        burn: numOr(sys?.burn),
+        infection: numOr(sys?.infection),
+        overshield: numOr(sys?.overshield?.value),
+        repairs: numOr(sys?.repairs?.value),
     };
 }
 
 // One vitals snapshot. Sync, no write; caller persists.
-export function reconcileCombatant(telemetry, combatant, round)
+export function reconcileCombatant(telemetry, combatant, round, turn = null)
 {
     const tokenId = combatant?.tokenId ?? combatant?.actorId;
     const entry = findEntry(telemetry, tokenId);
@@ -43,7 +40,7 @@ export function reconcileCombatant(telemetry, combatant, round)
     const sys = combatant.actor?.system;
     if (!sys)
         return;
-    pushEvent(telemetry, entry, { type: 'stat-tick', round, tokenId, ..._vitals(sys) });
+    pushEvent(telemetry, entry, { type: 'stat-tick', round, turn, tokenId, ..._vitals(sys) });
 }
 
 function _tokenActor(combat, tokenId)
@@ -67,21 +64,22 @@ async function _gmEmitDestroyed(combat, tokenId, actor, round)
         return;
     _destroyedInFlight.add(key);
     const useRound = round ?? combat.round ?? 0;
+    const useTurn = combat.turn ?? null;
     const sys = (actor ?? _tokenActor(combat, tokenId))?.system;
     if (sys)
-        await appendEvent(combat, tokenId, { type: 'stat-tick', round: useRound, tokenId, ..._vitals(sys) });
+        await appendEvent(combat, tokenId, { type: 'stat-tick', round: useRound, turn: useTurn, tokenId, ..._vitals(sys) });
     await appendEventComputed(combat, tokenId, (currentTelemetry, currentEntry) =>
     {
         if (currentEntry.events.some(ev => ev.type === 'destroyed'))
             return null;
         const { killerId, assistIds } = attributeKill(currentTelemetry, tokenId, useRound);
-        return { type: 'destroyed', round: useRound, tokenId, killerId, assistIds };
+        return { type: 'destroyed', round: useRound, turn: useTurn, tokenId, killerId, assistIds };
     });
 }
 
 function _emitLoss(combat, tokenId, event)
 {
-    if (game.user?.isGM)
+    if (isExecutorGM())
         appendEvent(combat, tokenId, event);
     else
         game.socket.emit('module.lancer-automations', { action: 'battleLogEvent', payload: { combatId: combat.id, entryId: tokenId, event } });
@@ -90,19 +88,19 @@ function _emitLoss(combat, tokenId, event)
 function _die(combat, tokenId, actor)
 {
     const round = combat.round ?? 0;
-    if (game.user?.isGM)
+    if (isExecutorGM())
         _gmEmitDestroyed(combat, tokenId, actor, round);
     else
-        game.socket.emit('module.lancer-automations', { action: 'battleLogEvent', payload: { combatId: combat.id, entryId: tokenId, event: { type: 'destroyed', round, tokenId } } });
+        game.socket.emit('module.lancer-automations', { action: 'battleLogEvent', payload: { combatId: combat.id, entryId: tokenId, event: { type: 'destroyed', round, turn: combat.turn ?? null, tokenId } } });
 }
 
 // GM sink for relayed state events; deaths get the final-tick treatment.
 export function handleRemoteStateEvent(payload)
 {
-    if (!game.user?.isGM)
+    if (!isExecutorGM())
         return;
     const combat = game.combats?.get(payload?.combatId);
-    if (!combat?.getFlag?.('lancer-automations', 'telemetry'))
+    if (!getLAFlag(combat,'telemetry'))
         return;
     const event = payload.event;
     if (event?.type === 'destroyed')
@@ -125,13 +123,13 @@ function _onStateTrigger(triggerType, data)
     if (triggerType === 'onStructure')
     {
         _emitLoss(combat, tokenId, { type: 'structure-loss', round, tokenId });
-        if (_num(data.remainingStructure) <= 0)
+        if (numOr(data.remainingStructure) <= 0)
             _die(combat, tokenId, actor);
     }
     else if (triggerType === 'onStress')
     {
         _emitLoss(combat, tokenId, { type: 'stress-loss', round, tokenId });
-        if (_num(data.remainingStress) <= 0)
+        if (numOr(data.remainingStress) <= 0)
             _die(combat, tokenId, actor);
     }
     else if (triggerType === 'onDestroyed')

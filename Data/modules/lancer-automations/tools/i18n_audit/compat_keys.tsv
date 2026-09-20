@@ -1,0 +1,14 @@
+key	english
+LA.compat.statusfx-vs-qol-auto.label	<b>StatusFX</b> auto-status conflicts with csm-lancer-qol <i>"Enable Status & Condition Automation"</i>
+LA.compat.statusfx-vs-qol-fx.label	<b>StatusFX</b> TokenMagic effects conflict with csm-lancer-qol <i>"Enable Status & Condition Token Effects"</i>
+LA.compat.altstruct-vs-qol-onestruct.label	<b>Alt Structure</b> rules conflict with csm-lancer-qol <i>"One Structure NPC Automation"</i>
+LA.compat.altstruct-vs-standalone.label	<b>Alt Structure</b> (built-in) conflicts with standalone <i>lancer-alt-structure</i> module
+LA.compat.engagement-vs-qol.label	<b>Engagement</b> reaction conflicts with csm-lancer-qol <i>"Enable Engaged Automation"</i>
+LA.compat.wipondeath-vs-qol.label	<b>Remove Statuses on Death</b> conflicts with csm-lancer-qol <i>"Remove Statuses on Death"</i>
+LA.compat.speedprovider-vs-standalone.label	<b>Built-in Speed Provider</b> conflicts with standalone <i>lancer-speed-provider</i> module. Auto-fix will disable the built-in provider.
+LA.compat.wreck-vs-qol.label	<b>Wreck Automation</b> conflicts with csm-lancer-qol <i>"Wreck Automation"</i>. Auto-fix will disable csm-lancer-qol wrecks.
+LA.compat.waypointlabel-vs-isoperspective.label	<b>Ruler Waypoint Labels</b> is off while <i>Isometric Perspective</i> is on. Ruler labels will sit on the orthogonal cell. Auto-fix turns it on.
+LA.compat.waypointlabel-vs-grapejuice.label	<b>Ruler Waypoint Labels</b> is on while <i>Grape Juice Isometrics</i> places those labels itself, so they get projected twice. Auto-fix turns it off.
+LA.compat.tht-los-vs-la-ruler.label	<b>Terrain Height Tools</b> draws its own line of sight measurement on token drags, which doubles up with the Lancer Automations ruler. Auto-fix turns the THT measurement off.
+LA.compat.jb2a-both-active.label	Both <b>JB2A</b> packs are active. The Patreon library already contains everything in the free one, so <i>JB2A_DnD5e</i> can be disabled.
+LA.compat.statuscounter-redundant.label	<b>Stack counters</b> are built into Lancer Automations now, so <i>Status Icon Counters</i> (statuscounter) can be disabled.

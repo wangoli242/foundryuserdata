@@ -1,3 +1,8 @@
 2026/09/16-19:55:06.989514 e69489fbefc0 Recovering log #24
 2026/09/16-19:55:06.997152 e69489fbefc0 Delete type=3 #22
 2026/09/16-19:55:06.997174 e69489fbefc0 Delete type=0 #24
+2026/09/20-02:03:38.048294 e69488f9efc0 Level-0 table #29: started
+2026/09/20-02:03:38.048307 e69488f9efc0 Level-0 table #29: 0 bytes OK
+2026/09/20-02:03:38.050940 e69488f9efc0 Delete type=0 #27
+2026/09/20-02:03:38.058404 e69488f9efc0 Manual compaction at level-0 from '!combats!8qh1gN6SDjkChRV7' @ 72057594037927935 : 1 .. '!combats!lg2kFLs7X9lfMEpt' @ 0 : 0; will stop at (end)
+2026/09/20-02:03:38.058525 e69488f9efc0 Manual compaction at level-1 from '!combats!8qh1gN6SDjkChRV7' @ 72057594037927935 : 1 .. '!combats!lg2kFLs7X9lfMEpt' @ 0 : 0; will stop at (end)

@@ -6,7 +6,9 @@ import {
     isAreaPickerActive, cancelAreaPicker,
     beginTargetSession, isTargetSessionActive, createTokenMark,
 } from '../interactive/canvas.js';
-import { buildTargetingUI, aoeRanges, clearAllAttackShapes, pollForForm, targetInfoAllowed } from './targeting-ui.js';
+import { buildTargetingUI, aoeRanges, clearAllAttackShapes, injectWhenReady, targetInfoAllowed } from './targeting-ui.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { hoverSightlines, clearHoverSightlines } from '../vision/sightlines.js';
 
 const _formulaBounds = new Map();
 function formulaBounds(formula)
@@ -32,12 +34,41 @@ function formulaBounds(formula)
 
 // Damage min-max label on targets (the damage counterpart of the attack hit-%). Lazy: for
 // weapon flows state.data.damage stays empty until the HUD closes, so read the live HUD rows.
+function hitResultFor(state, token)
+{
+    const id = token?.document?.id ?? token?.id;
+    if (!id)
+        return null;
+    for (const result of state.data?.hit_results ?? [])
+    {
+        const target = result?.target;
+        if ((target?.document?.id ?? target?.id) === id)
+            return result;
+    }
+    return null;
+}
+
+function reliableValue(state)
+{
+    const weapon = state.data?.damage_hud_data?.weapon;
+    if (weapon && !weapon.reliable)
+        return 0;
+    return Number(weapon?.reliableValue ?? state.data?.reliable_val ?? 0) || 0;
+}
+
 function damageRangeLabelFor(state)
 {
     if (!targetInfoAllowed())
         return null;
-    return () =>
+    return (token) =>
     {
+        // A resolved miss only ever deals Reliable, so never preview the rolled range on it.
+        const result = hitResultFor(state, token);
+        if (result && !result.hit)
+        {
+            const reliable = reliableValue(state);
+            return reliable > 0 ? { label: `${reliable}`, fill: 0xb0763a } : null;
+        }
         const hud = state.data?.damage_hud_data;
         const entries = hud
             ? [...(hud.base?.damage ?? []), ...(hud.base?.bonusDamage ?? []), ...(hud.weapon?.damage ?? []), ...(hud.weapon?.bonusDamage ?? [])]
@@ -76,12 +107,6 @@ function damageForm()
     return $form.length ? $form : null;
 }
 
-function injectWhenReady(state)
-{
-    pollForForm(damageForm,
-        $form => injectButton(state, $form).catch(err => console.warn('lancer-automations | damage targeting inject failed', err)));
-}
-
 async function injectButton(state, $form)
 {
     if ($form.find('.la-accdiff-target-button').length)
@@ -104,6 +129,20 @@ async function injectButton(state, $form)
     else
         $form.append($section);
     const $row = $section.find('.accdiff-ranges');
+
+    if (!$form.data('laDmgSightlines'))
+    {
+        $form.data('laDmgSightlines', true);
+        $form.on('mouseenter.laDmgSight', '.damage-hud-target-card', function ()
+        {
+            const cardIndex = $form.find('.damage-hud-target-card').index(this);
+            const targetUuid = state.data?.damage_hud_data?.targets?.[cardIndex]?.targetUuid;
+            const target = targetUuid ? fromUuidSync(targetUuid)?.object : null;
+            const viewer = state.actor?.token ? canvas.tokens.get(state.actor.token.id) : state.actor?.getActiveTokens?.()?.[0];
+            hoverSightlines(viewer, target);
+        });
+        $form.on('mouseleave.laDmgSight', '.damage-hud-target-card', () => clearHoverSightlines());
+    }
 
     const targeting = state.la_extraData?.laTargeting ?? null;
     if (targeting && !state.__laAttackShape)
@@ -144,14 +183,7 @@ export function registerDamageTargetButton()
             // Defer if another HUD already owns the shared shape session.
             const active = state?.name === 'DamageRollFlow' && !isTargetSessionActive() && (() =>
             {
-                try
-                {
-                    return game.settings.get('lancer-automations', 'enableDamageTargeting');
-                }
-                catch
-                {
-                    return false;
-                }
+                return getModuleSetting('enableDamageTargeting');
             })();
             let attackerMark = null;
             if (active)
@@ -159,9 +191,10 @@ export function registerDamageTargetButton()
                 try
                 {
                     seedTargetsFromHitResults(state);
-                    injectWhenReady(state);
-                    beginTargetSession(damageRangeLabelFor(state));
-                    attackerMark = createTokenMark(state.actor?.getActiveTokens?.()[0] ?? null);
+                    injectWhenReady(state, damageForm, injectButton, 'damage targeting');
+                    const attackerToken = state.actor?.getActiveTokens?.()[0] ?? null;
+                    beginTargetSession(damageRangeLabelFor(state), attackerToken);
+                    attackerMark = createTokenMark(attackerToken);
                 }
                 catch
                 {
@@ -195,15 +228,10 @@ export function registerDamageTargetButton()
 
         const clearTargetsAfterRoll = () =>
         {
-            try
-            {
-                if (!game.settings.get('lancer-automations', 'enableDamageTargeting'))
-                    return;
-            }
-            catch
-            {
+            if (!getModuleSetting('enableDamageTargeting'))
                 return;
-            }
+            if (!getModuleSetting('clearTargetsAfterRoll'))
+                return;
             for (const target of [...(game.user.targets ?? [])])
                 target.setTarget(false, { releaseOthers: false });
         };

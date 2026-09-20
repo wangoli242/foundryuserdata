@@ -1,5 +1,6 @@
 /* global Hooks, game, console */
 
+import { battleLogEnabled } from './battelog-utils.js';
 import { mockCombatTelemetry } from './combat-telemetry-mock.js';
 import { deriveDisplayBattle } from './combat-telemetry-derive.js';
 import { openBattleLogGMCard } from './gm-card.js';
@@ -10,7 +11,7 @@ import { registerAttackCapture } from './attack-capture.js';
 import { registerStateCapture } from './state-capture.js';
 import { registerActionCapture } from './action-capture.js';
 import { registerMoveCapture } from './move-capture.js';
-import { getModuleSetting } from "../tools/settings-utils.js";
+import { isExecutorGM } from '../tools/misc-tools.js';
 
 registerCombatRecorder();
 registerDamageCapture();
@@ -22,9 +23,9 @@ registerMoveCapture();
 function _mockAndLog()
 {
     const telemetry = mockCombatTelemetry();
-    console.log('[Battle Log] CombatTelemetry:', telemetry);
+    console.log('lancer-automations | Battle Log |CombatTelemetry:', telemetry);
     const battle = deriveDisplayBattle(telemetry);
-    console.log('[Battle Log] Derived display battle:', battle);
+    console.log('lancer-automations | Battle Log |Derived display battle:', battle);
     return battle;
 }
 
@@ -39,24 +40,19 @@ export function openBattleLogRecapTest()
     openBattleLogRecap(battle, { outcome: battle.mission.outcome, mvpId: battle.mvpId ?? null });
 }
 
-function _battleLogEnabled()
-{
-    return getModuleSetting('battleLogEnabled');
-}
-
 Hooks.on('deleteCombat', (combat) =>
 {
-    if (!game.user?.isGM)
+    if (!isExecutorGM())
         return;
-    if (!_battleLogEnabled())
+    if (!battleLogEnabled())
         return;
     const telemetry = consumeCombatTelemetry(combat.id);
     if (!telemetry)
         return;
     if ((telemetry.players?.length ?? 0) === 0 && (telemetry.hostiles?.length ?? 0) === 0)
         return;
-    console.log('[Battle Log] Real combat telemetry:', telemetry);
+    console.log('lancer-automations | Battle Log |Real combat telemetry:', telemetry);
     const battle = deriveDisplayBattle(telemetry);
-    console.log('[Battle Log] Derived battle:', battle);
+    console.log('lancer-automations | Battle Log |Derived battle:', battle);
     openBattleLogGMCard(battle);
 });

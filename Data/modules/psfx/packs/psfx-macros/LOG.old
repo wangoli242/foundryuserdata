@@ -1,8 +1,8 @@
-2026/09/16-02:36:32.984574 e69489fbefc0 Recovering log #931
-2026/09/16-02:36:32.992855 e69489fbefc0 Delete type=3 #929
-2026/09/16-02:36:32.992878 e69489fbefc0 Delete type=0 #931
-2026/09/16-03:24:49.243883 e69488f9efc0 Level-0 table #936: started
-2026/09/16-03:24:49.243898 e69488f9efc0 Level-0 table #936: 0 bytes OK
-2026/09/16-03:24:49.246613 e69488f9efc0 Delete type=0 #934
-2026/09/16-03:24:49.246771 e69488f9efc0 Manual compaction at level-0 from '!folders!jzAUpfC7fUt8k8Mb' @ 72057594037927935 : 1 .. '!macros!zYCX2BmlEYEBELbg' @ 0 : 0; will stop at (end)
-2026/09/16-03:24:49.249794 e69488f9efc0 Manual compaction at level-1 from '!folders!jzAUpfC7fUt8k8Mb' @ 72057594037927935 : 1 .. '!macros!zYCX2BmlEYEBELbg' @ 0 : 0; will stop at (end)
+2026/09/20-02:03:41.723249 e6948a7cefc0 Recovering log #939
+2026/09/20-02:03:41.729985 e6948a7cefc0 Delete type=3 #937
+2026/09/20-02:03:41.730008 e6948a7cefc0 Delete type=0 #939
+2026/09/20-02:04:14.610935 e69488f9efc0 Level-0 table #944: started
+2026/09/20-02:04:14.610947 e69488f9efc0 Level-0 table #944: 0 bytes OK
+2026/09/20-02:04:14.613566 e69488f9efc0 Delete type=0 #942
+2026/09/20-02:04:14.613787 e69488f9efc0 Manual compaction at level-0 from '!folders!jzAUpfC7fUt8k8Mb' @ 72057594037927935 : 1 .. '!macros!zYCX2BmlEYEBELbg' @ 0 : 0; will stop at (end)
+2026/09/20-02:04:14.619663 e69488f9efc0 Manual compaction at level-1 from '!folders!jzAUpfC7fUt8k8Mb' @ 72057594037927935 : 1 .. '!macros!zYCX2BmlEYEBELbg' @ 0 : 0; will stop at (end)

@@ -2,6 +2,25 @@
  * Wraps Grid-Aware Auras to support lambda-function macro callbacks, via libWrapper (no GAA edits).
  */
 import { hasReactionAvailable } from "./misc-tools.js";
+import { MODULE_ID } from "./constants.js";
+
+// GAA auras live in one flag array with read-modify-write updates, so concurrent
+// writers clobber each other's append unless serialized per owner document.
+const _auraWriteQueues = new Map();
+
+function _queueAuraWrite(owner, task)
+{
+    const doc = owner?.document ?? owner;
+    const key = doc?.uuid ?? 'global';
+    const chain = (_auraWriteQueues.get(key) ?? Promise.resolve()).catch(() => undefined).then(task);
+    _auraWriteQueues.set(key, chain);
+    chain.finally(() =>
+    {
+        if (_auraWriteQueues.get(key) === chain)
+            _auraWriteQueues.delete(key);
+    }).catch(() => undefined);
+    return chain;
+}
 
 export class LAAuras
 {
@@ -19,19 +38,20 @@ export class LAAuras
 
         if (typeof libWrapper === "function")
         {
-            libWrapper.register('lancer-automations', 'Macros.prototype.get', function (wrapped, ...args)
+            libWrapper.register(MODULE_ID,'Macros.prototype.get', function (wrapped, ...args)
             {
                 const id = args[0];
-                if (typeof id === 'string' && id.startsWith('@@fn:'))
+                const isBody = typeof id === 'string' && id.startsWith('@@code:');
+                if (isBody || (typeof id === 'string' && id.startsWith('@@fn:')))
                 {
-                    const macroSource = id.slice('@@fn:'.length);
+                    const macroSource = id.slice(isBody ? '@@code:'.length : '@@fn:'.length);
                     let callbackFn = LAAuras.callbackCache.get(macroSource);
                     if (!callbackFn)
                     {
                         try
                         {
                             callbackFn = new Function('token', 'parent', 'aura', 'options',
-                                `return (${macroSource})(token, parent, aura, options);`
+                                isBody ? macroSource : `return (${macroSource})(token, parent, aura, options);`
                             );
                             LAAuras.callbackCache.set(macroSource, callbackFn);
                         }
@@ -72,6 +92,34 @@ export class LAAuras
      * @returns {Promise<object|undefined>}
      */
     static async createAura(owner, auraConfig)
+    {
+        return _queueAuraWrite(owner, () => LAAuras._createAuraInner(owner, auraConfig));
+    }
+
+    static _hasInlineCodeMacros(gaaModule)
+    {
+        const authors = Array.from(gaaModule?.authors ?? []);
+        return authors.some(author => author?.github === 'Agraael')
+            || String(gaaModule?.title ?? '').includes('LaSossis');
+    }
+
+    static _buildMacroBody(fn, scope, apiIsParam)
+    {
+        const lines = [`${apiIsParam ? '' : 'const '}api = game.modules.get('${MODULE_ID}')?.api;`];
+        for (const [name, value] of Object.entries(scope ?? {}))
+        {
+            if (!/^[A-Za-z_$][\w$]*$/.test(name))
+            {
+                console.warn(`lancer-automations | Aura scope key '${name}' is not a valid identifier, skipped.`);
+                continue;
+            }
+            lines.push(`const ${name} = ${typeof value === 'function' ? value.toString() : JSON.stringify(value)};`);
+        }
+        lines.push(`return (${fn.toString()})(token, parent, aura, options);`);
+        return lines.join('\n');
+    }
+
+    static async _createAuraInner(owner, auraConfig)
     {
         const gridAwareAuras = game.modules.get("grid-aware-auras");
         if (!gridAwareAuras?.api?.createAura)
@@ -152,14 +200,21 @@ export class LAAuras
 
         if (configToPass.macros && Array.isArray(configToPass.macros))
         {
+            const inlineCode = LAAuras._hasInlineCodeMacros(gridAwareAuras);
             for (let macro of configToPass.macros)
             {
                 if (typeof macro.function === 'function')
                 {
-                    const src = macro.function.toString();
-                    macro.macroId = '@@fn:' + src;
-                    LAAuras.callbackCache.set(src, macro.function);
+                    const body = LAAuras._buildMacroBody(macro.function, macro.scope, inlineCode);
+                    if (inlineCode)
+                    {
+                        macro.actionType = 'code';
+                        macro.code = body;
+                    }
+                    else
+                        macro.macroId = '@@code:' + body;
                     delete macro.function; // Strip the function so GAA doesn't get confused
+                    delete macro.scope;
                 }
             }
         }
@@ -180,9 +235,13 @@ export class LAAuras
             console.warn("lancer-automations | ensureAura: auraConfig.name is required for dedupe.");
             return LAAuras.createAura(owner, auraConfig);
         }
-        if (LAAuras.findAura(owner, auraConfig.name))
-            return null;
-        return LAAuras.createAura(owner, auraConfig);
+        // dedupe check runs inside the queue so two same-name ensures can't both pass it
+        return _queueAuraWrite(owner, () =>
+        {
+            if (LAAuras.findAura(owner, auraConfig.name))
+                return null;
+            return LAAuras._createAuraInner(owner, auraConfig);
+        });
     }
 
     /**
@@ -195,7 +254,7 @@ export class LAAuras
         if (!gridAwareAuras?.api?.deleteAuras)
             return [];
         const opts = owner instanceof Item ? options : { includeItems: true, ...options };
-        return await gridAwareAuras.api.deleteAuras(owner, filter, opts);
+        return _queueAuraWrite(owner, () => gridAwareAuras.api.deleteAuras(owner, filter, opts));
     }
 
     /** The placeable that renders a token's or actor's auras. */

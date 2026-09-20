@@ -1,5 +1,5 @@
 {
-  "timestamp": 1789526188770,
+  "timestamp": 1789869819004,
   "os": {
     "platform": "linux",
     "version": "Ubuntu 24.04.4 LTS",
@@ -214,12 +214,12 @@
     },
     "lancer": {
       "version": "3.1.3",
-      "playtime": 250138
+      "playtime": 534333
     }
   },
   "worlds": {},
   "playtime": {
-    "total": 250138,
-    "max": 225317
+    "total": 534333,
+    "max": 306125
   }
 }

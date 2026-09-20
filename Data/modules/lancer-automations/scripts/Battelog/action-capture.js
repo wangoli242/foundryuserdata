@@ -1,6 +1,7 @@
 import { appendEvent } from './telemetry-store.js';
-import { findActiveCombatForToken, resolveEntryTokenId } from './battelog-utils.js';
+import { findActiveCombatForToken, resolveEntryTokenId, numOr } from './battelog-utils.js';
 import { SAVE_KINDS } from './combat-telemetry.js';
+import { isExecutorGM } from '../tools/misc-tools.js';
 
 let _registered = false;
 
@@ -8,15 +9,10 @@ const REAL_ACTIVATIONS = new Set(['Quick', 'Full', 'Free', 'Protocol', 'Reaction
 
 function _emit(combat, byId, event)
 {
-    if (game.user?.isGM)
+    if (isExecutorGM())
         appendEvent(combat, byId, event);
     else
         game.socket.emit('module.lancer-automations', { action: 'battleLogEvent', payload: { combatId: combat.id, entryId: byId, event } });
-}
-
-function _num(value, fallback)
-{
-    return typeof value === 'number' && Number.isFinite(value) ? value : fallback;
 }
 
 // HASE saves and skill checks. A save forced by another token records forcedBy
@@ -26,7 +22,7 @@ function _onCheck(data)
     const byId = data?.triggeringToken?.id;
     if (!byId)
         return;
-    if (_num(data?.targetVal, 10) <= 0)
+    if (numOr(data?.targetVal, 10) <= 0)
         return;
     const combat = findActiveCombatForToken(byId);
     if (!combat)

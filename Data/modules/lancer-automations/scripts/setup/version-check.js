@@ -1,5 +1,7 @@
 /*global game, console, fetch, Dialog, foundry, window */
 
+import { localize, localizeFormat } from '../tools/string-utils.js';
+
 export async function getPendingUpdate(moduleId)
 {
     if (!game.user.isGM)
@@ -112,18 +114,18 @@ function showUpdateDialog(module, newVersion, releaseNotes = "")
         <div class="form-group" style="padding: 10px;">
             <p>A new version of <b>${module.title}</b> is available: <span class="lancer-text-red">v${newVersion}</span> (Current: v${module.version})</p>
             <p>You can update it via the Foundry VTT Module Manager.</p>
-            <p style="margin-top: 8px;">More info, updates, and previews on <a href="https://www.patreon.com/cw/LaSossis" target="_blank" rel="noopener"><b>Patreon</b></a>.</p>
+            <p style="margin-top: 8px;">If you like this module or my other work, you can support me on <a href="https://www.patreon.com/cw/LaSossis" target="_blank" rel="noopener"><b>Patreon</b></a> or <a href="https://ko-fi.com/lasossis" target="_blank" rel="noopener"><b>Ko-fi</b></a>. Updates and previews land there too.</p>
         </div>
         ${notesHtml}
     `;
 
     new Dialog({
-        title: `${module.title} Update`,
+        title: localizeFormat('LA.dialogTitle.moduleUpdate', { name: module.title }),
         content: dialogContent,
         buttons: {
             dismiss: {
                 icon: '<i class="fas fa-times"></i>',
-                label: "Dismiss",
+                label: localize("LA.common.dismiss"),
                 callback: () =>
                 {
                     game.settings.set(module.id, 'lastNotifiedVersion', newVersion);
@@ -131,7 +133,7 @@ function showUpdateDialog(module, newVersion, releaseNotes = "")
             },
             later: {
                 icon: '<i class="fas fa-clock"></i>',
-                label: "Remind Me Later"
+                label: localize("LA.versionCheck.remindMeLater")
             }
         },
         default: "dismiss"

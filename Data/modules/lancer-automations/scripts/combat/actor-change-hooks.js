@@ -1,4 +1,6 @@
 import { _buildCancelFn } from "../activations/flow-steps.js";
+import { getModuleSetting } from "../tools/settings-utils.js";
+import { localize } from "../tools/string-utils.js";
 import { startChoiceCard, getActiveGMId } from "../interactive/index.js";
 import { handleTrigger } from "../activations/reactions-engine.js";
 import { updateStructure } from "../tools/wreck.js";
@@ -12,10 +14,12 @@ Hooks.on('preUpdateActor', (actor, change, _options, userId) =>
         return;
     try
     {
-        if (game.settings.get('lancer-automations', 'syncActorImgToToken'))
+        if (getModuleSetting('syncActorImgToToken'))
         {
             const newTokenImg = foundry.utils.getProperty(change, 'prototypeToken.texture.src');
-            if (newTokenImg && change.img === undefined)
+            // actor.img is IMAGE-only, so a video token image must not be mirrored onto it.
+            const ext = String(newTokenImg ?? '').split('?')[0].split('.').pop().toLowerCase();
+            if (newTokenImg && change.img === undefined && ext in CONST.IMAGE_FILE_EXTENSIONS)
                 foundry.utils.setProperty(change, 'img', newTokenImg);
         }
     }
@@ -23,7 +27,7 @@ Hooks.on('preUpdateActor', (actor, change, _options, userId) =>
     { /* ignore */ }
     try
     {
-        if (game.settings.get('lancer-automations', 'syncActorNameToToken'))
+        if (getModuleSetting('syncActorNameToToken'))
         {
             const newTokenName = foundry.utils.getProperty(change, 'prototypeToken.name');
             if (newTokenName && change.name === undefined)
@@ -113,7 +117,7 @@ Hooks.on('preUpdateActor', (actor, change, options, userId) =>
                     }
                     await startChoiceCard({
                         mode: "or",
-                        title: "HP MODIFIED",
+                        title: localize('LA.dialogTitle.hpModified'),
                         description: reasonText,
                         item,
                         originToken,
@@ -228,7 +232,7 @@ Hooks.on('preUpdateActor', (actor, change, options, userId) =>
                     }
                     await startChoiceCard({
                         mode: "or",
-                        title: "HEAT MODIFIED",
+                        title: localize('LA.dialogTitle.heatModified'),
                         description: reasonText,
                         item,
                         originToken,
@@ -335,7 +339,7 @@ Hooks.on('updateActor', async (actor, change, options, userId) =>
     {
         try
         {
-            if (game.settings.get('lancer-automations', 'enableWrecks'))
+            if (getModuleSetting('enableWrecks'))
                 await updateStructure(token);
         }
         catch (e)

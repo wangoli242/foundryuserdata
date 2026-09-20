@@ -1,11 +1,13 @@
 /* global game, canvas, PIXI, performance */
 
-import { _queueCard, _createInfoCard, _removeInfoCard } from "../cards.js";
+import { _queueCard, _createInfoCard, _removeInfoCard, bindCardEscape } from "../cards.js";
+import { MODULE_ID } from "../../tools/constants.js";
+import { localize } from "../../tools/string-utils.js";
 import { isSingleTargetPickerActive, cancelSingleTargetPicker, createChanceLabel } from "../canvas.js";
 import { getOccupiedOffsets } from "../../combat/grid-helpers.js";
-import { TG, paintDashedFootprint } from "../canvas-helpers.js";
+import { TG, paintDashedFootprint, createTokenTether } from "../canvas-helpers.js";
 import { broadcastToolPresence, clearToolPresence, startToolHeartbeat } from "../presence.js";
-import { targetInfoAllowed, contestWinChance, chanceLabelsOn } from "../../activations/targeting-ui.js";
+import { targetInfoAllowed, targetInfoAllowedFor, UNKNOWN_CHANCE, contestWinChance, chanceLabelsOn } from "../../activations/targeting-ui.js";
 
 const STAT_DEFS = [
     { value: 'HULL', key: 'hull' },
@@ -23,11 +25,13 @@ function contestStats(actor)
 }
 
 // Two-token / two-stat HASE contest card. Any of tokenA/skillA/tokenB/skillB can be pre-set.
-export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = null, skillB = null, title = 'HASE Contest', sendToOwner = true } = {})
+export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = null, skillB = null, title = 'HASE Contest', sendToOwner = true,
+    accuracy1 = 0, difficulty1 = 0, flatModifier1 = 0, accuracy2 = 0, difficulty2 = 0, flatModifier2 = 0,
+    sourceItem = null, sourceAction = null, extraData = null } = {})
 {
     return _queueCard(() => new Promise((resolve) =>
     {
-        const api = game.modules.get('lancer-automations')?.api;
+        const api = game.modules.get(MODULE_ID)?.api;
         const state = {
             a: { token: tokenA ?? null, skill: skillA ? String(skillA).toUpperCase() : null, mark: null, chance: null },
             b: { token: tokenB ?? null, skill: skillB ? String(skillB).toUpperCase() : null, mark: null, chance: null },
@@ -50,13 +54,15 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             const { a, b } = state;
             if (!(a.token?.actor && a.skill && b.token?.actor && b.skill))
                 return;
-            a.chance = createChanceLabel(a.token, () => contestWinChance(a.token?.actor, a.skill, b.token?.actor, b.skill, {}));
-            b.chance = createChanceLabel(b.token, () => contestWinChance(b.token?.actor, b.skill, a.token?.actor, a.skill, {}));
+            const masked = !targetInfoAllowedFor(a.token.actor) || !targetInfoAllowedFor(b.token.actor);
+            a.chance = createChanceLabel(a.token, () => masked ? UNKNOWN_CHANCE : contestWinChance(a.token?.actor, a.skill, b.token?.actor, b.skill, {}));
+            b.chance = createChanceLabel(b.token, () => masked ? UNKNOWN_CHANCE : contestWinChance(b.token?.actor, b.skill, a.token?.actor, a.skill, {}));
         };
 
         // Same gold pulsing footprint as the attack-roll smart-targeting shape (target-shapes.js).
         let markG = null;
         let markPulse = null;
+        let tether = null;
 
         // Broadcast the two contender footprints as a gold ghost, like placed shapes. Hidden tokens excluded.
         const presenceData = () =>
@@ -132,6 +138,18 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             if (markG && !markG.destroyed)
                 markG.destroy({ children: true });
             markG = null;
+            tether?.destroy();
+            tether = null;
+        };
+        const refreshTether = () =>
+        {
+            if (!state.a.token || !state.b.token)
+            {
+                tether?.setPairs([]);
+                return;
+            }
+            tether ??= createTokenTether();
+            tether.setPairs([[state.a.token, state.b.token]]);
         };
 
         let cardEl;
@@ -143,16 +161,21 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             clearToolPresence('haseContest');
             clearChanceLabels();
             destroyMarks();
+            unbindEscape();
             _removeInfoCard(cardEl);
         };
 
+        const cancel = () =>
+        {
+            cleanup();
+            resolve(null);
+        };
+
+        const unbindEscape = bindCardEscape(cancel, isSingleTargetPickerActive);
+
         cardEl = _createInfoCard("haseContest", {
-            title: "HASE CONTEST",
-            onCancel: () =>
-            {
-                cleanup();
-                resolve(null);
-            },
+            title: localize('LA.dialogTitle.haseContest'),
+            onCancel: cancel,
         });
 
         const updateRun = () =>
@@ -169,6 +192,7 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             clearMark(side);
             if (token)
                 s.mark = drawMark(token);
+            refreshTether();
             broadcastToolPresence('haseContest', presenceData());
 
             const img = colEl.find('[data-role="token-img"]');
@@ -239,7 +263,8 @@ export function openHaseContestCard({ tokenA = null, skillA = null, tokenB = nul
             if (!(a.token && a.skill && b.token && b.skill))
                 return;
             cleanup();
-            const result = await api?.executeContestedCheck?.(a.token, a.skill, b.token, b.skill, { title, sendToOwner: state.sendToOwner });
+            const result = await api?.executeContestedCheck?.(a.token, a.skill, b.token, b.skill,
+                { title, sendToOwner: state.sendToOwner, accuracy1, difficulty1, flatModifier1, accuracy2, difficulty2, flatModifier2, sourceItem, sourceAction, extraData });
             resolve(result ?? null);
         });
 

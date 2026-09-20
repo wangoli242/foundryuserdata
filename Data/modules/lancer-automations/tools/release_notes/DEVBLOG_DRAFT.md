@@ -1,56 +1,53 @@
-# v4.1.0 - Dev Blog (draft)
+# v4.3.1 - Dev Blog (draft)
 
-## Workshop: Share and Browse Community Automations
-The biggest new feature in v4 is the **Workshop**. A new tab in the Reaction Manager connects directly to a community GitHub repository where players share their custom automations, packs, and startup scripts. You can browse by contributor, preview entries before importing, and see status badges (NEW, UPDATE, OK) showing what you already have installed. Imported automations carry a workshop ID so updates flow cleanly, and a cloud icon badge marks everything that came from the Workshop. This is the foundation for a real sharing ecosystem around Lancer Automations.
+## Movement Gets a Full Overhaul
+The movement system has been basically rebuilt from the ground up. Tokens now understand **surfaces**: when you walk across Terrain Height Tools terrain, your mech snaps to the correct elevation automatically using a new solid-band collision model. Two elevation modes let you choose how this works: **Ground** mode (walk on surfaces, climb up and down terrain) and **Hold** mode (maintain altitude, used by flying). Press **Z** mid-drag to swap between them, with on-screen feedback so you always know which mode you're in.
 
-## In-Editor API Reference Panel
-Writing automations just got way less tab-switchy. A new draggable "Function Reference" popup lives right inside the activation editor, with every API function organized into searchable groups (attacks, effects, bonuses, tokens, cards, HUD actions, and more). Each entry shows return types, argument signatures, and links out to the full docs. No more flipping between your code and a browser tab.
+On top of that, **wall collision blocking** is now part of the movement system. Walls respect height bands, one-way doors, and open doors, so you can't just ruler-walk through a closed bulkhead anymore. And token movement now **animates per grid cell** instead of jumping between waypoints, so you actually see the mech step through each square on its path.
 
-## Action Overlays: Combat Data That Survives Re-imports
-A persistent pain point: you attach attack data to a system's action, then re-import your compendium and it's gone. Action overlays solve this by storing combat data (attack bonus, accuracy, damage, range, tags) in module flags that layer on top of native Lancer actions. The new "Action Combat" section in the Extras dialog makes it point-and-click. Lock On, the TAH hover range pulse, and deployable activations all read overlays automatically.
+## 17 New Visual Effect Filters (and 12 New Status Effects)
+This is the flashy one. The custom TokenMagic filter library went from 2 filters to **19**, each with its own GLSL shader. Highlights include Fracture (glowing Voronoi cracks), ChromaRot (chroma-decay signal glitch), Open Seams (armor plates pulling apart with glowing seams), Thermal Split (writhing heat cracks), Tracking Ghost (converging targeting duplicates), Vent Column (rising heat shimmer), Ricochet Lip (incoming fire sparking off armor), and Guiding Light (directional key light with a gleam sweep).
 
-## Live Hit-Chance Labels
-During stat rolls, skill checks, saves, and HASE contests, floating percentage labels now appear on tokens showing your probability of success (or contest win chance). They update live as you hover different targets or change accuracy/difficulty. Toggleable via settings for groups that prefer not to see the math.
+These filters power a huge expansion of **status condition visuals**. 12 new status effects (Impaired, Vulnerable, Lock On, Aided, Resist All, Phasing, Overheated, Reactor Meltdown, Prone, Bolstered, Shut Down and Disengage) now have dedicated looks. Existing effects got upgrades too: Danger Zone now shows a vent column, Overshield pulses with a double shell, Exposed cracks with thermal splits, and Shredded/Stripped use irregular shatter seams.
 
-## Tactical Distance Labels, Upgraded
-Tactical distance labels got a major glow-up. They now show a line-of-sight eye icon (green for clear, red for blocked) when Lancer LoS is enabled. Labels can sit above or below the token, scale up when you zoom out so they stay readable, and render on a high-z overlay so stat bars never cover them. Ghost labels even follow drag previews of targets you're moving around.
+## Token Ground Shadows
+Elevated tokens now cast a **ground shadow** onto the terrain below them. The shadow grows larger and blurs more the higher the token is, giving everyone at the table an instant visual read on elevation. Shadow direction syncs with Terrain Height Tools' sun angle when available. Three new settings let you dial in the throw distance and opacity.
 
-## Pinned Range Rings on Advanced Measure
-Right-click any range source or weapon in the Advanced Measure toolbar to pin a steady, non-pulsing range outline on the map. Pin multiple tokens and sources at once for a full tactical picture. New keyboard shortcuts too: T cycles range source, G clears everything. Re-clicking the active source toggles it off.
+## Vision and Detection Upgrades
+A new **peek-range limit** for trig-based vision means tokens can no longer see over short walls from the other side of the map. If a wall is shorter than your eye height, you can see past it up close, but that advantage fades with distance. The new `lancerLosPeekRange` setting controls the falloff.
 
-## Bond Panel in the Token Action HUD
-Pilots with bonds now get a dedicated Bond panel in the HUD. It shows bond questions with selectable answers, an XP checklist (major ideals, minor ideal, veteran power), and action buttons for tallying XP and refreshing powers. Bond powers show clickable use-tracking pips, and Bond XP appears in the stats bar. The token stat hint popup picks up Bond XP too.
+**Battlefield Awareness** now has three visual styles: Translucent (the new default), Silhouette (solid black), and Outline-only (just the contour). GMs can pick the one that fits their table's aesthetic.
 
-## Expanded NPC Automations
-A big batch of new NPC class automations landed: Squad traits (Strength in Numbers, Spread Out, Undersize, Primary Weapon), Miner (Pulverizer Charge, Rock Grinder, Collapse Plating), Engineer turret deploy/shutdown, Baserunner Defense, Terrain Printer waypoints, Sandblast zones, Remote Cloud healing, and more. Existing automations got real improvements too, like line-of-sight checks on Sniper abilities, proper damage cancellation on Anti-Materiel Rifle, and zones that auto-expire instead of needing manual cleanup reactions.
+Vision From Edge now **defers expensive rebuilds** while you're dragging or animating tokens, only recalculating once movement finishes. Combined with inlined LOS raycasting and other V8-friendly optimizations, sensor-heavy scenes should feel noticeably smoother.
 
-## Scanned Visibility and Stat Privacy
-A new "Owners + scanned" visibility mode for token stat bars means you can gate stat visibility behind the scan mechanic. Pair it with the new "hide current values" option to show "?" instead of exact HP/heat for scanned-only tokens. Or flip the "Reveal Stats Without Scan" toggle if your table doesn't bother with hidden NPC stats at all. The setup wizard now asks about stat privacy upfront.
+## Token Action HUD Portraits
+The TAH can now display a **portrait image** above the name band. Configure it at the world level (token art, actor art, or off) and override per-token with a custom image. Mechs can optionally pull their pilot's portrait instead. Scale is adjustable.
 
-## New Effects API Surface
-The Effects API got a serious expansion for automation authors. `applyMark`/`findMarkedTokens`/`clearMarks` give you a clean lifecycle for source-stamped effects (think Suppress or Engineer's Mark patterns). `ensureLinkedEffect` and `ensureLinkedBonus` are idempotent helpers safe to call from onInit without worrying about duplicates. `findEffectsOnToken` does multi-result queries with flag filters. `hasStatus` is the quick status check everyone was writing by hand. Duration label "unlimited" is now "indefinite" (old value still works).
+## Workshop Browser: Likes, Stats, and Search
+The Workshop Browser now tracks **community likes and install counts** backed by Supabase. You can like/unlike entries, see how popular packs are, and a new **search bar** lets you filter the entire workshop by name, LID, or contributor. Finding and picking community content just got a lot faster.
 
-## New Automation Helpers
-A cluster of new utility functions make complex automations dramatically simpler to write: `executeSaveVsEffect` handles parallel save rolls with effect-on-failure in one call, `attackWith` fires a weapon programmatically with auto-reload, `tierValue` replaces manual tier branching, `getFlowFlag`/`setFlowFlag` manage per-flow state cleanly, and `consumeOncePerRound` gates once-per-round abilities. Basic and tech attacks now accept injected damage data.
+## Immunity and Resistance Filters Actually Work Now
+This is a big fix. Immunity and resistance bonuses were **ignoring their condition filters**: per-weapon gates, per-target conditions, roll-type restrictions, and item LID filters were all being skipped. That's fixed. Filtered resistances are no longer permanently baked onto actors, and deferred resistance consumption now syncs across clients via socket so everyone stays consistent. The Effect Manager UI also got smarter, showing only the filter fields relevant to each immunity subtype.
 
-## Overwatch/Reaction Reminder Removed
-The built-in Overwatch reminder system (threat-range movement alerts and debug hex visualization) has been removed. This was a source of confusion and false positives. Community solutions and the Workshop can fill this niche for tables that want it.
+## Full Internationalization (i18n)
+Every single user-facing string in the module has been moved to localization keys. The setup wizard, the settings panel, the Token Action HUD, the Battle Log, the reaction editor, scan tools, combat dialogs, status tooltips, notifications... all of it. Community translators can now localize the entire module. This was a massive effort touching nearly every file in the codebase.
+
+The settings configuration window also got structural improvements: a new Terrain Height Tools shortcuts tab, new performance toggles, core Foundry performance shortcuts, and long setting labels now scroll on hover instead of getting clipped.
 
 ---
 
 ### Smaller stuff
-- **Mine detonation FX** with explosion visuals, sound, and a per-action sound toggle
-- **Item-name labels on action FX badges** (shows the system/weapon name on the banner)
-- **Phasing and Overheated** status effects are now built-in
-- **Rank badges** (LL7 / T2) display next to token names in the HUD
-- **Core system active synergies** shown in the HUD with frequency pips
-- **Settings menu overhaul**: fields now dim and show a warning icon when their prerequisites are off
-- **Bond power activation FX** and automation triggers (bond powers now fire onActivation hooks)
-- **Wreck aura** color and opacity are configurable, and auras now show outside of combat
-- **Move tool respects phasing**: phasing tokens pass through hostiles during pathfinding and knockback
-- **Force Check** supports area-of-effect range inputs and success-chance indicators on targets
-- **Zone auto-expiry** on combat turn boundaries, plus elevation-aware zone containment
-- **Obstacle (Phasing)** immunity subtype in the Effect Manager
-- **Standing Up** now shows a proper activation card and has an automated Limited Handling check for NPC vehicles
-- **Compatibility checker** warns when both JB2A packs are active simultaneously
-- **Pilot stress bar** fix for newer alternative character sheets
+- **Battlefield Awareness style setting** with Translucent, Silhouette, and Outline-only options
+- **Drag-suppress origin sources** option prevents doubled lighting/vision when dragging tokens
+- **Occlusion dim deferral** holds dim updates until token movement finishes, reducing flicker
+- Terrain-trigger waypoints now attempt to route through unreachable waypoints instead of ignoring them
+- Move-token ruler wall blocking is now elevation-aware
+- Waypoint labels show the active elevation mode icon
+- Movement-type cycling mid-drag now uses Foundry core's Tab key with audio and floating label feedback
+- Token height utilities with squad and vehicle awareness for wall-height integration
+- `executeItemActivation` API now supports talent rank actions and bond powers by path
+- Isometric settings changed from per-client to world-scoped (GM-controlled)
+- Hex-grid token LOS sample points now stay stable during animation
+- Battle Log awards, recap screen, intro terminal, share card, and GM card are all now translatable
+- Status tooltip no longer shows raw localization keys instead of translated descriptions
+- Compatibility checks added for Isometric Perspective waypoint labels, Grapejuice iso, and THT LoS conflicts

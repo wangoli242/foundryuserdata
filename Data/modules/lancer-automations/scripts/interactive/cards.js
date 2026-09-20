@@ -3,7 +3,9 @@
 import { firstKeyFor } from "./keybindings.js";
 import { isWhiteIcon } from "../tah/item-helpers.js";
 import { createTokenMark } from "./target-shapes.js";
+import { focusTokens } from "../tools/auto-focus.js";
 
+import { localize } from '../tools/string-utils.js';
 // Info Card Helpers (internal)
 
 export function isWhiteSvgIcon(iconPath)
@@ -26,15 +28,17 @@ function _elevationKeyLabels()
 }
 
 export const _cardDefaults = {
-    chooseToken: { title: "SELECT TARGETS", icon: "fas fa-crosshairs" },
-    knockBack:   { title: "KNOCKBACK",       icon: "fas fa-arrow-right" },
-    placeToken:  { title: "PLACE TOKEN",     icon: "fas fa-user-plus" },
-    placeZone:   { title: "PLACE ZONE",      icon: "fas fa-bullseye" },
-    choiceCard:  { title: "CHOICE",          icon: "fas fa-list" },
-    deploymentCard: { title: "DEPLOY",      icon: "cci cci-deployable" },
-    voteCard:    { title: "VOTE",            icon: "fas fa-poll" },
-    haseContest: { title: "HASE CONTEST",    icon: "fas fa-dice-d20" },
-    forceCheck:  { title: "FORCE CHECK",     icon: "mdi mdi-alert-circle-check-outline" }
+    chooseToken: { title: 'LA.card.selectTargets', icon: "fas fa-crosshairs" },
+    knockBack:   { title: 'LA.card.knockback',       icon: "fas fa-arrow-right" },
+    placeToken:  { title: 'LA.card.placeToken',     icon: "fas fa-user-plus" },
+    placeZone:   { title: 'LA.card.placeZone',      icon: "fas fa-bullseye" },
+    choiceCard:  { title: 'LA.card.choice',          icon: "fas fa-list" },
+    deploymentCard: { title: 'LA.card.deploy',      icon: "cci cci-deployable" },
+    voteCard:    { title: 'LA.card.vote',            icon: "fas fa-poll" },
+    haseContest: { title: 'LA.card.haseContest',    icon: "fas fa-dice-d20" },
+    forceCheck:  { title: 'LA.card.forceCheck',     icon: "mdi mdi-alert-circle-check-outline" },
+    rollCard:    { title: 'LA.card.roll',            icon: "fas fa-dice-d20" },
+    teleport:    { title: 'LA.card.move',            icon: "fas fa-arrows-alt" }
 };
 
 // Card queue: serialise all interactive cards so they never overwrite each other
@@ -178,9 +182,9 @@ export function _queueCard(fn, title = '', { urgent = false } = {})
 
 export function _createInfoCard(type, opts)
 {
-    const defaults = _cardDefaults[type] || { title: "INFO", icon: "fas fa-info" };
+    const defaults = _cardDefaults[type] || { title: 'LA.card.info', icon: 'fas fa-info' };
     const {
-        title = defaults.title,
+        title = localize(defaults.title),
         icon = defaults.icon,
         headerClass = "",
         description = "",
@@ -207,7 +211,7 @@ export function _createInfoCard(type, opts)
     });
 
     let infoRowHtml = '';
-    if (type !== "choiceCard" && type !== "deploymentCard" && type !== "voteCard" && type !== "haseContest" && type !== "forceCheck")
+    if (type !== "choiceCard" && type !== "deploymentCard" && type !== "voteCard" && type !== "haseContest" && type !== "forceCheck" && type !== "rollCard")
     {
         let infoItems = [];
         const isAoePattern = pattern === 'blast' || pattern === 'burst' || pattern === 'cone' || pattern === 'line';
@@ -246,6 +250,11 @@ export function _createInfoCard(type, opts)
         const showRotateHint = opts.pattern === 'cone' || opts.pattern === 'line';
         const showTiltHint = opts.pattern === 'line';
         const elevKeys = _elevationKeyLabels();
+        const losToggleHtml = opts.showLosToggle ? `
+            <label data-role="los-wrap" style="display:flex;align-items:center;gap:5px;cursor:pointer;" title="Range shown with line of sight">
+                <input type="checkbox" data-role="los-toggle" ${opts.losOn === false ? '' : 'checked'} style="margin:0;">
+                <span>Line of sight</span>
+            </label>` : '';
         const blastSection = isAreaPattern ? `
             <h3 class="la-section-header lancer-border-primary">Placed Areas</h3>
             <div class="la-area-modes" data-role="area-modes" style="display:flex;gap:14px;align-items:center;padding:4px 4px 6px 4px;border-bottom:1px solid #ccc;margin-bottom:6px;color:#fff;font-size:11.5px;flex-wrap:wrap;">
@@ -261,6 +270,7 @@ export function _createInfoCard(type, opts)
                     <input type="checkbox" data-role="propagation-toggle" style="margin:0;">
                     <span>Propagation</span>
                 </label>
+                ${losToggleHtml}
                 ${showQEHint ? `<span style="margin-left:auto;color:#666;font-size:10.5px;font-style:italic;">${elevKeys.down}/${elevKeys.up}: shift elevation</span>` : ''}
                 ${showRotateHint ? `<span style="color:#666;font-size:10.5px;font-style:italic;">Ctrl+wheel: rotate</span>` : ''}
                 ${showTiltHint ? `<span style="color:#666;font-size:10.5px;font-style:italic;">${elevKeys.tiltDown}/${elevKeys.tiltUp}: tilt</span>` : ''}
@@ -268,9 +278,13 @@ export function _createInfoCard(type, opts)
             <div class="la-placed-areas" data-role="area-list">
                 <div class="la-empty-state">No areas placed</div>
             </div>` : '';
+        const losRowHtml = (!isAreaPattern && losToggleHtml)
+            ? `<div style="display:flex;gap:12px;align-items:center;color:#fff;font-size:11.5px;margin-bottom:4px;">${losToggleHtml}</div>`
+            : '';
         dynamicHtml = `
             ${selectionCheckbox}
             ${blastSection}
+            ${losRowHtml}
             <h3 class="la-section-header lancer-border-primary">Selected Targets</h3>
             <div class="la-selected-targets" data-role="target-list">
                 <div class="la-empty-state">No targets selected</div>
@@ -281,7 +295,6 @@ export function _createInfoCard(type, opts)
         dynamicHtml = `
             <h3 class="la-section-header lancer-border-primary">Tokens to Move</h3>
             <div class="la-knockback-list" data-role="knockback-list">
-                <!-- Populated dynamically -->
             </div>`;
     }
     else if (type === "placeToken")
@@ -294,6 +307,7 @@ export function _createInfoCard(type, opts)
             <h3 class="la-section-header lancer-border-primary">Tokens to Place</h3>
             <div style="font-size:0.78em; opacity:0.85; margin:-4px 0 4px 0; display:flex; align-items:center; gap:10px; flex-wrap:wrap;">
                 <label style="display:flex;align-items:center;gap:4px;cursor:pointer;"><input type="checkbox" data-role="placetoken-auto-elev" style="margin:0;"> Auto elevation</label>
+                ${opts.showLosToggle ? `<label style="display:flex;align-items:center;gap:4px;cursor:pointer;" title="Placement range shown and checked with line of sight"><input type="checkbox" data-role="placetoken-los" ${opts.losOn === false ? '' : 'checked'} style="margin:0;"> Line of sight</label>` : ''}
                 <span style="opacity:0.75;">Use <kbd>${_elevationKeyLabels().down}</kbd> / <kbd>${_elevationKeyLabels().up}</kbd> to offset before placing.</span>
             </div>
             <div style="font-size:0.78em; opacity:0.9; margin:0 0 4px 0; display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
@@ -354,6 +368,27 @@ export function _createInfoCard(type, opts)
                 <i class="fas fa-dice-d20"></i> RUN CONTEST
             </button>`;
     }
+    else if (type === "teleport")
+    {
+        const listSection = opts.isMulti ? `
+            <h3 class="la-section-header lancer-border-primary">Tokens to Move</h3>
+            <div class="la-selected-targets" data-role="token-list"></div>` : '';
+        dynamicHtml = `
+            ${listSection}
+            <h3 class="la-section-header lancer-border-primary">Destination</h3>
+            <div class="la-selected-targets" data-role="dest-info">
+                <div class="la-empty-state">No destination selected</div>
+            </div>`;
+    }
+    else if (type === "rollCard")
+    {
+        dynamicHtml = `
+            <input type="text" data-role="roll-formula" value="${opts.rollFormula ?? '1d20'}" ${opts.allowEdit === false ? 'readonly' : ''} spellcheck="false"
+                style="width:100%;height:28px;font-family:var(--font-mono, monospace);text-align:center;font-weight:600;margin-bottom:6px;" />
+            <button type="button" data-action="do-roll" class="lancer-button lancer-secondary dialog-button submit default" style="width:100%;padding:6px;font-weight:700;">
+                <i class="fas fa-dice-d20"></i> ROLL
+            </button>`;
+    }
     else if (type === "forceCheck")
     {
         dynamicHtml = `
@@ -406,6 +441,10 @@ export function _createInfoCard(type, opts)
                     <input type="checkbox" data-role="zone-auto-elev" ${opts.autoElevation === false ? '' : 'checked'} style="margin:0;">
                     <span>Auto elevation</span>
                 </label>
+                ${opts.showLosToggle ? `<label style="display:flex;align-items:center;gap:5px;cursor:pointer;" title="Cast range shown with line of sight">
+                    <input type="checkbox" data-role="zone-los-toggle" ${opts.losOn === false ? '' : 'checked'} style="margin:0;">
+                    <span>Line of sight</span>
+                </label>` : ''}
             </div>
             <div style="font-size:0.75em;opacity:0.8;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;">
                 <span data-role="zone-elev-readout">Elevation: auto</span>
@@ -430,7 +469,7 @@ export function _createInfoCard(type, opts)
             </div>`;
     }
 
-    const showConfirm = type !== "choiceCard" && type !== "voteCard" && type !== "haseContest" && type !== "forceCheck";
+    const showConfirm = type !== "choiceCard" && type !== "voteCard" && type !== "haseContest" && type !== "forceCheck" && type !== "rollCard";
     const showConfirmVote = type === "voteCard" && opts.isCreator;
 
     const html = `
@@ -499,6 +538,10 @@ export function _createInfoCard(type, opts)
         const raw = String($(ev.currentTarget).val() ?? '').trim();
         opts.onCountChange?.(raw === '' ? -1 : Number(raw));
     });
+    cardEl.find('[data-role="placetoken-los"]').on('change', function ()
+    {
+        opts.onToggleLos?.(/** @type {HTMLInputElement} */ (this).checked);
+    });
     if (originToken)
     {
         cardEl.find('[data-role="origin-token"]').on('click', () =>
@@ -532,6 +575,7 @@ export function _createInfoCard(type, opts)
     if (relatedToken)
         cardEl[0]._laRelatedMark = createTokenMark(relatedToken);
     _cardVisualStack.push(cardEl);
+    focusTokens('cards', [originToken, relatedToken]);
     return cardEl;
 }
 
@@ -661,7 +705,7 @@ export function _updateInfoCard(cardEl, type, cardState)
                 const warns = cardState.warnings?.[token.id] ?? [];
                 const warnHtml = warns.length > 0
                     ? `<div class="la-target-warnings" style="width:100%;margin-top:3px;font-size:10.5px;color:#b34700;font-style:italic;">
-                           ${warns.map(w => `<div><i class="fas fa-exclamation-triangle" style="margin-right:4px;"></i>${w}</div>`).join('')}
+                           ${warns.map(warn => `<div><i class="fas fa-exclamation-triangle" style="margin-right:4px;"></i>${warn}</div>`).join('')}
                        </div>`
                     : '';
                 listEl.append(`
@@ -781,7 +825,7 @@ export function _updateInfoCard(cardEl, type, cardState)
                 const warns = cardState.warnings?.[idx] ?? [];
                 const warnHtml = warns.length > 0
                     ? `<div class="la-target-warnings" style="width:100%;margin-top:3px;font-size:10.5px;color:#b34700;font-style:italic;">
-                           ${warns.map(w => `<div><i class="fas fa-exclamation-triangle" style="margin-right:4px;"></i>${w}</div>`).join('')}
+                           ${warns.map(warn => `<div><i class="fas fa-exclamation-triangle" style="margin-right:4px;"></i>${warn}</div>`).join('')}
                        </div>`
                     : '';
                 const elev = typeof placement.elevation === 'number' ? placement.elevation : 0;
@@ -918,6 +962,47 @@ export function _updateInfoCard(cardEl, type, cardState)
             });
         }
     }
+    else if (type === "teleport")
+    {
+        const listEl = cardEl.find('[data-role="token-list"]');
+        if (listEl.length && cardState.tokens)
+        {
+            listEl.empty();
+            cardState.tokens.forEach((row, idx) =>
+            {
+                const isActive = idx === cardState.activeIndex;
+                const statusIcon = row.planned
+                    ? '<i class="fas fa-check" style="color:var(--lancer-color-green, #3a9e6e);"></i>'
+                    : '<i class="fas fa-arrow-right" style="opacity:0.6;"></i>';
+                listEl.append(`
+                    <div class="la-selected-target" data-token-index="${idx}" style="${isActive ? 'border-color:#ff6400; background:rgba(255,100,0,0.12);' : ''}">
+                        <img src="${row.img}" alt="${row.name}">
+                        <span class="la-selected-target-name">${row.name}</span>
+                        <span style="margin-left:auto;">${statusIcon}</span>
+                    </div>`);
+            });
+            listEl.find('.la-selected-target').on('click', function ()
+            {
+                cardState.onSelectToken?.(Number($(this).data('token-index')));
+            });
+        }
+        const destEl = cardEl.find('[data-role="dest-info"]');
+        if (!destEl.length)
+            return;
+        if (!cardState.selectedPos)
+        {
+            destEl.html('<div class="la-empty-state">No destination selected</div>');
+            return;
+        }
+        const elevation = typeof cardState.selectedPos.elevation === 'number'
+            ? ` <span style="opacity:0.8;">(elev ${cardState.selectedPos.elevation})</span>`
+            : '';
+        destEl.html(`
+            <div class="la-selected-target">
+                <i class="fas fa-map-marker-alt" style="color:var(--primary-color); font-size:16px;"></i>
+                <span class="la-selected-target-name">${cardState.tokenName ?? 'Token'}: destination set${elevation}</span>
+            </div>`);
+    }
     else if (type === "voteCard")
     {
         const listEl = cardEl.find('[data-role="choice-list"]');
@@ -979,6 +1064,21 @@ export function _updateInfoCard(cardEl, type, cardState)
                 : ''
         );
     }
+}
+
+// Capture-phase Escape that cancels the card, unless an open picker owns the key.
+export function bindCardEscape(onCancel, isPickerActive)
+{
+    const keyHandler = (event) =>
+    {
+        if (event.key !== 'Escape' || isPickerActive?.())
+            return;
+        event.preventDefault();
+        event.stopPropagation();
+        onCancel();
+    };
+    document.addEventListener('keydown', keyHandler, true);
+    return () => document.removeEventListener('keydown', keyHandler, true);
 }
 
 export function _removeInfoCard(cardEl)

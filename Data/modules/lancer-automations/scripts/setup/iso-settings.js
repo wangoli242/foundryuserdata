@@ -1,6 +1,7 @@
 /* global game, canvas, Hooks, libWrapper, PIXI, CONFIG, requestAnimationFrame */
 
-const MODULE_ID = 'lancer-automations';
+import { MODULE_ID } from '../tools/constants.js';
+import { getModuleSetting, getExternalSetting } from '../tools/settings-utils.js';
 
 export const ISO_PERSPECTIVE_ID = 'isometric-perspective';
 export const GRAPE_ISO_ID = 'grape_juice-isometrics';
@@ -16,65 +17,72 @@ export const ISO_SETTINGS = {
     clickZone: 'iso.clickZone',
     selectionMarquee: 'iso.selectionMarquee',
     moduleLabels: 'iso.moduleLabels',
+    effectAspect: 'iso.effectAspect',
     debugSelectionOverlay: 'iso.debugSelectionOverlay',
 };
 
 const DEFS = [
     {
         key: ISO_SETTINGS.statBar,
-        name: 'Stat Bar / Nameplate / Status Icons',
-        hint: 'Keep them upright above the projected token.',
+        name: 'LA.settings.iso.statBar.name',
+        hint: 'LA.settings.iso.statBar.hint',
     },
     {
         key: ISO_SETTINGS.tacticalDistance,
-        name: 'Tactical Distance Labels',
-        hint: 'Keep drag-distance labels upright.',
+        name: 'LA.settings.iso.tacticalDistance.name',
+        hint: 'LA.settings.iso.tacticalDistance.hint',
     },
     {
         key: ISO_SETTINGS.waypointLabel,
-        name: 'Ruler Waypoint Labels',
-        hint: 'Place cost labels next to the projected token instead of its orthogonal cell.',
+        name: 'LA.settings.iso.waypointLabel.name',
+        hint: 'LA.settings.iso.waypointLabel.hint',
     },
     {
         key: ISO_SETTINGS.elevationAnimation,
-        name: 'Follow Terrain Elevation During Animation',
-        hint: 'Raise the mesh over THT ground during movement. Isometric Perspective only.',
+        name: 'LA.settings.iso.elevationAnimation.name',
+        hint: 'LA.settings.iso.elevationAnimation.hint',
     },
     {
         key: ISO_SETTINGS.restoreAnchor,
-        name: 'Restore Token Anchor on Non-Iso Scenes',
-        hint: 'Undo the anchor override Isometric Perspective applies even to non-iso scenes.',
+        name: 'LA.settings.iso.restoreAnchor.name',
+        hint: 'LA.settings.iso.restoreAnchor.hint',
     },
     {
         key: ISO_SETTINGS.scrollingText,
-        name: 'Scrolling Text',
-        hint: 'Show damage/status floating text over the projected token instead of the orthogonal cell.',
+        name: 'LA.settings.iso.scrollingText.name',
+        hint: 'LA.settings.iso.scrollingText.hint',
     },
     {
         key: ISO_SETTINGS.targetReticle,
-        name: 'Target Reticle',
-        hint: 'Move the target arrows/pips onto the projected token.',
+        name: 'LA.settings.iso.targetReticle.name',
+        hint: 'LA.settings.iso.targetReticle.hint',
     },
     {
         key: ISO_SETTINGS.clickZone,
-        name: 'Token Click Zone',
-        hint: 'Add a hover/click/select zone over the projected token, not just its orthogonal cell.',
+        name: 'LA.settings.iso.clickZone.name',
+        hint: 'LA.settings.iso.clickZone.hint',
     },
     {
         key: ISO_SETTINGS.selectionMarquee,
-        name: 'Drag-Select Rectangle',
-        hint: 'Draw and select with a proper screen rectangle instead of the skewed world box.',
+        name: 'LA.settings.iso.selectionMarquee.name',
+        hint: 'LA.settings.iso.selectionMarquee.hint',
     },
     {
         key: ISO_SETTINGS.moduleLabels,
-        name: 'Template & Terrain Labels',
-        hint: 'Keep TemplateMacro center labels and Terrain Height Tools labels upright.',
+        name: 'LA.settings.iso.moduleLabels.name',
+        hint: 'LA.settings.iso.moduleLabels.hint',
+    },
+    {
+        key: ISO_SETTINGS.effectAspect,
+        name: 'LA.settings.iso.effectAspect.name',
+        hint: 'LA.settings.iso.effectAspect.hint',
     },
     {
         key: ISO_SETTINGS.debugSelectionOverlay,
-        name: 'DEBUG: Draw Iso Selection Overlays',
-        hint: 'Draw the marquee polygon, per-token click zones, and center/mesh test points on the canvas.',
+        name: 'LA.settings.iso.debugSelectionOverlay.name',
+        hint: 'LA.settings.iso.debugSelectionOverlay.hint',
         defaultValue: false,
+        scope: 'client',
     },
 ];
 
@@ -85,7 +93,7 @@ export function registerIsoSettings()
         game.settings.register(MODULE_ID, def.key, {
             name: def.name,
             hint: def.hint,
-            scope: 'client',
+            scope: /** @type {'world' | 'client'} */ (def.scope ?? 'world'),
             config: false,
             type: Boolean,
             default: def.defaultValue ?? true,
@@ -97,32 +105,24 @@ export function registerIsoSettings()
 Hooks.on('refreshToken', (token) => _refreshTokenIsoDebug(token));
 Hooks.on('canvasReady', _refreshAllTokensIsoDebug);
 
-function _isoPerspectiveActive()
+export function isIsoPerspectiveActive()
 {
     const mod = game.modules.get(ISO_PERSPECTIVE_ID);
     if (!mod?.active)
         return false;
-    try
-    {
-        return !!game.settings.get(ISO_PERSPECTIVE_ID, 'worldIsometricFlag');
-    }
-    catch
-    {
-        return false;
-    }
+    return !!getExternalSetting(ISO_PERSPECTIVE_ID, 'worldIsometricFlag', false);
 }
 
-function _grapeActive()
+export function isGrapeIsoActive()
 {
     return !!game.modules.get(GRAPE_ISO_ID)?.active;
 }
 
 export function isAnyIsoModuleActive()
 {
-    return _isoPerspectiveActive() || _grapeActive();
+    return isIsoPerspectiveActive() || isGrapeIsoActive();
 }
 
-// Active iso provider for the scene, or null.
 // Iso counter-transform state for a token, or null if not applicable.
 export function getIsoStateForToken(token)
 {
@@ -137,18 +137,19 @@ export function getIsoStateForToken(token)
     };
 }
 
+// Active iso provider for the scene, or null.
 export function getIsoProvider(scene)
 {
     const activeScene = scene ?? canvas.scene;
     if (!activeScene)
         return null;
 
-    if (_isoPerspectiveActive())
+    if (isIsoPerspectiveActive())
     {
         if (activeScene.getFlag(ISO_PERSPECTIVE_ID, 'isometricEnabled'))
             return ISO_PERSPECTIVE_PROVIDER;
     }
-    if (_grapeActive())
+    if (isGrapeIsoActive())
     {
         if (activeScene.getFlag(GRAPE_ISO_ID, 'is_isometric'))
             return GRAPE_PROVIDER;
@@ -197,29 +198,15 @@ export function isIsoFeatureEnabled(featureKey)
 {
     if (!isAnyIsoModuleActive())
         return false;
-    try
-    {
-        return !!game.settings.get(MODULE_ID, featureKey);
-    }
-    catch
-    {
-        return false;
-    }
+    return !!getModuleSetting(featureKey);
 }
 
 // Some features only make sense for iso-perspective (elevationAnimation, restoreAnchor).
 export function isIsoPerspectiveFeatureEnabled(featureKey)
 {
-    if (!_isoPerspectiveActive())
+    if (!isIsoPerspectiveActive())
         return false;
-    try
-    {
-        return !!game.settings.get(MODULE_ID, featureKey);
-    }
-    catch
-    {
-        return false;
-    }
+    return !!getModuleSetting(featureKey);
 }
 
 // Skew/scale that cancels the iso stage so a label reads flat (set via obj.skew/scale, rotation 0).
@@ -230,7 +217,7 @@ export function isoLabelTransform(scene, settingKey = null)
     {
         try
         {
-            if (!game.settings.get(MODULE_ID, settingKey))
+            if (!getModuleSetting(settingKey))
                 return null;
         }
         catch
@@ -377,7 +364,7 @@ function _debugOverlayOn()
 {
     try
     {
-        return !!game.settings.get(MODULE_ID, ISO_SETTINGS.debugSelectionOverlay);
+        return !!getModuleSetting(ISO_SETTINGS.debugSelectionOverlay);
     }
     catch
     {
@@ -517,4 +504,82 @@ Hooks.once('ready', () =>
             }
             return this.setTargets(targets, { mode: (opts.releaseOthers ?? true) ? 'replace' : 'acquire' });
         }, 'MIXED');
+});
+
+// Sequencer's iso plugin skews stretchTo/overlay effects without checking the scene flag.
+// CanvasEffect isn't exported, so patch its prototype off the first effect we see.
+let _flatScenePatched = false;
+function _effectOnFlatScene(effect)
+{
+    if (!isIsoFeatureEnabled(ISO_SETTINGS.effectAspect))
+        return false;
+    const scene = game.scenes.get(effect?.data?.sceneId) ?? canvas.scene;
+    return !getIsoProvider(scene);
+}
+function _flattenIsoContainer(effect)
+{
+    const container = effect?.isometricContainer;
+    if (!container || container.destroyed || !_effectOnFlatScene(effect))
+        return;
+    container.skew.set(0, 0);
+    container.scale.set(1, 1);
+    container.rotation = 0;
+}
+function _patchSequencerFlatScenes(effect)
+{
+    if (_flatScenePatched)
+        return;
+    let proto = Object.getPrototypeOf(effect);
+    while (proto && !Object.hasOwn(proto, '_transformSprite'))
+        proto = Object.getPrototypeOf(proto);
+    if (!proto)
+        return;
+    _flatScenePatched = true;
+    for (const name of ['_transformSprite', '_rotateTowards', '_transformAttachedNoStretchSprite'])
+    {
+        const original = proto[name];
+        if (typeof original !== 'function')
+            continue;
+        proto[name] = function (...args)
+        {
+            const result = original.apply(this, args);
+            if (result instanceof Promise)
+            {
+                return result.then((value) =>
+                {
+                    _flattenIsoContainer(this);
+                    return value;
+                });
+            }
+            _flattenIsoContainer(this);
+            return result;
+        };
+    }
+}
+Hooks.on('createSequencerEffect', _patchSequencerFlatScenes);
+
+// Sequencer's iso plugin stands effects up (45deg on isometricContainer) but skips the aspect
+// counter-scale, so billboarded FX render squashed. Overlay and beam effects use other paths.
+Hooks.on('createSequencerEffect', (effect) =>
+{
+    if (!isIsoFeatureEnabled(ISO_SETTINGS.effectAspect))
+        return;
+    const iso = getIsoProvider(canvas.scene);
+    if (!iso)
+        return;
+    if (effect?.data?.isometric?.overlay || effect?.data?.rotateTowards || effect?.data?.stretchTo)
+        return;
+    let tries = 0;
+    const apply = () =>
+    {
+        const container = effect?.isometricContainer;
+        if (!container || container.destroyed)
+        {
+            if (tries++ < 120)
+                requestAnimationFrame(apply);
+            return;
+        }
+        container.scale.set(iso.counterScale, 1 / iso.counterScale);
+    };
+    apply();
 });

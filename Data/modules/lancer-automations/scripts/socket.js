@@ -10,10 +10,16 @@ import {
     updateVoteCardOnVoter, confirmVoteCardOnVoter, cancelVoteCardOnVoter,
 } from './interactive/index.js';
 import { onRemotePresence, onRemotePresenceClear } from './interactive/presence.js';
+import { onRemoteSightlines, onRemoteSightlinesClear } from './vision/sightlines.js';
+import { onUplinkRollOpen, onUplinkRollSnapshot, onUplinkRollClose } from './uplink/live-rolls.js';
+import { localize, localizeFormat } from './tools/string-utils.js';
+import { handleRemoteFocus } from './tools/auto-focus.js';
+import { floatTokenText } from './tools/float-text.js';
+import { receiveDeferredResistanceConsumption } from './bonuses/genericBonuses.js';
 import { setEffect, setEffectOnDoc, removeEffectsByName, consumeEffectCharge } from './bonuses/flagged-effects.js';
 import { performGMInputScan, performSystemScan, showSystemScanDialog } from './tools/scan.js';
 import { preLoadImageForAll } from './tools/wreck.js';
-import { executeStatRoll, getItemLID } from './tools/misc-tools.js';
+import { executeStatRoll, getItemLID, isExecutorGM } from './tools/misc-tools.js';
 import { openDowntimeSummary, showDowntimeJournalPopup } from './tools/downtime.js';
 import { playTerminalIntro } from './Battelog/intro-terminal.js';
 import { openBattleLogRecap } from './Battelog/recap.js';
@@ -200,6 +206,21 @@ function emitAck(action, requestId, extra = {})
 
 const HANDLERS = {
 
+    autoFocus: handleRemoteFocus,
+
+    uplinkRollOpen: onUplinkRollOpen,
+    uplinkRollSnapshot: onUplinkRollSnapshot,
+    uplinkRollClose: onUplinkRollClose,
+
+    floatTokenText: ({ tokenId, text, fill }) =>
+    {
+        const token = canvas.tokens.get(tokenId);
+        if (token)
+            floatTokenText(token, text, fill);
+    },
+
+    deferResistanceConsumption: receiveDeferredResistanceConsumption,
+
     showReactionPopup: async ({ targetUserId, triggerType, reactions }) =>
     {
         if (targetUserId && targetUserId !== game.userId)
@@ -245,7 +266,7 @@ const HANDLERS = {
 
     setActorFlag: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const actor = game.actors.get(payload.actorId);
         if (actor)
@@ -268,7 +289,7 @@ const HANDLERS = {
 
     setItemFlag: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         try
         {
@@ -291,7 +312,7 @@ const HANDLERS = {
 
     setTokenFlag: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const scene = game.scenes.get(payload.sceneId) ?? canvas.scene;
         const tokenDoc = scene?.tokens.get(payload.tokenId);
@@ -315,7 +336,7 @@ const HANDLERS = {
 
     setEffect: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         try
         {
@@ -332,7 +353,7 @@ const HANDLERS = {
 
     setEffectOnDoc: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         try
         {
@@ -350,7 +371,7 @@ const HANDLERS = {
 
     removeEffectFromDoc: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         try
         {
@@ -366,7 +387,7 @@ const HANDLERS = {
 
     removeEffect: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         try
         {
@@ -383,7 +404,7 @@ const HANDLERS = {
 
     removeEffectById: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const target = canvas.tokens.get(payload.targetID);
         if (target?.actor)
@@ -403,7 +424,7 @@ const HANDLERS = {
 
     consumeEffectCharge: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         try
         {
@@ -427,7 +448,7 @@ const HANDLERS = {
 
     moveTokens: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const trigToken = payload.triggeringTokenId ? canvas.tokens.get(payload.triggeringTokenId) : null;
         const knockbackItem = payload.itemId
@@ -438,7 +459,7 @@ const HANDLERS = {
 
     createTokens: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const scene = game.scenes.get(payload.sceneId) || canvas.scene;
         const created = await scene.createEmbeddedDocuments('Token', payload.tokenDataArray);
@@ -448,7 +469,7 @@ const HANDLERS = {
 
     pickupWeapon: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const scene = game.scenes.get(payload.sceneId) || canvas.scene;
         if (!scene)
@@ -467,7 +488,7 @@ const HANDLERS = {
 
     recallDeployable: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const scene = game.scenes.get(payload.sceneId) || canvas.scene;
         if (!scene)
@@ -479,7 +500,7 @@ const HANDLERS = {
 
     scanInfoRequest: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const target = canvas.tokens.get(payload.targetId);
         if (!target)
@@ -489,24 +510,24 @@ const HANDLERS = {
 
     scanSystemOptionsRequest: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const target = canvas.tokens.get(payload.targetId);
         if (!target)
             return;
-        ui.notifications.info(`${payload.requestingUserName} requested a system scan of ${payload.targetName}.`);
+        ui.notifications.info(localizeFormat('LA.notify.scanRequestedBy', { user: payload.requestingUserName, target: payload.targetName }));
         await showSystemScanDialog([target]);
     },
 
     scanSystemJournalRequest: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const target = canvas.tokens.get(payload.targetId);
         if (!target)
             return;
         new Dialog({
-            title: 'Journal Entry Request',
+            title: localize('LA.dialogTitle.journalEntryRequest'),
             content: `
                 <div class="lancer-dialog-header">
                     <h2 class="lancer-dialog-title">Journal Entry Request</h2>
@@ -519,25 +540,25 @@ const HANDLERS = {
                     </div>
                     <div class="form-group">
                         <label style="font-weight: bold; margin-bottom: 8px; display: block;">Custom Journal Name (optional):</label>
-                        <input type="text" id="custom-journal-name" name="custom-journal-name" value="${payload.customName || ''}" placeholder="Leave empty for auto-generated name" style="width: 100%; padding: 8px; font-size: 14px; border: 2px solid #999; border-radius: 4px;" />
+                        <input type="text" id="custom-journal-name" name="custom-journal-name" value="${payload.customName || ''}" placeholder="${localize('LA.socket.journalNamePlaceholder')}" style="width: 100%; padding: 8px; font-size: 14px; border: 2px solid #999; border-radius: 4px;" />
                     </div>
                 </form>
             `,
             buttons: {
                 yes: {
                     icon: '<i class="fas fa-check"></i>',
-                    label: 'Create Journal Entry',
+                    label: localize('LA.socket.createJournalEntry'),
                     callback: async (html) =>
                     {
                         const customName = String(/** @type {any} */ (html).find('[name="custom-journal-name"]').val()).trim();
                         await performSystemScan(target, true, customName, payload.ownership ?? null);
-                        ui.notifications.info(`Journal entry created for ${payload.targetName}`);
+                        ui.notifications.info(localizeFormat('LA.notify.journalCreatedFor', { target: payload.targetName }));
                     },
                 },
                 no: {
                     icon: '<i class="fas fa-times"></i>',
-                    label: 'Decline',
-                    callback: () => ui.notifications.info('Journal entry request declined'),
+                    label: localize('LA.common.decline'),
+                    callback: () => ui.notifications.info(localize('LA.notify.journalEntryRequestDeclined')),
                 },
             },
             default: 'yes',
@@ -598,7 +619,7 @@ const HANDLERS = {
 
     updateActorSystem: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         const actor = game.actors.get(payload.actorId);
         if (actor)
@@ -609,7 +630,7 @@ const HANDLERS = {
 
     combatAction: async (payload) =>
     {
-        if (!game.user.isGM)
+        if (!isExecutorGM())
             return;
         try
         {
@@ -673,10 +694,14 @@ const HANDLERS = {
             return;
         const msgToken = canvas.tokens.get(payload.reactorTokenId);
         if (!msgToken)
-            return;
+            return emitAck('onMessageDone', payload.requestId, { returnData: null });
         checkOnMessageReactions(msgToken, payload.itemLid ?? null, payload.reactionPath ?? null, payload.activationName ?? null, payload.triggerType, payload.data ?? {})
             .then((returnData) => emitAck('onMessageDone', payload.requestId, { returnData: returnData ?? null }))
-            .catch((e) => console.error('lancer-automations | onMessage socket error:', e));
+            .catch((error) =>
+            {
+                console.error('lancer-automations | onMessage socket error:', error);
+                emitAck('onMessageDone', payload.requestId, { returnData: null });
+            });
     },
     onMessageDone: ({ requestId, returnData }) => resolveAck(requestId, returnData ?? null),
 
@@ -731,6 +756,9 @@ const HANDLERS = {
 
     toolPresence: (payload) => onRemotePresence(payload),
     toolPresenceClear: (payload) => onRemotePresenceClear(payload),
+
+    sightlines: (payload) => onRemoteSightlines(payload),
+    sightlinesClear: (payload) => onRemoteSightlinesClear(payload),
 
     // Foundry doesn't echo socket emits to sender, so GM playback is triggered locally in gm-card.
     battleLogPlayIntro: ({ outcome, battle, mvpId, extraLines }) =>

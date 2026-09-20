@@ -6,7 +6,11 @@ import {
     beginTargetSession, createTokenMark,
 } from '../interactive/canvas.js';
 import { rollHitCritChance } from '../interactive/canvas-helpers.js';
-import { buildTargetingUI, aoeRanges, clearAllAttackShapes, pollForForm, targetInfoAllowed } from './targeting-ui.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { buildTargetingUI, aoeRanges, clearAllAttackShapes, injectWhenReady, targetInfoAllowed, targetInfoAllowedFor, UNKNOWN_CHANCE } from './targeting-ui.js';
+import { weaponTypeIcon } from '../tah/item-helpers.js';
+import { predictBonusDamage } from './flow-wraps.js';
+import { escapeHtml } from '../tools/string-utils.js';
 
 function buildHitChanceFor(state)
 {
@@ -20,44 +24,68 @@ function buildHitChanceFor(state)
         const actor = token?.actor;
         if (!base || !weapon || typeof weapon.total !== 'function' || !actor?.system)
             return null;
+        if (!targetInfoAllowedFor(actor))
+            return UNKNOWN_CHANCE;
         const isSmart = !!weapon.smart || !!state?.data?.is_smart;
         const bonus = (Number(base.grit) || 0) + (Number(base.flatBonus) || 0);
         const defense = isSmart ? (Number(actor.system.edef) || 8) : (Number(actor.system.evasion) || 5);
         const targetEntry = (accDiff.targets ?? []).find(entry => entry.targetUuid === token.document?.uuid);
         let netAcc;
+        let invisible;
         if (targetEntry)
+        {
             netAcc = Number(targetEntry.total) || 0;
+            invisible = targetEntry.plugins?.invisibility
+                ? !!targetEntry.plugins.invisibility.data
+                : !!actor.statuses?.has?.('invisible');
+        }
         else
         {
             const cover = actor.statuses?.has?.('cover_hard') ? 2 : actor.statuses?.has?.('cover_soft') ? 1 : 0;
             const prone = actor.system?.statuses?.prone ? 1 : 0;
             const lockOn = actor.system?.statuses?.lockon ? 1 : 0;
             netAcc = (Number(weapon.total(cover)) || 0) + (Number(base.accuracy) || 0) - (Number(base.difficulty) || 0) + prone + lockOn;
+            invisible = !!actor.statuses?.has?.('invisible');
         }
         const result = rollHitCritChance(bonus, netAcc, defense);
+        if (invisible)
+        {
+            result.hit /= 2;
+            result.crit /= 2;
+        }
         if (weapon.tech)
             result.crit = 0;
         return result;
     };
 }
 
-function injectWhenReady(state)
+// The system header renders a generic cci-weapon glyph. Mask it with the weapon's own type icon.
+function swapHeaderIcon(state, $form)
 {
-    pollForForm(() => $('form[id^="accdiff"]'),
-        $form => injectButton(state, $form).catch(err => console.warn('lancer-automations | targeting inject failed', err)));
+    const icon = weaponTypeIcon(state.data?.lancerItem ?? state.item);
+    if (!icon)
+        return;
+    const $host = $form.closest('.app, .sliding-hud');
+    const $glyph = ($host.length ? $host : $form).find('i.cci-weapon').first();
+    if (!$glyph.length)
+        return;
+    const url = foundry.utils.getRoute(icon);
+    $glyph.css({
+        fontSize: 0,
+        display: 'inline-block',
+        width: '26px',
+        height: '26px',
+        verticalAlign: 'middle',
+        backgroundColor: 'currentColor',
+        webkitMask: `url("${url}") center / contain no-repeat`,
+        mask: `url("${url}") center / contain no-repeat`,
+    });
 }
 
 async function injectButton(state, $form)
 {
-    try
-    {
-        if (!game.settings.get('lancer-automations', 'enableAttackTargeting'))
-            return;
-    }
-    catch
-    {
-        // settings not ready
-    }
+    if (!getModuleSetting('enableAttackTargeting', true))
+        return;
     $form = $form || $('form[id^="accdiff"]');
     if (!$form.length)
         return;
@@ -91,6 +119,27 @@ async function injectButton(state, $form)
     return buildTargetingUI(state, $form, $row, { weapon, aoe, hitChanceForFactory: buildHitChanceFor, autoStart: weapon ? 'setting' : 'ifEmpty' });
 }
 
+// The header only shows the weapon's own line; this adds what the damage HUD will put on top.
+async function injectDamagePreview(state, $form)
+{
+    if (!$form?.length || $form.find('.la-accdiff-bonus-dmg').length)
+        return;
+    const entries = await predictBonusDamage(state);
+    if (!entries.length)
+        return;
+    const parts = entries.map(entry =>
+    {
+        const type = String(entry.type || '').toLowerCase();
+        return `<i class="cci i--sm cci-${escapeHtml(type)} damage--${escapeHtml(type)}"></i>${escapeHtml(entry.val)} ${escapeHtml(entry.type)}`;
+    });
+    const $line = $(`<div class="la-accdiff-bonus-dmg" style="text-align:center;font-size:11px;opacity:0.85;padding:2px 0;color:var(--dark-text, #fff);">Bonus damage: +${parts.join(' + ')}</div>`);
+    const $section = $form.find('.accdiff-ranges').first().closest('.accdiff-grid__section');
+    if ($section.length)
+        $section.append($line);
+    else
+        $form.find('.accdiff-footer').first().before($line);
+}
+
 export function registerAccDiffTargetButton()
 {
     Hooks.once('ready', () =>
@@ -104,11 +153,14 @@ export function registerAccDiffTargetButton()
             let attackerMark = null;
             try
             {
-                injectWhenReady(state);
-                if (game.settings.get('lancer-automations', 'enableAttackTargeting'))
+                injectWhenReady(state, () => $('form[id^="accdiff"]'), injectButton, 'targeting');
+                injectWhenReady(state, () => $('form[id^="accdiff"]'), swapHeaderIcon, 'weapon header icon');
+                injectWhenReady(state, () => $('form[id^="accdiff"]'), injectDamagePreview, 'bonus damage preview');
+                if (getModuleSetting('enableAttackTargeting'))
                 {
-                    beginTargetSession(buildHitChanceFor(state)); // shapes + live hit-% for targets already set before the HUD
-                    attackerMark = createTokenMark(state.actor?.getActiveTokens?.()[0] ?? null);
+                    const attackerToken = state.actor?.getActiveTokens?.()[0] ?? null;
+                    beginTargetSession(buildHitChanceFor(state), attackerToken); // shapes + live hit-% + distances
+                    attackerMark = createTokenMark(attackerToken);
                 }
             }
             catch
@@ -136,15 +188,10 @@ export function registerAccDiffTargetButton()
         // postFlow fires after roll; weapon-fx snapshots flow-state, so clearing here is safe.
         const clearTargetsAfterRoll = () =>
         {
-            try
-            {
-                if (!game.settings.get('lancer-automations', 'enableAttackTargeting'))
-                    return;
-            }
-            catch
-            {
+            if (!getModuleSetting('enableAttackTargeting'))
                 return;
-            }
+            if (!getModuleSetting('clearTargetsAfterRoll'))
+                return;
             for (const target of [...(game.user.targets ?? [])])
                 target.setTarget(false, { releaseOthers: false });
         };

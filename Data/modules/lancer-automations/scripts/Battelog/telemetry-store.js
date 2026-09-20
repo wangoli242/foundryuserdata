@@ -4,8 +4,9 @@
 // dies with the encounter and survives F5s while the combat exists.
 
 import { getRelativeDisposition } from '../combat/overwatch.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { getLAFlag, setLAFlag } from '../tools/flag-utils.js';
 
-const MODULE = 'lancer-automations';
 const FLAG_TELEMETRY = 'telemetry';
 const SETTING_FRIENDLY_MECH_AS_SQUAD = 'tah.telemetryFriendlyMechAsSquad';
 
@@ -13,14 +14,7 @@ export const BUCKETS = ['players', 'hostiles', 'friendlies', 'neutrals', 'secret
 
 function friendlyMechAsSquad()
 {
-    try
-    {
-        return !!game.settings.get(MODULE, SETTING_FRIENDLY_MECH_AS_SQUAD);
-    }
-    catch
-    {
-        return true;
-    }
+    return !!getModuleSetting(SETTING_FRIENDLY_MECH_AS_SQUAD, true);
 }
 
 const _canonical = new Map();
@@ -30,7 +24,7 @@ export function getTelemetry(combat)
 {
     if (combat?.id && _canonical.has(combat.id))
         return _canonical.get(combat.id);
-    return combat?.getFlag?.(MODULE, FLAG_TELEMETRY) ?? null;
+    return getLAFlag(combat,FLAG_TELEMETRY) ?? null;
 }
 
 // Writers mutate one stable per-combat object; Foundry re-clones the flag on every update, so we never persist a re-read clone.
@@ -40,7 +34,7 @@ function _writable(combat)
         return null;
     if (!_canonical.has(combat.id))
     {
-        const current = combat.getFlag?.(MODULE, FLAG_TELEMETRY);
+        const current = getLAFlag(combat,FLAG_TELEMETRY);
         if (current)
             _canonical.set(combat.id, current);
     }
@@ -53,7 +47,7 @@ function _enqueueWrite(combat)
     if (!telemetry)
         return Promise.resolve();
     const prev = _writeChains.get(combat.id) ?? Promise.resolve();
-    const next = prev.then(() => combat.setFlag(MODULE, FLAG_TELEMETRY, telemetry))
+    const next = prev.then(() => setLAFlag(combat,FLAG_TELEMETRY, telemetry))
         .catch(error => console.error('lancer-automations | telemetry write failed:', error));
     _writeChains.set(combat.id, next);
     return next;
@@ -75,15 +69,8 @@ export function forgetCombat(combatId)
 
 function _debugLog(entryId, event)
 {
-    try
-    {
-        if (game.settings.get(MODULE, 'tah.telemetryDebug'))
-            console.log('[Battle Log telemetry]', entryId, event);
-    }
-    catch
-    {
-        void 0;
-    }
+    if (getModuleSetting('tah.telemetryDebug'))
+        console.log('lancer-automations | Battle Log telemetry |', entryId, event);
 }
 
 /**
@@ -212,17 +199,20 @@ export function reclassifyCombat(combat)
     for (const name of BUCKETS)
     {
         for (const entry of telemetry[name] ?? [])
-            entries.push(entry);
+            entries.push({ entry, from: name });
         telemetry[name] = [];
     }
     const squadRef = _squadRefToken(combat);
-    for (const entry of entries)
+    for (const { entry, from } of entries)
     {
         const combatant = combat.combatants?.find(item => (item.tokenId ?? item.actorId) === entry.tokenId);
-        const bucket = combatant ? classifyCombatant(combatant, squadRef) : 'players';
+        // Combatant gone (token deleted, removed from the encounter): keep the bucket it was
+        // recorded in. Defaulting here would file departed hostiles as squad.
+        const bucket = combatant ? classifyCombatant(combatant, squadRef) : from;
         if (bucket === 'exclude')
             continue;
-        entry.side = combatant ? factionSide(combatant, squadRef) : (entry.side ?? 'player');
+        const priorSide = (from === 'hostiles' || from === 'secrets') ? 'enemy' : 'player';
+        entry.side = combatant ? factionSide(combatant, squadRef) : (entry.side ?? priorSide);
         telemetry[bucket].push(entry);
     }
     return _enqueueWrite(combat);

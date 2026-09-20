@@ -1,17 +1,53 @@
 /* global $, game, CONFIG */
 
-import { removeGlobalBonus, removeConstantBonus, getBonusIcon, getBonusDetailString } from '../bonuses/genericBonuses.js';
-import { applyEffectsToTokens } from '../bonuses/flagged-effects.js';
+import { removeGlobalBonus, removeConstantBonus, getBonusIcon, getBonusDetailString, getBonusUsesInfo, isBonusRemovalPending } from '../bonuses/genericBonuses.js';
+import { getBonusConditionHint } from '../bonuses/bonus-condition.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { getLAFlag, getLAFlags } from '../tools/flag-utils.js';
+import { MODULE_ID } from '../tools/constants.js';
+import { applyEffectsToTokens, effectStack } from '../bonuses/flagged-effects.js';
 import { durationFieldsHtml, setupDurationUI, getDurationConfig, createDurationMarks } from '../bonuses/duration-widget.js';
 import { playUiSound } from './sound.js';
 import { tahScale, laHudRenderIcon } from './item-helpers.js';
 import { HudPanel } from './hud-panel.js';
+import { openCursorMenu } from './cursor-menu.js';
+import { localize } from '../tools/string-utils.js';
 
 function getBonusDetailStr(/** @type {any} */ bonus)
 {
     if (bonus.type === 'multi' && Array.isArray(bonus.bonuses))
         return bonus.bonuses.map(getBonusDetailStr).join(' | ');
     return getBonusDetailString(bonus);
+}
+
+/**
+ * @param {any[]} effects
+ * @returns {boolean} true when any of them is flagged permanent
+ */
+export function isPermanentEffect(effects)
+{
+    for (const effect of (effects ?? []))
+    {
+        const laFlags = getLAFlags(effect);
+        const duration = laFlags?.duration ?? /** @type {any} */ (effect.flags)?.['csm-lancer-qol']?.duration;
+        if (duration?.label === 'permanent')
+            return true;
+    }
+    return false;
+}
+
+// A permanent effect is meant to stay, so dropping one asks first.
+export async function confirmPermanentRemoval(label, effects)
+{
+    if (!isPermanentEffect(effects))
+        return true;
+    return await openCursorMenu({
+        head: `${label} is permanent`,
+        rows: [
+            { value: true, label: localize('LA.common.remove'), glyph: '✕', cls: 'la-menu-popup-danger' },
+            { value: false, label: localize('LA.common.keep') },
+        ],
+    }) === true;
 }
 
 let _lastSearchQuery = '';
@@ -68,7 +104,6 @@ export class StatusPanel extends HudPanel
         if (!this._panel || !this._actor)
             return;
         const actor = this._actor;
-        const hasStatusCounter = !!game.modules.get('statuscounter')?.active;
         this._panel.find('[data-status-id]').each(function()
         {
             const rowEl = $(this);
@@ -77,7 +112,7 @@ export class StatusPanel extends HudPanel
             const nowActive = effects.length > 0;
             const nowPerm = nowActive && effects.some(/** @type {any} */ eff =>
             {
-                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
+                const laFlags = getLAFlags(eff);
                 const dur = laFlags?.duration ?? /** @type {any} */ (eff.flags)?.['csm-lancer-qol']?.duration;
                 return dur?.label === 'permanent';
             });
@@ -86,9 +121,9 @@ export class StatusPanel extends HudPanel
             const bg = nowActive ? (nowPerm ? '#f0e0a0' : '#b8d4f0') : BG_DEFAULT;
             const border = nowActive ? (nowPerm ? '#a07020' : '#1a4a7a') : 'transparent';
             rowEl.css({ background: bg, borderLeftColor: border, color: nowActive ? FG_ACTIVE : FG_DEFAULT });
-            const totalStack = hasStatusCounter ? effects.reduce((sum, /** @type {any} */ eff) => sum + (eff.getFlag?.('statuscounter', 'value') ?? 1), 0) : 0;
+            const totalStack = effects.reduce((sum, /** @type {any} */ eff) => sum + effectStack(eff), 0);
             const parts = [];
-            if (hasStatusCounter && totalStack > 1)
+            if (totalStack > 1)
                 parts.push(`×${totalStack}`);
             if (effects.length > 1)
                 parts.push(`[${effects.length}]`);
@@ -105,18 +140,17 @@ export class StatusPanel extends HudPanel
         if (!actor || !token)
             return;
 
-        const hasStatusCounter  = !!game.modules.get('statuscounter')?.active;
         const hasTempCustomStatuses = !!game.modules.get('temporary-custom-statuses')?.active;
         const tempCustomStatusesApi = hasTempCustomStatuses ? /** @type {any} */ (game.modules.get('temporary-custom-statuses'))?.api : null;
         const savedStatuses = hasTempCustomStatuses ? (game.settings.get('temporary-custom-statuses', 'savedStatuses') ?? []) : [];
         const activeCustomEffects = hasTempCustomStatuses
             ? /** @type {any[]} */ ([...actor.effects]).filter(/** @type {any} */ eff =>
                 eff.getFlag?.('temporary-custom-statuses', 'isCustom') &&
-                !eff.getFlag?.('lancer-automations', 'linkedBonusId')
+                !getLAFlag(eff,'linkedBonusId')
             )
             : [];
         const customMap = new Map();
-        savedStatuses.forEach(/** @type {any} */ saved => customMap.set(saved.name, { name: saved.name, icon: saved.icon }));
+        savedStatuses.forEach(/** @type {any} */ saved => customMap.set(saved.name, { name: saved.name, icon: saved.icon, description: saved.description }));
         activeCustomEffects.forEach(/** @type {any} */ eff =>
         {
             const name = eff.getFlag?.('temporary-custom-statuses', 'originalName') || eff.name;
@@ -128,14 +162,7 @@ export class StatusPanel extends HudPanel
         // active first, then favorites, alphabetic within each group
         const readFavorites = () =>
         {
-            try
-            {
-                return new Set(game.settings.get('lancer-automations', 'tah.statusFavorites') ?? []);
-            }
-            catch
-            {
-                return new Set();
-            }
+            return new Set(getModuleSetting('tah.statusFavorites') ?? []);
         };
         const favoriteIds = readFavorites();
         const toggleStatusFavorite = async (/** @type {string} */ sid) =>
@@ -146,7 +173,7 @@ export class StatusPanel extends HudPanel
                 current.add(sid);
             else
                 current.delete(sid);
-            await game.settings.set('lancer-automations', 'tah.statusFavorites', [...current]);
+            await game.settings.set(MODULE_ID,'tah.statusFavorites', [...current]);
             return nowFav;
         };
         const activeStatusIds = new Set();
@@ -157,8 +184,9 @@ export class StatusPanel extends HudPanel
             for (const statusId of (eff.statuses ?? []))
                 activeStatusIds.add(statusId);
         }
+        // TCS mirrors its saved list into CONFIG, the Custom section owns those rows
         const allStatuses = (/** @type {any} */ (CONFIG).statusEffects ?? [])
-            .filter(/** @type {any} */ status => status.id)
+            .filter(/** @type {any} */ status => status.id && !status.tcsCustom)
             .sort(/** @type {any} */ (aStatus, bStatus) =>
             {
                 const aActive = activeStatusIds.has(aStatus.id);
@@ -175,22 +203,11 @@ export class StatusPanel extends HudPanel
         const getEffectsForStatus = (/** @type {string} */ sid) =>
             /** @type {any[]} */ ([...actor.effects]).filter(/** @type {any} */ eff => eff.statuses?.has(sid) && !eff.disabled);
 
-        const getStack = (/** @type {any} */ eff) =>
-            hasStatusCounter ? (eff.getFlag?.('statuscounter', 'value') ?? 1) : 1;
+        const getStack = effectStack;
 
         const isActive = (/** @type {any} */ s) => getEffectsForStatus(s.id).length > 0;
 
-        const isPermanent = (/** @type {any} */ status) =>
-        {
-            for (const eff of getEffectsForStatus(status.id))
-            {
-                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
-                const dur = laFlags?.duration ?? /** @type {any} */ (eff.flags)?.['csm-lancer-qol']?.duration;
-                if (dur?.label === 'permanent')
-                    return true;
-            }
-            return false;
-        };
+        const isPermanent = (/** @type {any} */ status) => isPermanentEffect(getEffectsForStatus(status.id));
 
         // active-row colors: yellow when any active effect is permanent, blue otherwise
         const ACTIVE_BG_NORMAL    = '#b8d4f0';
@@ -211,9 +228,9 @@ export class StatusPanel extends HudPanel
             const effects = getEffectsForStatus(s.id);
             if (!effects.length)
                 return '';
-            const totalStack = hasStatusCounter ? effects.reduce((sum, e) => sum + getStack(e), 0) : 0;
+            const totalStack = effects.reduce((sum, e) => sum + getStack(e), 0);
             const parts = [];
-            if (hasStatusCounter && totalStack > 1)
+            if (totalStack > 1)
                 parts.push(`×${totalStack}`);
             if (effects.length > 1)
                 parts.push(`[${effects.length}]`);
@@ -228,8 +245,8 @@ export class StatusPanel extends HudPanel
                 lines.push(`<div class="la-tooltip-line">${status.description}</div>`);
             for (const eff of effects)
             {
-                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
-                const stackCount = hasStatusCounter ? (eff.getFlag?.('statuscounter', 'value') ?? 1) : null;
+                const laFlags = getLAFlags(eff);
+                const stackCount = getStack(eff);
                 let label = 'Base Effect';
                 if (laFlags?.consumption)
                 {
@@ -282,7 +299,7 @@ export class StatusPanel extends HudPanel
             return tooltipEl;
         };
 
-        const searchBar =$(`<input type="text" class="la-status-search" placeholder="Search statuses…">`);
+        const searchBar =$(`<input type="text" class="la-status-search" placeholder="${localize('LA.tokenHud.searchStatuses')}">`);
         const searchWrap = $(`<div class="la-status-search-wrap"><i class="fas fa-search la-status-search-icon"></i></div>`);
         searchWrap.append(searchBar);
 
@@ -295,7 +312,7 @@ export class StatusPanel extends HudPanel
             _lastDurationLabel = String($(this).val());
         });
         const searchRow = $(`<div class="la-status-search-row"></div>`);
-        const helpTip = $(`<i class="fas fa-circle-question la-status-help" data-tooltip="Click: apply or add a stack<br>Right-click: remove or reduce<br>Ctrl+click: favorite<br>Hover: description"></i>`);
+        const helpTip = $(`<i class="fas fa-circle-question la-status-help" data-tooltip="${localize('LA.tokenHud.statusHelp')}"></i>`);
         searchRow.append(searchWrap, durTool, helpTip);
         const refreshDurMarks = () =>
         {
@@ -365,17 +382,8 @@ export class StatusPanel extends HudPanel
                 $(this).css({ background: active ? activeBg(perm) : BG_DEFAULT, borderLeftColor: active ? activeBorder(perm) : 'transparent', color: active ? FG_ACTIVE : FG_DEFAULT });
             });
 
-            rowEl.on('click', async (ev) =>
+            rowEl.on('click', async () =>
             {
-                if (ev.ctrlKey)
-                {
-                    const nowFav = await toggleStatusFavorite(status.id);
-                    playUiSound('toggle');
-                    rowEl.find('.la-hud-fav-mark').remove();
-                    if (nowFav)
-                        rowEl.css('position', 'relative').append('<span class="la-hud-fav-mark">★</span>');
-                    return;
-                }
                 playUiSound('toggle');
                 const effects = getEffectsForStatus(status.id);
                 if (effects.length > 1)
@@ -386,7 +394,7 @@ export class StatusPanel extends HudPanel
                 this._incDepth();
                 try
                 {
-                    if (hasStatusCounter && effects.length === 1)
+                    if (effects.length === 1)
                     {
                         const eff = effects[0];
                         await eff.update({ 'flags.statuscounter.value': getStack(eff) + 1, 'flags.statuscounter.visible': true });
@@ -395,6 +403,8 @@ export class StatusPanel extends HudPanel
                         await this._applyWithDuration(status);
                     else
                     {
+                        if (!await confirmPermanentRemoval(status.name, effects))
+                            return;
                         for (const token of this._tokens)
                             await /** @type {any} */ (token).toggleEffect(status);
                     }
@@ -410,6 +420,15 @@ export class StatusPanel extends HudPanel
             rowEl.on('contextmenu', async (ev) =>
             {
                 ev.preventDefault();
+                if (ev.ctrlKey)
+                {
+                    const nowFav = await toggleStatusFavorite(status.id);
+                    playUiSound('toggle');
+                    rowEl.find('.la-hud-fav-mark').remove();
+                    if (nowFav)
+                        rowEl.css('position', 'relative').append('<span class="la-hud-fav-mark">★</span>');
+                    return;
+                }
                 playUiSound('toggle');
                 const effects = getEffectsForStatus(status.id);
                 if (effects.length > 1)
@@ -438,10 +457,12 @@ export class StatusPanel extends HudPanel
                 {
                     const eff = effects[0];
                     const stack = getStack(eff);
-                    if (hasStatusCounter && stack > 1)
+                    if (stack > 1)
                         await eff.update({ 'flags.statuscounter.value': stack - 1, 'flags.statuscounter.visible': stack - 1 > 1 });
                     else
                     {
+                        if (!await confirmPermanentRemoval(status.name, effects))
+                            return;
                         await actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);
                         for (const token of this._tokens.slice(1))
                         {
@@ -464,7 +485,7 @@ export class StatusPanel extends HudPanel
 
         const rightEl =$(`<div class="la-hud-right-col"></div>`);
 
-        const laApi = /** @type {any} */ (game.modules.get('lancer-automations'))?.api;
+        const laApi = /** @type {any} */ (game.modules.get(MODULE_ID))?.api;
         if (laApi?.executeEffectManager)
         {
             const effectManagerBtn = $(`<button class="la-hud-util-btn">Effect Manager</button>`);
@@ -511,9 +532,9 @@ export class StatusPanel extends HudPanel
                 const effs = getCustomEffects(name);
                 if (!effs.length)
                     return '';
-                const totalStack = hasStatusCounter ? effs.reduce((sum, /** @type {any} */ eff) => sum + (eff.getFlag?.('statuscounter', 'value') ?? 1), 0) : 0;
+                const totalStack = effs.reduce((sum, /** @type {any} */ eff) => sum + getStack(eff), 0);
                 const parts = [];
-                if (hasStatusCounter && totalStack > 1)
+                if (totalStack > 1)
                     parts.push(`×${totalStack}`);
                 if (effs.length > 1)
                     parts.push(`[${effs.length}]`);
@@ -534,13 +555,28 @@ export class StatusPanel extends HudPanel
                     <span class="la-status-name">${customStatus.name}</span>
                     <span class="la-status-badge">${badge}</span>
                 </div>`);
+                // status-shaped so the tooltip finds the applied effects by id
+                const customTooltipStatus = {
+                    id: customStatus.name.slugify(),
+                    name: customStatus.name,
+                    description: customStatus.description
+                };
+                let customTooltipEl = /** @type {any} */ (null);
+                let customTooltipTimer = null;
                 customRow.on('mouseenter', function()
                 {
                     playUiSound('statusHover');
                     if (!$(this).data('active'))
                         $(this).css({ background: BG_HOVER, borderLeftColor: 'var(--la-edge)' });
+                    const self = $(this);
+                    customTooltipTimer = setTimeout(() =>
+                    {
+                        customTooltipEl = showTooltip(self, customTooltipStatus);
+                    }, 600);
                 }).on('mouseleave', function()
                 {
+                    clearTimeout(customTooltipTimer); customTooltipTimer = null;
+                    customTooltipEl?.remove(); customTooltipEl = null;
                     const active = $(this).data('active');
                     $(this).css({ background: active ? '#b8d4f0' : BG_DEFAULT, borderLeftColor: active ? '#1a4a7a' : 'transparent', color: active ? FG_ACTIVE : FG_DEFAULT });
                 });
@@ -565,7 +601,7 @@ export class StatusPanel extends HudPanel
                     this._incDepth();
                     try
                     {
-                        if (hasStatusCounter && effs.length === 1)
+                        if (effs.length === 1)
                         {
                             const eff = effs[0];
                             await eff.update({ 'flags.statuscounter.value': getStack(eff) + 1, 'flags.statuscounter.visible': true });
@@ -577,6 +613,8 @@ export class StatusPanel extends HudPanel
                         }
                         else
                         {
+                            if (!await confirmPermanentRemoval(customStatus.name, effs))
+                                return;
                             await actor.deleteEmbeddedDocuments('ActiveEffect', [effs[0].id]);
                             for (const tok of this._tokens.slice(1))
                             {
@@ -623,10 +661,12 @@ export class StatusPanel extends HudPanel
                     {
                         const eff = effs[0];
                         const stack = getStack(eff);
-                        if (hasStatusCounter && stack > 1)
+                        if (stack > 1)
                             await eff.update({ 'flags.statuscounter.value': stack - 1, 'flags.statuscounter.visible': stack - 1 > 1 });
                         else
                         {
+                            if (!await confirmPermanentRemoval(customStatus.name, effs))
+                                return;
                             await actor.deleteEmbeddedDocuments('ActiveEffect', [eff.id]);
                             for (const token of this._tokens.slice(1))
                             {
@@ -650,8 +690,9 @@ export class StatusPanel extends HudPanel
             rightEl.append(customListEl);
         }
 
-        const globalBonuses   =/** @type {any[]} */ (actor.getFlag('lancer-automations', 'global_bonuses')   || []);
-        const constantBonuses = /** @type {any[]} */ (actor.getFlag('lancer-automations', 'constant_bonuses') || []);
+        const globalBonuses = /** @type {any[]} */ (getLAFlag(actor,'global_bonuses') || [])
+            .filter((/** @type {any} */ bonus) => !isBonusRemovalPending(actor, bonus.id));
+        const constantBonuses = /** @type {any[]} */ (getLAFlag(actor,'constant_bonuses') || []);
         const allBonuses = [
             ...globalBonuses.map((/** @type {any} */ bonus, i) => ({ bonus, kind: 'global', idx: i })),
             ...constantBonuses.map((/** @type {any} */ bonus, i) => ({ bonus, kind: 'constant', idx: i })),
@@ -666,14 +707,22 @@ export class StatusPanel extends HudPanel
             {
                 const detail = getBonusDetailStr(bonus);
                 const kindBadge = kind === 'constant' ? ' <span class="la-bonus-row__kind">(const)</span>' : '';
+                const condHint = getBonusConditionHint(bonus);
+                const condBadge = condHint ? ' <span class="la-bonus-row__cond"><i class="fas fa-code-branch"></i></span>' : '';
+                const uses = getBonusUsesInfo(actor, bonus);
+                const usesBadge = uses
+                    ? ` <span class="la-bonus-row__uses">[${uses.label}]</span>${uses.onUse ? ' <span class="la-bonus-row__kind">[on-use]</span>' : ''}`
+                    : '';
                 const row = $(`<div class="la-bonus-row" title="${bonus.name}: ${detail}">
                     ${laHudRenderIcon(bonus.icon || getBonusIcon(bonus))}
                     <div class="la-bonus-row__body">
-                        <b>${bonus.name}</b>${kindBadge}<br>
-                        <span class="la-bonus-row__detail">${detail}</span>
+                        <b>${bonus.name}</b>${kindBadge}${condBadge}<br>
+                        <span class="la-bonus-row__detail">${detail}</span>${usesBadge}
                     </div>
                     <i class="la-bonus-del fas fa-trash" title="Delete bonus"></i>
                 </div>`);
+                if (condHint)
+                    row.find('.la-bonus-row__cond').attr('title', condHint);
                 row.find('.la-bonus-del').on('mouseenter', function()
                 {
                     $(this).css('opacity', '1');
@@ -736,8 +785,7 @@ export class StatusPanel extends HudPanel
         {
             this._subtypePanel.remove(); this._subtypePanel = null;
         }
-        const hasStatusCounter = !!game.modules.get('statuscounter')?.active;
-        const getStack = (/** @type {any} */ eff) => hasStatusCounter ? (eff.getFlag?.('statuscounter', 'value') ?? 1) : 1;
+        const getStack = effectStack;
         const statusName = game.i18n.localize(statusConfig.name ?? statusConfig.id);
 
         const panel = $(`<div class="la-hud-sub-panel"></div>`);
@@ -759,7 +807,7 @@ export class StatusPanel extends HudPanel
             body.empty();
             for (const eff of current)
             {
-                const laFlags = /** @type {any} */ (eff.flags)?.['lancer-automations'];
+                const laFlags = getLAFlags(eff);
                 let label = 'Base';
                 if (laFlags?.consumption)
                     label = 'Consume';
@@ -769,8 +817,8 @@ export class StatusPanel extends HudPanel
                 const row = $(`<div class="la-hud-sub-row" data-eid="${eff.id}">
                     <span class="la-sub-label">${label}</span>
                     <span class="la-sub-stack">×${stack}</span>
-                    ${hasStatusCounter ? `<span class="la-sub-minus la-sub-btn la-sub-btn--minus">−</span>` : ''}
-                    ${hasStatusCounter ? `<span class="la-sub-plus la-sub-btn la-sub-btn--plus">+</span>` : ''}
+                    <span class="la-sub-minus la-sub-btn la-sub-btn--minus">−</span>
+                    <span class="la-sub-plus la-sub-btn la-sub-btn--plus">+</span>
                     <span class="la-sub-del la-sub-btn la-sub-btn--del">✕</span>
                 </div>`);
                 row.find('.la-sub-minus').on('click', async () =>

@@ -1,12 +1,17 @@
 /* global document, MutationObserver, Roll, game, ui, Number */
 
 import { ActiveFlowState } from './flows.js';
+import { getLAFlag, setLAFlag } from '../tools/flag-utils.js';
+import { getModuleSetting } from '../tools/settings-utils.js';
+import { localize, localizeFormat } from '../tools/string-utils.js';
 import {
     injectNoBonusDmgCheckbox,
     injectThrottledCheckbox,
     getImmunityBonuses,
     checkDamageResistances,
     mutateDamageWithBonus,
+    mutatesBaseDamage,
+    mutatesBonusDamage,
     isBonusApplicable,
     flattenBonuses,
     getConstantBonuses,
@@ -54,6 +59,28 @@ export function wrapRollDamageForNoBonusDmg(flowSteps)
     }
 }
 
+/**
+ * Seed the HASE HUD from `la_extraData` before it opens, so a caller can set acc/diff/flat
+ * the way a weapon's tags do on an attack. The player still sees and can change them.
+ * @param {any} state
+ */
+function applyStatRollPresets(state)
+{
+    const extra = state.la_extraData;
+    if (!extra)
+        return;
+    const base = state.data.acc_diff?.base;
+    if (base)
+    {
+        if (Number(extra.accuracy))
+            base.accuracy = (base.accuracy || 0) + Number(extra.accuracy);
+        if (Number(extra.difficulty))
+            base.difficulty = (base.difficulty || 0) + Number(extra.difficulty);
+    }
+    if (Number(extra.flatModifier))
+        state.data.bonus = (state.data.bonus || 0) + Number(extra.flatModifier);
+}
+
 export function wrapStatRollFlatModifier(flowSteps)
 {
     const orig = flowSteps.get('showStatRollHUD');
@@ -63,6 +90,7 @@ export function wrapStatRollFlatModifier(flowSteps)
     {
         if (!state.data)
             throw new TypeError('Stat roll flow state missing!');
+        applyStatRollPresets(state);
         const bonus = state.data.bonus || 0;
         let flatMod = 0;
 
@@ -115,7 +143,7 @@ function _injectStatFlatModRow(dialog, bonus, onChange)
     const label = document.createElement('label');
     label.className = 'flexrow accdiff-weight lancer-border-primary';
     label.setAttribute('for', 'accdiff-flat-bonus');
-    label.textContent = 'Flat Modifier';
+    label.textContent = localize('LA.flow.flatModifier');
 
     const grid = document.createElement('div');
     grid.className = `la-stat-flat-mod accdiff-grid accdiff-flat-bonus ${_scope}`.trim();
@@ -185,7 +213,7 @@ function _injectStatFlatModRow(dialog, bonus, onChange)
     });
 }
 
-async function _collectBaseDamageMutations(state)
+async function _collectDamageMutations(state, applies)
 {
     const actor = state.actor;
     if (!actor)
@@ -198,15 +226,69 @@ async function _collectBaseDamageMutations(state)
     const applicableBonuses = [];
     for (const bonus of raw)
     {
-        if (bonus.type !== 'damage')
-            continue;
-        const mode = bonus.damageMode || 'add';
-        if (mode !== 'replace' && mode !== 'change_type' && mode !== 'add_base')
+        if (bonus.type !== 'damage' || !applies(bonus))
             continue;
         if (await isBonusApplicable(bonus, flowTags, state))
             applicableBonuses.push(bonus);
     }
     return applicableBonuses;
+}
+
+/** Plain copies of the entries with the given bonus-scope change_type bonuses applied. */
+export function convertBonusDamageEntries(entries, bonuses, state)
+{
+    const cloned = foundry.utils.duplicate(entries ?? []);
+    if (!bonuses.length)
+        return cloned;
+    const mockState = { actor: state.actor, item: state.item, data: { damage: cloned } };
+    for (const bonus of bonuses)
+        mutateDamageWithBonus(mockState, bonus);
+    return cloned;
+}
+
+// What the damage HUD will add on top of the weapon's own line, as far as an attack-time evaluation can tell.
+export async function predictBonusDamage(state)
+{
+    const actor = state?.actor;
+    if (!actor)
+        return [];
+    const flowTags = new Set(['all', 'damage']);
+    const targetIds = Array.from(game.user?.targets || []).map(target => target.id);
+    const entries = [];
+    for (const bonus of flattenBonuses([...getGlobalBonuses(actor), ...getConstantBonuses(actor)]))
+    {
+        if (bonus.type !== 'damage' || (bonus.damageMode || 'add') !== 'add')
+            continue;
+        if (Array.isArray(bonus.applyTo) && bonus.applyTo.length && !bonus.applyTo.some(tokenId => targetIds.includes(tokenId)))
+            continue;
+        if (!isBonusApplicable(bonus, flowTags, state))
+            continue;
+        for (const entry of bonus.damage || [])
+            entries.push({ type: entry.type, val: entry.val });
+    }
+    const converters = await _collectDamageMutations(state, mutatesBonusDamage);
+    return convertBonusDamageEntries(entries, converters, state);
+}
+
+// Runs after rollReliable: by then the HUD's global and per-target bonus rows are back in the flow state, and both feed the roll.
+export async function bonusDamageMutateStep(state)
+{
+    if (!state?.data)
+        return true;
+    const bonuses = await _collectDamageMutations(state, mutatesBonusDamage);
+    if (bonuses.length === 0)
+        return true;
+    try
+    {
+        state.data.bonus_damage = convertBonusDamageEntries(state.data.bonus_damage, bonuses, state);
+        for (const target of state.data.damage_hud_data?.targets ?? [])
+            target.bonusDamage = convertBonusDamageEntries(target.bonusDamage, bonuses, state);
+    }
+    catch (e)
+    {
+        console.warn('lancer-automations | bonus damage mutation failed:', e);
+    }
+    return true;
 }
 
 // fromParams reads the weapon's damage from item.system, so we swap it before the HUD builds and restore after.
@@ -218,7 +300,7 @@ export function wrapShowDamageHUD(flowSteps)
 
     flowSteps.set('showDamageHUD', async function wrappedShowDamageHUD(state)
     {
-        const bonuses = await _collectBaseDamageMutations(state);
+        const bonuses = await _collectDamageMutations(state, mutatesBaseDamage);
         if (bonuses.length === 0)
             return orig(state);
 
@@ -227,6 +309,8 @@ export function wrapShowDamageHUD(flowSteps)
             return orig(state);
 
         let restore = null;
+        // currentProfile() reads the swapped array, so its own wrap must not mutate it a second time.
+        item._laBaseDamageSwapped = true;
         try
         {
             if (item.type === 'mech_weapon' && item.system.active_profile)
@@ -298,6 +382,7 @@ export function wrapShowDamageHUD(flowSteps)
         }
         finally
         {
+            delete item._laBaseDamageSwapped;
             if (restore)
             {
                 try
@@ -334,14 +419,7 @@ export function wrapRollReliable(flowSteps)
 function getHeatMitigation(actor)
 {
     let enabled = true;
-    try
-    {
-        enabled = !!game.settings.get('lancer-automations', 'resistSelfHeat');
-    }
-    catch
-    {
-        enabled = true;
-    }
+    enabled = !!getModuleSetting('resistSelfHeat', true);
     if (!enabled)
         return { immune: false, resisted: false };
 
@@ -381,7 +459,7 @@ export function wrapApplySelfHeat(flowSteps)
         if (hasResistance)
         {
             const roll = await new Roll(state.data.self_heat).evaluate();
-            const halved = Math.floor(roll.total / 2);
+            const halved = Math.ceil(roll.total / 2);
             state.data.self_heat_result = { roll, tt: await roll.getTooltip() };
 
             const automationSettings = game.settings.get(game.system.id, "automationOptions");
@@ -428,7 +506,7 @@ export function wrapUpdateOverchargeActor(flowSteps)
         const heatEnabled = game.settings.get(game.system.id, "automationOptions")?.overcharge_heat;
         if (heatEnabled)
         {
-            const applied = immune ? 0 : Math.floor(rollTotal / 2);
+            const applied = immune ? 0 : Math.ceil(rollTotal / 2);
             await actor.update(/** @type {any}*/({ "system.heat.value": actor.system.heat.value + applied }));
         }
         return true;
@@ -468,7 +546,7 @@ export function wrapApplyOverkillHeat(flowSteps)
 
         if ((actor.is_mech?.() || actor.is_npc?.() || actor.is_deployable?.()) && (actor.system.heat?.max ?? 0) > 0)
         {
-            const applied = immune ? 0 : Math.floor(overkillHeat / 2);
+            const applied = immune ? 0 : Math.ceil(overkillHeat / 2);
             await actor.update(/** @type {any}*/({ "system.heat.value": (Number(actor.system.heat.value) || 0) + applied }));
         }
         return true;
@@ -489,7 +567,7 @@ export function wrapExtraActionRecharge(flowSteps, flows)
             let hasExtraRechargeables = false;
             for (const item of state.actor.items)
             {
-                const extraActions = item.getFlag('lancer-automations', 'extraActions') || [];
+                const extraActions = getLAFlag(item,'extraActions') || [];
                 if (extraActions.some(action => action.recharge && action.charged === false))
                 {
                     hasExtraRechargeables = true; break;
@@ -497,7 +575,7 @@ export function wrapExtraActionRecharge(flowSteps, flows)
             }
             if (!hasExtraRechargeables)
             {
-                const actorExtraActions = state.actor.getFlag('lancer-automations', 'extraActions') || [];
+                const actorExtraActions = getLAFlag(state.actor,'extraActions') || [];
                 if (actorExtraActions.some(action => action.recharge && action.charged === false))
                     hasExtraRechargeables = true;
             }
@@ -521,7 +599,7 @@ export function wrapExtraActionRecharge(flowSteps, flows)
 
         for (const item of state.actor.items)
         {
-            const extraActions = item.getFlag('lancer-automations', 'extraActions') || [];
+            const extraActions = getLAFlag(item,'extraActions') || [];
             let changed = false;
             for (const action of extraActions)
             {
@@ -534,9 +612,9 @@ export function wrapExtraActionRecharge(flowSteps, flows)
                 }
             }
             if (changed)
-                await item.setFlag('lancer-automations', 'extraActions', extraActions);
+                await setLAFlag(item,'extraActions', extraActions);
         }
-        const actorActions = state.actor.getFlag('lancer-automations', 'extraActions') || [];
+        const actorActions = getLAFlag(state.actor,'extraActions') || [];
         let actorChanged = false;
         for (const action of actorActions)
         {
@@ -549,7 +627,7 @@ export function wrapExtraActionRecharge(flowSteps, flows)
             }
         }
         if (actorChanged)
-            await state.actor.setFlag('lancer-automations', 'extraActions', actorActions);
+            await setLAFlag(state.actor,'extraActions', actorActions);
         return true;
     });
     flows.get('NPCRechargeFlow')?.insertStepAfter('applyRecharge', 'lancer-automations:rechargeExtraActions');
@@ -561,7 +639,7 @@ export function wrapExtraActionRecharge(flowSteps, flows)
         const action = state.data?.action;
         if (action?.recharge && action?.charged === false)
         {
-            ui.notifications.warn(`${action.name} has not recharged! (Recharge ${action.recharge}+)`);
+            ui.notifications.warn(localizeFormat('LA.notify.hasNotRecharged', { name: action.name, recharge: action.recharge }));
             return false;
         }
         return true;

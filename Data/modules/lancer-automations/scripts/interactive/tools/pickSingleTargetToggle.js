@@ -3,9 +3,9 @@
 import { pixelToOffset } from "../../combat/grid-helpers.js";
 
 import {
-    pointerToWorld, suppressTokenInteraction, createPickerSession, createCursorPreview, createMultiPlusIndicator, gridLineWidth,
+    pointerToWorld, suppressTokenInteraction, createPickerSession, createCursorPreview, createMultiPlusIndicator, hitLabelAnchor,
     makeText, gridTextResolution, applyTargetInfoLabel, HIT_LABEL_STYLE, hitLabelFontSize, paintSingleMarkCursor,
-    suppressEvent, showOverlapStackPicker,
+    suppressEvent, showOverlapStackPicker, isShiftDown,
 } from "../canvas-helpers.js";
 import { playTargetingMove, playUiSound } from "../../tah/sound.js";
 import { broadcastToolPresence, clearToolPresence } from "../presence.js";
@@ -69,7 +69,8 @@ export function pickSingleTargetToggle(casterToken = null, { includeSelf = false
             }
             applyTargetInfoLabel(hitLabel, res);
             hitLabel.resolution = gridTextResolution();
-            hitLabel.position.set(hoveredToken.center.x, hoveredToken.bounds.top - gridLineWidth(3));
+            const anchor = hitLabelAnchor(hoveredToken);
+            hitLabel.position.set(anchor.x, anchor.y);
             hitLabel.visible = true;
         };
 
@@ -100,8 +101,8 @@ export function pickSingleTargetToggle(casterToken = null, { includeSelf = false
 
         const toggleTarget = (token, keepOpen = false) =>
         {
-            const already = Array.from(game.user.targets ?? []).some(t => t.id === token.id);
-            token.setTarget(!already, { releaseOthers: single }); // single: replace any other target
+            const already = Array.from(game.user.targets ?? []).some(target => target.id === token.id);
+            token.setTarget(!already, { releaseOthers: single || !keepOpen });
             playUiSound('targetingConfirm');
             if (keepOpen && !single)
                 return; // Shift: keep targeting (disabled in single mode)
@@ -126,7 +127,7 @@ export function pickSingleTargetToggle(casterToken = null, { includeSelf = false
         {
             const { x: tx, y: ty } = pointerToWorld(event);
             drawCursorHighlight(tx, ty);
-            plus.move(!!event?.data?.originalEvent?.shiftKey, tx, ty);
+            plus.move(isShiftDown(event), tx, ty);
             const o = pixelToOffset(tx, ty);
             playTargetingMove(o.col, o.row);
         };
@@ -143,7 +144,7 @@ export function pickSingleTargetToggle(casterToken = null, { includeSelf = false
 
         const clickHandler = (event) =>
         {
-            const shift = !!event?.data?.originalEvent?.shiftKey;
+            const shift = isShiftDown(event);
             const { x: tx, y: ty } = pointerToWorld(event);
             const tokensHere = allTokens.filter(token =>
             {

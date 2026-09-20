@@ -3,6 +3,7 @@
 // Foundry combat lifecycle wiring for Battle Log telemetry.
 // Only the GM writes; each hook is a no-op for player clients.
 
+import { battleLogEnabled } from './battelog-utils.js';
 import {
     initTelemetry,
     ensureCombatantTracked,
@@ -12,13 +13,13 @@ import {
     forgetCombat,
 } from './telemetry-store.js';
 import { reconcileCombatant, forgetCombatState } from './state-capture.js';
-import { getModuleSetting } from "../tools/settings-utils.js";
+import { isExecutorGM } from '../tools/misc-tools.js';
 
 // Tick every tracked combatant into a telemetry object (in place). Returns it.
 function _tickInto(telemetry, combat, round)
 {
     for (const combatant of combat.combatants ?? [])
-        reconcileCombatant(telemetry, combatant, round);
+        reconcileCombatant(telemetry, combatant, round, combat.turn ?? 0);
     if (round > (telemetry.roundCount ?? 0))
         telemetry.roundCount = round;
     return telemetry;
@@ -39,25 +40,20 @@ export function consumeCombatTelemetry(combatId)
     return telemetry;
 }
 
-function _battleLogEnabled()
-{
-    return getModuleSetting('battleLogEnabled');
-}
-
 export function registerCombatRecorder()
 {
     Hooks.on('createCombat', async (combat) =>
     {
-        if (!game.user?.isGM)
+        if (!isExecutorGM())
             return;
-        if (!_battleLogEnabled())
+        if (!battleLogEnabled())
             return;
         await initTelemetry(combat);
     });
 
     Hooks.on('combatStart', async (combat) =>
     {
-        if (!game.user?.isGM)
+        if (!isExecutorGM())
             return;
         await reclassifyCombat(combat);
         await mutateTelemetry(combat, (telemetry) =>
@@ -72,7 +68,7 @@ export function registerCombatRecorder()
 
     Hooks.on('createCombatant', async (combatant) =>
     {
-        if (!game.user?.isGM)
+        if (!isExecutorGM())
             return;
         const combat = combatant?.combat ?? combatant?.parent;
         if (!combat)
@@ -83,7 +79,7 @@ export function registerCombatRecorder()
     // Tick at every turn and round advance.
     Hooks.on('updateCombat', async (combat, delta) =>
     {
-        if (!game.user?.isGM)
+        if (!isExecutorGM())
             return;
         if (delta.round == null && delta.turn == null)
             return;
@@ -95,7 +91,7 @@ export function registerCombatRecorder()
     // mid-delete), then stash for the delete consumer.
     Hooks.on('preDeleteCombat', (combat) =>
     {
-        if (!game.user?.isGM)
+        if (!isExecutorGM())
             return;
         const round = combat.round ?? 0;
         const telemetry = getTelemetry(combat);

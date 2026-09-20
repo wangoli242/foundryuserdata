@@ -1,6 +1,8 @@
 import { getOccupiedOffsets } from "./grid-helpers.js";
+import { getLAFlag, setLAFlag, unsetLAFlag } from "../tools/flag-utils.js";
 import { getImmunityBonuses, consumeImmunityUse } from "../bonuses/genericBonuses.js";
 import { startChoiceCard, getActiveGMId } from "../interactive/network.js";
+import { localize, localizeFormat } from "../tools/string-utils.js";
 
 /**
  * Get all grid cells occupied by a token.
@@ -19,6 +21,9 @@ const _terrainCache = {
     timestamp: 0,
     ttl: 2000
 };
+
+// THT reloads its shapes after canvasReady, so stacks cached before that reload are empty.
+Hooks.on('terrain-height-tools.updateTerrain', () => { _terrainCache.timestamp = 0; });
 
 function _refreshSolidCache(terrainAPI)
 {
@@ -75,6 +80,29 @@ export function getHexGroundElevation(col, row, terrainAPI = globalThis.terrainH
         }
     }
     return maxTopElevation;
+}
+
+/**
+ * True if solid terrain at the cell starts above the given elevation, so the cell sits under an overhang.
+ * @param {number} col
+ * @param {number} row
+ * @param {number} elevation Scene grid units
+ * @param {Object} [terrainAPI]
+ * @returns {boolean}
+ */
+export function isHexUnderTerrain(col, row, elevation, terrainAPI = globalThis.terrainHeightTools)
+{
+    if (!terrainAPI)
+        return false;
+    _refreshSolidCache(terrainAPI);
+    for (const terrain of _cellTerrainStack(terrainAPI, col, row))
+    {
+        if (!_terrainCache.solidMap.has(terrain.terrainTypeId))
+            continue;
+        if ((terrain.elevation || 0) > elevation)
+            return true;
+    }
+    return false;
 }
 
 /**
@@ -143,15 +171,15 @@ async function _runDangerousZone(token, damageType, damageValue)
     if (!actor)
         return;
     const currentRound = game.combat?.round || 0;
-    const lastTriggeredRound = actor.getFlag("lancer-automations", "dangerousZoneRound");
+    const lastTriggeredRound = getLAFlag(actor,"dangerousZoneRound");
 
     if (lastTriggeredRound === currentRound && game.combat?.started)
         return;
 
     if (game.combat?.started)
-        await actor.setFlag("lancer-automations", "dangerousZoneRound", currentRound);
+        await setLAFlag(actor,"dangerousZoneRound", currentRound);
     else if (lastTriggeredRound !== undefined)
-        await actor.unsetFlag("lancer-automations", "dangerousZoneRound");
+        await unsetLAFlag(actor,"dangerousZoneRound");
 
     const damageTypeLabels = { kinetic: "Kinetic", energy: "Energy", explosive: "Explosive", burn: "Burn", heat: "Heat", variable: "Variable" };
 
@@ -210,25 +238,25 @@ export async function triggerDangerousZoneFlow(token, damageType = "kinetic", da
     const tokenPlaceable = /** @type {any} */ (token).object ?? token;
     const actorName = actor.name ?? "Token";
     await startChoiceCard({
-        title: "TERRAIN IMMUNITY",
-        description: `<b>${actorName}</b> entered dangerous terrain.<hr>Immunity from: <i>${immunitySourceNames.join(", ")}</i>`,
+        title: localize('LA.dialogTitle.terrainImmunity'),
+        description: localizeFormat('LA.terrain.immunityPrompt', { name: actorName, sources: immunitySourceNames.join(', ') }),
         icon: "mdi mdi-boot",
         mode: "or",
         relatedToken: tokenPlaceable,
         userIdControl: getActiveGMId(),
         choices: [
             {
-                text: "Activate (Ignore Terrain)",
+                text: localize('LA.terrain.activateIgnoreTerrain'),
                 icon: "fas fa-shield-alt",
                 callback: async () =>
                 {
-                    ui.notifications.info(`${actorName} ignored dangerous terrain.`);
+                    ui.notifications.info(localizeFormat('LA.notify.ignoredDangerousTerrain', { name: actorName }));
                     if (immunityBonuses.length > 0)
                         await consumeImmunityUse(actor, 'terrain');
                 }
             },
             {
-                text: "No (Apply Effect)",
+                text: localize('LA.terrain.noApplyEffect'),
                 icon: "fas fa-times",
                 callback: async () =>
                 {
@@ -242,6 +270,7 @@ export async function triggerDangerousZoneFlow(token, damageType = "kinetic", da
 export const TerrainAPI = {
     getTokenCells,
     getHexGroundElevation,
+    isHexUnderTerrain,
     getMaxGroundHeightUnderToken,
     hasTallerSolidAdjacent,
     triggerDangerousZoneFlow

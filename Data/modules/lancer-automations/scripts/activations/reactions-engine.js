@@ -1,25 +1,37 @@
-import { ReactionManager, stringToFunction, stringToAsyncFunction } from "./reaction-manager.js";
+import { ReactionManager, stringToFunction, stringToAsyncFunction, ACTIVATION_TRIGGERS, BUILT_IN_TRIGGERS } from "./reaction-manager.js";
+import { getModuleSetting } from "../tools/settings-utils.js";
+import { getLAFlag, getLAFlags } from "../tools/flag-utils.js";
+import { MODULE_ID } from "../tools/constants.js";
 import { displayReactionPopup, activateReaction } from "./reactions-ui.js";
 import { runInFlowBody } from "./flow-queue.js";
 import { getTokenOwnerUserId, startWaitCard } from "../interactive/index.js";
 import { consumeEffectCharge, runInOnInitTriggerContext } from "../bonuses/flagged-effects.js";
+import { deferResistanceEffectConsumption } from "../bonuses/genericBonuses.js";
 import { getTokenDistance } from "../combat/overwatch.js";
-import { getItemLID, isItemAvailable, hasReactionAvailable, executeSimpleActivation, debugActivation } from "../tools/misc-tools.js";
+import { getItemLID, isItemAvailable, hasReactionAvailable, executeSimpleActivation, debugActivation, isRangedAttack } from "../tools/misc-tools.js";
 import { awaitPendingAck } from "../socket.js";
 
+import { localize, localizeFormat } from '../tools/string-utils.js';
 let reactionDebounceTimer = null;
 let reactionQueue = [];
 const REACTION_DEBOUNCE_MS = 100;
 let cachedFlatGeneralReactions = null;
-/** @type {Map<string, Array>} triggerType → filtered non-action reactions; cleared with cachedFlatGeneralReactions */
+/** @type {Map<string, Array>} triggerType to filtered non-action reactions, cleared with cachedFlatGeneralReactions */
 const cachedNonActionReactionsByTrigger = new Map();
+/** @type {Map<string, Array>} triggerType to general reactions with sceneReactor on, evaluated once as the scene */
+const cachedSceneReactionsByTrigger = new Map();
 const COMBAT_INHERENT_TRIGGERS = new Set(['onEnterCombat', 'onExitCombat', 'onTurnStart', 'onTurnEnd', 'onRoundStart']);
-const REACTION_ITEM_TYPES = new Set(["frame", "mech_system", "mech_weapon", "npc_feature", "pilot_gear", "talent", "bond"]);
+// Custom triggers are fired on purpose by their caller, who owns the combat gating.
+const firesRegardlessOfCombat = triggerType => COMBAT_INHERENT_TRIGGERS.has(triggerType) || !BUILT_IN_TRIGGERS.has(triggerType);
+const REACTION_ITEM_TYPES = new Set(["frame", "mech_system", "mech_weapon", "weapon_mod", "npc_feature", "pilot_gear", "talent", "bond"]);
+const sceneReactorMode = reaction => reaction.sceneReactor || 'off';
+const onViewedScene = reaction => !reaction.sceneId || reaction.sceneId === canvas.scene?.id;
 
 Hooks.on('lancer-automations.clearCaches', () =>
 {
     cachedFlatGeneralReactions = null;
     cachedNonActionReactionsByTrigger.clear();
+    cachedSceneReactionsByTrigger.clear();
 });
 
 Hooks.on('createItem', (item) =>
@@ -123,23 +135,26 @@ export function getReactionItems(token)
     }
 
     // Surrogate for actor-UUID-keyed reactions (e.g. "Actor.qe5wEevLrMN6ki44").
+    const actorSurrogate = (lid) => ({
+        name: actor.name,
+        type: "actor_surrogate",
+        system: {
+            lid,
+            tags: [],
+            destroyed: actor.system?.destroyed === true,
+            disabled: actor.system?.disabled === true,
+            actions: actor.system?.actions || []
+        },
+        getFlag: () => null,
+        _actorSurrogate: true,
+        _surrogateActor: actor
+    });
     if (actor.uuid)
-    {
-        items = items.concat([{
-            name: actor.name,
-            type: "actor_surrogate",
-            system: {
-                lid: actor.uuid,
-                tags: [],
-                destroyed: actor.system?.destroyed === true,
-                disabled: actor.system?.disabled === true,
-                actions: actor.system?.actions || []
-            },
-            getFlag: () => null,
-            _actorSurrogate: true,
-            _surrogateActor: actor
-        }]);
-    }
+        items = items.concat([actorSurrogate(actor.uuid)]);
+    // Unlinked tokens have a synthetic uuid, so the world actor's uuid needs its own surrogate.
+    const baseActor = actor.isToken ? actor.token?.baseActor : null;
+    if (baseActor?.uuid && baseActor.uuid !== actor.uuid)
+        items = items.concat([actorSurrogate(baseActor.uuid)]);
 
     return items;
 }
@@ -174,9 +189,50 @@ export async function checkOnInitReactions(token, filterItem = null)
     return runInOnInitTriggerContext(() => _checkOnInitReactionsBody(token, filterItem));
 }
 
+// Scene reactor onInit runs on scene load, GM only, with the scene stand-in as the token.
+export async function checkSceneOnInitReactions(scene)
+{
+    if (!scene || !game.user.isGM)
+        return;
+    const candidates = getFlatGeneralReactions().filter(([, reaction]) =>
+        reaction.enabled !== false && reaction.onInit && sceneReactorMode(reaction) !== 'off' && onViewedScene(reaction));
+    if (candidates.length === 0)
+        return;
+    return runInOnInitTriggerContext(async () =>
+    {
+        const api = game.modules.get(MODULE_ID).api;
+        const sceneReactor = makeSceneReactor(scene);
+        for (const [reactionName, reaction] of candidates)
+        {
+            try
+            {
+                if (typeof reaction.onInit === 'function')
+                    await reaction.onInit(sceneReactor, null, api);
+                else if (typeof reaction.onInit === 'string' && reaction.onInit.trim() !== '')
+                {
+                    const onInitFunc = stringToFunction(reaction.onInit, ["token", "item", "api"], reaction, `${reactionName}/onInit`);
+                    await onInitFunc(sceneReactor, null, api);
+                }
+            }
+            catch (error)
+            {
+                console.error(`lancer-automations | Error in scene onInit for "${reactionName}":`, error);
+            }
+        }
+    });
+}
+
+// First load: canvasReady fires before the api exists, the ready hook covers that pass.
+Hooks.on('canvasReady', () =>
+{
+    if (game.modules.get(MODULE_ID)?.api)
+        checkSceneOnInitReactions(canvas.scene);
+});
+Hooks.on('lancer-automations.ready', () => checkSceneOnInitReactions(canvas.scene));
+
 async function _checkOnInitReactionsBody(token, filterItem = null)
 {
-    const api = game.modules.get('lancer-automations').api;
+    const api = game.modules.get(MODULE_ID).api;
     const items = filterItem ? [filterItem] : getReactionItems(token);
 
     for (const item of items)
@@ -206,7 +262,7 @@ async function _checkOnInitReactionsBody(token, filterItem = null)
                     await reaction.onInit(token, item, api);
                 else if (typeof reaction.onInit === 'string' && reaction.onInit.trim() !== '')
                 {
-                    const onInitFunc = stringToFunction(reaction.onInit, ["token", "item", "api"]);
+                    const onInitFunc = stringToFunction(reaction.onInit, ["token", "item", "api"], reaction, `${lid}/${registryEntry.reactions.indexOf(reaction)}/onInit`);
                     await onInitFunc(token, item, api);
                 }
             }
@@ -231,7 +287,7 @@ async function _checkOnInitReactionsBody(token, filterItem = null)
                 await reaction.onInit(token, null, api);
             else if (typeof reaction.onInit === 'string' && reaction.onInit.trim() !== '')
             {
-                const onInitFunc = stringToFunction(reaction.onInit, ["token", "item", "api"]);
+                const onInitFunc = stringToFunction(reaction.onInit, ["token", "item", "api"], reaction, `${name}/onInit`);
                 await onInitFunc(token, null, api);
             }
         }
@@ -244,7 +300,7 @@ async function _checkOnInitReactionsBody(token, filterItem = null)
 
 export async function checkOnMessageReactions(token, itemLid, reactionPath, activationName, triggerType, data)
 {
-    const api = game.modules.get('lancer-automations').api;
+    const api = game.modules.get(MODULE_ID).api;
     if (itemLid)
     {
         const items = getReactionItems(token);
@@ -270,14 +326,14 @@ export async function checkOnMessageReactions(token, itemLid, reactionPath, acti
                         result = await reaction.onMessage(triggerType, data, token, item, activationName, api);
                     else if (typeof reaction.onMessage === 'string' && reaction.onMessage.trim())
                     {
-                        const fn = stringToAsyncFunction(reaction.onMessage, ["triggerType", "data", "reactorToken", "item", "activationName", "api"]);
+                        const fn = stringToAsyncFunction(reaction.onMessage, ["triggerType", "data", "reactorToken", "item", "activationName", "api"], `${itemLid}/${registryEntry.reactions.indexOf(reaction)}/onMessage`);
                         result = await fn(triggerType, data, token, item, activationName, api);
                     }
                     return result;
                 }
-                catch (e)
+                catch (error)
                 {
-                    console.error(`lancer-automations | Error in onMessage for ${item.name}:`, e);
+                    console.error(`lancer-automations | Error in onMessage for ${item.name}:`, error);
                 }
             }
             break;
@@ -300,13 +356,13 @@ export async function checkOnMessageReactions(token, itemLid, reactionPath, acti
                     await reaction.onMessage(triggerType, data, token, null, activationName, api);
                 else if (typeof reaction.onMessage === 'string' && reaction.onMessage.trim())
                 {
-                    const fn = stringToAsyncFunction(reaction.onMessage, ["triggerType", "data", "reactorToken", "item", "activationName", "api"]);
+                    const fn = stringToAsyncFunction(reaction.onMessage, ["triggerType", "data", "reactorToken", "item", "activationName", "api"], `${name}/onMessage`);
                     await fn(triggerType, data, token, null, activationName, api);
                 }
             }
-            catch (e)
+            catch (error)
             {
-                console.error(`lancer-automations | Error in onMessage for general reaction ${name}:`, e);
+                console.error(`lancer-automations | Error in onMessage for general reaction ${name}:`, error);
             }
         }
     }
@@ -315,10 +371,18 @@ export async function checkOnMessageReactions(token, itemLid, reactionPath, acti
 Hooks.on('lancer-automations.runOnMessage', ({ token, itemLid, reactionPath, activationName, triggerType, data }) =>
 {
     checkOnMessageReactions(token, itemLid ?? null, reactionPath ?? null, activationName ?? null, triggerType, data)
-        .catch(e => console.error('lancer-automations | onMessage error:', e));
+        .catch(error => console.error('lancer-automations | onMessage error:', error));
 });
 
-function evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isInCombat)
+/** The reactor's own entry of data.targets ({ target/token, roll, crit, ... }), or null. */
+function findTargetEntry(data, token)
+{
+    if (!Array.isArray(data.targets))
+        return null;
+    return data.targets.find(entry => entry?.constructor === Object && (entry.target ?? entry.token)?.id === token.id) ?? null;
+}
+
+function evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isTarget, isInCombat)
 {
     const cancelledBy = data._cancelledBy;
     if (cancelledBy?.length > 0)
@@ -333,11 +397,11 @@ function evaluateGeneralReaction(reactionName, reaction, triggerType, data, toke
         }
     }
     dbgAuto('candidate:', token.name, reactionName, '(general)', { triggers: reaction.triggers });
-    if (!isInCombat && !reaction.outOfCombat && !COMBAT_INHERENT_TRIGGERS.has(triggerType))
+    if (!isInCombat && !reaction.outOfCombat && !firesRegardlessOfCombat(triggerType))
     {
         dbgAuto('skip:', token.name, reactionName, 'out of combat', { setting: 'outOfCombat', value: reaction.outOfCombat });
-        if ((token?.isOwner || game.user.isGM) && game.settings.get('lancer-automations', 'debugOutOfCombat'))
-            ui.notifications.warn(`${reactionName} (${token?.name ?? '?'}): not triggered, out of combat.`);
+        if ((token?.isOwner || game.user.isGM) && getModuleSetting('debugOutOfCombat'))
+            ui.notifications.warn(localizeFormat('LA.notify.notTriggeredOutOfCombat', { reaction: reactionName, name: token?.name ?? '?' }));
         return null;
     }
     if (isSelf && !reaction.triggerSelf)
@@ -345,9 +409,9 @@ function evaluateGeneralReaction(reactionName, reaction, triggerType, data, toke
         dbgAuto('skip:', token.name, reactionName, 'reactor is the trigger source', { setting: 'triggerSelf', value: !!reaction.triggerSelf });
         return null;
     }
-    if (!isSelf && reaction.triggerOther === false)
+    if (!isSelf && reaction.triggerOther === false && !(reaction.triggerTarget === true && isTarget))
     {
-        dbgAuto('skip:', token.name, reactionName, 'reactor is not the trigger source', { setting: 'triggerOther', value: false });
+        dbgAuto('skip:', token.name, reactionName, 'reactor is not the trigger source or target', { setting: 'triggerOther', value: false });
         return null;
     }
     if (reaction.checkReaction && !(isSelf && data.reactionJustConsumed) && !hasReactionAvailable(token))
@@ -363,7 +427,7 @@ function evaluateGeneralReaction(reactionName, reaction, triggerType, data, toke
 
     try
     {
-        const api = game.modules.get('lancer-automations').api;
+        const api = game.modules.get(MODULE_ID).api;
         const sourceToken = data.triggeringToken;
         const distanceToTrigger = (sourceToken && token) ? getTokenDistance(token, sourceToken) : null;
         const provokeReasons = [];
@@ -378,47 +442,132 @@ function evaluateGeneralReaction(reactionName, reaction, triggerType, data, toke
             dbgAuto('skip:', token.name, reactionName, 'cannot provoke', { setting: 'requireCanProvoke', value: true, reasons: provokeReasons });
             return null;
         }
-        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction };
+        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction, isTarget, targetEntry: findTargetEntry(data, token) };
         enrichedData.debugActivation = function (label)
         {
             return debugActivation(triggerType, this ?? enrichedData, token, null, reactionName, label);
         };
 
-        let shouldTrigger = false;
-        if (typeof reaction.evaluate === 'function')
-        {
-            const result = reaction.evaluate(triggerType, enrichedData, token, null, reactionName, api);
-            if (result instanceof Promise)
-            {
-                console.error(`lancer-automations | evaluate for "${reactionName}" is async. Evaluate functions must be synchronous.`);
-                result.then(_ =>
-                { /* fire-and-forget async evaluate */ });
-                shouldTrigger = false;
-            }
-            else
-                shouldTrigger = result;
-        }
-        else if (typeof reaction.evaluate === 'string' && reaction.evaluate.trim() !== '')
-        {
-            const evalFunc = stringToFunction(reaction.evaluate, ["triggerType", "triggerData", "reactorToken", "item", "activationName", "api"], reaction);
-            const result = evalFunc(triggerType, enrichedData, token, null, reactionName, api);
-            if (result instanceof Promise)
-            {
-                console.error(`lancer-automations | String evaluate for "${reactionName}" returned a Promise. Evaluate functions must be synchronous.`);
-                shouldTrigger = false;
-            }
-            else
-                shouldTrigger = result;
-        }
-        else
-            shouldTrigger = true;
-
+        const shouldTrigger = runGeneralEvaluate(reaction, reactionName, triggerType, enrichedData, token, api);
         dbgAuto(shouldTrigger ? 'fire:' : 'skip:', token.name, reactionName, 'evaluate →', shouldTrigger);
         return shouldTrigger ? enrichedData : null;
     }
     catch (error)
     {
         console.error(`lancer-automations | Error evaluating general reaction ${reactionName}:`, error);
+        return null;
+    }
+}
+
+function runGeneralEvaluate(reaction, reactionName, triggerType, enrichedData, reactorToken, api)
+{
+    if (typeof reaction.evaluate === 'function')
+    {
+        const result = reaction.evaluate(triggerType, enrichedData, reactorToken, null, reactionName, api);
+        if (result instanceof Promise)
+        {
+            console.error(`lancer-automations | evaluate for "${reactionName}" is async. Evaluate functions must be synchronous.`);
+            result.then(_ =>
+            { /* fire-and-forget async evaluate */ });
+            return false;
+        }
+        return result;
+    }
+    if (typeof reaction.evaluate === 'string' && reaction.evaluate.trim() !== '')
+    {
+        const evalFunc = stringToFunction(reaction.evaluate, ["triggerType", "triggerData", "reactorToken", "item", "activationName", "api"], reaction, `${reactionName}/evaluate`);
+        const result = evalFunc(triggerType, enrichedData, reactorToken, null, reactionName, api);
+        if (result instanceof Promise)
+        {
+            console.error(`lancer-automations | String evaluate for "${reactionName}" returned a Promise. Evaluate functions must be synchronous.`);
+            return false;
+        }
+        return result;
+    }
+    return true;
+}
+
+// Token-shaped stand-in so cards, popups and cancel plumbing work for scene reactions.
+export function makeSceneReactor(scene)
+{
+    return {
+        isSceneReactor: true,
+        scene,
+        id: `scene:${scene.id}`,
+        name: scene.name,
+        actor: null,
+        inCombat: false,
+        control: () => undefined,
+        document: {
+            id: scene.id,
+            name: scene.name,
+            hidden: false,
+            texture: { src: scene.thumb ?? scene.background?.src ?? '' },
+            testUserPermission: (user) => !!user?.isGM
+        }
+    };
+}
+
+// Entries with a "reactions" array expand into sub-reactions.
+function getFlatGeneralReactions()
+{
+    if (cachedFlatGeneralReactions)
+        return cachedFlatGeneralReactions;
+    cachedFlatGeneralReactions = [];
+    for (const [reactionName, entry] of Object.entries(ReactionManager.getGeneralReactions()))
+    {
+        if (Array.isArray(entry.reactions))
+        {
+            for (const subReaction of entry.reactions)
+                cachedFlatGeneralReactions.push([reactionName, { ...subReaction, enabled: subReaction.enabled ?? entry.enabled }]);
+        }
+        else
+            cachedFlatGeneralReactions.push([reactionName, entry]);
+    }
+    return cachedFlatGeneralReactions;
+}
+
+function evaluateSceneReaction(reactionName, reaction, triggerType, data, sceneReactor, identity)
+{
+    const sceneName = sceneReactor.name;
+    const cancelledBy = data._cancelledBy;
+    if (cancelledBy?.length > 0)
+    {
+        const identityKeys = Object.keys(identity);
+        const isCancelled = cancelledBy.some(cancelRecord =>
+            Object.keys(cancelRecord).length === identityKeys.length && identityKeys.every(key => cancelRecord[key] === identity[key]));
+        if (isCancelled)
+        {
+            dbgAuto('skip:', sceneName, reactionName, 'already cancelled this pass');
+            return null;
+        }
+    }
+    dbgAuto('candidate:', sceneName, reactionName, '(scene)', { triggers: reaction.triggers });
+    const isInCombat = !!game.combat?.started;
+    if (!isInCombat && !reaction.outOfCombat && !firesRegardlessOfCombat(triggerType))
+    {
+        dbgAuto('skip:', sceneName, reactionName, 'out of combat', { setting: 'outOfCombat', value: reaction.outOfCombat });
+        if (getModuleSetting('debugOutOfCombat'))
+            ui.notifications.warn(localizeFormat('LA.notify.notTriggeredOutOfCombat', { reaction: reactionName, name: sceneName }));
+        return null;
+    }
+
+    try
+    {
+        const api = game.modules.get(MODULE_ID).api;
+        const enrichedData = { ...data, isSceneReactor: true, scene: sceneReactor.scene, distanceToTrigger: null, canTriggerReaction: true, isTarget: false, targetEntry: null };
+        enrichedData.debugActivation = function (label)
+        {
+            return debugActivation(triggerType, this ?? enrichedData, sceneReactor, null, reactionName, label);
+        };
+
+        const shouldTrigger = runGeneralEvaluate(reaction, reactionName, triggerType, enrichedData, sceneReactor, api);
+        dbgAuto(shouldTrigger ? 'fire:' : 'skip:', sceneName, reactionName, 'evaluate →', shouldTrigger);
+        return shouldTrigger ? enrichedData : null;
+    }
+    catch (error)
+    {
+        console.error(`lancer-automations | Error evaluating scene reaction ${reactionName}:`, error);
         return null;
     }
 }
@@ -455,7 +604,7 @@ function _buildSendMessageToReactor(token, item, reactionPath, activationName, t
             targetUserId = ownerIds.at(0) ?? null;
             console.warn(`lancer-automations | sendMessageToReactor: no userId provided, falling back to token owner "${targetUserId}" for ${token.name}.`);
         }
-        if (!targetUserId || targetUserId === game.user.id)
+        if (!targetUserId || targetUserId === game.user.id || !game.users.get(targetUserId)?.active)
             return await checkOnMessageReactions(token, itemLid, reactionPath, activationName, triggerType, data);
         const requestId = wait ? `omsg_${Date.now()}_${Math.random().toString(36).slice(2, 8)}` : null;
         game.socket.emit('module.lancer-automations', {
@@ -468,7 +617,7 @@ function _buildSendMessageToReactor(token, item, reactionPath, activationName, t
                 ? startWaitCard({
                     title: waitTitle ?? 'WAITING',
                     description: waitDescription ?? '',
-                    waitMessage: `Waiting for ${game.users.get(targetUserId)?.name ?? 'remote user'}…`,
+                    waitMessage: localizeFormat('LA.reaction.waitingForUser', { name: game.users.get(targetUserId)?.name ?? localize('LA.reaction.remoteUser') }),
                     item: waitItem,
                     originToken: waitOriginToken ?? token,
                     relatedToken: waitRelatedToken
@@ -495,6 +644,11 @@ export function _buildStartRelatedFlow(token, item, reaction, activationName, ex
             const reactionPath = reaction?.reactionPath;
             if (reactionPath)
             {
+                if (/^(?:system\.)?profiles\[\d+\]$/.test(reactionPath))
+                {
+                    console.warn(`lancer-automations | activation type "flow" cannot start a profile path (${reactionPath}), use code or none`);
+                    return false;
+                }
                 const activationPath = reactionPath.startsWith("system.") ? reactionPath : `system.${reactionPath}`;
                 return _beginFlow("ActivationFlow", item, { action_path: activationPath }, extraData);
             }
@@ -558,7 +712,7 @@ function _buildStartRelatedFlowToReactor(token, item, reaction, activationName)
                 ? startWaitCard({
                     title: waitTitle ?? 'WAITING',
                     description: waitDescription ?? '',
-                    waitMessage: `Waiting for ${game.users.get(targetUserId)?.name ?? 'remote user'}…`,
+                    waitMessage: localizeFormat('LA.reaction.waitingForUser', { name: game.users.get(targetUserId)?.name ?? localize('LA.reaction.remoteUser') }),
                     item: waitItem ?? item,
                     originToken: waitOriginToken ?? token,
                     relatedToken: waitRelatedToken
@@ -576,7 +730,7 @@ function _buildStartRelatedFlowToReactor(token, item, reaction, activationName)
     };
 }
 
-// Cancellable: autoActivate fires sequentially; first cancel triggers a redo with _cancelledBy set.
+// Cancellable: autoActivate fires sequentially, the first cancel triggers a redo with _cancelledBy set.
 const CANCELLABLE_TRIGGERS = new Set([
     'onPreMove', 'onPreStructure', 'onPreStress',
     'onPreStatusApplied', 'onPreStatusRemoved',
@@ -585,20 +739,13 @@ const CANCELLABLE_TRIGGERS = new Set([
 
 function debugAutomationOn()
 {
-    try
-    {
-        return !!game.settings.get('lancer-automations', 'debugAutomation');
-    }
-    catch
-    {
-        return false;
-    }
+    return !!getModuleSetting('debugAutomation');
 }
 
 function dbgAuto(...args)
 {
     if (debugAutomationOn())
-        console.log('[LA debug]', ...args);
+        console.log('lancer-automations | debug |', ...args);
 }
 
 const _laConfigWarnedSet = new Set();
@@ -617,7 +764,7 @@ async function checkReactions(triggerType, data)
     const reactionsPromises = [];
     const deferredFactories = [];
     const isCancellable = CANCELLABLE_TRIGGERS.has(triggerType);
-    // Re-stamp reactor identity on shared fns right before activation fires; last eval-loop assignment would otherwise win.
+    // Re-stamp reactor identity on shared fns right before activation fires, otherwise the last eval-loop assignment wins.
     const applyReactorIdentity = (reactionTriggerData, identity, context) =>
     {
         for (const key of Object.keys(reactionTriggerData))
@@ -629,25 +776,9 @@ async function checkReactions(triggerType, data)
             }
         }
     };
-    const api = game.modules.get('lancer-automations').api;
+    const api = game.modules.get(MODULE_ID).api;
 
-    // Flatten general reactions: entries with a "reactions" array expand into sub-reactions.
-    if (!cachedFlatGeneralReactions)
-    {
-        const generalReactions = ReactionManager.getGeneralReactions();
-        cachedFlatGeneralReactions = [];
-        for (const [reactionName, entry] of Object.entries(generalReactions))
-        {
-            if (Array.isArray(entry.reactions))
-            {
-                for (const subReaction of entry.reactions)
-                    cachedFlatGeneralReactions.push([reactionName, { ...subReaction, enabled: subReaction.enabled ?? entry.enabled }]);
-            }
-            else
-                cachedFlatGeneralReactions.push([reactionName, entry]);
-        }
-    }
-    const flatGeneralReactions = cachedFlatGeneralReactions;
+    const flatGeneralReactions = getFlatGeneralReactions();
 
     let actionBasedReaction = null;
     if (data.actionName)
@@ -661,40 +792,109 @@ async function checkReactions(triggerType, data)
     if (!cachedNonActionReactionsByTrigger.has(triggerType))
     {
         const filtered = [];
+        const sceneFiltered = [];
         for (const [reactionName, reaction] of flatGeneralReactions)
         {
-            if (reaction.onlyOnSourceMatch)
-                continue;
             if (!reaction.triggers?.includes(triggerType))
                 continue;
             if (reaction.enabled === false)
                 continue;
+            const sceneMode = sceneReactorMode(reaction);
+            // onlyOnSourceMatch entries reach the scene pass through actionBasedReaction.
+            if (sceneMode !== 'off' && !reaction.onlyOnSourceMatch)
+                sceneFiltered.push([reactionName, reaction]);
+            if (reaction.onlyOnSourceMatch || sceneMode === 'only')
+                continue;
             filtered.push([reactionName, reaction]);
         }
         cachedNonActionReactionsByTrigger.set(triggerType, filtered);
+        cachedSceneReactionsByTrigger.set(triggerType, sceneFiltered);
     }
     const nonActionBasedReactions = cachedNonActionReactionsByTrigger.get(triggerType);
 
     const hasValidActionBasedReaction = actionBasedReaction &&
-        actionBasedReaction.reaction.enabled !== false;
+        actionBasedReaction.reaction.enabled !== false && onViewedScene(actionBasedReaction.reaction);
 
     const triggeringTokenHidden = !!data.triggeringToken?.document?.hidden;
 
     // Process mover first so reroute-style reactions (Engagement) run before path reactors (Overwatch).
     const orderedTokens = isCancellable && data.triggeringToken
-        ? [...allTokens].sort((a, b) =>
+        ? [...allTokens].sort((left, right) =>
         {
-            const aSelf = a.id === data.triggeringToken.id ? 1 : 0;
-            const bSelf = b.id === data.triggeringToken.id ? 1 : 0;
-            return bSelf - aSelf;
+            const leftSelf = left.id === data.triggeringToken.id ? 1 : 0;
+            const rightSelf = right.id === data.triggeringToken.id ? 1 : 0;
+            return rightSelf - leftSelf;
         })
         : allTokens;
+
+    // Scene pass first: on cancellable triggers the scene's deferred factory wins the cancel race.
+    const sceneCandidates = [];
+    if (game.user.isGM && canvas.scene)
+    {
+        sceneCandidates.push(...cachedSceneReactionsByTrigger.get(triggerType).filter(([, reaction]) => onViewedScene(reaction)));
+        if (hasValidActionBasedReaction && sceneReactorMode(actionBasedReaction.reaction) !== 'off')
+            sceneCandidates.push([actionBasedReaction.name, actionBasedReaction.reaction]);
+    }
+    const sceneReactor = sceneCandidates.length > 0 ? makeSceneReactor(canvas.scene) : null;
+    for (const [reactionName, reaction] of sceneCandidates)
+    {
+        const reactorIdentity = { sceneId: sceneReactor.scene.id, reactionName };
+        const enrichedData = evaluateSceneReaction(reactionName, reaction, triggerType, data, sceneReactor, reactorIdentity);
+        if (!enrichedData)
+            continue;
+        const reactionTriggerData = { ...enrichedData,
+            startRelatedFlow: _buildStartRelatedFlow(sceneReactor, null, reaction, reactionName),
+            startRelatedFlowToReactor: _buildStartRelatedFlowToReactor(sceneReactor, null, reaction, reactionName),
+            sendMessageToReactor: _buildSendMessageToReactor(sceneReactor, null, null, reactionName, triggerType)
+        };
+        const defaultCancelContext = { item: null, originToken: null, relatedToken: enrichedData.triggeringToken ?? null };
+        applyReactorIdentity(reactionTriggerData, reactorIdentity, defaultCancelContext);
+
+        if (!reaction.autoActivate)
+        {
+            reactionQueue.push({
+                triggerType,
+                token: sceneReactor,
+                item: null,
+                reaction,
+                itemName: reactionName,
+                reactionName,
+                isGeneral: true,
+                triggerData: reactionTriggerData
+            });
+            continue;
+        }
+        if (isCancellable)
+        {
+            deferredFactories.push(() =>
+            {
+                applyReactorIdentity(reactionTriggerData, reactorIdentity, defaultCancelContext);
+                return activateReaction(triggerType, reactionTriggerData, sceneReactor, null, reactionName, reaction, true);
+            });
+            continue;
+        }
+        try
+        {
+            const activation = activateReaction(triggerType, reactionTriggerData, sceneReactor, null, reactionName, reaction, true);
+            if (activation instanceof Promise)
+            {
+                activation.catch(error => console.error(`lancer-automations | Error auto-activating scene reaction:`, error));
+                if (reaction.awaitActivationCompletion !== false)
+                    reactionsPromises.push(activation);
+            }
+        }
+        catch (error)
+        {
+            console.error(`lancer-automations | Error auto-activating scene reaction:`, error);
+        }
+    }
 
     for (const token of orderedTokens)
     {
         const isSelf = data.triggeringToken?.id === token.id;
-        // Hidden triggering tokens: only self-reactions fire.
-        if (triggeringTokenHidden && !isSelf)
+        const isTarget = (data.hitTokens ?? []).some(hitToken => hitToken.id === token.id);
+        // Hidden triggering tokens: only self- and target-reactions fire (being attacked is knowable).
+        if (triggeringTokenHidden && !isSelf && !isTarget)
             continue;
         const isInCombat = token.inCombat && !!game.combat?.started;
 
@@ -702,7 +902,7 @@ async function checkReactions(triggerType, data)
         const distanceToTrigger = sourceToken ? getTokenDistance(token, sourceToken) : null;
         const provokeReasons = [];
         const canTriggerReaction = api.canProvokeReaction(sourceToken, token, provokeReasons);
-        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction };
+        const enrichedData = { ...data, distanceToTrigger, canTriggerReaction, isTarget, targetEntry: findTargetEntry(data, token) };
 
         const items = getReactionItems(token);
         for (const item of items)
@@ -733,9 +933,10 @@ async function checkReactions(triggerType, data)
                     const triggeringItemLid = triggeringItem?.system?.lid ?? null;
                     const triggeringDepLid = data.deployable?.lid ?? null;
                     const triggeringActorUuid = data.triggeringToken?.actor?.uuid ?? null;
-                    if (triggeringItemLid !== lid && triggeringDepLid !== lid && triggeringActorUuid !== lid)
+                    const triggeringBaseActorUuid = data.triggeringToken?.document?.baseActor?.uuid ?? null;
+                    if (triggeringItemLid !== lid && triggeringDepLid !== lid && triggeringActorUuid !== lid && triggeringBaseActorUuid !== lid)
                     {
-                        dbgAuto('skip:', token.name, item.name, 'onlyOnSourceMatch failed', { triggeringItemLid, triggeringDepLid, triggeringActorUuid, lid });
+                        dbgAuto('skip:', token.name, item.name, 'onlyOnSourceMatch failed', { triggeringItemLid, triggeringDepLid, triggeringActorUuid, triggeringBaseActorUuid, lid });
                         continue;
                     }
                     // Same-LID dedupe: when reactor owns multiple items sharing this LID, only the exact triggering doc fires.
@@ -746,10 +947,10 @@ async function checkReactions(triggerType, data)
                     }
                 }
 
-                if (!isInCombat && !reaction.outOfCombat && !COMBAT_INHERENT_TRIGGERS.has(triggerType))
+                if (!isInCombat && !reaction.outOfCombat && !firesRegardlessOfCombat(triggerType))
                 {
-                    if ((token.isOwner || game.user.isGM) && game.settings.get('lancer-automations', 'debugOutOfCombat'))
-                        ui.notifications.warn(`${item.name} (${token.name}): not triggered, out of combat.`);
+                    if ((token.isOwner || game.user.isGM) && getModuleSetting('debugOutOfCombat'))
+                        ui.notifications.warn(localizeFormat('LA.notify.notTriggeredOutOfCombat', { reaction: item.name, name: token.name }));
                     if (triggerType === 'onActivation' && (token.isOwner || game.user.isGM))
                         _warnReactionConfigOnce(`ooc|${lid}|${reaction.reactionPath || ''}`, `"${item.name}" only triggers in combat. Enable "Out of Combat" to allow it outside.`);
                     dbgAuto('skip:', token.name, item.name, 'out of combat', { setting: 'outOfCombat', value: reaction.outOfCombat });
@@ -766,9 +967,9 @@ async function checkReactions(triggerType, data)
                 }
                 else
                 {
-                    if (reaction.triggerOther === false)
+                    if (reaction.triggerOther === false && !(reaction.triggerTarget === true && isTarget))
                     {
-                        dbgAuto('skip:', token.name, item.name, 'reactor is not the trigger source', { setting: 'triggerOther', value: !!reaction.triggerOther });
+                        dbgAuto('skip:', token.name, item.name, 'reactor is not the trigger source or target', { setting: 'triggerOther', value: !!reaction.triggerOther });
                         continue;
                     }
                 }
@@ -806,8 +1007,8 @@ async function checkReactions(triggerType, data)
                     const hasLoading = hasTag('tg_loading');
                     const hasRecharge = hasTag('tg_recharge');
                     const hasUses = sys?.uses?.max > 0;
-                    const perRoundLimit = game.combat?.started && game.settings.get('lancer-automations', 'enablePerRoundTurnTags') ? tagVal('tg_round') : 0;
-                    const perTurnLimit = game.combat?.started && game.settings.get('lancer-automations', 'enablePerRoundTurnTags') ? tagVal('tg_turn') : 0;
+                    const perRoundLimit = game.combat?.started && getModuleSetting('enablePerRoundTurnTags') ? tagVal('tg_round') : 0;
+                    const perTurnLimit = game.combat?.started && getModuleSetting('enablePerRoundTurnTags') ? tagVal('tg_turn') : 0;
                     if (!hasLoading && !hasRecharge && !hasUses && !perRoundLimit && !perTurnLimit && (token.isOwner || game.user.isGM))
                         _warnReactionConfigOnce(`usage|${lid}|${reaction.reactionPath || ''}`, `"${item.name}" has Check Usage enabled but no loading, recharge, limited uses, or per-round/turn tag. The check has no effect.`);
                     if (hasLoading && sys?.loaded === false)
@@ -847,6 +1048,8 @@ async function checkReactions(triggerType, data)
                 {
                     let activationName = item.name;
                     const reactionPath = reaction.reactionPath || "";
+                    // actionName only identifies a sub-action on activation triggers, elsewhere it's a flow title
+                    const actionNameIsSubAction = ACTIVATION_TRIGGERS.has(triggerType);
 
                     if (reactionPath && reactionPath !== "" && reactionPath !== "system" && reactionPath !== "system.trigger")
                     {
@@ -855,15 +1058,15 @@ async function checkReactions(triggerType, data)
                         if (reactionPath.startsWith("extraActions."))
                         {
                             const actionName = reactionPath.slice("extraActions.".length);
-                            const extraActions = item.getFlag?.('lancer-automations', 'extraActions') || [];
-                            actionData = extraActions.find(a => a.name === actionName) ?? null;
+                            const extraActions = getLAFlag(item,'extraActions') || [];
+                            actionData = extraActions.find(action => action.name === actionName) ?? null;
                         }
                         else if (reactionPath.startsWith("actions."))
                         {
                             // Lookup-by-name for deployables whose action LIDs are empty strings (name is the only key).
                             const actionName = reactionPath.slice("actions.".length);
                             const list = item.system?.actions ?? [];
-                            actionData = list.find(a => a.name === actionName) ?? null;
+                            actionData = list.find(action => action.name === actionName) ?? null;
                         }
                         else
                         {
@@ -887,14 +1090,14 @@ async function checkReactions(triggerType, data)
                         if (actionData?.name)
                         {
                             activationName = actionData.name;
-                            if (data.actionName && data.actionName !== activationName)
+                            if (actionNameIsSubAction && data.actionName && data.actionName !== activationName)
                             {
                                 dbgAuto('skip:', token.name, item.name, 'action name mismatch', { actionName: data.actionName, expected: activationName, reactionPath });
                                 continue;
                             }
                         }
                     }
-                    else if (reaction.onlyOnSourceMatch && data.actionName && data.actionName !== item.name)
+                    else if (actionNameIsSubAction && reaction.onlyOnSourceMatch && data.actionName && data.actionName !== item.name)
                     {
                         // No reactionPath: skip when a specific sub-action was triggered (not the base item)
                         dbgAuto('skip:', token.name, item.name, 'action name mismatch', { setting: 'onlyOnSourceMatch', actionName: data.actionName, expected: item.name });
@@ -940,7 +1143,7 @@ async function checkReactions(triggerType, data)
                     {
                         try
                         {
-                            const evalFunc = stringToFunction(reaction.evaluate, ["triggerType", "triggerData", "reactorToken", "item", "activationName", "api"], reaction);
+                            const evalFunc = stringToFunction(reaction.evaluate, ["triggerType", "triggerData", "reactorToken", "item", "activationName", "api"], reaction, `${lid}/${registryEntry.reactions.indexOf(reaction)}/evaluate`);
                             const result = evalFunc(triggerType, enrichedData, token, item, activationName, api);
                             if (result instanceof Promise)
                             {
@@ -950,9 +1153,9 @@ async function checkReactions(triggerType, data)
                             else
                                 shouldTrigger = result;
                         }
-                        catch (e)
+                        catch (error)
                         {
-                            console.error(`lancer-automations | Error parsing custom evaluate for ${item.name}:`, e);
+                            console.error(`lancer-automations | Error parsing custom evaluate for ${item.name}:`, error);
                         }
                     }
                     else
@@ -995,12 +1198,12 @@ async function checkReactions(triggerType, data)
                             {
                                 try
                                 {
-                                    const p = activateReaction(triggerType, reactionTriggerData, token, item, activationName, reaction, false);
-                                    if (p instanceof Promise)
+                                    const activation = activateReaction(triggerType, reactionTriggerData, token, item, activationName, reaction, false);
+                                    if (activation instanceof Promise)
                                     {
-                                        p.catch(error => console.error(`lancer-automations | Error auto-activating reaction:`, error));
+                                        activation.catch(error => console.error(`lancer-automations | Error auto-activating reaction:`, error));
                                         if (reaction.awaitActivationCompletion !== false)
-                                            reactionsPromises.push(p);
+                                            reactionsPromises.push(activation);
                                     }
                                 }
                                 catch (error)
@@ -1030,11 +1233,11 @@ async function checkReactions(triggerType, data)
             }
         }
 
-        if (hasValidActionBasedReaction)
+        if (hasValidActionBasedReaction && sceneReactorMode(actionBasedReaction.reaction) !== 'only')
         {
             const reactionName = actionBasedReaction.name;
             const reaction = actionBasedReaction.reaction;
-            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isInCombat);
+            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isTarget, isInCombat);
             if (enrichedData)
             {
                 const reactionTriggerData = { ...enrichedData,
@@ -1068,12 +1271,12 @@ async function checkReactions(triggerType, data)
                     {
                         try
                         {
-                            const p = activateReaction(triggerType, reactionTriggerData, token, null, reactionName, reaction, true);
-                            if (p instanceof Promise)
+                            const activation = activateReaction(triggerType, reactionTriggerData, token, null, reactionName, reaction, true);
+                            if (activation instanceof Promise)
                             {
-                                p.catch(error => console.error(`lancer-automations | Error auto-activating general reaction:`, error));
+                                activation.catch(error => console.error(`lancer-automations | Error auto-activating general reaction:`, error));
                                 if (reaction.awaitActivationCompletion !== false)
-                                    reactionsPromises.push(p);
+                                    reactionsPromises.push(activation);
                             }
                         }
                         catch (error)
@@ -1100,7 +1303,9 @@ async function checkReactions(triggerType, data)
 
         for (const [reactionName, reaction] of nonActionBasedReactions)
         {
-            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isInCombat);
+            if (!onViewedScene(reaction))
+                continue;
+            const enrichedData = evaluateGeneralReaction(reactionName, reaction, triggerType, data, token, isSelf, isTarget, isInCombat);
             if (enrichedData)
             {
                 const reactionTriggerData = { ...enrichedData,
@@ -1134,12 +1339,12 @@ async function checkReactions(triggerType, data)
                     {
                         try
                         {
-                            const p = activateReaction(triggerType, reactionTriggerData, token, null, reactionName, reaction, true);
-                            if (p instanceof Promise)
+                            const activation = activateReaction(triggerType, reactionTriggerData, token, null, reactionName, reaction, true);
+                            if (activation instanceof Promise)
                             {
-                                p.catch(error => console.error(`lancer-automations | Error auto-activating general reaction:`, error));
+                                activation.catch(error => console.error(`lancer-automations | Error auto-activating general reaction:`, error));
                                 if (reaction.awaitActivationCompletion !== false)
-                                    reactionsPromises.push(p);
+                                    reactionsPromises.push(activation);
                             }
                         }
                         catch (error)
@@ -1174,15 +1379,15 @@ async function checkReactions(triggerType, data)
         {
             try
             {
-                const p = factory();
-                if (p instanceof Promise)
-                    p.catch(e => console.error('lancer-automations | async reaction error:', e));
+                const activation = factory();
+                if (activation instanceof Promise)
+                    activation.catch(error => console.error('lancer-automations | async reaction error:', error));
                 if (cancelRaised())
                     break;
             }
-            catch (e)
+            catch (error)
             {
-                console.error('lancer-automations | reaction error:', e);
+                console.error('lancer-automations | reaction error:', error);
             }
         }
     }
@@ -1202,10 +1407,10 @@ async function checkReactions(triggerType, data)
 
             if (manualReactions.length > 0)
             {
-                const mode = game.settings.get('lancer-automations', 'reactionNotificationMode');
+                const mode = getModuleSetting('reactionNotificationMode');
                 const distribution = new Map();
 
-                const allGMs = game.users.filter(u => u.active && u.isGM);
+                const allGMs = game.users.filter(user => user.active && user.isGM);
 
                 for (const reaction of manualReactions)
                 {
@@ -1218,7 +1423,7 @@ async function checkReactions(triggerType, data)
                     }
 
                     if (mode === 'gm' || mode === 'both')
-                        allGMs.forEach(u => recipients.add(u));
+                        allGMs.forEach(user => recipients.add(user));
 
                     for (const user of recipients)
                     {
@@ -1239,13 +1444,13 @@ async function checkReactions(triggerType, data)
                         const payload = {
                             targetUserId: userId,
                             triggerType: mainTrigger,
-                            reactions: reactions.map(r => ({
-                                tokenId: r.token.id,
-                                itemId: r.item?.id,
-                                reactionName: r.reactionName,
-                                itemName: r.itemName,
-                                isGeneral: r.isGeneral,
-                                triggerData: serializeTriggerData(r.triggerData)
+                            reactions: reactions.map(entry => ({
+                                tokenId: entry.token.id,
+                                itemId: entry.item?.id,
+                                reactionName: entry.reactionName,
+                                itemName: entry.itemName,
+                                isGeneral: entry.isGeneral,
+                                triggerData: serializeTriggerData(entry.triggerData)
                             }))
                         };
                         game.socket.emit('module.lancer-automations', {
@@ -1262,19 +1467,16 @@ async function checkReactions(triggerType, data)
     }, REACTION_DEBOUNCE_MS);
 }
 
-// Origin can appear as triggering token, single target, or in targets array.
-function isOriginInvolved(originId, triggerType, data)
+// originId may be the triggering token, a single target, or inside targets[]; role 'source' = caused it, 'target' = was hit by it, else either side.
+function isOriginInvolved(originId, role, data)
 {
-    if (data.triggeringToken?.id === originId)
-        return true;
-    if (data.target?.id === originId)
-        return true;
-    if (data.targets && Array.isArray(data.targets))
-    {
-        if (data.targets.some(t => t.id === originId))
-            return true;
-    }
-    return false;
+    const isSource = data.triggeringToken?.id === originId;
+    const isTarget = (data.hitTokens ?? []).some(hitToken => hitToken.id === originId) || data.target?.id === originId;
+    if (role === 'source')
+        return isSource;
+    if (role === 'target')
+        return isTarget;
+    return isSource || isTarget;
 }
 
 function passesBuiltInFilters(consumption, triggerType, data)
@@ -1286,7 +1488,7 @@ function passesBuiltInFilters(consumption, triggerType, data)
         if (!currentLid)
             return false;
 
-        const validLids = consumption.itemLid.split(',').map(s => s.trim()).filter(Boolean);
+        const validLids = consumption.itemLid.split(',').map(lid => lid.trim()).filter(Boolean);
         if (!validLids.includes(currentLid))
             return false;
     }
@@ -1302,11 +1504,6 @@ function passesBuiltInFilters(consumption, triggerType, data)
     if (consumption.actionName)
     {
         if (data.actionName !== consumption.actionName)
-            return false;
-    }
-    if (consumption.isBoost !== undefined && consumption.isBoost !== null)
-    {
-        if (data.moveInfo?.isBoost !== consumption.isBoost)
             return false;
     }
     if (consumption.minDistance !== undefined && consumption.minDistance !== null)
@@ -1332,7 +1529,7 @@ function passesBuiltInFilters(consumption, triggerType, data)
     if (consumption.statusId)
     {
         const triggerStatusId = data.statusId || data.effect?.statuses?.first() || data.effect?.name;
-        const allowedIds = consumption.statusId.split(',').map(s => s.trim()).filter(Boolean);
+        const allowedIds = consumption.statusId.split(',').map(statusId => statusId.trim()).filter(Boolean);
         if (!allowedIds.includes(triggerStatusId))
             return false;
     }
@@ -1351,9 +1548,9 @@ export async function processEffectConsumption(triggerType, data)
         if (!actor)
             continue;
 
-        const consumableEffects = actor.effects.filter(e =>
+        const consumableEffects = actor.effects.filter(effect =>
         {
-            const consumption = e.flags?.['lancer-automations']?.consumption;
+            const consumption = getLAFlags(effect)?.consumption;
             const trigger = consumption?.trigger;
             if (!trigger)
                 return false;
@@ -1367,7 +1564,7 @@ export async function processEffectConsumption(triggerType, data)
 
         for (const effect of consumableEffects)
         {
-            const consumption = effect.getFlag('lancer-automations', 'consumption');
+            const consumption = getLAFlag(effect,'consumption');
             if (!consumption)
                 continue;
 
@@ -1375,7 +1572,7 @@ export async function processEffectConsumption(triggerType, data)
                 continue;
 
             const originId = consumption.originId || token.id;
-            if (!isOriginInvolved(originId, triggerType, data))
+            if (!isOriginInvolved(originId, consumption.role, data))
                 continue;
 
             if (!passesBuiltInFilters(consumption, triggerType, data))
@@ -1398,13 +1595,18 @@ export async function processEffectConsumption(triggerType, data)
                         if (!shouldConsume)
                             return;
                     }
-                    catch (e)
+                    catch (error)
                     {
-                        console.error(`lancer-automations | Error evaluating consumption for ${effect.name}:`, e);
+                        console.error(`lancer-automations | Error evaluating consumption for ${effect.name}:`, error);
                         return;
                     }
                 }
 
+                if (triggerType === 'onDamage' && effect.changes?.some(change => change.key?.startsWith('system.resistances.')))
+                {
+                    deferResistanceEffectConsumption(token.actor, effect);
+                    return;
+                }
                 console.log(`lancer-automations | Consuming charge on ${effect.name} (trigger: ${triggerType})`);
                 if (consumption.groupId)
                     consumedGroups.add(consumption.groupId);
@@ -1417,7 +1619,7 @@ export async function processEffectConsumption(triggerType, data)
     await Promise.all(consumptionPromises);
 }
 
-const _BATTLELOG_TELEMETRY_TRIGGERS = new Set(['onHit', 'onMiss', 'onTechHit', 'onTechMiss', 'onStructure', 'onStress', 'onDestroyed', 'onCheck', 'onActivation']);
+const _BATTLELOG_TELEMETRY_TRIGGERS = new Set(['onHit', 'onMiss', 'onTechHit', 'onTechMiss', 'onStructure', 'onStress', 'onDestroyed', 'onCheck', 'onActivation', 'onEndActivation']);
 
 export async function handleTrigger(triggerType, data)
 {
@@ -1437,18 +1639,38 @@ export async function handleTrigger(triggerType, data)
     return _handleTriggerBody(triggerType, data);
 }
 
+/**
+ * Fire a user-defined trigger. Automations listing `name` in their triggers react to it, in or out of combat.
+ * Built-in names and the onInit prefix are refused.
+ * @param {string} name
+ * @param {object} [data] trigger payload, `triggeringToken` enables the self/other, disposition and distance filters
+ * @returns {Promise<void>}
+ */
+export async function dispatchCustomTrigger(name, data = {})
+{
+    const triggerType = typeof name === 'string' ? name.trim() : '';
+    if (!triggerType || BUILT_IN_TRIGGERS.has(triggerType) || triggerType.startsWith('onInit'))
+    {
+        ui.notifications.warn(`lancer-automations | dispatchCustomTrigger: "${name}" is not a valid custom trigger name.`);
+        return;
+    }
+    return handleTrigger(triggerType, (data && typeof data === 'object') ? data : {});
+}
+
 async function _handleTriggerBody(triggerType, data)
 {
     // runInFlowBody: child flow.begin() from reactions routes to innerChain, avoids parent-await deadlock.
     return runInFlowBody(async () =>
     {
-        // Normalized target list: entries may be raw tokens or { target } wrappers, single target included.
+        // Normalized target list: entries may be raw tokens or { target }/{ token } wrappers, single target included.
         if (!('hitTokens' in data))
         {
-            const unwrap = entry => (entry?.constructor === Object ? entry.target : entry);
-            const raw = Array.isArray(data.targets) ? data.targets.map(unwrap) : (data.target ? [unwrap(data.target)] : []);
+            const unwrap = entry => (entry?.constructor === Object ? (entry.target ?? entry.token) : entry);
+            const single = data.target ?? data.token ?? data.checkAgainstToken;
+            const raw = Array.isArray(data.targets) ? data.targets.map(unwrap) : (single ? [unwrap(single)] : []);
             data.hitTokens = raw.filter(candidate => candidate?.actor);
         }
+        data.isRangedAttack = () => isRangedAttack(data);
         data.startRelatedFlow = async () =>
         {
             const item = data.item ?? data.weapon ?? data.techItem;
@@ -1523,7 +1745,7 @@ function serializeTriggerData(data, depth = 0)
                 }
                 return result;
             }
-            catch (e)
+            catch (error)
             {
                 return undefined;
             }

@@ -1,6 +1,7 @@
 /* global CodeMirror, game */
 
-import { AUTO_API_MANIFEST, AUTO_OPTION_SCHEMAS, AUTO_DOC_INDEX, AUTO_DOC_REF } from '../../tools/codemirror-hints-data.generated.js';
+import { AUTO_API_MANIFEST, AUTO_OPTION_SCHEMAS, AUTO_DOC_INDEX, AUTO_DOC_REF, AUTO_DOC_PARAMS } from '../../tools/codemirror-hints-data.generated.js';
+import { MODULE_ID } from '../tools/constants.js';
 
 const HAND_SIGNATURE_OVERRIDES = {
 };
@@ -44,12 +45,14 @@ const TRIGGER_MANIFEST = [
     { name: 'modifyRoll', args: '(newTotal)', returns: 'void', doc: 'ModifyValueFunction', summary: 'Structure/stress only. Sets the total, leaves title and text stale.' },
     { name: 'reroll', args: '(reason, subtype, title, allowConfirm, userIdControl, opts)', returns: 'Promise<void>', doc: 'ModifyValueFunction', summary: "subtype: 'retry' | 'highest' | 'lowest' | 'choose'." },
     { name: 'changeRoll', args: '(newTotal, reason, title, allowConfirm, userIdControl, preConfirm, postChoice, opts)', returns: 'Promise<void>', doc: 'ModifyValueFunction' },
-    { name: 'endActivation', args: '()', returns: 'Promise<void>', summary: 'End the item activation this trigger came from.' },
+    { name: 'endActivation', returns: 'boolean', summary: 'Deprecated. True on onEndActivation / onInitEndActivation. Listen for the end trigger instead.' },
 
     { name: 'actionData', returns: 'ActionData', doc: 'actionData' },
     { name: 'flowState', returns: 'FlowState', doc: 'actionData' },
     { name: 'extraData', returns: 'object', summary: 'Injected by startRelatedFlowToReactor.' },
     { name: 'hitTokens', returns: 'Token[]', summary: 'Targets flattened to plain Tokens.' },
+    { name: 'isTarget', returns: 'boolean', summary: 'True when the reactor is one of the event targets.' },
+    { name: 'targetEntry', returns: 'object | null', summary: 'The reactor\'s own targets entry (roll, crit, ...) when the trigger has per-target entries.' },
     { name: 'targets', returns: 'Token[] | Array<{ target, roll, crit? }>' },
     { name: 'target', returns: 'Token' },
     { name: 'weapon', returns: 'Item' },
@@ -104,7 +107,7 @@ const TRIGGER_MANIFEST = [
     { name: 'distance', returns: 'number' },
     { name: 'destination', returns: '{ x, y }' },
     { name: 'isDrag', returns: 'boolean' },
-    { name: 'moveInfo', returns: '{ isInvoluntary, isTeleport, isUndo, isModified, pathHexes, isBoost?, boostSet?, extraData? }' },
+    { name: 'moveInfo', returns: '{ isInvoluntary, isTeleport, isUndo, isModified, pathHexes, isFreeMovement?, movementCost?, extraData? }' },
     { name: 'combat', returns: 'Combat' },
     { name: 'round', returns: 'number' },
     { name: 'isHidden', returns: 'boolean' },
@@ -117,6 +120,7 @@ const TRIGGER_MANIFEST = [
 
 const COMMON_TRIGGER_FIELDS = new Set([
     'triggeringToken', 'distanceToTrigger', 'canTriggerReaction',
+    'hitTokens', 'isTarget', 'targetEntry',
     'startRelatedFlow', 'startRelatedFlowToReactor', 'sendMessageToReactor',
     'debugActivation',
 ]);
@@ -138,7 +142,9 @@ const TRIGGER_FIELDS_BY_TRIGGER = {
     onCheck:             ['statName', 'roll', 'total', 'success', 'checkAgainstToken', 'targetVal', 'flowState'],
     onInitCheck:         ['statName', 'checkAgainstToken', 'targetVal', 'cancelCheck', 'flowState'],
     onActivation:        ['actionType', 'actionName', 'item', 'actionData', 'deployable', 'reactionJustConsumed', 'endActivation', 'extraData', 'flowState'],
-    onInitActivation:    ['actionType', 'actionName', 'item', 'actionData', 'deployable', 'cancelAction', 'flowState'],
+    onInitActivation:    ['actionType', 'actionName', 'item', 'actionData', 'deployable', 'endActivation', 'cancelAction', 'flowState'],
+    onEndActivation:     ['actionType', 'actionName', 'item', 'actionData', 'deployable', 'reactionJustConsumed', 'endActivation', 'extraData', 'flowState'],
+    onInitEndActivation: ['actionType', 'actionName', 'item', 'actionData', 'deployable', 'endActivation', 'cancelAction', 'flowState'],
     onPreStructure:      ['remainingStructure', 'cancelStructure', 'flowState'],
     onStructure:         ['remainingStructure', 'rollResult', 'rollDice', 'cancelStructureOutcome', 'modifyRoll', 'flowState'],
     onPreStress:         ['remainingStress', 'cancelStress', 'flowState'],
@@ -221,11 +227,25 @@ const HAND_OPTION_SCHEMAS = {
         ['action', 'string'],
         ['range', 'number'],
         ['cost', 'number'],
+        ['free', 'boolean'],
+        ['urgent', 'boolean'],
         ['canBeBlocked', 'boolean'],
         ['title', 'string'],
         ['description', 'string'],
         ['icon', 'string'],
         ['headerClass', 'string'],
+    ],
+    'rollCard.options': [
+        ['title', 'string'],
+        ['description', 'string'],
+        ['roll', 'string'],
+        ['allowEdit', 'boolean'],
+        ['flavor', 'string'],
+        ['originToken', 'Token'],
+        ['relatedToken', 'Token'],
+        ['item', 'Item'],
+        ['icon', 'string'],
+        ['urgent', 'boolean'],
     ],
     'removeEffectsByNameFromTokens.options': [
         ['tokens', 'Token[]'],
@@ -255,9 +275,16 @@ const HAND_OPTION_SCHEMAS = {
         ['requireRange', 'boolean'],
     ],
     'knockBackToken.options': [
-        ['direction', 'number | { x, y }'],
-        ['originToken', 'Token'],
-        ['ignoreRange', 'boolean'],
+        ['triggeringToken', 'Token'],
+        ['actionName', 'string'],
+        ['item', 'Item'],
+        ['asVoluntary', 'boolean'],
+        ['setElevation', 'boolean'],
+        ['urgent', 'boolean'],
+        ['title', 'string'],
+        ['description', 'string'],
+        ['icon', 'string'],
+        ['headerClass', 'string'],
     ],
     'placeToken.options': [
         ['actor', 'Actor | Actor[] | { actor, extraData }[]'],
@@ -313,7 +340,7 @@ const HAND_OPTION_SCHEMAS = {
         ['durationTurns', 'number'],
         ['origin', 'Token | string'],
         ['icon', 'string'],
-        ['consumption', '{ trigger, originId?, groupId?, evaluate?, itemLid?, itemId?, actionName?, isBoost?, minDistance?, checkType?, checkAbove?, checkBelow? }'],
+        ['consumption', '{ trigger, originId?, groupId?, evaluate?, itemLid?, itemId?, actionName?, minDistance?, checkType?, checkAbove?, checkBelow? }'],
     ],
     'executeEffectManager.options': [
         ['initialTab', '"bonus" | "manage" | string'],
@@ -620,7 +647,7 @@ function _getApiList()
 {
     if (_apiCache)
         return _apiCache;
-    const apiObj = game?.modules?.get?.('lancer-automations')?.api ?? {};
+    const apiObj = game?.modules?.get?.(MODULE_ID)?.api ?? {};
     const entries = [];
     for (const apiName of Object.keys(apiObj))
     {
@@ -735,8 +762,8 @@ export function apiDocUrl(name)
     if (!entry && !ref)
         return null;
     const file = entry?.file ?? ref.file;
-    const line = entry?.line ?? ref.line;
-    return `https://github.com/Agraael/lancer-automations/blob/main/doc/${file}#L${line}`;
+    const anchor = entry?.anchor ? `#${entry.anchor}` : '';
+    return `https://agraael.github.io/lancer-automations/${file.replace(/\.md$/, '.html')}${anchor}`;
 }
 
 // Live api surface (spread-composed names included), enriched from the generated manifest.
@@ -777,6 +804,17 @@ function _showTooltip(anchor, name, fullArgs, returns, summary = '', params = []
     _hideTooltip();
     const parts = _splitArgs(fullArgs);
     const paramByName = new Map((params ?? []).map((param) => [param.name, param]));
+    // Doc tables are the maintained source; prefer them over JSDoc-derived meta.
+    const docRows = AUTO_DOC_PARAMS[name] ?? null;
+    const positionalNames = new Set(parts.map((argStr) =>
+    {
+        const eq = argStr.indexOf('=');
+        return (eq >= 0 ? argStr.slice(0, eq) : argStr).trim();
+    }));
+    if (docRows)
+        for (const [pname, ptype, pdflt] of docRows)
+            if (positionalNames.has(pname))
+                paramByName.set(pname, { name: pname, type: ptype, desc: pdflt && pdflt !== 'required' ? `default: ${pdflt}` : '' });
     let body;
     if (!fullArgs || fullArgs === '()' || fullArgs === '(...)')
         body = `<div class="la-hint-tt-paren">${fullArgs || '()'}</div>`;
@@ -789,11 +827,17 @@ function _showTooltip(anchor, name, fullArgs, returns, summary = '', params = []
             const defPart = eq >= 0 ? ` = ${argStr.slice(eq + 1).trim()}` : '';
             const comma = i < parts.length - 1 ? ',' : '';
             const lookupKey = namePart.replace(/^\{.*\}$/, 'options');
-            const schema = OPTION_SCHEMAS[`${name}.${lookupKey}`];
+            let schema = OPTION_SCHEMAS[`${name}.${lookupKey}`];
+            if (docRows && (lookupKey === 'options' || lookupKey === 'opts'))
+            {
+                const bagRows = docRows.filter(([pname]) => !positionalNames.has(pname));
+                if (bagRows.length)
+                    schema = bagRows.map(([pname, ptype]) => [pname, ptype || 'any']);
+            }
             let schemaHtml = '';
             if (schema)
             {
-                const lines = schema.map(([fieldName, fieldType]) => `<div class="la-hint-tt-schema-line"><span class="la-hint-tt-argname">${fieldName}</span><span class="la-hint-tt-default">: ${fieldType}</span></div>`).join('');
+                const lines = schema.map(([fieldName, fieldType]) => `<div class="la-hint-tt-schema-line"><span class="la-hint-tt-argname">${_escapeHtml(fieldName)}</span><span class="la-hint-tt-default">: ${_escapeHtml(fieldType)}</span></div>`).join('');
                 schemaHtml = `<div class="la-hint-tt-schema">${lines}</div>`;
             }
             const paramMeta = paramByName.get(namePart);
