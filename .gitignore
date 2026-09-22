@@ -1,1 +1,23 @@
+# Foundry already writes zip snapshots here. Do not git them.
 Backups/
+# Daily debug/error logs. Huge, rotated, not campaign data.
+Logs/
+# LevelDB lock + text journals. Rewritten every time Foundry starts.
+# Harmless at runtime, noisy in git.
+**/LOCK
+**/LOG
+**/LOG.old
+# Numbered LevelDB write-ahead logs (e.g. data/scenes/000758.log).
+# After compaction they are often empty and byte-identical across packs,
+# so git treats them as "renames" between worlds/modules. A merge that
+# applies those renames will mix databases.
+*.log
+# Modules and systems are reinstallable from Foundry's package installer.
+# Their compendium databases churn on every world launch and dominated
+# the diffs without containing Pass the Torch content.
+Data/modules/
+Data/systems/
+# OS junk
+.DS_Store
+Thumbs.db
+desktop.ini

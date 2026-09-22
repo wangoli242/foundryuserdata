@@ -1,8 +1,0 @@
-2026/09/20-02:03:41.333857 e694897aefc0 Recovering log #584
-2026/09/20-02:03:41.340919 e694897aefc0 Delete type=3 #582
-2026/09/20-02:03:41.340943 e694897aefc0 Delete type=0 #584
-2026/09/20-02:04:14.630871 e69488f9efc0 Level-0 table #590: started
-2026/09/20-02:04:14.630891 e69488f9efc0 Level-0 table #590: 0 bytes OK
-2026/09/20-02:04:14.633592 e69488f9efc0 Delete type=0 #588
-2026/09/20-02:04:14.636761 e69488f9efc0 Manual compaction at level-0 from '!messages!USSua3MbirGbyOAP' @ 72057594037927935 : 1 .. '!messages!USSua3MbirGbyOAP' @ 0 : 0; will stop at (end)
-2026/09/20-02:04:14.642255 e69488f9efc0 Manual compaction at level-1 from '!messages!USSua3MbirGbyOAP' @ 72057594037927935 : 1 .. '!messages!USSua3MbirGbyOAP' @ 0 : 0; will stop at (end)
