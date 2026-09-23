@@ -1,15 +1,15 @@
 {
-  "title": "Beneath the Static",
+  "title": "Operation: Severe Weather",
   "id": "beneath-the-static",
   "system": "lancer",
-  "background": "assets/forte/beneath_the_static/bts_landing4.jpg",
+  "background": "assets/forte/twelve_rainmakers/dark_skies.jpg",
   "coreVersion": "13.351",
   "compatibility": {
     "minimum": "13",
     "verified": "13"
   },
   "systemVersion": "3.1.3",
-  "lastPlayed": "Sun Sep 20 2026 02:03:37 GMT+0000 (Coordinated Universal Time)",
+  "lastPlayed": "Wed Sep 23 2026 07:42:03 GMT+0000 (Coordinated Universal Time)",
   "packs": [
     {
       "name": "pilot-items",
@@ -90,7 +90,7 @@
       "flags": {}
     }
   ],
-  "playtime": 306125,
+  "playtime": 327932,
   "description": "",
   "flags": {}
 }
