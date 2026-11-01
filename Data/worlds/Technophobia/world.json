@@ -2,14 +2,14 @@
   "title": "Technophobia",
   "id": "Technophobia",
   "system": "lancer",
-  "joinTheme": "default",
+  "joinTheme": "minimal",
   "coreVersion": "13.351",
   "compatibility": {
     "minimum": "13",
     "verified": "13.351"
   },
   "systemVersion": "3.1.3",
-  "lastPlayed": "Sun Nov 01 2026 18:54:22 GMT+0000 (Coordinated Universal Time)",
+  "lastPlayed": "Sun Nov 01 2026 22:26:09 GMT+0000 (Coordinated Universal Time)",
   "packs": [
     {
       "name": "pilot-items",
@@ -102,8 +102,8 @@
       "flags": {}
     }
   ],
-  "playtime": 562627,
-  "background": "Background.png",
+  "playtime": 568070,
+  "background": "assets/Technophobia/Landing.jpg",
   "safeMode": false,
   "description": "",
   "flags": {}
