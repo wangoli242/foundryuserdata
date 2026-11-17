@@ -2,14 +2,14 @@
   "title": "Pass the Torch",
   "id": "pass_the_torch",
   "system": "lancer",
-  "joinTheme": "default",
+  "joinTheme": "minimal",
   "coreVersion": "13.351",
   "compatibility": {
     "minimum": "13",
     "verified": "13.351"
   },
   "systemVersion": "3.1.3",
-  "lastPlayed": "Sun Nov 01 2026 18:54:22 GMT+0000 (Coordinated Universal Time)",
+  "lastPlayed": "Sun Nov 15 2026 06:12:57 GMT+0000 (Coordinated Universal Time)",
   "packs": [
     {
       "name": "pilot-items",
@@ -102,7 +102,7 @@
       "flags": {}
     }
   ],
-  "playtime": 562627,
+  "playtime": 968598,
   "background": "Background.png",
   "safeMode": false,
   "description": "",
